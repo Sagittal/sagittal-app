@@ -2,6 +2,7 @@
   "name": "sagittal-app",
   "version": "1.0.0",
   "description": "web apps for the Sagittal microtonal notation system",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sagittal/sagittal-app.git"
