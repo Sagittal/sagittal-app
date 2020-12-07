@@ -1,0 +1,3 @@
+[submodule "sagittal.github.io"]
+	path = dist
+	url = git@github.com:Sagittal/sagittal.github.io
