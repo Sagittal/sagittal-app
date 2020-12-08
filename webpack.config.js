@@ -12,6 +12,9 @@ module.exports = {
         "child_process": "{}",
         "perf_hooks": "{}",
     },
+    output: {
+        filename: 'main.[contenthash].js',
+    },
     module: {
         rules: [
             {
