@@ -1,4 +1,6 @@
-// https://w3c.github.io/smufl/gitbook/tables/extended-helmholtz-ellis-accidentals-just-intonation.html
+// tslint:disable max-line-length
+
+// See: ttps://w3c.github.io/smufl/gitbook/tables/extended-helmholtz-ellis-accidentals-just-intonation.html
 // All EHEJIPN staffCodes start with a dot (full-stop). Unicodes are successive below.
 
 const EHEJIPN_ACCIDENTALS = {
@@ -64,7 +66,7 @@ const EHEJIPN_ACCIDENTALS = {
     ".=": "",          // U+E2FB
 
     // For convenience of EHEJIPN users, standard accidentals with dots at the start of their codes
-    // https://w3c.github.io/smufl/gitbook/tables/standard-accidentals-12-edo.html
+    // See: https://w3c.github.io/smufl/gitbook/tables/standard-accidentals-12-edo.html
     ".bb": "",         // U+E264
     ".b": "",          // U+E260
     ".h": "",          // U+E261

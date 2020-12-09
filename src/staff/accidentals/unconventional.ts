@@ -1,5 +1,5 @@
-// https://w3c.github.io/smufl/gitbook/tables/stein-zimmermann-accidentals-24-edo.html
-// https://w3c.github.io/smufl/gitbook/tables/other-accidentals.html
+// See: https://w3c.github.io/smufl/gitbook/tables/stein-zimmermann-accidentals-24-edo.html
+// And: https://w3c.github.io/smufl/gitbook/tables/other-accidentals.html
 
 const UNCONVENTIONAL_ACCIDENTALS = {
     ">": "",           // U+E282           Half sharp (quarter-tone sharp) (Stein)

@@ -1,9 +1,9 @@
 import {Io, RecordKey} from "@sagittal/general"
-import {Clef, Uni} from "./types"
 import {
     BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
     TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
 } from "./combiningStaffPositions"
+import {Clef, Uni} from "./types"
 import {CLEF_AGNOSTIC_UNICODE_MAP} from "./unicodeMap"
 
 const getUnicode = (userInput: Io, clef: Clef): Uni => {
