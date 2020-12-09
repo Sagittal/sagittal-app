@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
-    entry: "./src/index.ts",
+    entry: "./src/staff/index.ts",
     mode: "none",
     resolve: {
         extensions: [".ts", ".scss", ".js"],
@@ -40,7 +40,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "Sagittal Notator",
+            title: "staffCode renderer",
         }),
     ],
 }
