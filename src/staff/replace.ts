@@ -1,12 +1,12 @@
 import {staffCodeInput} from "./staffCodeInput"
 import {staffCodeToUnicode} from "./staffCodeToUnicode"
 import {staffDiv} from "./staffDiv"
-import {updateSvg} from "./svgText"
+import {vectorize} from "./vectorize"
 
 const replaceStaffCodeWithUnicodeApp = (): void => {
     const unicode = staffCodeToUnicode(staffCodeInput.value)
     staffDiv.textContent = unicode
-    updateSvg(unicode)
+    vectorize(unicode)
 }
 
 export {

@@ -4,11 +4,6 @@ const saveSvg = (): void => {
     const svg: SVGElement | null = document.querySelector("svg")
     if (!svg) return
     const clonedSvg: SVGElement = svg.cloneNode(true) as SVGElement
-    clonedSvg.setAttribute("xmlns","http://www.w3.org/2000/svg")
-    const text = clonedSvg.querySelector("text")
-    if (!text) return
-    text.style.fontFamily = "Bravura Text BB"
-    text.style.fontSize = "72px"
 
     const outerHTML = clonedSvg.outerHTML
     const blob = new Blob([outerHTML], {type: "image/svg+xml;charset=utf-8"})
