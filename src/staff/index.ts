@@ -1,7 +1,8 @@
+import {doOnNextEventLoop, Ms} from "@sagittal/general"
 import "../styles"
 import {replaceStaffCodeWithUnicodeApp} from "./replace"
 
-replaceStaffCodeWithUnicodeApp()
+doOnNextEventLoop(replaceStaffCodeWithUnicodeApp, 1000 as Ms)
 
 // TODO: this is horrible. eventually use React to have some actual control over the layout
 import "./download"
