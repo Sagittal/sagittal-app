@@ -829,38 +829,39 @@ exports.nt2dn = exports.nt2 = exports.nt1 = exports.ntdb = exports.TIME_SIGNATUR
 exports.CODES = exports.BEAMED_GROUPS_OF_NOTES = exports.tp3 = exports.bm16 = exports.bm8 = exports.ntbm16 = exports.ntbm8 = exports.ntbmst = exports.DOTS = exports.agdt = exports.dt = exports.RESTS = exports.rs = exports.rs16 = exports.rs8 = exports.rs4 = exports.rs2 = exports.rs1 = exports.rsdb = exports.NOTES = exports.nt = exports.nt16dn = exports.nt16 = exports.nt8dn = exports.nt8 = exports.nt4dn = exports.nt4 = void 0;
 const accidentals_1 = __webpack_require__(7);
 const types_1 = __webpack_require__(5);
-const sp1 = " "; // U+200A           HAIR SPACE
+const sp1 = " "; // U+200A                   HAIR SPACE
 exports.sp1 = sp1;
-const sp2 = " "; // U+2009           THIN SPACE
+const sp2 = " "; // U+2009                   THIN SPACE
 exports.sp2 = sp2;
 const sp3 = "  "; // U+2009 U+200A
 exports.sp3 = sp3;
-const sp4 = " "; // U+2005           FOUR-PER-EM SPACE
+const sp4 = " "; // U+2005                   FOUR-PER-EM SPACE
 exports.sp4 = sp4;
 const sp5 = "  "; // U+2005 U+200A
 exports.sp5 = sp5;
-const sp6 = " "; // U+2004           THREE-PER-EM SPACE
+const sp6 = " "; // U+2004                   THREE-PER-EM SPACE
 exports.sp6 = sp6;
 const sp7 = "  "; // U+2004 U+200A
 exports.sp7 = sp7;
-const sp8 = " "; // U+2002           EN SPACE
+const sp8 = " "; // U+2002                   EN SPACE
 exports.sp8 = sp8;
 const sp9 = "  "; // U+2002 U+200A
 exports.sp9 = sp9;
-const sp10 = " "; // U+2008           PUNCTUATION SPACE
+const sp10 = " "; // U+2008                   PUNCTUATION SPACE
 exports.sp10 = sp10;
 const sp11 = "  "; // U+2008 U+200A
 exports.sp11 = sp11;
-const sp12 = "　"; // U+3000           IDEOGRAPHIC SPACE
+const sp12 = "　"; // U+3000                   IDEOGRAPHIC SPACE
 exports.sp12 = sp12;
 const sp13 = "　 "; // U+3000 U+200A
 exports.sp13 = sp13;
-const sp14 = " "; // U+2001           EM QUAD (not in font yet)
+const sp14 = "　 "; // U+3000 U+2009 *
 exports.sp14 = sp14;
-const sp15 = "  "; // U+2001 U+200A    (not in font yet)
+const sp15 = "　  "; // U+3000 U+2009 U+200A *
 exports.sp15 = sp15;
-const sp16 = " "; // U+2003           EM SPACE
+const sp16 = " "; // U+2003                   EM SPACE
 exports.sp16 = sp16;
+// * U+2001 EM QUAD, our desired sp14, is not in the font yet. Once it is, these should be replaced.
 const SPACES = {
     [types_1.Code["sp1"]]: sp1,
     [types_1.Code["sp2"]]: sp2,
