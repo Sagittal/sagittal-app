@@ -118,6 +118,7 @@ exports.replaceStaffCodeWithUnicodeBBCode = void 0;
 const replace_1 = __webpack_require__(1);
 Object.defineProperty(exports, "replaceStaffCodeWithUnicodeBBCode", { enumerable: true, get: function () { return replace_1.replaceStaffCodeWithUnicodeBBCode; } });
 document.querySelectorAll("div.staff.unprocessed").forEach(replace_1.replaceStaffCodeWithUnicodeBBCode);
+// TODO: I could theoretically add a script that would programmatically SFTP changes up to the site
 
 
 /***/ }),
