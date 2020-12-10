@@ -2,7 +2,7 @@ import {Io} from "@sagittal/general"
 import {_11MUp, _5CDown} from "../../../src/staff/accidentals/sagittal"
 import {d5, g4} from "../../../src/staff/combiningStaffPositions"
 import {staffCodeToUnicode} from "../../../src/staff/staffCodeToUnicode"
-import {nt, sp12, sp14, sp16, sp8, st} from "../../../src/staff/unicodeMap"
+import {nt, sp12, sp14, sp8, st} from "../../../src/staff/unicodeMap"
 
 describe("staffCodeToUnicode", (): void => {
     it("basically works", (): void => {

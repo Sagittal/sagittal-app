@@ -159,7 +159,24 @@ const types_1 = __webpack_require__(5);
 const unicodeFromCode_1 = __webpack_require__(13);
 const unicodeMap_1 = __webpack_require__(12);
 const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).includes(unicode)
-    || Object.values(unicodeMap_1.NOTES).includes(unicode);
+    || Object.values(unicodeMap_1.NOTES).includes(unicode)
+    || Object.values(unicodeMap_1.BEAMED_GROUPS_OF_NOTES).includes(unicode)
+    || Object.values(unicodeMap_1.CLEFS).includes(unicode)
+    || unicode === unicodeMap_1.lgln;
+// TODO: it would be better if we went by the unicode range, to support arbitrary unicode input
+//  I think that would involve every unicode map object also containing the unicode codepoint in addition to the unicode
+//  Or perhaps... instead... sigh... so we can just see it, rather than in a comment, and everything passes through that
+//  Helper method to convert to the actual unicode symbol from its codepoint.
+//  That is, assuming the \u form of it can also be looked at and compared to a range
+// tslint:disable:max-line-length
+/*
+\uE022 to \uE02F // leger lines
+\uE050 to \uE07F // clefs
+\uE0A0 to \uE21F // noteheads, notes, beamed groups, stems
+\uE240 to \uE4FF // flags, accidentals, articulation, holds and pauses, rests
+\uE900 to \uEA1F // Medieval and Renaissance: clefs, prolations, noteheads and stems, notes, oblique forms, plainchant single/multi/articulations, accidentals, rests, miscellany.
+\uEC30 to \uEC3F // Kievan square notation
+ */
 const staffCodeToUnicode = (staffCode) => {
     let staffPosition = "";
     return staffCode.toLowerCase()
@@ -171,6 +188,7 @@ const staffCodeToUnicode = (staffCode) => {
         let unicode = getUnicode_1.getUnicode(userInput, types_1.Clef.TREBLE);
         unicode = unicode === undefined ?
             userInput.match(/^u\+/) ?
+                // TODO: name change to indicate arbitrary rather than known
                 unicodeFromCode_1.unicodeFromCode(userInput) :
                 userInput :
             unicode;
