@@ -1,13 +1,15 @@
 import {getUnicode} from "../../../src/staff/getUnicode"
-import {Clef} from "../../../src/staff/types"
+import {Clef, Code} from "../../../src/staff/types"
+import {nt4} from "../../../src/staff/unicodeMap"
 
 describe("getUnicode", (): void => {
     it("basically works", (): void => {
-        const userInput = "nt4"
+        const userInput = Code["nt4"]
+        const clef = Clef.TREBLE
 
-        const actual = getUnicode(userInput, Clef.TREBLE)
+        const actual = getUnicode(userInput, clef)
 
-        const expected = ""
+        const expected = `${nt4}`
         expect(actual).toBe(expected)
     })
 })

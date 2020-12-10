@@ -1,20 +1,22 @@
-import {Io, RecordKey} from "@sagittal/general"
 import {
     BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
     TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
 } from "./combiningStaffPositions"
-import {Clef, Uni} from "./types"
-import {CLEF_AGNOSTIC_UNICODE_MAP} from "./unicodeMap"
+import {Clef, Code, Uni} from "./types"
+import {CODES} from "./unicodeMap"
 
-const getUnicode = (userInput: Io, clef: Clef): Uni => {
-    const CLEF_UNICODE_MAP = clef === "bass" ?
-        BASS_COMBINING_STAFF_POSITION_UNICODE_MAP :
-        TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP
+const CODES_WITH_BASS: Record<Code, Uni> = {
+    ...CODES,
+    ...BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
+} as Record<Code, Uni>
 
-    const INPUT_TO_UNICODE_MAP: Record<RecordKey<Io>, Uni> = {
-        ...CLEF_AGNOSTIC_UNICODE_MAP as Record<string, string> as Record<RecordKey<Io>, Uni>,
-        ...CLEF_UNICODE_MAP as Record<string, string> as Record<RecordKey<Io>, Uni>,
-    }
+const CODES_WITH_TREBLE: Record<Code, Uni> = {
+    ...CODES,
+    ...TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
+} as Record<Code, Uni>
+
+const getUnicode = (userInput: Code, clef: Clef = Clef.TREBLE): Uni => {
+    const INPUT_TO_UNICODE_MAP = clef === Clef.BASS ? CODES_WITH_BASS : CODES_WITH_TREBLE
 
     return INPUT_TO_UNICODE_MAP[userInput]
 }

@@ -1,15 +1,19 @@
 import {staffCodeToUnicode} from "../staffCodeToUnicode"
-import {Clef} from "../types"
+import {Clef, Code} from "../types"
 
-const replaceStaffCodeWithUnicodeBBCode = (staffSpan: Element): void => {
-    const clef = staffSpan.classList[2] as Clef
+const BASS_CLEF_INITIATION = `${Code["st24"]} ${Code["bscf"]} ${Code["sp16"]} ${Code["st24"]}`
+const TREBLE_CLEF_INITIATION = `${Code["st24"]} ${Code["tbcf"]} ${Code["sp16"]} ${Code["st24"]}`
 
-    staffSpan.classList.remove("unprocessed")
+const replaceStaffCodeWithUnicodeBBCode = (staffDiv: Element): void => {
+    const clef = staffDiv.classList[2] as Clef
 
-    const clefInitiation = clef === "bass" ? "st24 bscf sp16 st24" :
-        clef === "treble" ? "st24 tbcf sp16 st24" : ""
+    staffDiv.classList.remove("unprocessed")
 
-    staffSpan.textContent = staffCodeToUnicode(`${clefInitiation}${staffSpan.textContent}`)
+    // TODO: support the clef initiation feature on the web
+    // TODO: test cover that this doesn't default to treble
+    const clefInitiation = clef === Clef.BASS ? BASS_CLEF_INITIATION : clef === Clef.TREBLE ? TREBLE_CLEF_INITIATION : ""
+
+    staffDiv.textContent = staffCodeToUnicode(`${clefInitiation}${staffDiv.textContent}`)
 }
 
 export {

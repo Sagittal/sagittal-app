@@ -1,6 +1,6 @@
 import {Io} from "@sagittal/general"
 import {getUnicode} from "./getUnicode"
-import {Clef, Uni} from "./types"
+import {Clef, Code, Uni} from "./types"
 import {unicodeFromCode} from "./unicodeFromCode"
 
 const staffCodeToUnicode = (staffCode: Io): Uni => {
@@ -10,7 +10,7 @@ const staffCodeToUnicode = (staffCode: Io): Uni => {
         .replace(/\t/g, " ")
         .split(" ")
         .map((userInput: Io): Uni => {
-            const unicode = getUnicode(userInput, Clef.TREBLE)
+            const unicode = getUnicode(userInput as Code, Clef.TREBLE)
 
             return unicode === undefined ?
                 userInput.match(/^u\+/) ?

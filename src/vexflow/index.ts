@@ -45,3 +45,5 @@ voice.addTickables(notes)
 // Format and justify the notes to 400 pixels.
 const formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400)
 voice.draw(context, stave)
+
+// TODO: just consolidate this with notator because that's the only reason it's really here
