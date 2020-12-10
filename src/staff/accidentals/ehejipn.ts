@@ -1,7 +1,8 @@
 // tslint:disable max-line-length
 
 import {Code, Uni} from "../types"
-import {b, bb, h, sharp, smallDoubleSharp} from "./conventional"
+import {b, bb, n, sharp, smallDoubleSharp} from "./conventional"
+import {sesquisharp} from "./unconventional"
 
 // See: ttps://w3c.github.io/smufl/gitbook/tables/extended-helmholtz-ellis-accidentals-just-intonation.html
 // All EHEJIPN staffCodes start with a dot (full-stop). Unicodes are successive below.
@@ -65,35 +66,37 @@ const ehejipnEnharmonicallyReinterpret = "" as Uni                // U+E2F9
 const ehejipnEnharmonicallyReinterpretAlmostEqual = "" as Uni     // U+E2FA
 const ehejipnEnharmonicallyReinterpretEquals = "" as Uni          // U+E2FB
 
+const accidentalThreeQuarterTonesFlatZimmermann = "" as Uni         // U+E281
+
 const EHEJIPN_ACCIDENTALS: Partial<Record<Code, Uni>> = {
     [Code[".bbv"]]: ehejipnDoubleFlat5Otonal,
     [Code[".bv"]]: ehejipnFlat5Otonal,
-    [Code[".hv"]]: ehejipnNatural5Otonal,
+    [Code[".nv"]]: ehejipnNatural5Otonal,
     [Code[".#v"]]: ehejipnSharp5Otonal,
     [Code[".xv"]]: ehejipnDoubleSharp5Otonal,
     [Code[".bb^"]]: ehejipnDoubleFlat5Utonal,
     [Code[".b^"]]: ehejipnFlat5Utonal,
-    [Code[".h^"]]: ehejipnNatural5Utonal,
+    [Code[".n^"]]: ehejipnNatural5Utonal,
     [Code[".#^"]]: ehejipnSharp5Utonal,
     [Code[".x^"]]: ehejipnDoubleSharp5Utonal,
     [Code[".bbvv"]]: ehejipnDoubleFlatDouble5Otonal,
     [Code[".bvv"]]: ehejipnFlatDouble5Otonal,
-    [Code[".hvv"]]: ehejipnNaturalDouble5Otonal,
+    [Code[".nvv"]]: ehejipnNaturalDouble5Otonal,
     [Code[".#vv"]]: ehejipnSharpDouble5Otonal,
     [Code[".xvv"]]: ehejipnDoubleSharpDouble5Otonal,
     [Code[".bb^^"]]: ehejipnDoubleFlatDouble5Utonal,
     [Code[".b^^"]]: ehejipnFlatDouble5Utonal,
-    [Code[".h^^"]]: ehejipnNaturalDouble5Utonal,
+    [Code[".n^^"]]: ehejipnNaturalDouble5Utonal,
     [Code[".#^^"]]: ehejipnSharpDouble5Utonal,
     [Code[".x^^"]]: ehejipnDoubleSharpDouble5Utonal,
     [Code[".bbvvv"]]: ehejipnDoubleFlatTriple5Otonal,
     [Code[".bvvv"]]: ehejipnFlatTriple5Otonal,
-    [Code[".hvvv"]]: ehejipnNaturalTriple5Otonal,
+    [Code[".nvvv"]]: ehejipnNaturalTriple5Otonal,
     [Code[".#vvv"]]: ehejipnSharpTriple5Otonal,
     [Code[".xvvv"]]: ehejipnDoubleSharpTriple5Otonal,
     [Code[".bb^^^"]]: ehejipnDoubleFlatTriple5Utonal,
     [Code[".b^^^"]]: ehejipnFlatTriple5Utonal,
-    [Code[".h^^^"]]: ehejipnNaturalTriple5Utonal,
+    [Code[".n^^^"]]: ehejipnNaturalTriple5Utonal,
     [Code[".#^^^"]]: ehejipnSharpTriple5Utonal,
     [Code[".x^^^"]]: ehejipnDoubleSharpTriple5Utonal,
     [Code[".l"]]: ehejipn7Otonal,
@@ -114,7 +117,7 @@ const EHEJIPN_ACCIDENTALS: Partial<Record<Code, Uni>> = {
     [Code[".}"]]: ehejipnCombiningCloseCurlyBrace,
     [Code[".bbt"]]: ehejipnDoubleFlatTemperedSemitone,
     [Code[".bt"]]: ehejipnFlatTemperedSemitone,
-    [Code[".ht"]]: ehejipnNaturalTemperedSemitone,
+    [Code[".nt"]]: ehejipnNaturalTemperedSemitone,
     [Code[".#t"]]: ehejipnSharpTemperedSemitone,
     [Code[".xt"]]: ehejipnDoubleSharpTemperedSemitone,
     [Code[".<t"]]: ehejipnQuarterFlatTemperedSemitone,
@@ -129,9 +132,11 @@ const EHEJIPN_ACCIDENTALS: Partial<Record<Code, Uni>> = {
     // See: https://w3c.github.io/smufl/gitbook/tables/standard-accidentals-12-edo.html
     [Code[".bb"]]: bb,
     [Code[".b"]]: b,
-    [Code[".h"]]: h,
+    [Code[".n"]]: n,
     [Code[".#"]]: sharp,
     [Code[".x"]]: smallDoubleSharp,
+    [Code[".<b"]]: accidentalThreeQuarterTonesFlatZimmermann,
+    [Code[".>#"]]: sesquisharp,
 }
 
 export {
@@ -194,4 +199,5 @@ export {
     ehejipnEnharmonicallyReinterpret,
     ehejipnEnharmonicallyReinterpretAlmostEqual,
     ehejipnEnharmonicallyReinterpretEquals,
+    accidentalThreeQuarterTonesFlatZimmermann,
 }
