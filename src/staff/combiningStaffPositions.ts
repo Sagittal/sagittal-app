@@ -112,6 +112,26 @@ const BASS_COMBINING_STAFF_POSITION_UNICODE_MAP = {
     [Code["c2"]]: bsc2,
 }
 
+const COMBINING_STAFF_POSITIONS = [
+    staffPosRaise8,
+    staffPosRaise7,
+    staffPosRaise6,
+    staffPosRaise5,
+    staffPosRaise4,
+    staffPosRaise3,
+    staffPosRaise2,
+    staffPosRaise1,
+    staffPosCenter,
+    staffPosLower1,
+    staffPosLower2,
+    staffPosLower3,
+    staffPosLower4,
+    staffPosLower5,
+    staffPosLower6,
+    staffPosLower7,
+    staffPosLower8,
+]
+
 export {
     BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
     TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
@@ -183,4 +203,5 @@ export {
     c4,
     b3,
     a3,
+    COMBINING_STAFF_POSITIONS,
 }

@@ -152,22 +152,36 @@ exports.replaceStaffCodeWithUnicodeBBCode = replaceStaffCodeWithUnicodeBBCode;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.staffCodeToUnicode = void 0;
-const getUnicode_1 = __webpack_require__(3);
+const accidentals_1 = __webpack_require__(3);
+const combiningStaffPositions_1 = __webpack_require__(10);
+const getUnicode_1 = __webpack_require__(11);
 const types_1 = __webpack_require__(5);
 const unicodeFromCode_1 = __webpack_require__(13);
+const unicodeMap_1 = __webpack_require__(12);
+const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).includes(unicode)
+    || Object.values(unicodeMap_1.NOTES).includes(unicode);
 const staffCodeToUnicode = (staffCode) => {
+    let staffPosition = "";
     return staffCode.toLowerCase()
         .replace(/<br>/g, " ")
         .replace(/\n/g, " ")
         .replace(/\t/g, " ")
         .split(" ")
         .map((userInput) => {
-        const unicode = getUnicode_1.getUnicode(userInput, types_1.Clef.TREBLE);
-        return unicode === undefined ?
+        let unicode = getUnicode_1.getUnicode(userInput, types_1.Clef.TREBLE);
+        unicode = unicode === undefined ?
             userInput.match(/^u\+/) ?
                 unicodeFromCode_1.unicodeFromCode(userInput) :
                 userInput :
             unicode;
+        if (combiningStaffPositions_1.COMBINING_STAFF_POSITIONS.includes(unicode)) {
+            staffPosition = unicode;
+            unicode = "";
+        }
+        else if (canBePositioned(unicode)) {
+            unicode = staffPosition + unicode;
+        }
+        return unicode;
     })
         .join("");
 };
@@ -181,23 +195,20 @@ exports.staffCodeToUnicode = staffCodeToUnicode;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUnicode = void 0;
-const combiningStaffPositions_1 = __webpack_require__(4);
-const types_1 = __webpack_require__(5);
-const unicodeMap_1 = __webpack_require__(6);
-const CODES_WITH_BASS = {
-    ...unicodeMap_1.CODES,
-    ...combiningStaffPositions_1.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
+exports.ACCIDENTALS = void 0;
+const conventional_1 = __webpack_require__(4);
+const ehejipn_1 = __webpack_require__(6);
+const sagittal_1 = __webpack_require__(8);
+const unconventional_1 = __webpack_require__(7);
+const upsAndDowns_1 = __webpack_require__(9);
+const ACCIDENTALS = {
+    ...conventional_1.CONVENTIONAL_ACCIDENTALS,
+    ...ehejipn_1.EHEJIPN_ACCIDENTALS,
+    ...sagittal_1.SAGITTAL_ACCIDENTALS,
+    ...unconventional_1.UNCONVENTIONAL_ACCIDENTALS,
+    ...upsAndDowns_1.UPS_AND_DOWNS_ACCIDENTALS,
 };
-const CODES_WITH_TREBLE = {
-    ...unicodeMap_1.CODES,
-    ...combiningStaffPositions_1.TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
-};
-const getUnicode = (userInput, clef = types_1.Clef.TREBLE) => {
-    const INPUT_TO_UNICODE_MAP = clef === types_1.Clef.BASS ? CODES_WITH_BASS : CODES_WITH_TREBLE;
-    return INPUT_TO_UNICODE_MAP[userInput];
-};
-exports.getUnicode = getUnicode;
+exports.ACCIDENTALS = ACCIDENTALS;
 
 
 /***/ }),
@@ -207,185 +218,33 @@ exports.getUnicode = getUnicode;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bsf2 = exports.bsg2 = exports.bsa2 = exports.bsb2 = exports.bsc3 = exports.bsd3 = exports.bse3 = exports.bsf3 = exports.bsg3 = exports.bsa3 = exports.bsb3 = exports.bsc4 = exports.bsd4 = exports.bse4 = exports.tra3 = exports.trb3 = exports.trc4 = exports.trd4 = exports.tre4 = exports.trf4 = exports.trg4 = exports.tra4 = exports.trb4 = exports.trc5 = exports.trd5 = exports.tre5 = exports.trf5 = exports.trg5 = exports.tra5 = exports.trb5 = exports.trc6 = exports.staffPosLower8 = exports.staffPosLower7 = exports.staffPosLower6 = exports.staffPosLower5 = exports.staffPosLower4 = exports.staffPosLower3 = exports.staffPosLower2 = exports.staffPosLower1 = exports.staffPosCenter = exports.staffPosRaise1 = exports.staffPosRaise2 = exports.staffPosRaise3 = exports.staffPosRaise4 = exports.staffPosRaise5 = exports.staffPosRaise6 = exports.staffPosRaise7 = exports.staffPosRaise8 = exports.TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP = exports.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP = void 0;
-exports.a3 = exports.b3 = exports.c4 = exports.d4 = exports.e4 = exports.f4 = exports.g4 = exports.a4 = exports.b4 = exports.c5 = exports.d5 = exports.e5 = exports.f5 = exports.g5 = exports.a5 = exports.b5 = exports.c6 = exports.bsc2 = exports.bsd2 = exports.bse2 = void 0;
+exports.smallDoubleSharp = exports.bb = exports.x = exports.b = exports.sharp = exports.n = exports.h = exports.CONVENTIONAL_ACCIDENTALS = void 0;
 const types_1 = __webpack_require__(5);
-const staffPosRaise8 = ""; // U+EB97
-exports.staffPosRaise8 = staffPosRaise8;
-const staffPosRaise7 = ""; // U+EB96
-exports.staffPosRaise7 = staffPosRaise7;
-const staffPosRaise6 = ""; // U+EB95
-exports.staffPosRaise6 = staffPosRaise6;
-const staffPosRaise5 = ""; // U+EB94
-exports.staffPosRaise5 = staffPosRaise5;
-const staffPosRaise4 = ""; // U+EB93
-exports.staffPosRaise4 = staffPosRaise4;
-const staffPosRaise3 = ""; // U+EB92
-exports.staffPosRaise3 = staffPosRaise3;
-const staffPosRaise2 = ""; // U+EB91
-exports.staffPosRaise2 = staffPosRaise2;
-const staffPosRaise1 = ""; // U+EB90
-exports.staffPosRaise1 = staffPosRaise1;
-const staffPosCenter = ""; // (blank)
-exports.staffPosCenter = staffPosCenter;
-const staffPosLower1 = ""; // U+EB98
-exports.staffPosLower1 = staffPosLower1;
-const staffPosLower2 = ""; // U+EB99
-exports.staffPosLower2 = staffPosLower2;
-const staffPosLower3 = ""; // U+EB9A
-exports.staffPosLower3 = staffPosLower3;
-const staffPosLower4 = ""; // U+EB9B
-exports.staffPosLower4 = staffPosLower4;
-const staffPosLower5 = ""; // U+EB9C
-exports.staffPosLower5 = staffPosLower5;
-const staffPosLower6 = ""; // U+EB9D
-exports.staffPosLower6 = staffPosLower6;
-const staffPosLower7 = ""; // U+EB9E
-exports.staffPosLower7 = staffPosLower7;
-const staffPosLower8 = ""; // U+EB9F
-exports.staffPosLower8 = staffPosLower8;
-const trc6 = staffPosRaise8;
-exports.trc6 = trc6;
-const trb5 = staffPosRaise7;
-exports.trb5 = trb5;
-const tra5 = staffPosRaise6;
-exports.tra5 = tra5;
-const trg5 = staffPosRaise5;
-exports.trg5 = trg5;
-const trf5 = staffPosRaise4;
-exports.trf5 = trf5;
-const tre5 = staffPosRaise3;
-exports.tre5 = tre5;
-const trd5 = staffPosRaise2;
-exports.trd5 = trd5;
-const trc5 = staffPosRaise1;
-exports.trc5 = trc5;
-const trb4 = staffPosCenter;
-exports.trb4 = trb4;
-const tra4 = staffPosLower1;
-exports.tra4 = tra4;
-const trg4 = staffPosLower2;
-exports.trg4 = trg4;
-const trf4 = staffPosLower3;
-exports.trf4 = trf4;
-const tre4 = staffPosLower4;
-exports.tre4 = tre4;
-const trd4 = staffPosLower5;
-exports.trd4 = trd4;
-const trc4 = staffPosLower6;
-exports.trc4 = trc4;
-const trb3 = staffPosLower7;
-exports.trb3 = trb3;
-const tra3 = staffPosLower8;
-exports.tra3 = tra3;
-const bse4 = staffPosRaise8;
-exports.bse4 = bse4;
-const bsd4 = staffPosRaise7;
-exports.bsd4 = bsd4;
-const bsc4 = staffPosRaise6;
-exports.bsc4 = bsc4;
-const bsb3 = staffPosRaise5;
-exports.bsb3 = bsb3;
-const bsa3 = staffPosRaise4;
-exports.bsa3 = bsa3;
-const bsg3 = staffPosRaise3;
-exports.bsg3 = bsg3;
-const bsf3 = staffPosRaise2;
-exports.bsf3 = bsf3;
-const bse3 = staffPosRaise1;
-exports.bse3 = bse3;
-const bsd3 = staffPosCenter;
-exports.bsd3 = bsd3;
-const bsc3 = staffPosLower1;
-exports.bsc3 = bsc3;
-const bsb2 = staffPosLower2;
-exports.bsb2 = bsb2;
-const bsa2 = staffPosLower3;
-exports.bsa2 = bsa2;
-const bsg2 = staffPosLower4;
-exports.bsg2 = bsg2;
-const bsf2 = staffPosLower5;
-exports.bsf2 = bsf2;
-const bse2 = staffPosLower6;
-exports.bse2 = bse2;
-const bsd2 = staffPosLower7;
-exports.bsd2 = bsd2;
-const bsc2 = staffPosLower8;
-exports.bsc2 = bsc2;
-const c6 = trc6;
-exports.c6 = c6;
-const b5 = trb5;
-exports.b5 = b5;
-const a5 = tra5;
-exports.a5 = a5;
-const g5 = trg5;
-exports.g5 = g5;
-const f5 = trf5;
-exports.f5 = f5;
-const e5 = tre5;
-exports.e5 = e5;
-const d5 = trd5;
-exports.d5 = d5;
-const c5 = trc5;
-exports.c5 = c5;
-const b4 = trb4;
-exports.b4 = b4;
-const a4 = tra4;
-exports.a4 = a4;
-const g4 = trg4;
-exports.g4 = g4;
-const f4 = trf4;
-exports.f4 = f4;
-const e4 = tre4;
-exports.e4 = e4;
-const d4 = trd4;
-exports.d4 = d4;
-const c4 = trc4;
-exports.c4 = c4;
-const b3 = trb3;
-exports.b3 = b3;
-const a3 = tra3;
-exports.a3 = a3;
-const TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP = {
-    [types_1.Code["c6"]]: trc6,
-    [types_1.Code["b5"]]: trb5,
-    [types_1.Code["a5"]]: tra5,
-    [types_1.Code["g5"]]: trg5,
-    [types_1.Code["f5"]]: trf5,
-    [types_1.Code["e5"]]: tre5,
-    [types_1.Code["d5"]]: trd5,
-    [types_1.Code["c5"]]: trc5,
-    [types_1.Code["b4"]]: trb4,
-    [types_1.Code["a4"]]: tra4,
-    [types_1.Code["g4"]]: trg4,
-    [types_1.Code["f4"]]: trf4,
-    [types_1.Code["e4"]]: tre4,
-    [types_1.Code["d4"]]: trd4,
-    [types_1.Code["c4"]]: trc4,
-    [types_1.Code["b3"]]: trb3,
-    [types_1.Code["a3"]]: tra3,
+const h = ""; // U+E261   natural
+exports.h = h;
+const n = h;
+exports.n = n;
+const sharp = ""; // U+E262   sharp
+exports.sharp = sharp;
+const b = ""; // U+E260   flat
+exports.b = b;
+const x = ""; // U+E47D   double sharp
+exports.x = x;
+const bb = ""; // U+E264   double flat
+exports.bb = bb;
+const smallDoubleSharp = ""; // U+E263   small double-sharp*
+exports.smallDoubleSharp = smallDoubleSharp;
+// * Not the same as "x" or "X", which is the (Sagittal-compatible) large double-sharp.
+const CONVENTIONAL_ACCIDENTALS = {
+    [types_1.Code.h]: h,
+    [types_1.Code.n]: n,
+    [types_1.Code["#"]]: sharp,
+    [types_1.Code.b]: b,
+    [types_1.Code.x]: x,
+    [types_1.Code.bb]: bb,
+    [types_1.Code.smallDoubleSharp]: smallDoubleSharp,
 };
-exports.TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP = TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP;
-const BASS_COMBINING_STAFF_POSITION_UNICODE_MAP = {
-    [types_1.Code["e4"]]: bse4,
-    [types_1.Code["d4"]]: bsd4,
-    [types_1.Code["c4"]]: bsc4,
-    [types_1.Code["b3"]]: bsb3,
-    [types_1.Code["a3"]]: bsa3,
-    [types_1.Code["g3"]]: bsg3,
-    [types_1.Code["f3"]]: bsf3,
-    [types_1.Code["e3"]]: bse3,
-    [types_1.Code["d3"]]: bsd3,
-    [types_1.Code["c3"]]: bsc3,
-    [types_1.Code["b2"]]: bsb2,
-    [types_1.Code["a2"]]: bsa2,
-    [types_1.Code["g2"]]: bsg2,
-    [types_1.Code["f2"]]: bsf2,
-    [types_1.Code["e2"]]: bse2,
-    [types_1.Code["d2"]]: bsd2,
-    [types_1.Code["c2"]]: bsc2,
-};
-exports.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP = BASS_COMBINING_STAFF_POSITION_UNICODE_MAP;
+exports.CONVENTIONAL_ACCIDENTALS = CONVENTIONAL_ACCIDENTALS;
 
 
 /***/ }),
@@ -826,328 +685,13 @@ exports.Code = Code;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.nt2dn = exports.nt2 = exports.nt1 = exports.ntdb = exports.TIME_SIGNATURES = exports.tmdn = exports.tmnm = exports.tmcm = exports.tm9 = exports.tm8 = exports.tm7 = exports.tm6 = exports.tm5 = exports.tm4 = exports.tm3 = exports.tm2 = exports.tm1 = exports.tm0 = exports.CLEFS = exports._8vb = exports._8va = exports.bscf = exports.alcf = exports.tbcf = exports.BARS = exports.brlndb = exports.brln = exports.LINES = exports.lgln = exports.st = exports.st24 = exports.st16 = exports.st8 = exports.SPACES = exports.sp16 = exports.sp15 = exports.sp14 = exports.sp13 = exports.sp12 = exports.sp11 = exports.sp10 = exports.sp9 = exports.sp8 = exports.sp7 = exports.sp6 = exports.sp5 = exports.sp4 = exports.sp3 = exports.sp2 = exports.sp1 = void 0;
-exports.CODES = exports.BEAMED_GROUPS_OF_NOTES = exports.tp3 = exports.bm16 = exports.bm8 = exports.ntbm16 = exports.ntbm8 = exports.ntbmst = exports.DOTS = exports.agdt = exports.dt = exports.RESTS = exports.rs = exports.rs16 = exports.rs8 = exports.rs4 = exports.rs2 = exports.rs1 = exports.rsdb = exports.NOTES = exports.nt = exports.nt16dn = exports.nt16 = exports.nt8dn = exports.nt8 = exports.nt4dn = exports.nt4 = void 0;
-const accidentals_1 = __webpack_require__(7);
-const types_1 = __webpack_require__(5);
-const sp1 = " "; // U+200A                   HAIR SPACE
-exports.sp1 = sp1;
-const sp2 = " "; // U+2009                   THIN SPACE
-exports.sp2 = sp2;
-const sp3 = "  "; // U+2009 U+200A
-exports.sp3 = sp3;
-const sp4 = " "; // U+2005                   FOUR-PER-EM SPACE
-exports.sp4 = sp4;
-const sp5 = "  "; // U+2005 U+200A
-exports.sp5 = sp5;
-const sp6 = " "; // U+2004                   THREE-PER-EM SPACE
-exports.sp6 = sp6;
-const sp7 = "  "; // U+2004 U+200A
-exports.sp7 = sp7;
-const sp8 = " "; // U+2002                   EN SPACE
-exports.sp8 = sp8;
-const sp9 = "  "; // U+2002 U+200A
-exports.sp9 = sp9;
-const sp10 = " "; // U+2008                   PUNCTUATION SPACE
-exports.sp10 = sp10;
-const sp11 = "  "; // U+2008 U+200A
-exports.sp11 = sp11;
-const sp12 = "　"; // U+3000                   IDEOGRAPHIC SPACE
-exports.sp12 = sp12;
-const sp13 = "　 "; // U+3000 U+200A
-exports.sp13 = sp13;
-const sp14 = "　 "; // U+3000 U+2009 *
-exports.sp14 = sp14;
-const sp15 = "　  "; // U+3000 U+2009 U+200A *
-exports.sp15 = sp15;
-const sp16 = " "; // U+2003                   EM SPACE
-exports.sp16 = sp16;
-// * U+2001 EM QUAD, our desired sp14, is not in the font yet. Once it is, these should be replaced.
-const SPACES = {
-    [types_1.Code["sp1"]]: sp1,
-    [types_1.Code["sp2"]]: sp2,
-    [types_1.Code["sp3"]]: sp3,
-    [types_1.Code["sp4"]]: sp4,
-    [types_1.Code["sp5"]]: sp5,
-    [types_1.Code["sp6"]]: sp6,
-    [types_1.Code["sp7"]]: sp7,
-    [types_1.Code["sp8"]]: sp8,
-    [types_1.Code["sp9"]]: sp9,
-    [types_1.Code["sp10"]]: sp10,
-    [types_1.Code["sp11"]]: sp11,
-    [types_1.Code["sp12"]]: sp12,
-    [types_1.Code["sp13"]]: sp13,
-    [types_1.Code["sp14"]]: sp14,
-    [types_1.Code["sp15"]]: sp15,
-    [types_1.Code["sp16"]]: sp16,
-};
-exports.SPACES = SPACES;
-const st8 = ""; // U+E020
-exports.st8 = st8;
-const st16 = ""; // U+E014
-exports.st16 = st16;
-const st24 = ""; // U+E01A
-exports.st24 = st24;
-const st = st24;
-exports.st = st;
-const lgln = ""; // U+E022    leger line
-exports.lgln = lgln;
-const LINES = {
-    [types_1.Code["st8"]]: st8,
-    [types_1.Code["st16"]]: st16,
-    [types_1.Code["st24"]]: st24,
-    [types_1.Code["st"]]: st,
-    [types_1.Code["lgln"]]: lgln,
-};
-exports.LINES = LINES;
-const brln = ""; // U+E030   bar line (single)
-exports.brln = brln;
-const brlndb = ""; // U+E031   bar line double
-exports.brlndb = brlndb;
-const BARS = {
-    [types_1.Code["brln"]]: brln,
-    [types_1.Code["brlndb"]]: brlndb,
-};
-exports.BARS = BARS;
-const tbcf = ""; // U+E050    treble
-exports.tbcf = tbcf;
-const alcf = ""; // U+E05C    alto
-exports.alcf = alcf;
-const bscf = ""; // U+E062    bass
-exports.bscf = bscf;
-const _8va = ""; // U+E512    octave above
-exports._8va = _8va;
-const _8vb = ""; // U+E51C    octave below
-exports._8vb = _8vb;
-const CLEFS = {
-    [types_1.Code["tbcf"]]: tbcf,
-    [types_1.Code["alcf"]]: alcf,
-    [types_1.Code["bscf"]]: bscf,
-    [types_1.Code["8va"]]: _8va,
-    [types_1.Code["8va"]]: _8vb,
-};
-exports.CLEFS = CLEFS;
-const tm0 = ""; // U+E080   time signature digit 0
-exports.tm0 = tm0;
-const tm1 = ""; // U+E081   time signature digit 1
-exports.tm1 = tm1;
-const tm2 = ""; // U+E082   time signature digit 2
-exports.tm2 = tm2;
-const tm3 = ""; // U+E083   time signature digit 3
-exports.tm3 = tm3;
-const tm4 = ""; // U+E084   time signature digit 4
-exports.tm4 = tm4;
-const tm5 = ""; // U+E085   time signature digit 5
-exports.tm5 = tm5;
-const tm6 = ""; // U+E086   time signature digit 6
-exports.tm6 = tm6;
-const tm7 = ""; // U+E087   time signature digit 7
-exports.tm7 = tm7;
-const tm8 = ""; // U+E088   time signature digit 8
-exports.tm8 = tm8;
-const tm9 = ""; // U+E089   time signature digit 9
-exports.tm9 = tm9;
-const tmcm = ""; // U+E08A   common time
-exports.tmcm = tmcm;
-const tmnm = ""; // U+E09E   time signature combining numerator position
-exports.tmnm = tmnm;
-const tmdn = ""; // U+E09F   time signature combining denominator position
-exports.tmdn = tmdn;
-const TIME_SIGNATURES = {
-    [types_1.Code["tm0"]]: tm0,
-    [types_1.Code["tm1"]]: tm1,
-    [types_1.Code["tm2"]]: tm2,
-    [types_1.Code["tm3"]]: tm3,
-    [types_1.Code["tm4"]]: tm4,
-    [types_1.Code["tm5"]]: tm5,
-    [types_1.Code["tm6"]]: tm6,
-    [types_1.Code["tm7"]]: tm7,
-    [types_1.Code["tm8"]]: tm8,
-    [types_1.Code["tm9"]]: tm9,
-    [types_1.Code["tmcm"]]: tmcm,
-    [types_1.Code["tmnm"]]: tmnm,
-    [types_1.Code["tmdn"]]: tmdn,
-};
-exports.TIME_SIGNATURES = TIME_SIGNATURES;
-const ntdb = ""; // U+E1D0    double whole note
-exports.ntdb = ntdb;
-const nt1 = ""; // U+E1D2    whole note
-exports.nt1 = nt1;
-const nt2 = ""; // U+E1D3    half note stem up
-exports.nt2 = nt2;
-const nt2dn = ""; // U+E1D4    half note stem down
-exports.nt2dn = nt2dn;
-const nt4 = ""; // U+E1D5    quarter note stem up
-exports.nt4 = nt4;
-const nt4dn = ""; // U+E1D6    quarter note stem down
-exports.nt4dn = nt4dn;
-const nt8 = ""; // U+E1D7    quarter note stem up
-exports.nt8 = nt8;
-const nt8dn = ""; // U+E1D8    quarter note stem down
-exports.nt8dn = nt8dn;
-const nt16 = ""; // U+E1D9    sixteenth note stem up
-exports.nt16 = nt16;
-const nt16dn = ""; // U+E1DA    sixteenth note stem down
-exports.nt16dn = nt16dn;
-const nt = nt4;
-exports.nt = nt;
-const NOTES = {
-    [types_1.Code["ntdb"]]: ntdb,
-    [types_1.Code["nt1"]]: nt1,
-    [types_1.Code["nt2"]]: nt2,
-    [types_1.Code["nt2dn"]]: nt2dn,
-    [types_1.Code["nt4"]]: nt4,
-    [types_1.Code["nt4dn"]]: nt4dn,
-    [types_1.Code["nt8"]]: nt8,
-    [types_1.Code["nt8dn"]]: nt8dn,
-    [types_1.Code["nt16"]]: nt16,
-    [types_1.Code["nt16dn"]]: nt16dn,
-    [types_1.Code["nt"]]: nt,
-};
-exports.NOTES = NOTES;
-const rsdb = ""; // U+E4E2   double whole rest
-exports.rsdb = rsdb;
-const rs1 = ""; // U+E4E3   whole rest
-exports.rs1 = rs1;
-const rs2 = ""; // U+E4E4   half rest
-exports.rs2 = rs2;
-const rs4 = ""; // U+E4E5   quarter rest
-exports.rs4 = rs4;
-const rs8 = ""; // U+E4E6   eighth rest
-exports.rs8 = rs8;
-const rs16 = ""; // U+E4E7   sixteenth rest
-exports.rs16 = rs16;
-const rs = rs4;
-exports.rs = rs;
-const RESTS = {
-    [types_1.Code["rsdb"]]: rsdb,
-    [types_1.Code["rs1"]]: rs1,
-    [types_1.Code["rs2"]]: rs2,
-    [types_1.Code["rs4"]]: rs4,
-    [types_1.Code["rs8"]]: rs8,
-    [types_1.Code["rs16"]]: rs16,
-    [types_1.Code["rs"]]: rs,
-};
-exports.RESTS = RESTS;
-const dt = ""; // U+E1E7    augmentation dot
-exports.dt = dt;
-const agdt = dt;
-exports.agdt = agdt;
-const DOTS = {
-    [types_1.Code["dt"]]: dt,
-    [types_1.Code["agdt"]]: agdt,
-};
-exports.DOTS = DOTS;
-// See: https://w3c.github.io/smufl/gitbook/tables/beamed-groups-of-notes.html
-const ntbmst = ""; // U+E1F0   note for start of any beam (short stem)
-exports.ntbmst = ntbmst;
-const ntbm8 = ""; // U+E1F2   note for end of eighth beam, and possible continuation of any beam (short stem)
-exports.ntbm8 = ntbm8;
-const ntbm16 = ""; // U+E1F4   note for end of 16th beam, and possible continuation of any beam (short stem)
-exports.ntbm16 = ntbm16;
-const bm8 = ""; // U+E1F7   eighth beam continuation (for short stems)
-exports.bm8 = bm8;
-const bm16 = ""; // U+E1F9   sixteenth beam continuation (for short stems)
-exports.bm16 = bm16;
-const tp3 = ""; // U+E1FF   tuplet digit 3 (for short stems)
-exports.tp3 = tp3;
-const BEAMED_GROUPS_OF_NOTES = {
-    [types_1.Code["ntbmst"]]: ntbmst,
-    [types_1.Code["ntbm8"]]: ntbm8,
-    [types_1.Code["ntbm16"]]: ntbm16,
-    [types_1.Code["bm8"]]: bm8,
-    [types_1.Code["bm16"]]: bm16,
-    [types_1.Code["tp3"]]: tp3,
-};
-exports.BEAMED_GROUPS_OF_NOTES = BEAMED_GROUPS_OF_NOTES;
-const CODES = {
-    ...SPACES,
-    ...LINES,
-    ...BARS,
-    ...CLEFS,
-    ...NOTES,
-    ...RESTS,
-    ...DOTS,
-    ...BEAMED_GROUPS_OF_NOTES,
-    ...TIME_SIGNATURES,
-    ...accidentals_1.ACCIDENTALS,
-};
-exports.CODES = CODES;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ACCIDENTALS = void 0;
-const conventional_1 = __webpack_require__(8);
-const ehejipn_1 = __webpack_require__(9);
-const sagittal_1 = __webpack_require__(11);
-const unconventional_1 = __webpack_require__(10);
-const upsAndDowns_1 = __webpack_require__(12);
-const ACCIDENTALS = {
-    ...conventional_1.CONVENTIONAL_ACCIDENTALS,
-    ...ehejipn_1.EHEJIPN_ACCIDENTALS,
-    ...sagittal_1.SAGITTAL_ACCIDENTALS,
-    ...unconventional_1.UNCONVENTIONAL_ACCIDENTALS,
-    ...upsAndDowns_1.UPS_AND_DOWNS_ACCIDENTALS,
-};
-exports.ACCIDENTALS = ACCIDENTALS;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.smallDoubleSharp = exports.bb = exports.x = exports.b = exports.sharp = exports.n = exports.h = exports.CONVENTIONAL_ACCIDENTALS = void 0;
-const types_1 = __webpack_require__(5);
-const h = ""; // U+E261   natural
-exports.h = h;
-const n = h;
-exports.n = n;
-const sharp = ""; // U+E262   sharp
-exports.sharp = sharp;
-const b = ""; // U+E260   flat
-exports.b = b;
-const x = ""; // U+E47D   double sharp
-exports.x = x;
-const bb = ""; // U+E264   double flat
-exports.bb = bb;
-const smallDoubleSharp = ""; // U+E263   small double-sharp*
-exports.smallDoubleSharp = smallDoubleSharp;
-// * Not the same as "x" or "X", which is the (Sagittal-compatible) large double-sharp.
-const CONVENTIONAL_ACCIDENTALS = {
-    [types_1.Code.h]: h,
-    [types_1.Code.n]: n,
-    [types_1.Code["#"]]: sharp,
-    [types_1.Code.b]: b,
-    [types_1.Code.x]: x,
-    [types_1.Code.bb]: bb,
-    [types_1.Code.smallDoubleSharp]: smallDoubleSharp,
-};
-exports.CONVENTIONAL_ACCIDENTALS = CONVENTIONAL_ACCIDENTALS;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 // tslint:disable max-line-length
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ehejipnNaturalTemperedSemitone = exports.ehejipnFlatTemperedSemitone = exports.ehejipnDoubleFlatTemperedSemitone = exports.ehejipnCombiningCloseCurlyBrace = exports.ehejipnCombiningOpenCurlyBrace = exports.ehejipn23Utonal = exports.ehejipn23Otonal = exports.ehejipn19Otonal = exports.ehejipn19Utonal = exports.ehejipn17Utonal = exports.ehejipn17Otonal = exports.ehejipn13Utonal = exports.ehejipn13Otonal = exports.ehejipn11Otonal = exports.ehejipn11Utonal = exports.ehejipnDouble7Utonal = exports.ehejipnDouble7Otonal = exports.ehejipn7Utonal = exports.ehejipn7Otonal = exports.ehejipnDoubleSharpTriple5Utonal = exports.ehejipnSharpTriple5Utonal = exports.ehejipnNaturalTriple5Utonal = exports.ehejipnFlatTriple5Utonal = exports.ehejipnDoubleFlatTriple5Utonal = exports.ehejipnDoubleSharpTriple5Otonal = exports.ehejipnSharpTriple5Otonal = exports.ehejipnNaturalTriple5Otonal = exports.ehejipnFlatTriple5Otonal = exports.ehejipnDoubleFlatTriple5Otonal = exports.ehejipnDoubleSharpDouble5Utonal = exports.ehejipnSharpDouble5Utonal = exports.ehejipnNaturalDouble5Utonal = exports.ehejipnFlatDouble5Utonal = exports.ehejipnDoubleFlatDouble5Utonal = exports.ehejipnDoubleSharpDouble5Otonal = exports.ehejipnSharpDouble5Otonal = exports.ehejipnNaturalDouble5Otonal = exports.ehejipnFlatDouble5Otonal = exports.ehejipnDoubleFlatDouble5Otonal = exports.ehejipnDoubleSharp5Utonal = exports.ehejipnSharp5Utonal = exports.ehejipnNatural5Utonal = exports.ehejipnFlat5Utonal = exports.ehejipnDoubleFlat5Utonal = exports.ehejipnDoubleSharp5Otonal = exports.ehejipnSharp5Otonal = exports.ehejipnNatural5Otonal = exports.ehejipnFlat5Otonal = exports.ehejipnDoubleFlat5Otonal = exports.EHEJIPN_ACCIDENTALS = void 0;
 exports.accidentalThreeQuarterTonesFlatZimmermann = exports.ehejipnEnharmonicallyReinterpretEquals = exports.ehejipnEnharmonicallyReinterpretAlmostEqual = exports.ehejipnEnharmonicallyReinterpret = exports.ehejipn53Utonal = exports.ehejipn53Otonal = exports.ehejipnQuarterSharpTemperedSemitone = exports.ehejipnQuarterFlatTemperedSemitone = exports.ehejipnDoubleSharpTemperedSemitone = exports.ehejipnSharpTemperedSemitone = void 0;
 const types_1 = __webpack_require__(5);
-const conventional_1 = __webpack_require__(8);
-const unconventional_1 = __webpack_require__(10);
+const conventional_1 = __webpack_require__(4);
+const unconventional_1 = __webpack_require__(7);
 // See: ttps://w3c.github.io/smufl/gitbook/tables/extended-helmholtz-ellis-accidentals-just-intonation.html
 // All EHEJIPN staffCodes start with a dot (full-stop). Unicodes are successive below.
 const ehejipnDoubleFlat5Otonal = ""; // U+E2C0
@@ -1341,7 +885,7 @@ exports.EHEJIPN_ACCIDENTALS = EHEJIPN_ACCIDENTALS;
 
 
 /***/ }),
-/* 10 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1375,7 +919,7 @@ exports.UNCONVENTIONAL_ACCIDENTALS = UNCONVENTIONAL_ACCIDENTALS;
 
 
 /***/ }),
-/* 11 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2103,7 +1647,7 @@ exports.SAGITTAL_ACCIDENTALS = SAGITTAL_ACCIDENTALS;
 
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2121,6 +1665,496 @@ const UPS_AND_DOWNS_ACCIDENTALS = {
     [types_1.Code["v"]]: down,
 };
 exports.UPS_AND_DOWNS_ACCIDENTALS = UPS_AND_DOWNS_ACCIDENTALS;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.bsf2 = exports.bsg2 = exports.bsa2 = exports.bsb2 = exports.bsc3 = exports.bsd3 = exports.bse3 = exports.bsf3 = exports.bsg3 = exports.bsa3 = exports.bsb3 = exports.bsc4 = exports.bsd4 = exports.bse4 = exports.tra3 = exports.trb3 = exports.trc4 = exports.trd4 = exports.tre4 = exports.trf4 = exports.trg4 = exports.tra4 = exports.trb4 = exports.trc5 = exports.trd5 = exports.tre5 = exports.trf5 = exports.trg5 = exports.tra5 = exports.trb5 = exports.trc6 = exports.staffPosLower8 = exports.staffPosLower7 = exports.staffPosLower6 = exports.staffPosLower5 = exports.staffPosLower4 = exports.staffPosLower3 = exports.staffPosLower2 = exports.staffPosLower1 = exports.staffPosCenter = exports.staffPosRaise1 = exports.staffPosRaise2 = exports.staffPosRaise3 = exports.staffPosRaise4 = exports.staffPosRaise5 = exports.staffPosRaise6 = exports.staffPosRaise7 = exports.staffPosRaise8 = exports.TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP = exports.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP = void 0;
+exports.COMBINING_STAFF_POSITIONS = exports.a3 = exports.b3 = exports.c4 = exports.d4 = exports.e4 = exports.f4 = exports.g4 = exports.a4 = exports.b4 = exports.c5 = exports.d5 = exports.e5 = exports.f5 = exports.g5 = exports.a5 = exports.b5 = exports.c6 = exports.bsc2 = exports.bsd2 = exports.bse2 = void 0;
+const types_1 = __webpack_require__(5);
+const staffPosRaise8 = ""; // U+EB97
+exports.staffPosRaise8 = staffPosRaise8;
+const staffPosRaise7 = ""; // U+EB96
+exports.staffPosRaise7 = staffPosRaise7;
+const staffPosRaise6 = ""; // U+EB95
+exports.staffPosRaise6 = staffPosRaise6;
+const staffPosRaise5 = ""; // U+EB94
+exports.staffPosRaise5 = staffPosRaise5;
+const staffPosRaise4 = ""; // U+EB93
+exports.staffPosRaise4 = staffPosRaise4;
+const staffPosRaise3 = ""; // U+EB92
+exports.staffPosRaise3 = staffPosRaise3;
+const staffPosRaise2 = ""; // U+EB91
+exports.staffPosRaise2 = staffPosRaise2;
+const staffPosRaise1 = ""; // U+EB90
+exports.staffPosRaise1 = staffPosRaise1;
+const staffPosCenter = ""; // (blank)
+exports.staffPosCenter = staffPosCenter;
+const staffPosLower1 = ""; // U+EB98
+exports.staffPosLower1 = staffPosLower1;
+const staffPosLower2 = ""; // U+EB99
+exports.staffPosLower2 = staffPosLower2;
+const staffPosLower3 = ""; // U+EB9A
+exports.staffPosLower3 = staffPosLower3;
+const staffPosLower4 = ""; // U+EB9B
+exports.staffPosLower4 = staffPosLower4;
+const staffPosLower5 = ""; // U+EB9C
+exports.staffPosLower5 = staffPosLower5;
+const staffPosLower6 = ""; // U+EB9D
+exports.staffPosLower6 = staffPosLower6;
+const staffPosLower7 = ""; // U+EB9E
+exports.staffPosLower7 = staffPosLower7;
+const staffPosLower8 = ""; // U+EB9F
+exports.staffPosLower8 = staffPosLower8;
+const trc6 = staffPosRaise8;
+exports.trc6 = trc6;
+const trb5 = staffPosRaise7;
+exports.trb5 = trb5;
+const tra5 = staffPosRaise6;
+exports.tra5 = tra5;
+const trg5 = staffPosRaise5;
+exports.trg5 = trg5;
+const trf5 = staffPosRaise4;
+exports.trf5 = trf5;
+const tre5 = staffPosRaise3;
+exports.tre5 = tre5;
+const trd5 = staffPosRaise2;
+exports.trd5 = trd5;
+const trc5 = staffPosRaise1;
+exports.trc5 = trc5;
+const trb4 = staffPosCenter;
+exports.trb4 = trb4;
+const tra4 = staffPosLower1;
+exports.tra4 = tra4;
+const trg4 = staffPosLower2;
+exports.trg4 = trg4;
+const trf4 = staffPosLower3;
+exports.trf4 = trf4;
+const tre4 = staffPosLower4;
+exports.tre4 = tre4;
+const trd4 = staffPosLower5;
+exports.trd4 = trd4;
+const trc4 = staffPosLower6;
+exports.trc4 = trc4;
+const trb3 = staffPosLower7;
+exports.trb3 = trb3;
+const tra3 = staffPosLower8;
+exports.tra3 = tra3;
+const bse4 = staffPosRaise8;
+exports.bse4 = bse4;
+const bsd4 = staffPosRaise7;
+exports.bsd4 = bsd4;
+const bsc4 = staffPosRaise6;
+exports.bsc4 = bsc4;
+const bsb3 = staffPosRaise5;
+exports.bsb3 = bsb3;
+const bsa3 = staffPosRaise4;
+exports.bsa3 = bsa3;
+const bsg3 = staffPosRaise3;
+exports.bsg3 = bsg3;
+const bsf3 = staffPosRaise2;
+exports.bsf3 = bsf3;
+const bse3 = staffPosRaise1;
+exports.bse3 = bse3;
+const bsd3 = staffPosCenter;
+exports.bsd3 = bsd3;
+const bsc3 = staffPosLower1;
+exports.bsc3 = bsc3;
+const bsb2 = staffPosLower2;
+exports.bsb2 = bsb2;
+const bsa2 = staffPosLower3;
+exports.bsa2 = bsa2;
+const bsg2 = staffPosLower4;
+exports.bsg2 = bsg2;
+const bsf2 = staffPosLower5;
+exports.bsf2 = bsf2;
+const bse2 = staffPosLower6;
+exports.bse2 = bse2;
+const bsd2 = staffPosLower7;
+exports.bsd2 = bsd2;
+const bsc2 = staffPosLower8;
+exports.bsc2 = bsc2;
+const c6 = trc6;
+exports.c6 = c6;
+const b5 = trb5;
+exports.b5 = b5;
+const a5 = tra5;
+exports.a5 = a5;
+const g5 = trg5;
+exports.g5 = g5;
+const f5 = trf5;
+exports.f5 = f5;
+const e5 = tre5;
+exports.e5 = e5;
+const d5 = trd5;
+exports.d5 = d5;
+const c5 = trc5;
+exports.c5 = c5;
+const b4 = trb4;
+exports.b4 = b4;
+const a4 = tra4;
+exports.a4 = a4;
+const g4 = trg4;
+exports.g4 = g4;
+const f4 = trf4;
+exports.f4 = f4;
+const e4 = tre4;
+exports.e4 = e4;
+const d4 = trd4;
+exports.d4 = d4;
+const c4 = trc4;
+exports.c4 = c4;
+const b3 = trb3;
+exports.b3 = b3;
+const a3 = tra3;
+exports.a3 = a3;
+const TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP = {
+    [types_1.Code["c6"]]: trc6,
+    [types_1.Code["b5"]]: trb5,
+    [types_1.Code["a5"]]: tra5,
+    [types_1.Code["g5"]]: trg5,
+    [types_1.Code["f5"]]: trf5,
+    [types_1.Code["e5"]]: tre5,
+    [types_1.Code["d5"]]: trd5,
+    [types_1.Code["c5"]]: trc5,
+    [types_1.Code["b4"]]: trb4,
+    [types_1.Code["a4"]]: tra4,
+    [types_1.Code["g4"]]: trg4,
+    [types_1.Code["f4"]]: trf4,
+    [types_1.Code["e4"]]: tre4,
+    [types_1.Code["d4"]]: trd4,
+    [types_1.Code["c4"]]: trc4,
+    [types_1.Code["b3"]]: trb3,
+    [types_1.Code["a3"]]: tra3,
+};
+exports.TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP = TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP;
+const BASS_COMBINING_STAFF_POSITION_UNICODE_MAP = {
+    [types_1.Code["e4"]]: bse4,
+    [types_1.Code["d4"]]: bsd4,
+    [types_1.Code["c4"]]: bsc4,
+    [types_1.Code["b3"]]: bsb3,
+    [types_1.Code["a3"]]: bsa3,
+    [types_1.Code["g3"]]: bsg3,
+    [types_1.Code["f3"]]: bsf3,
+    [types_1.Code["e3"]]: bse3,
+    [types_1.Code["d3"]]: bsd3,
+    [types_1.Code["c3"]]: bsc3,
+    [types_1.Code["b2"]]: bsb2,
+    [types_1.Code["a2"]]: bsa2,
+    [types_1.Code["g2"]]: bsg2,
+    [types_1.Code["f2"]]: bsf2,
+    [types_1.Code["e2"]]: bse2,
+    [types_1.Code["d2"]]: bsd2,
+    [types_1.Code["c2"]]: bsc2,
+};
+exports.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP = BASS_COMBINING_STAFF_POSITION_UNICODE_MAP;
+const COMBINING_STAFF_POSITIONS = [
+    staffPosRaise8,
+    staffPosRaise7,
+    staffPosRaise6,
+    staffPosRaise5,
+    staffPosRaise4,
+    staffPosRaise3,
+    staffPosRaise2,
+    staffPosRaise1,
+    staffPosCenter,
+    staffPosLower1,
+    staffPosLower2,
+    staffPosLower3,
+    staffPosLower4,
+    staffPosLower5,
+    staffPosLower6,
+    staffPosLower7,
+    staffPosLower8,
+];
+exports.COMBINING_STAFF_POSITIONS = COMBINING_STAFF_POSITIONS;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getUnicode = void 0;
+const combiningStaffPositions_1 = __webpack_require__(10);
+const types_1 = __webpack_require__(5);
+const unicodeMap_1 = __webpack_require__(12);
+const CODES_WITH_BASS = {
+    ...unicodeMap_1.CODES,
+    ...combiningStaffPositions_1.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
+};
+const CODES_WITH_TREBLE = {
+    ...unicodeMap_1.CODES,
+    ...combiningStaffPositions_1.TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
+};
+const getUnicode = (userInput, clef = types_1.Clef.TREBLE) => {
+    const INPUT_TO_UNICODE_MAP = clef === types_1.Clef.BASS ? CODES_WITH_BASS : CODES_WITH_TREBLE;
+    return INPUT_TO_UNICODE_MAP[userInput];
+};
+exports.getUnicode = getUnicode;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.nt2dn = exports.nt2 = exports.nt1 = exports.ntdb = exports.TIME_SIGNATURES = exports.tmdn = exports.tmnm = exports.tmcm = exports.tm9 = exports.tm8 = exports.tm7 = exports.tm6 = exports.tm5 = exports.tm4 = exports.tm3 = exports.tm2 = exports.tm1 = exports.tm0 = exports.CLEFS = exports._8vb = exports._8va = exports.bscf = exports.alcf = exports.tbcf = exports.BARS = exports.brlndb = exports.brln = exports.LINES = exports.lgln = exports.st = exports.st24 = exports.st16 = exports.st8 = exports.SPACES = exports.sp16 = exports.sp15 = exports.sp14 = exports.sp13 = exports.sp12 = exports.sp11 = exports.sp10 = exports.sp9 = exports.sp8 = exports.sp7 = exports.sp6 = exports.sp5 = exports.sp4 = exports.sp3 = exports.sp2 = exports.sp1 = void 0;
+exports.CODES = exports.BEAMED_GROUPS_OF_NOTES = exports.tp3 = exports.bm16 = exports.bm8 = exports.ntbm16 = exports.ntbm8 = exports.ntbmst = exports.DOTS = exports.agdt = exports.dt = exports.RESTS = exports.rs = exports.rs16 = exports.rs8 = exports.rs4 = exports.rs2 = exports.rs1 = exports.rsdb = exports.NOTES = exports.nt = exports.nt16dn = exports.nt16 = exports.nt8dn = exports.nt8 = exports.nt4dn = exports.nt4 = void 0;
+const accidentals_1 = __webpack_require__(3);
+const types_1 = __webpack_require__(5);
+const sp1 = " "; // U+200A                   HAIR SPACE
+exports.sp1 = sp1;
+const sp2 = " "; // U+2009                   THIN SPACE
+exports.sp2 = sp2;
+const sp3 = "  "; // U+2009 U+200A
+exports.sp3 = sp3;
+const sp4 = " "; // U+2005                   FOUR-PER-EM SPACE
+exports.sp4 = sp4;
+const sp5 = "  "; // U+2005 U+200A
+exports.sp5 = sp5;
+const sp6 = " "; // U+2004                   THREE-PER-EM SPACE
+exports.sp6 = sp6;
+const sp7 = "  "; // U+2004 U+200A
+exports.sp7 = sp7;
+const sp8 = " "; // U+2002                   EN SPACE
+exports.sp8 = sp8;
+const sp9 = "  "; // U+2002 U+200A
+exports.sp9 = sp9;
+const sp10 = " "; // U+2008                   PUNCTUATION SPACE
+exports.sp10 = sp10;
+const sp11 = "  "; // U+2008 U+200A
+exports.sp11 = sp11;
+const sp12 = "　"; // U+3000                   IDEOGRAPHIC SPACE
+exports.sp12 = sp12;
+const sp13 = "　 "; // U+3000 U+200A
+exports.sp13 = sp13;
+const sp14 = "　 "; // U+3000 U+2009 *
+exports.sp14 = sp14;
+const sp15 = "　  "; // U+3000 U+2009 U+200A *
+exports.sp15 = sp15;
+const sp16 = " "; // U+2003                   EM SPACE
+exports.sp16 = sp16;
+// * U+2001 EM QUAD, our desired sp14, is not in the font yet. Once it is, these should be replaced.
+const SPACES = {
+    [types_1.Code["sp1"]]: sp1,
+    [types_1.Code["sp2"]]: sp2,
+    [types_1.Code["sp3"]]: sp3,
+    [types_1.Code["sp4"]]: sp4,
+    [types_1.Code["sp5"]]: sp5,
+    [types_1.Code["sp6"]]: sp6,
+    [types_1.Code["sp7"]]: sp7,
+    [types_1.Code["sp8"]]: sp8,
+    [types_1.Code["sp9"]]: sp9,
+    [types_1.Code["sp10"]]: sp10,
+    [types_1.Code["sp11"]]: sp11,
+    [types_1.Code["sp12"]]: sp12,
+    [types_1.Code["sp13"]]: sp13,
+    [types_1.Code["sp14"]]: sp14,
+    [types_1.Code["sp15"]]: sp15,
+    [types_1.Code["sp16"]]: sp16,
+};
+exports.SPACES = SPACES;
+const st8 = ""; // U+E020
+exports.st8 = st8;
+const st16 = ""; // U+E014
+exports.st16 = st16;
+const st24 = ""; // U+E01A
+exports.st24 = st24;
+const st = st24;
+exports.st = st;
+const lgln = ""; // U+E022    leger line
+exports.lgln = lgln;
+const LINES = {
+    [types_1.Code["st8"]]: st8,
+    [types_1.Code["st16"]]: st16,
+    [types_1.Code["st24"]]: st24,
+    [types_1.Code["st"]]: st,
+    [types_1.Code["lgln"]]: lgln,
+};
+exports.LINES = LINES;
+const brln = ""; // U+E030   bar line (single)
+exports.brln = brln;
+const brlndb = ""; // U+E031   bar line double
+exports.brlndb = brlndb;
+const BARS = {
+    [types_1.Code["brln"]]: brln,
+    [types_1.Code["brlndb"]]: brlndb,
+};
+exports.BARS = BARS;
+const tbcf = ""; // U+E050    treble
+exports.tbcf = tbcf;
+const alcf = ""; // U+E05C    alto
+exports.alcf = alcf;
+const bscf = ""; // U+E062    bass
+exports.bscf = bscf;
+const _8va = ""; // U+E512    octave above
+exports._8va = _8va;
+const _8vb = ""; // U+E51C    octave below
+exports._8vb = _8vb;
+const CLEFS = {
+    [types_1.Code["tbcf"]]: tbcf,
+    [types_1.Code["alcf"]]: alcf,
+    [types_1.Code["bscf"]]: bscf,
+    [types_1.Code["8va"]]: _8va,
+    [types_1.Code["8va"]]: _8vb,
+};
+exports.CLEFS = CLEFS;
+const tm0 = ""; // U+E080   time signature digit 0
+exports.tm0 = tm0;
+const tm1 = ""; // U+E081   time signature digit 1
+exports.tm1 = tm1;
+const tm2 = ""; // U+E082   time signature digit 2
+exports.tm2 = tm2;
+const tm3 = ""; // U+E083   time signature digit 3
+exports.tm3 = tm3;
+const tm4 = ""; // U+E084   time signature digit 4
+exports.tm4 = tm4;
+const tm5 = ""; // U+E085   time signature digit 5
+exports.tm5 = tm5;
+const tm6 = ""; // U+E086   time signature digit 6
+exports.tm6 = tm6;
+const tm7 = ""; // U+E087   time signature digit 7
+exports.tm7 = tm7;
+const tm8 = ""; // U+E088   time signature digit 8
+exports.tm8 = tm8;
+const tm9 = ""; // U+E089   time signature digit 9
+exports.tm9 = tm9;
+const tmcm = ""; // U+E08A   common time
+exports.tmcm = tmcm;
+const tmnm = ""; // U+E09E   time signature combining numerator position
+exports.tmnm = tmnm;
+const tmdn = ""; // U+E09F   time signature combining denominator position
+exports.tmdn = tmdn;
+const TIME_SIGNATURES = {
+    [types_1.Code["tm0"]]: tm0,
+    [types_1.Code["tm1"]]: tm1,
+    [types_1.Code["tm2"]]: tm2,
+    [types_1.Code["tm3"]]: tm3,
+    [types_1.Code["tm4"]]: tm4,
+    [types_1.Code["tm5"]]: tm5,
+    [types_1.Code["tm6"]]: tm6,
+    [types_1.Code["tm7"]]: tm7,
+    [types_1.Code["tm8"]]: tm8,
+    [types_1.Code["tm9"]]: tm9,
+    [types_1.Code["tmcm"]]: tmcm,
+    [types_1.Code["tmnm"]]: tmnm,
+    [types_1.Code["tmdn"]]: tmdn,
+};
+exports.TIME_SIGNATURES = TIME_SIGNATURES;
+const ntdb = ""; // U+E1D0    double whole note
+exports.ntdb = ntdb;
+const nt1 = ""; // U+E1D2    whole note
+exports.nt1 = nt1;
+const nt2 = ""; // U+E1D3    half note stem up
+exports.nt2 = nt2;
+const nt2dn = ""; // U+E1D4    half note stem down
+exports.nt2dn = nt2dn;
+const nt4 = ""; // U+E1D5    quarter note stem up
+exports.nt4 = nt4;
+const nt4dn = ""; // U+E1D6    quarter note stem down
+exports.nt4dn = nt4dn;
+const nt8 = ""; // U+E1D7    quarter note stem up
+exports.nt8 = nt8;
+const nt8dn = ""; // U+E1D8    quarter note stem down
+exports.nt8dn = nt8dn;
+const nt16 = ""; // U+E1D9    sixteenth note stem up
+exports.nt16 = nt16;
+const nt16dn = ""; // U+E1DA    sixteenth note stem down
+exports.nt16dn = nt16dn;
+const nt = nt4;
+exports.nt = nt;
+const NOTES = {
+    [types_1.Code["ntdb"]]: ntdb,
+    [types_1.Code["nt1"]]: nt1,
+    [types_1.Code["nt2"]]: nt2,
+    [types_1.Code["nt2dn"]]: nt2dn,
+    [types_1.Code["nt4"]]: nt4,
+    [types_1.Code["nt4dn"]]: nt4dn,
+    [types_1.Code["nt8"]]: nt8,
+    [types_1.Code["nt8dn"]]: nt8dn,
+    [types_1.Code["nt16"]]: nt16,
+    [types_1.Code["nt16dn"]]: nt16dn,
+    [types_1.Code["nt"]]: nt,
+};
+exports.NOTES = NOTES;
+const rsdb = ""; // U+E4E2   double whole rest
+exports.rsdb = rsdb;
+const rs1 = ""; // U+E4E3   whole rest
+exports.rs1 = rs1;
+const rs2 = ""; // U+E4E4   half rest
+exports.rs2 = rs2;
+const rs4 = ""; // U+E4E5   quarter rest
+exports.rs4 = rs4;
+const rs8 = ""; // U+E4E6   eighth rest
+exports.rs8 = rs8;
+const rs16 = ""; // U+E4E7   sixteenth rest
+exports.rs16 = rs16;
+const rs = rs4;
+exports.rs = rs;
+const RESTS = {
+    [types_1.Code["rsdb"]]: rsdb,
+    [types_1.Code["rs1"]]: rs1,
+    [types_1.Code["rs2"]]: rs2,
+    [types_1.Code["rs4"]]: rs4,
+    [types_1.Code["rs8"]]: rs8,
+    [types_1.Code["rs16"]]: rs16,
+    [types_1.Code["rs"]]: rs,
+};
+exports.RESTS = RESTS;
+const dt = ""; // U+E1E7    augmentation dot
+exports.dt = dt;
+const agdt = dt;
+exports.agdt = agdt;
+const DOTS = {
+    [types_1.Code["dt"]]: dt,
+    [types_1.Code["agdt"]]: agdt,
+};
+exports.DOTS = DOTS;
+// See: https://w3c.github.io/smufl/gitbook/tables/beamed-groups-of-notes.html
+const ntbmst = ""; // U+E1F0   note for start of any beam (short stem)
+exports.ntbmst = ntbmst;
+const ntbm8 = ""; // U+E1F2   note for end of eighth beam, and possible continuation of any beam (short stem)
+exports.ntbm8 = ntbm8;
+const ntbm16 = ""; // U+E1F4   note for end of 16th beam, and possible continuation of any beam (short stem)
+exports.ntbm16 = ntbm16;
+const bm8 = ""; // U+E1F7   eighth beam continuation (for short stems)
+exports.bm8 = bm8;
+const bm16 = ""; // U+E1F9   sixteenth beam continuation (for short stems)
+exports.bm16 = bm16;
+const tp3 = ""; // U+E1FF   tuplet digit 3 (for short stems)
+exports.tp3 = tp3;
+const BEAMED_GROUPS_OF_NOTES = {
+    [types_1.Code["ntbmst"]]: ntbmst,
+    [types_1.Code["ntbm8"]]: ntbm8,
+    [types_1.Code["ntbm16"]]: ntbm16,
+    [types_1.Code["bm8"]]: bm8,
+    [types_1.Code["bm16"]]: bm16,
+    [types_1.Code["tp3"]]: tp3,
+};
+exports.BEAMED_GROUPS_OF_NOTES = BEAMED_GROUPS_OF_NOTES;
+const CODES = {
+    ...SPACES,
+    ...LINES,
+    ...BARS,
+    ...CLEFS,
+    ...NOTES,
+    ...RESTS,
+    ...DOTS,
+    ...BEAMED_GROUPS_OF_NOTES,
+    ...TIME_SIGNATURES,
+    ...accidentals_1.ACCIDENTALS,
+};
+exports.CODES = CODES;
 
 
 /***/ }),
