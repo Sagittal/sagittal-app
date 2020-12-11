@@ -5,7 +5,7 @@ import {vectorize} from "./vectorize"
 
 const replaceStaffCodeWithUnicodeApp = (): void => {
     const unicode = staffCodeToUnicode(staffCodeInput.value)
-    staffDiv.value = unicode
+    staffDiv.textContent = unicode
     vectorize(unicode)
 }
 

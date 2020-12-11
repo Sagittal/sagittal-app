@@ -186,22 +186,22 @@ const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).in
 \uE900 to \uEA1F // Medieval and Renaissance: clefs, prolations, noteheads and stems, notes, oblique forms, plainchant single/multi/articulations, accidentals, rests, miscellany.
 \uEC30 to \uEC3F // Kievan square notation
  */
-const applySmartSpace = () => {
+const applySmartSpace = (space) => {
     if (!globals_1.staffState.smartStaffOn) { // TODO: this could probably be simppiflied
         const spaceUnicode = space_1.computeSpaceUnicode(globals_1.staffState.smartSpace);
         globals_1.staffState.smartSpace = 0;
         return spaceUnicode;
     }
     // We've got enough staff ahead of us still to apply the advance and still be within it
-    if (globals_1.staffState.smartStaff >= globals_1.staffState.smartSpace) {
-        const spaceUnicode = space_1.computeSpaceUnicode(globals_1.staffState.smartSpace);
-        globals_1.staffState.smartStaff = globals_1.staffState.smartStaff - globals_1.staffState.smartSpace;
+    if (globals_1.staffState.smartStaff >= space) {
+        const spaceUnicode = space_1.computeSpaceUnicode(space);
+        globals_1.staffState.smartStaff = globals_1.staffState.smartStaff - space;
         globals_1.staffState.smartSpace = 0;
         return spaceUnicode;
     }
     else {
         const useUpExistingStaffSpaceUnicode = space_1.computeSpaceUnicode(globals_1.staffState.smartStaff);
-        const remainingSpaceWeNeedToApply = globals_1.staffState.smartSpace - globals_1.staffState.smartStaff;
+        const remainingSpaceWeNeedToApply = space - globals_1.staffState.smartStaff;
         const remainingStaffSpaceUnicode = space_1.computeSpaceUnicode(remainingSpaceWeNeedToApply);
         globals_1.staffState.smartStaff = 24 - remainingSpaceWeNeedToApply;
         globals_1.staffState.smartSpace = 0;
@@ -210,36 +210,37 @@ const applySmartSpace = () => {
 };
 const getSpaceForUnicode = (unicode) => {
     if ([...Object.values(unicodeMap_1.CLEFS)].includes(unicode))
-        return 23;
+        return 24;
     else if ([unicodeMap_1.ntdb].includes(unicode))
-        return 22;
-    // 21
+        return 23;
+    // 22
     else if ([unicodeMap_1.nt8, unicodeMap_1.nt16].includes(unicode))
-        return 20;
+        return 21;
+    // 20
     // 19
     // 18
-    // 17
     else if ([unicodeMap_1.tm0, unicodeMap_1.tm1, unicodeMap_1.tm2, unicodeMap_1.tm3, unicodeMap_1.tm4, unicodeMap_1.tm5, unicodeMap_1.tm6, unicodeMap_1.tm7, unicodeMap_1.tm8, unicodeMap_1.tm9, unicodeMap_1.tmcm].includes(unicode))
-        return 16;
-    // 15
+        return 17;
+    // 16
     else if ([conventional_1.bb].includes(unicode))
-        return 14;
+        return 15;
     else if ([sagittal_1._35LUp, sagittal_1._35LDown].includes(unicode))
-        return 13;
+        return 14;
     else if ([unicodeMap_1.lgln, unicodeMap_1.nt1, unicodeMap_1.nt2, unicodeMap_1.nt4, unicodeMap_1.nt2dn, unicodeMap_1.nt4dn, unicodeMap_1.nt8dn, unicodeMap_1.nt16dn, conventional_1.x, sagittal_1._11LUp, sagittal_1._11LDown, sagittal_1._11MUp, sagittal_1._11MDown].includes(unicode))
-        return 12;
-    // 11
+        return 13;
+    // 12
     else if ([sagittal_1._35MUp, sagittal_1._35MDown].includes(unicode))
-        return 10;
+        return 11;
     else if ([conventional_1.sharp, conventional_1.smallDoubleSharp, sagittal_1._25SUp, sagittal_1._25SDown].includes(unicode))
-        return 9;
+        return 10;
     else if ([conventional_1.b].includes(unicode))
-        return 8;
-    // 7
+        return 9;
+    // 8
     else if ([conventional_1.n, sagittal_1._5v7kUp, sagittal_1._5v7kDown, sagittal_1._5CUp, sagittal_1._5CDown, sagittal_1._7CUp, sagittal_1._7CDown].includes(unicode))
-        return 6;
+        return 7;
     else if ([unicodeMap_1.agdt].includes(unicode))
-        return 5;
+        return 6;
+    // 5
     // 4
     // 3
     // 2
@@ -272,7 +273,11 @@ const staffCodeToUnicode = (staffCode) => {
         .split(" ")
         .map((userInput) => {
         if (userInput === "sp") {
-            return applySmartSpace();
+            return applySmartSpace(globals_1.staffState.smartSpace);
+        }
+        else if (userInput.match("sp") && globals_1.staffState.smartStaffOn) {
+            const amount = parseInt(userInput.replace("sp", ""));
+            return applySmartSpace(amount);
         }
         if (["st", "st8", "st16", "st24"].includes(userInput)) {
             recordStaff(userInput);
