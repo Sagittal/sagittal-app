@@ -154,15 +154,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.staffCodeToUnicode = void 0;
 const general_1 = __webpack_require__(3);
 const accidentals_1 = __webpack_require__(240);
+// TODO: clean these up
 // tslint:disable-next-line:no-reaching-imports
 const conventional_1 = __webpack_require__(241);
 const sagittal_1 = __webpack_require__(245);
 const combiningStaffPositions_1 = __webpack_require__(247);
-const computeSpace_1 = __webpack_require__(248);
-const getUnicode_1 = __webpack_require__(250);
-const globals_1 = __webpack_require__(252);
+const getUnicode_1 = __webpack_require__(248);
+const globals_1 = __webpack_require__(251);
+const space_1 = __webpack_require__(252);
 const types_1 = __webpack_require__(242);
-const unicodeMap_1 = __webpack_require__(249);
+const unicodeMap_1 = __webpack_require__(250);
 const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).includes(unicode)
     || Object.values(unicodeMap_1.NOTES).includes(unicode)
     || Object.values(unicodeMap_1.BEAMED_GROUPS_OF_NOTES).includes(unicode)
@@ -185,9 +186,32 @@ const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).in
 \uEC30 to \uEC3F // Kievan square notation
  */
 const applySmartSpace = () => {
-    const space = computeSpace_1.computeSpace(globals_1.staffGlobals.smartSpace);
-    globals_1.staffGlobals.smartSpace = 0;
-    return space;
+    // console.log("is smsartstaff on?", staffGlobals.smartStaffOn)
+    if (!globals_1.staffGlobals.smartStaffOn) { // TODO: this could probably be simppiflied
+        const spaceUnicode = space_1.computeSpaceUnicode(globals_1.staffGlobals.smartSpace);
+        globals_1.staffGlobals.smartSpace = 0;
+        return spaceUnicode;
+    }
+    // We've got enough staff ahead of us still to apply the advance and still be within it
+    if (globals_1.staffGlobals.smartStaff >= globals_1.staffGlobals.smartSpace) {
+        // console.log("ok have enough staff ahead of us", staffGlobals.smartStaff, "because we only need to apply this much space", staffGlobals.smartSpace)
+        const spaceUnicode = space_1.computeSpaceUnicode(globals_1.staffGlobals.smartSpace);
+        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff - globals_1.staffGlobals.smartSpace;
+        globals_1.staffGlobals.smartSpace = 0;
+        // console.log("there's now 0 space left, and ", staffGlobals.smartStaff, "staff left")
+        return spaceUnicode;
+    }
+    else {
+        // console.log("ok we have", staffGlobals.smartStaff, "staff ahead of us still")
+        // console.log("and this much space/advance we're going to apply now, which is more than that", staffGlobals.smartSpace)
+        const useUpExistingStaffSpaceUnicode = space_1.computeSpaceUnicode(globals_1.staffGlobals.smartStaff);
+        const remainingSpaceWeNeedToApply = globals_1.staffGlobals.smartSpace - globals_1.staffGlobals.smartStaff;
+        // console.log("having used that up we have this much space left", remainingSpaceWeNeedToApply)
+        const remainingStaffSpaceUnicode = space_1.computeSpaceUnicode(remainingSpaceWeNeedToApply);
+        globals_1.staffGlobals.smartStaff = 24 - remainingSpaceWeNeedToApply;
+        globals_1.staffGlobals.smartSpace = 0;
+        return general_1.sumTexts(useUpExistingStaffSpaceUnicode, unicodeMap_1.st, remainingStaffSpaceUnicode);
+    }
 };
 const getSpaceForUnicode = (unicode) => {
     if ([...Object.values(unicodeMap_1.CLEFS)].includes(unicode))
@@ -232,9 +256,26 @@ const getSpaceForUnicode = (unicode) => {
 const recordSpace = (unicode) => {
     globals_1.staffGlobals.smartSpace = general_1.max(globals_1.staffGlobals.smartSpace, getSpaceForUnicode(unicode));
 };
+const recordStaff = (userInput) => {
+    // console.log("we are recordin' some smart staff so we are turning it ON")
+    globals_1.staffGlobals.smartStaffOn = true;
+    if (userInput === types_1.Code["st"])
+        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff + 24;
+    if (userInput === types_1.Code["st8"])
+        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff + 8;
+    if (userInput === types_1.Code["st16"])
+        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff + 16;
+    if (userInput === types_1.Code["st24"])
+        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff + 24;
+};
 const staffCodeToUnicode = (staffCode) => {
+    // TODO: just reset. and this should be test covered, integration test?
+    globals_1.staffGlobals.smartStaffOn = false;
+    globals_1.staffGlobals.smartStaff = 0;
+    globals_1.staffGlobals.smartSpace = 0;
     let staffPosition = ""; // TODO: blank uni constant
-    return staffCode.toLowerCase()
+    return `${staffCode.toLowerCase()} sp`
+        // return staffCode.toLowerCase()
         .replace(/<br>/g, " ")
         .replace(/\n/g, " ")
         .replace(/\t/g, " ")
@@ -242,6 +283,9 @@ const staffCodeToUnicode = (staffCode) => {
         .map((userInput) => {
         if (userInput === "sp") {
             return applySmartSpace();
+        }
+        if (["st", "st8", "st16", "st24"].includes(userInput)) {
+            recordStaff(userInput);
         }
         let unicode = getUnicode_1.getUnicode(userInput, types_1.Clef.TREBLE);
         let output;
@@ -16456,39 +16500,27 @@ exports.COMBINING_STAFF_POSITIONS = COMBINING_STAFF_POSITIONS;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeSpace = void 0;
-const general_1 = __webpack_require__(3);
-const unicodeMap_1 = __webpack_require__(249);
-const BIGGEST_SPACE = 16;
-// TODO: ugh names are so bad
-const SPACES_ARRAY = [
-    "",
-    unicodeMap_1.sp1,
-    unicodeMap_1.sp2,
-    unicodeMap_1.sp3,
-    unicodeMap_1.sp4,
-    unicodeMap_1.sp5,
-    unicodeMap_1.sp6,
-    unicodeMap_1.sp7,
-    unicodeMap_1.sp8,
-    unicodeMap_1.sp9,
-    unicodeMap_1.sp10,
-    unicodeMap_1.sp11,
-    unicodeMap_1.sp12,
-    unicodeMap_1.sp13,
-    unicodeMap_1.sp14,
-    unicodeMap_1.sp15,
-];
-const computeSpace = (spaces) => {
-    let remainingSpace = spaces;
-    let unicode = "";
-    while (remainingSpace >= BIGGEST_SPACE) {
-        remainingSpace = remainingSpace - 16;
-        unicode = general_1.sumTexts(unicode, unicodeMap_1.sp16);
-    }
-    return general_1.sumTexts(unicode, SPACES_ARRAY[remainingSpace]);
+exports.getUnicode = void 0;
+const combiningStaffPositions_1 = __webpack_require__(247);
+const types_1 = __webpack_require__(242);
+const unicodeFromUnknownCode_1 = __webpack_require__(249);
+const unicodeMap_1 = __webpack_require__(250);
+const CODES_WITH_BASS = {
+    ...unicodeMap_1.CODES,
+    ...combiningStaffPositions_1.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
 };
-exports.computeSpace = computeSpace;
+const CODES_WITH_TREBLE = {
+    ...unicodeMap_1.CODES,
+    ...combiningStaffPositions_1.TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
+};
+const getUnicode = (userInput, clef = types_1.Clef.TREBLE) => {
+    const INPUT_TO_UNICODE_MAP = clef === types_1.Clef.BASS ? CODES_WITH_BASS : CODES_WITH_TREBLE;
+    const knownUnicode = INPUT_TO_UNICODE_MAP[userInput];
+    return knownUnicode || (userInput.match(/^u\+/) ?
+        unicodeFromUnknownCode_1.unicodeFromUnknownCode(userInput) :
+        userInput);
+};
+exports.getUnicode = getUnicode;
 
 
 /***/ }),
@@ -16498,8 +16530,21 @@ exports.computeSpace = computeSpace;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.nt2dn = exports.nt2 = exports.nt1 = exports.ntdb = exports.TIME_SIGNATURES = exports.tmdn = exports.tmnm = exports.tmcm = exports.tm9 = exports.tm8 = exports.tm7 = exports.tm6 = exports.tm5 = exports.tm4 = exports.tm3 = exports.tm2 = exports.tm1 = exports.tm0 = exports.CLEFS = exports._8vb = exports._8va = exports.bscf = exports.alcf = exports.tbcf = exports.BARS = exports.brlndb = exports.brln = exports.LINES = exports.lgln = exports.st = exports.st24 = exports.st16 = exports.st8 = exports.SPACES = exports.sp16 = exports.sp15 = exports.sp14 = exports.sp13 = exports.sp12 = exports.sp11 = exports.sp10 = exports.sp9 = exports.sp8 = exports.sp7 = exports.sp6 = exports.sp5 = exports.sp4 = exports.sp3 = exports.sp2 = exports.sp1 = void 0;
-exports.CODES = exports.BEAMED_GROUPS_OF_NOTES = exports.tp3 = exports.bm16 = exports.bm8 = exports.ntbm16 = exports.ntbm8 = exports.ntbmst = exports.DOTS = exports.agdt = exports.dt = exports.RESTS = exports.rs = exports.rs16 = exports.rs8 = exports.rs4 = exports.rs2 = exports.rs1 = exports.rsdb = exports.NOTES = exports.nt = exports.nt16dn = exports.nt16 = exports.nt8dn = exports.nt8 = exports.nt4dn = exports.nt4 = void 0;
+exports.unicodeFromUnknownCode = void 0;
+// TODO: Probably a lot of these types and variable names can be refined now that we have Code type
+const unicodeFromUnknownCode = (userInput) => String.fromCharCode(parseInt(userInput.replace(/^u\+(.*)/, "0x$1")));
+exports.unicodeFromUnknownCode = unicodeFromUnknownCode;
+
+
+/***/ }),
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.nt2 = exports.nt1 = exports.ntdb = exports.TIME_SIGNATURES = exports.tmdn = exports.tmnm = exports.tmcm = exports.tm9 = exports.tm8 = exports.tm7 = exports.tm6 = exports.tm5 = exports.tm4 = exports.tm3 = exports.tm2 = exports.tm1 = exports.tm0 = exports.CLEFS = exports._8vb = exports._8va = exports.bscf = exports.alcf = exports.tbcf = exports.BARS = exports.brlndb = exports.brln = exports.LEDGER_LINES = exports.STAFF_LINES = exports.lgln = exports.st = exports.st24 = exports.st16 = exports.st8 = exports.SPACES = exports.sp16 = exports.sp15 = exports.sp14 = exports.sp13 = exports.sp12 = exports.sp11 = exports.sp10 = exports.sp9 = exports.sp8 = exports.sp7 = exports.sp6 = exports.sp5 = exports.sp4 = exports.sp3 = exports.sp2 = exports.sp1 = void 0;
+exports.CODES = exports.BEAMED_GROUPS_OF_NOTES = exports.tp3 = exports.bm16 = exports.bm8 = exports.ntbm16 = exports.ntbm8 = exports.ntbmst = exports.DOTS = exports.agdt = exports.dt = exports.RESTS = exports.rs = exports.rs16 = exports.rs8 = exports.rs4 = exports.rs2 = exports.rs1 = exports.rsdb = exports.NOTES = exports.nt = exports.nt16dn = exports.nt16 = exports.nt8dn = exports.nt8 = exports.nt4dn = exports.nt4 = exports.nt2dn = void 0;
 const accidentals_1 = __webpack_require__(240);
 const types_1 = __webpack_require__(242);
 const sp1 = " "; // U+200A                   HAIR SPACE
@@ -16562,16 +16607,19 @@ const st24 = ""; // U+E01A
 exports.st24 = st24;
 const st = st24;
 exports.st = st;
-const lgln = ""; // U+E022    leger line
-exports.lgln = lgln;
-const LINES = {
+const STAFF_LINES = {
     [types_1.Code["st8"]]: st8,
     [types_1.Code["st16"]]: st16,
     [types_1.Code["st24"]]: st24,
     [types_1.Code["st"]]: st,
+};
+exports.STAFF_LINES = STAFF_LINES;
+const lgln = ""; // U+E022    leger line
+exports.lgln = lgln;
+const LEDGER_LINES = {
     [types_1.Code["lgln"]]: lgln,
 };
-exports.LINES = LINES;
+exports.LEDGER_LINES = LEDGER_LINES;
 const brln = ""; // U+E030   bar line (single)
 exports.brln = brln;
 const brlndb = ""; // U+E031   bar line double
@@ -16734,7 +16782,8 @@ const BEAMED_GROUPS_OF_NOTES = {
 exports.BEAMED_GROUPS_OF_NOTES = BEAMED_GROUPS_OF_NOTES;
 const CODES = {
     ...SPACES,
-    ...LINES,
+    ...STAFF_LINES,
+    ...LEDGER_LINES,
     ...BARS,
     ...CLEFS,
     ...NOTES,
@@ -16748,46 +16797,19 @@ exports.CODES = CODES;
 
 
 /***/ }),
-/* 250 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUnicode = void 0;
-const combiningStaffPositions_1 = __webpack_require__(247);
-const types_1 = __webpack_require__(242);
-const unicodeFromUnknownCode_1 = __webpack_require__(251);
-const unicodeMap_1 = __webpack_require__(249);
-const CODES_WITH_BASS = {
-    ...unicodeMap_1.CODES,
-    ...combiningStaffPositions_1.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
-};
-const CODES_WITH_TREBLE = {
-    ...unicodeMap_1.CODES,
-    ...combiningStaffPositions_1.TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
-};
-const getUnicode = (userInput, clef = types_1.Clef.TREBLE) => {
-    const INPUT_TO_UNICODE_MAP = clef === types_1.Clef.BASS ? CODES_WITH_BASS : CODES_WITH_TREBLE;
-    const knownUnicode = INPUT_TO_UNICODE_MAP[userInput];
-    return knownUnicode || (userInput.match(/^u\+/) ?
-        unicodeFromUnknownCode_1.unicodeFromUnknownCode(userInput) :
-        userInput);
-};
-exports.getUnicode = getUnicode;
-
-
-/***/ }),
 /* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.unicodeFromUnknownCode = void 0;
-// TODO: Probably a lot of these types and variable names can be refined now that we have Code type
-const unicodeFromUnknownCode = (userInput) => String.fromCharCode(parseInt(userInput.replace(/^u\+(.*)/, "0x$1")));
-exports.unicodeFromUnknownCode = unicodeFromUnknownCode;
+exports.staffGlobals = void 0;
+let staffGlobals = {
+    smartSpace: 0,
+    smartStaff: 0,
+    smartStaffOn: false,
+};
+exports.staffGlobals = staffGlobals;
 
 
 /***/ }),
@@ -16797,11 +16819,39 @@ exports.unicodeFromUnknownCode = unicodeFromUnknownCode;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.staffGlobals = void 0;
-let staffGlobals = {
-    smartSpace: 0
+exports.computeSpaceUnicode = void 0;
+const general_1 = __webpack_require__(3);
+const unicodeMap_1 = __webpack_require__(250);
+const BIGGEST_SPACE = 16;
+// TODO: ugh names are so bad
+const SPACES_ARRAY = [
+    "",
+    unicodeMap_1.sp1,
+    unicodeMap_1.sp2,
+    unicodeMap_1.sp3,
+    unicodeMap_1.sp4,
+    unicodeMap_1.sp5,
+    unicodeMap_1.sp6,
+    unicodeMap_1.sp7,
+    unicodeMap_1.sp8,
+    unicodeMap_1.sp9,
+    unicodeMap_1.sp10,
+    unicodeMap_1.sp11,
+    unicodeMap_1.sp12,
+    unicodeMap_1.sp13,
+    unicodeMap_1.sp14,
+    unicodeMap_1.sp15,
+];
+const computeSpaceUnicode = (spaces) => {
+    let remainingSpace = spaces;
+    let unicode = "";
+    while (remainingSpace >= BIGGEST_SPACE) {
+        remainingSpace = remainingSpace - 16;
+        unicode = general_1.sumTexts(unicode, unicodeMap_1.sp16);
+    }
+    return general_1.sumTexts(unicode, SPACES_ARRAY[remainingSpace]);
 };
-exports.staffGlobals = staffGlobals;
+exports.computeSpaceUnicode = computeSpaceUnicode;
 
 
 /***/ })

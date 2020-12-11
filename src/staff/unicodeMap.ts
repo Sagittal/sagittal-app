@@ -43,12 +43,15 @@ const st8 = "" as Uni      // U+E020
 const st16 = "" as Uni     // U+E014
 const st24 = "" as Uni     // U+E01A
 const st = st24
-const lgln = "" as Uni     // U+E022    leger line
-const LINES: Partial<Record<Code, Uni>> = {
+const STAFF_LINES: Partial<Record<Code, Uni>> = {
     [Code["st8"]]: st8,
     [Code["st16"]]: st16,
     [Code["st24"]]: st24,
     [Code["st"]]: st,
+}
+
+const lgln = "" as Uni     // U+E022    leger line
+const LEDGER_LINES: Partial<Record<Code, Uni>> = {
     [Code["lgln"]]: lgln,
 }
 
@@ -168,7 +171,8 @@ const BEAMED_GROUPS_OF_NOTES: Partial<Record<Code, Uni>> = {
 
 const CODES: Partial<Record<Code, Uni>> = {
     ...SPACES,
-    ...LINES,
+    ...STAFF_LINES,
+    ...LEDGER_LINES,
     ...BARS,
     ...CLEFS,
     ...NOTES,
@@ -202,7 +206,8 @@ export {
     st24,
     st,
     lgln,
-    LINES,
+    STAFF_LINES,
+    LEDGER_LINES,
     brln,
     brlndb,
     BARS,

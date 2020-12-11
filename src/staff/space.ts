@@ -24,7 +24,7 @@ const SPACES_ARRAY: Uni[] = [
     sp15,
 ]
 
-const computeSpace = (spaces: number): Uni => {
+const computeSpaceUnicode = (spaces: number): Uni => {
     let remainingSpace = spaces
 
     let unicode = "" as Uni
@@ -37,5 +37,5 @@ const computeSpace = (spaces: number): Uni => {
 }
 
 export {
-    computeSpace,
+    computeSpaceUnicode,
 }

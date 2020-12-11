@@ -14,14 +14,14 @@ import {
     nt4dn,
     nt8,
     nt8dn,
-    ntdb,
+    ntdb, sp10,
     sp12,
     sp14,
-    sp16,
+    sp16, sp2,
     sp4,
     sp6,
-    sp7,
-    st,
+    sp7, sp8,
+    st, st24,
     tbcf,
 } from "../../../src/staff/unicodeMap"
 
@@ -31,7 +31,7 @@ describe("staffCodeToUnicode", (): void => {
 
         const actual = staffCodeToUnicode(staffCode)
 
-        const expected = d5 + _11MUp + d5 + nt
+        const expected = d5 + _11MUp + d5 + nt + sp12
         expect(actual).toBe(expected)
     })
 
@@ -40,25 +40,25 @@ describe("staffCodeToUnicode", (): void => {
 
         const actual = staffCodeToUnicode(staffCode)
 
-        const expected = d5 + _11MUp + d5 + nt
+        const expected = d5 + _11MUp + d5 + nt + sp12
         expect(actual).toBe(expected)
     })
 
     it("combining staff positions don't manifest until they are needed (only apply to symbols with ligatures to be vertically shifted by them)", (): void => {
-        const staffCode = "d5 st /|\\ sp12 st nt sp12" as Io
+        const staffCode = "d5 st /|\\ sp12 nt sp12" as Io
 
         const actual = staffCodeToUnicode(staffCode)
 
-        const expected = st + d5 + _11MUp + sp12 + st + d5 + nt + sp12
+        const expected = st + d5 + _11MUp + sp12 + d5 + nt + sp12 + sp12
         expect(actual).toBe(expected)
     })
 
     it("combining staff positions persist until a new one is used", (): void => {
-        const staffCode = "d5 st /|\\ sp12 st nt sp12 g4 st \\! sp6 st nt sp12" as Io
+        const staffCode = "d5 st /|\\ sp12 nt sp12 g4 st \\! sp6 nt sp12" as Io
 
         const actual = staffCodeToUnicode(staffCode)
 
-        const expected = st + d5 + _11MUp + sp12 + st + d5 + nt + sp12 + st + g4 + _5CDown + sp6 + st + g4 + nt + sp12
+        const expected = st + d5 + _11MUp + sp12 + d5 + nt + sp12 + st + g4 + _5CDown + sp6 + g4 + nt + sp12 + sp12
         expect(actual).toBe(expected)
     })
 
@@ -80,10 +80,15 @@ describe("staffCodeToUnicode", (): void => {
     })
 
     it("if more than one symbol has occurred since the previous sp, uses the space value for the one with the max needed space", (): void => {
+        // TODO: might want a helper that conerst the unicodes BACK into their tokens
         expect(staffCodeToUnicode("lgln nt16 sp" as Io)).toBe(lgln + nt16 + sp16 + sp4)
     })
 
     it("resets the space amount after each application", (): void => {
         expect(staffCodeToUnicode("lgln nt16 sp nt4 sp" as Io)).toBe(lgln + nt16 + sp16 + sp4 + nt4 + sp12)
+    })
+
+    it("automatically adds staff as needed, if a staff has been asked for at all", (): void => {
+        expect(staffCodeToUnicode("st nt8 sp nt4 sp")).toBe(st24 + nt8 + sp16 + sp4 + nt4 + sp4 + st24 + sp8)
     })
 })
