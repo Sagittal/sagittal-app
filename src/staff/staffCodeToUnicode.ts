@@ -117,6 +117,7 @@ const applySmartSpace = (space: number): Uni => {
     }
 }
 
+// TODO: may well need to just include these on each key, or make it optional `code: {char: '', width?: 13}` like that
 const getSpaceForUnicode = (unicode: Uni): number => {
     if ([...Object.values(CLEFS)].includes(unicode)) return 24
     else if ([ntdb].includes(unicode)) return 23
@@ -170,7 +171,8 @@ const staffCodeToUnicode = (staffCode: Io): Uni => {
         .replace(/\t/g, " ")
         .split(" ")
         .map((userInput: Io): Uni => {
-            if (userInput === "sp") {
+            if (["sp", "ad", ";"].includes(userInput)) {
+                // TODO: rename most "space" stuff to "advance"
                 return applySmartSpace(staffState.smartSpace)
             } else if (userInput.match("sp") && staffState.smartStaffOn) {
                 const amount = parseInt(userInput.replace("sp", ""))

@@ -6,6 +6,8 @@ import {Clef, Code, Uni} from "./types"
 import {unicodeFromUnknownCode} from "./unicodeFromUnknownCode"
 import {CODES} from "./unicodeMap"
 
+// TODO: accept a user custom codes JSON object to merge in here too
+
 const CODES_WITH_BASS: Record<Code, Uni> = {
     ...CODES,
     ...BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,

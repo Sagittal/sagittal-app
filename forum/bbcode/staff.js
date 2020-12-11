@@ -160,6 +160,7 @@ const TREBLE_CLEF_INITIATION = `${types_1.Code["st"]} ${types_1.Code["tbcf"]} sp
 exports.TREBLE_CLEF_INITIATION = TREBLE_CLEF_INITIATION;
 const INITIAL_STAFF_STATE = {
     smartSpace: 0,
+    // TODO: autoStaff, autoStaffOn, and smartSpace
     smartStaff: 0,
     smartStaffOn: false,
 };
@@ -172,6 +173,7 @@ exports.INITIAL_STAFF_STATE = INITIAL_STAFF_STATE;
 
 "use strict";
 
+// TODO: wait, should the core of staffCode be extracted to its own repo, so others can contribute to it?
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Code = exports.Clef = void 0;
 var Clef;
@@ -619,6 +621,7 @@ const globals_1 = __webpack_require__(252);
 const space_1 = __webpack_require__(253);
 const types_1 = __webpack_require__(3);
 const unicodeMap_1 = __webpack_require__(251);
+// TODO: obviously break this huge file down a lot
 const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).includes(unicode)
     || Object.values(unicodeMap_1.NOTES).includes(unicode)
     || Object.values(unicodeMap_1.BEAMED_GROUPS_OF_NOTES).includes(unicode)
@@ -640,8 +643,11 @@ const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).in
 \uE900 to \uEA1F // Medieval and Renaissance: clefs, prolations, noteheads and stems, notes, oblique forms, plainchant single/multi/articulations, accidentals, rests, miscellany.
 \uEC30 to \uEC3F // Kievan square notation
  */
+// TODO: maybe Auto Staff opt-out, rather than opt-in.
+// TODO: and related, do not take clef as a bbCode argument
+//  See forum post after this one: http://forum.sagittal.org/viewtopic.php?p=3095#p3095
 const applySmartSpace = (space) => {
-    if (!globals_1.staffState.smartStaffOn) { // TODO: this could probably be simppiflied
+    if (!globals_1.staffState.smartStaffOn) { // TODO: this could probably be simplified
         const spaceUnicode = space_1.computeSpaceUnicode(globals_1.staffState.smartSpace);
         globals_1.staffState.smartSpace = 0;
         return spaceUnicode;
@@ -726,7 +732,8 @@ const staffCodeToUnicode = (staffCode) => {
         .replace(/\t/g, " ")
         .split(" ")
         .map((userInput) => {
-        if (userInput === "sp") {
+        if (["sp", "ad", ";"].includes(userInput)) {
+            // TODO: rename most "space" stuff to "advance"
             return applySmartSpace(globals_1.staffState.smartSpace);
         }
         else if (userInput.match("sp") && globals_1.staffState.smartStaffOn) {

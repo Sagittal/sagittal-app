@@ -14,21 +14,20 @@ import {
     nt4dn,
     nt8,
     nt8dn,
-    ntdb, sp10,
+    ntdb,
+    sp10,
     sp11,
-    sp12,
     sp13,
     sp16,
-    sp2, sp3,
-    sp4,
+    sp2,
+    sp3,
     sp5,
     sp7,
     sp8,
-    sp9,
     st,
     st24,
     tbcf,
-} from '../../../src/staff/unicodeMap'
+} from "../../../src/staff/unicodeMap"
 
 describe("staffCodeToUnicode", (): void => {
     it("basically works", (): void => {
@@ -68,32 +67,32 @@ describe("staffCodeToUnicode", (): void => {
     })
 
     it("automatically add spaces, proportioned to each symbol", (): void => {
-        expect(staffCodeToUnicode("lgln sp" as Io)).toBe(lgln + sp13)
+        expect(staffCodeToUnicode("lgln ;" as Io)).toBe(lgln + sp13)
 
-        expect(staffCodeToUnicode("tbcf sp" as Io)).toBe(tbcf + sp16 + sp8)
+        expect(staffCodeToUnicode("tbcf ;" as Io)).toBe(tbcf + sp16 + sp8)
 
-        expect(staffCodeToUnicode("ntdb sp" as Io)).toBe(ntdb + sp16 + sp7)
-        expect(staffCodeToUnicode("nt1 sp" as Io)).toBe(nt1 + sp13)
-        expect(staffCodeToUnicode("nt2 sp" as Io)).toBe(nt2 + sp13)
-        expect(staffCodeToUnicode("nt4 sp" as Io)).toBe(nt4 + sp13)
-        expect(staffCodeToUnicode("nt8 sp" as Io)).toBe(nt8 + sp16 + sp5)
-        expect(staffCodeToUnicode("nt16 sp" as Io)).toBe(nt16 + sp16 + sp5)
-        expect(staffCodeToUnicode("nt2dn sp" as Io)).toBe(nt2dn + sp13)
-        expect(staffCodeToUnicode("nt4dn sp" as Io)).toBe(nt4dn + sp13)
-        expect(staffCodeToUnicode("nt8dn sp" as Io)).toBe(nt8dn + sp13)
-        expect(staffCodeToUnicode("nt16dn sp" as Io)).toBe(nt16dn + sp13)
+        expect(staffCodeToUnicode("ntdb ;" as Io)).toBe(ntdb + sp16 + sp7)
+        expect(staffCodeToUnicode("nt1 ;" as Io)).toBe(nt1 + sp13)
+        expect(staffCodeToUnicode("nt2 ;" as Io)).toBe(nt2 + sp13)
+        expect(staffCodeToUnicode("nt4 ;" as Io)).toBe(nt4 + sp13)
+        expect(staffCodeToUnicode("nt8 ;" as Io)).toBe(nt8 + sp16 + sp5)
+        expect(staffCodeToUnicode("nt16 ;" as Io)).toBe(nt16 + sp16 + sp5)
+        expect(staffCodeToUnicode("nt2dn ;" as Io)).toBe(nt2dn + sp13)
+        expect(staffCodeToUnicode("nt4dn ;" as Io)).toBe(nt4dn + sp13)
+        expect(staffCodeToUnicode("nt8dn ;" as Io)).toBe(nt8dn + sp13)
+        expect(staffCodeToUnicode("nt16dn ;" as Io)).toBe(nt16dn + sp13)
     })
 
     it("if more than one symbol has occurred since the previous sp, uses the space value for the one with the max needed space", (): void => {
-        // TODO: might want a helper that conerst the unicodes BACK into their tokens
-        expect(staffCodeToUnicode("lgln nt16 sp" as Io)).toBe(lgln + nt16 + sp16 + sp5)
+        // TODO: might want a helper that converts the unicodes BACK into their tokens
+        expect(staffCodeToUnicode("lgln nt16 ;" as Io)).toBe(lgln + nt16 + sp16 + sp5)
     })
 
     it("resets the space amount after each application", (): void => {
-        expect(staffCodeToUnicode("lgln nt16 sp nt4 sp" as Io)).toBe(lgln + nt16 + sp16 + sp5 + nt4 + sp13)
+        expect(staffCodeToUnicode("lgln nt16 ; nt4 ;" as Io)).toBe(lgln + nt16 + sp16 + sp5 + nt4 + sp13)
     })
 
     it("automatically adds staff as needed, if a staff has been asked for at all", (): void => {
-        expect(staffCodeToUnicode("st24 nt8 sp nt4 sp")).toBe(st24 + nt8 + sp16 + sp5 + nt4 + sp3 + st24 + sp10)
+        expect(staffCodeToUnicode("st24 nt8 ; nt4 ;")).toBe(st24 + nt8 + sp16 + sp5 + nt4 + sp3 + st24 + sp10)
     })
 })
