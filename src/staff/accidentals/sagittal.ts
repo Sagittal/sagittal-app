@@ -4,8 +4,8 @@ import {Code, Uni} from "../types"
 
 // TODO: I considered pulling these unicodes in from @sagittal/system, but decided not to bloat it for the forum
 
-const _5v7KUp = "" as Uni                  // U+E300   5:7 kleisma up, (5:7k, ~11:13k, 7C less 5C)
-const _5v7KDown = "" as Uni                // U+E301   5:7 kleisma down
+const _5v7kUp = "" as Uni                  // U+E300   5:7 kleisma up, (5:7k, ~11:13k, 7C less 5C)
+const _5v7kDown = "" as Uni                // U+E301   5:7 kleisma down
 const _5CUp = "" as Uni                    // U+E302   5 comma up, (5C), 1° up [22 27 29 34 41 46 53 96-EDOs], 1/12-tone up
 const _5CDown = "" as Uni                  // U+E303   5 comma down, 1° down [22 27 29 34 41 46 53 96-EDOs], 1/12-tone down
 const _7CUp = "" as Uni                    // U+E304   7 comma up, (7C), 1° up [43-EDO], 2° up [72-EDO], 1/6-tone up
@@ -58,8 +58,8 @@ const doubleFlat5v7kUp = "" as Uni         // U+E333   Double flat 5:7k-up
 const doubleSharp = "" as Uni              // U+E334   Double sharp, (2 apotomes up)[almost all-EDOs], whole-tone up
 const doubleFlat = "" as Uni               // U+E335   Double flat, (2 apotomes down)[almost all-EDOs], whole-tone down
 
-const _7v11KUp = "" as Uni                 // U+E340   7:11 kleisma up, (7:11k)
-const _7v11KDown = "" as Uni               // U+E341   7:11 kleisma down
+const _7v11kUp = "" as Uni                 // U+E340   7:11 kleisma up, (7:11k)
+const _7v11kDown = "" as Uni               // U+E341   7:11 kleisma down
 const _17CUp = "" as Uni                   // U+E342   17 comma up, (17C)
 const _17CDown = "" as Uni                 // U+E343   17 comma down
 const _55CUp = "" as Uni                   // U+E344   55 comma up, (55C, 11M less 5C), 3°up [96-EDO], 3/16-tone up
@@ -126,8 +126,8 @@ const doubleFlat23CUp = "" as Uni          // U+E387   Double flat 23C-up, 14
 
 const _19sUp = "" as Uni                   // U+E390   19 schisma up, (19s)
 const _19sDown = "" as Uni                 // U+E391   19 schisma down
-const _17KUp = "" as Uni                   // U+E392   17 kleisma up, (17k)
-const _17KDown = "" as Uni                 // U+E393   17 kleisma down
+const _17kUp = "" as Uni                   // U+E392   17 kleisma up, (17k)
+const _17kDown = "" as Uni                 // U+E393   17 kleisma down
 const _143CUp = "" as Uni                  // U+E394   143 comma up, (143C, 13L less 11M)
 const _143CDown = "" as Uni                // U+E395   143 comma down
 const _11v49CUp = "" as Uni                // U+E396   11:49 comma up, (11:49C, 11M less 49S)
@@ -250,8 +250,8 @@ const dotUp = "" as Uni                    // U+E40A   fractional tina up, 77
 const dotDown = "" as Uni                  // U+E40B   fractional tina down, 77/(5⋅37)-schismina down, 0.08 cents down
 
 const SAGITTAL_ACCIDENTALS: Partial<Record<Code, Uni>> = {
-    [Code["|("]]: _5v7KUp,
-    [Code["!("]]: _5v7KDown,
+    [Code["|("]]: _5v7kUp,
+    [Code["!("]]: _5v7kDown,
     [Code["/|"]]: _5CUp,
     [Code["\\!"]]: _5CDown,
     [Code["|)"]]: _7CUp,
@@ -304,8 +304,8 @@ const SAGITTAL_ACCIDENTALS: Partial<Record<Code, Uni>> = {
     [Code["/X\\"]]: doubleSharp,
     [Code["\\Y/"]]: doubleFlat,
 
-    [Code[")|("]]: _7v11KUp,
-    [Code[")!("]]: _7v11KDown,
+    [Code[")|("]]: _7v11kUp,
+    [Code[")!("]]: _7v11kDown,
     [Code["~|("]]: _17CUp,
     [Code["~!("]]: _17CDown,
     [Code["|\\"]]: _55CUp,
@@ -372,8 +372,8 @@ const SAGITTAL_ACCIDENTALS: Partial<Record<Code, Uni>> = {
 
     [Code[")|"]]: _19sUp,
     [Code[")!"]]: _19sDown,
-    [Code["~|"]]: _17KUp,
-    [Code["~!"]]: _17KDown,
+    [Code["~|"]]: _17kUp,
+    [Code["~!"]]: _17kDown,
     [Code[")~|"]]: _143CUp,
     [Code[")~!"]]: _143CDown,
     [Code["~~|"]]: _11v49CUp,
@@ -498,8 +498,8 @@ const SAGITTAL_ACCIDENTALS: Partial<Record<Code, Uni>> = {
 
 export {
     SAGITTAL_ACCIDENTALS,
-    _5v7KUp,
-    _5v7KDown,
+    _5v7kUp,
+    _5v7kDown,
     _5CUp,
     _5CDown,
     _7CUp,
@@ -550,8 +550,8 @@ export {
     doubleFlat5v7kUp,
     doubleSharp,
     doubleFlat,
-    _7v11KUp,
-    _7v11KDown,
+    _7v11kUp,
+    _7v11kDown,
     _17CUp,
     _17CDown,
     _55CUp,
@@ -616,8 +616,8 @@ export {
     doubleFlat23CUp,
     _19sUp,
     _19sDown,
-    _17KUp,
-    _17KDown,
+    _17kUp,
+    _17kDown,
     _143CUp,
     _143CDown,
     _11v49CUp,

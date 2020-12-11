@@ -4,7 +4,16 @@ module.exports = {
     entry: "./src/staff/bbCode/index.ts",
     mode: "none",
     resolve: {
-        extensions: [".ts"],
+        extensions: [".ts", ".js"],
+    },
+    // TODO: whoa okay including @sagittal/general made the generated .js way huger
+    //  There must be a way to do tree-shaking or whatever to help with that
+    //  I'm only pulling in "max" and "sumTexts"...
+    externals: {
+        "fs": "{}",
+        "jasmine-spec-reporter": "{}",
+        "child_process": "{}",
+        "perf_hooks": "{}",
     },
     output: {
         path: path.resolve(__dirname, "forum/bbcode"),
