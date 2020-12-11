@@ -19,7 +19,7 @@ module.exports = {
         "perf_hooks": "{}",
     },
     output: {
-        path: path.resolve(__dirname, "forum/bbcode"),
+        path: path.resolve(__dirname, "dist/forum/bbcode"),
         filename: "staff.js",
     },
     module: {
