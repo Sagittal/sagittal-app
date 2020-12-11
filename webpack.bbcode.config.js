@@ -9,6 +9,7 @@ module.exports = {
     // TODO: whoa okay including @sagittal/general made the generated .js way huger
     //  There must be a way to do tree-shaking or whatever to help with that
     //  I'm only pulling in "max" and "sumTexts"...
+    //  And it went from 98KB to 755KB...
     externals: {
         "fs": "{}",
         "jasmine-spec-reporter": "{}",

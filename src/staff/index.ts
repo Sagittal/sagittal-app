@@ -1,11 +1,9 @@
-import {doOnNextEventLoop, Ms} from "@sagittal/general"
 import "../styles"
-import {replaceStaffCodeWithUnicodeApp} from "./replace"
-
-doOnNextEventLoop(replaceStaffCodeWithUnicodeApp, 1000 as Ms)
-
 // TODO: this is horrible. eventually use React to have some actual control over the layout
 import "./download"
+import {replaceStaffCodeWithUnicodeApp} from "./replace"
+
+replaceStaffCodeWithUnicodeApp()
 
 // TODO: I think we may just want multiple folders within dist
 //  One for the app, and one for other stuff like the bbCode stuff

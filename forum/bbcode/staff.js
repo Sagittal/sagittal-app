@@ -131,8 +131,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.replaceStaffCodeWithUnicodeBBCode = void 0;
 const staffCodeToUnicode_1 = __webpack_require__(2);
 const types_1 = __webpack_require__(242);
-const BASS_CLEF_INITIATION = `${types_1.Code["st24"]} ${types_1.Code["bscf"]} ${types_1.Code["sp16"]} ${types_1.Code["st24"]}`;
-const TREBLE_CLEF_INITIATION = `${types_1.Code["st24"]} ${types_1.Code["tbcf"]} ${types_1.Code["sp16"]} ${types_1.Code["st24"]}`;
+const BASS_CLEF_INITIATION = `${types_1.Code["st24"]} ${types_1.Code["bscf"]} sp`;
+const TREBLE_CLEF_INITIATION = `${types_1.Code["st24"]} ${types_1.Code["tbcf"]} sp`;
 const replaceStaffCodeWithUnicodeBBCode = (staffDiv) => {
     const clef = staffDiv.classList[2];
     staffDiv.classList.remove("unprocessed");

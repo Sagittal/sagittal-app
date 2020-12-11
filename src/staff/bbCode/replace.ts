@@ -1,8 +1,8 @@
 import {staffCodeToUnicode} from "../staffCodeToUnicode"
 import {Clef, Code} from "../types"
 
-const BASS_CLEF_INITIATION = `${Code["st24"]} ${Code["bscf"]} ${Code["sp16"]} ${Code["st24"]}`
-const TREBLE_CLEF_INITIATION = `${Code["st24"]} ${Code["tbcf"]} ${Code["sp16"]} ${Code["st24"]}`
+const BASS_CLEF_INITIATION = `${Code["st24"]} ${Code["bscf"]} sp`
+const TREBLE_CLEF_INITIATION = `${Code["st24"]} ${Code["tbcf"]} sp`
 
 const replaceStaffCodeWithUnicodeBBCode = (staffDiv: Element): void => {
     const clef = staffDiv.classList[2] as Clef

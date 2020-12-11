@@ -1,7 +1,6 @@
 const vectorizeText = require("vectorize-text")
 
 const svgWrapper = document.createElement("div")
-document.body.appendChild(svgWrapper)
 
 // TODO: Probably don't need to actually display the SVG once the concept is proven out
 
@@ -38,4 +37,5 @@ const vectorize = (text: string): void => {
 
 export {
     vectorize,
+    svgWrapper,
 }

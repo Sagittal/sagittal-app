@@ -1,7 +1,8 @@
 import {controlsDiv} from "./staffCodeInput"
+import {svgWrapper} from "./vectorize"
 
 const saveSvg = (): void => {
-    const svg: SVGElement | null = document.querySelector("svg")
+    const svg: SVGElement | null = svgWrapper.querySelector("svg")
     if (!svg) return
     const clonedSvg: SVGElement = svg.cloneNode(true) as SVGElement
 
