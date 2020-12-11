@@ -8,7 +8,7 @@ a4 nt4 c5 nt4 e5 nt4
 
 and see a chord displayed on a staff.
 
-This script will find all elements on the page matching the CSS selector `div.staff.unprocessed`
+This script will find all elements on the page matching the CSS selector `div.staff`
 and convert their `staffCode` from text to unicode. A modified version of the Bravura Text font
 from Steinberg MediaTechnologies GmbH, designed by Daniel Spreadbury, is used to display as sheet
 music notation. This project would not have been possible without the great work done on Bravura
@@ -22,9 +22,10 @@ staffCode assumes your site loads the BravuraTextBB font. We suggest you locate 
 assets/fonts folder. Please do not load it from another forum's assets, for your own performance.
 */
 
+import "../../styles"
 import {replaceStaffCodeWithUnicodeBBCode} from "./replace"
 
-document.querySelectorAll("div.staff.unprocessed").forEach(replaceStaffCodeWithUnicodeBBCode)
+document.querySelectorAll("div.staff").forEach(replaceStaffCodeWithUnicodeBBCode)
 
 export {
     replaceStaffCodeWithUnicodeBBCode,

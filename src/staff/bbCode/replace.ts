@@ -3,9 +3,10 @@ import {staffCodeToUnicode} from "../staffCodeToUnicode"
 import {Clef} from "../types"
 
 const replaceStaffCodeWithUnicodeBBCode = (staffDiv: Element): void => {
-    const clef = staffDiv.classList[2] as Clef
+    const clef = staffDiv.classList[1] as Clef
 
-    staffDiv.classList.remove("unprocessed")
+    if (staffDiv.classList.contains("processed")) return
+    staffDiv.classList.add("processed")
 
     // TODO: support the clef initiation feature on the web
     // TODO: test cover that this doesn't default to treble

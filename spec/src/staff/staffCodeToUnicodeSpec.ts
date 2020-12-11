@@ -66,7 +66,7 @@ describe("staffCodeToUnicode", (): void => {
         expect(actual).toBe(expected)
     })
 
-    it("automatically add spaces, proportioned to each symbol", (): void => {
+    it("automatically advances, proportioned to each symbol", (): void => {
         expect(staffCodeToUnicode("lgln ;" as Io)).toBe(lgln + sp13)
 
         expect(staffCodeToUnicode("tbcf ;" as Io)).toBe(tbcf + sp16 + sp8)
@@ -83,16 +83,16 @@ describe("staffCodeToUnicode", (): void => {
         expect(staffCodeToUnicode("nt16dn ;" as Io)).toBe(nt16dn + sp13)
     })
 
-    it("if more than one symbol has occurred since the previous sp, uses the space value for the one with the max needed space", (): void => {
+    it("if more than one symbol has occurred since the previous advance, uses the width of the symbol with the max width", (): void => {
         // TODO: might want a helper that converts the unicodes BACK into their tokens
         expect(staffCodeToUnicode("lgln nt16 ;" as Io)).toBe(lgln + nt16 + sp16 + sp5)
     })
 
-    it("resets the space amount after each application", (): void => {
+    it("resets the advance amount after each application", (): void => {
         expect(staffCodeToUnicode("lgln nt16 ; nt4 ;" as Io)).toBe(lgln + nt16 + sp16 + sp5 + nt4 + sp13)
     })
 
-    it("automatically adds staff as needed, if a staff has been asked for at all", (): void => {
+    it("automatically adds staff lines as needed, if a staff has been asked for at all", (): void => {
         expect(staffCodeToUnicode("st24 nt8 ; nt4 ;")).toBe(st24 + nt8 + sp16 + sp5 + nt4 + sp3 + st24 + sp10)
     })
 })

@@ -165,7 +165,7 @@ const staffCodeToUnicode = (staffCode: Io): Uni => {
 
     let staffPosition = "" as Uni // TODO: blank uni constant
 
-    return `${staffCode.toLowerCase()} sp`
+    return `${staffCode.toLowerCase()} ;`
         .replace(/<br>/g, " ")
         .replace(/\n/g, " ")
         .replace(/\t/g, " ")

@@ -1,7 +1,7 @@
 import {Code, StaffState} from "./types"
 
-const BASS_CLEF_INITIATION = `${Code["st"]} ${Code["bscf"]} sp `
-const TREBLE_CLEF_INITIATION = `${Code["st"]} ${Code["tbcf"]} sp `
+const BASS_CLEF_INITIATION = `${Code["st"]} ${Code["bscf"]} ; `
+const TREBLE_CLEF_INITIATION = `${Code["st"]} ${Code["tbcf"]} ; `
 
 const INITIAL_STAFF_STATE: StaffState = {
     smartSpace: 0,

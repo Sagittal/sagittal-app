@@ -34,7 +34,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.otf$/,
+                test: /\.(otf|woff)$/,
                 loader: 'url-loader',
             },
         ],
