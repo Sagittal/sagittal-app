@@ -1,43 +1,12 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin")
+const common = require("./webpack.common")
 
 module.exports = {
+    ...common,
     entry: "./src/staff/index.ts",
-    mode: "none",
-    resolve: {
-        extensions: [".ts", ".scss", ".js"],
-    },
-    externals: {
-        "fs": "{}",
-        "jasmine-spec-reporter": "{}",
-        "child_process": "{}",
-        "perf_hooks": "{}",
-    },
     output: {
         filename: 'main.[contenthash].js',
-    },
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                loader: "ts-loader",
-                options: {
-                    transpileOnly: true,
-                },
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'sass-loader',
-                ],
-            },
-            {
-                test: /\.(otf|woff)$/,
-                loader: 'url-loader',
-            },
-        ],
     },
     plugins: [
         new HtmlWebpackPlugin({

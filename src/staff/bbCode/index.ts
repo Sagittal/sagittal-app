@@ -22,7 +22,7 @@ staffCode assumes your site loads the BravuraTextBB font. We suggest you locate 
 assets/fonts folder. Please do not load it from another forum's assets, for your own performance.
 */
 
-import "../../../styles"
+import "../../styles"
 import {replaceStaffCodeWithUnicodeBBCode} from "./replace"
 
 document.querySelectorAll("div.staff").forEach(replaceStaffCodeWithUnicodeBBCode)
