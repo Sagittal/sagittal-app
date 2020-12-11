@@ -1,14 +1,13 @@
-// TODO: this is not great. eventually use React to have some actual control over the layout
+import {downloadButton} from "./download"
+import {staffCodeInput} from "./staffCodeInput"
+import {staffDiv} from "./staffDiv"
 
-const staffCodeInputWrapper = document.createElement("div")
-const staffDivWrapper = document.createElement("div")
-const downloadButtonWrapper = document.createElement("div")
-document.body.appendChild(staffCodeInputWrapper)
-document.body.appendChild(staffDivWrapper)
-document.body.appendChild(downloadButtonWrapper)
+const setupDom = (): void => {
+    document.body.appendChild(staffCodeInput)
+    document.body.appendChild(staffDiv)
+    document.body.appendChild(downloadButton)
+}
 
 export {
-    staffCodeInputWrapper,
-    staffDivWrapper,
-    downloadButtonWrapper,
+    setupDom,
 }
