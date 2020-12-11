@@ -63,29 +63,14 @@ import {
 
 // TODO: obviously break this huge file down a lot
 
-const canBePositioned = (unicode: Uni): boolean =>
-    Object.values(ACCIDENTALS).includes(unicode)
-    || Object.values(NOTES).includes(unicode)
-    || Object.values(BEAMED_GROUPS_OF_NOTES).includes(unicode)
-    || Object.values(CLEFS).includes(unicode)
-    || unicode === lgln
-
-// TODO: it would be better if we went by the unicode range, to support arbitrary unicode input
-//  I think that would involve every unicode map object also containing the unicode codepoint in addition to the unicode
-//  Or perhaps... instead... sigh... so we can just see it, rather than in a comment, and everything passes through that
-//  Helper method to convert to the actual unicode symbol from its codepoint.
-//  That is, assuming the \u form of it can also be looked at and compared to a range
-//  Actually I don't think it'll be that bad,
-//  You can just take the existing unicode and say > \uE022 and < \uEF88 or whatever
-// tslint:disable:max-line-length
-/*
-\uE022 to \uE02F // leger lines
-\uE050 to \uE07F // clefs
-\uE0A0 to \uE21F // noteheads, notes, beamed groups, stems
-\uE240 to \uE4FF // flags, accidentals, articulation, holds and pauses, rests
-\uE900 to \uEA1F // Medieval and Renaissance: clefs, prolations, noteheads and stems, notes, oblique forms, plainchant single/multi/articulations, accidentals, rests, miscellany.
-\uEC30 to \uEC3F // Kievan square notation
- */
+const canBePositioned = (unicode: Uni): boolean => {
+    return (unicode >= "\uE022" && unicode <= "\uE02F") // Leger lines
+        || (unicode >= "\uE050" && unicode <= "\uE07F") // Clefs
+        || (unicode >= "\uE0A0" && unicode <= "\uE21F") // Noteheads, notes, beamed groups, stems
+        || (unicode >= "\uE240" && unicode <= "\uE4FF") // Flags, accidentals, articulation, holds and pauses, rests
+        || (unicode >= "\uE900" && unicode <= "\uEA1F") // Medieval and Renaissance
+        || (unicode >= "\uEC30" && unicode <= "\uEC3F") // Kievan square notation
+}
 
 // TODO: maybe Auto Staff opt-out, rather than opt-in.
 // TODO: and related, do not take clef as a bbCode argument

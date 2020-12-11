@@ -1064,40 +1064,26 @@ exports.Code = Code;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.staffCodeToUnicode = void 0;
 const general_1 = __webpack_require__(12);
-const accidentals_1 = __webpack_require__(249);
 // TODO: clean these up
 // tslint:disable-next-line:no-reaching-imports
-const conventional_1 = __webpack_require__(250);
-const sagittal_1 = __webpack_require__(253);
-const combiningStaffPositions_1 = __webpack_require__(255);
+const conventional_1 = __webpack_require__(249);
+const sagittal_1 = __webpack_require__(250);
+const combiningStaffPositions_1 = __webpack_require__(251);
 const constants_1 = __webpack_require__(9);
-const getUnicode_1 = __webpack_require__(256);
+const getUnicode_1 = __webpack_require__(252);
 const globals_1 = __webpack_require__(259);
 const space_1 = __webpack_require__(260);
 const types_1 = __webpack_require__(10);
-const unicodeMap_1 = __webpack_require__(258);
+const unicodeMap_1 = __webpack_require__(254);
 // TODO: obviously break this huge file down a lot
-const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).includes(unicode)
-    || Object.values(unicodeMap_1.NOTES).includes(unicode)
-    || Object.values(unicodeMap_1.BEAMED_GROUPS_OF_NOTES).includes(unicode)
-    || Object.values(unicodeMap_1.CLEFS).includes(unicode)
-    || unicode === unicodeMap_1.lgln;
-// TODO: it would be better if we went by the unicode range, to support arbitrary unicode input
-//  I think that would involve every unicode map object also containing the unicode codepoint in addition to the unicode
-//  Or perhaps... instead... sigh... so we can just see it, rather than in a comment, and everything passes through that
-//  Helper method to convert to the actual unicode symbol from its codepoint.
-//  That is, assuming the \u form of it can also be looked at and compared to a range
-//  Actually I don't think it'll be that bad,
-//  You can just take the existing unicode and say > \uE022 and < \uEF88 or whatever
-// tslint:disable:max-line-length
-/*
-\uE022 to \uE02F // leger lines
-\uE050 to \uE07F // clefs
-\uE0A0 to \uE21F // noteheads, notes, beamed groups, stems
-\uE240 to \uE4FF // flags, accidentals, articulation, holds and pauses, rests
-\uE900 to \uEA1F // Medieval and Renaissance: clefs, prolations, noteheads and stems, notes, oblique forms, plainchant single/multi/articulations, accidentals, rests, miscellany.
-\uEC30 to \uEC3F // Kievan square notation
- */
+const canBePositioned = (unicode) => {
+    return (unicode >= "\uE022" && unicode <= "\uE02F") // Leger lines
+        || (unicode >= "\uE050" && unicode <= "\uE07F") // Clefs
+        || (unicode >= "\uE0A0" && unicode <= "\uE21F") // Noteheads, notes, beamed groups, stems
+        || (unicode >= "\uE240" && unicode <= "\uE4FF") // Flags, accidentals, articulation, holds and pauses, rests
+        || (unicode >= "\uE900" && unicode <= "\uEA1F") // Medieval and Renaissance
+        || (unicode >= "\uEC30" && unicode <= "\uEC3F"); // Kievan square notation
+};
 // TODO: maybe Auto Staff opt-out, rather than opt-in.
 // TODO: and related, do not take clef as a bbCode argument
 //  See forum post after this one: http://forum.sagittal.org/viewtopic.php?p=3095#p3095
@@ -15725,29 +15711,6 @@ exports.SKIP_THE_FINAL_EMPTY_LINE = SKIP_THE_FINAL_EMPTY_LINE;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ACCIDENTALS = void 0;
-const conventional_1 = __webpack_require__(250);
-const ehejipn_1 = __webpack_require__(251);
-const sagittal_1 = __webpack_require__(253);
-const unconventional_1 = __webpack_require__(252);
-const upsAndDowns_1 = __webpack_require__(254);
-const ACCIDENTALS = {
-    ...conventional_1.CONVENTIONAL_ACCIDENTALS,
-    ...ehejipn_1.EHEJIPN_ACCIDENTALS,
-    ...sagittal_1.SAGITTAL_ACCIDENTALS,
-    ...unconventional_1.UNCONVENTIONAL_ACCIDENTALS,
-    ...upsAndDowns_1.UPS_AND_DOWNS_ACCIDENTALS,
-};
-exports.ACCIDENTALS = ACCIDENTALS;
-
-
-/***/ }),
-/* 250 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.smallDoubleSharp = exports.bb = exports.x = exports.b = exports.sharp = exports.n = exports.h = exports.CONVENTIONAL_ACCIDENTALS = void 0;
 const types_1 = __webpack_require__(10);
 const h = ""; // U+E261   natural
@@ -15778,246 +15741,7 @@ exports.CONVENTIONAL_ACCIDENTALS = CONVENTIONAL_ACCIDENTALS;
 
 
 /***/ }),
-/* 251 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// tslint:disable max-line-length
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ehejipnNaturalTemperedSemitone = exports.ehejipnFlatTemperedSemitone = exports.ehejipnDoubleFlatTemperedSemitone = exports.ehejipnCombiningCloseCurlyBrace = exports.ehejipnCombiningOpenCurlyBrace = exports.ehejipn23Utonal = exports.ehejipn23Otonal = exports.ehejipn19Otonal = exports.ehejipn19Utonal = exports.ehejipn17Utonal = exports.ehejipn17Otonal = exports.ehejipn13Utonal = exports.ehejipn13Otonal = exports.ehejipn11Otonal = exports.ehejipn11Utonal = exports.ehejipnDouble7Utonal = exports.ehejipnDouble7Otonal = exports.ehejipn7Utonal = exports.ehejipn7Otonal = exports.ehejipnDoubleSharpTriple5Utonal = exports.ehejipnSharpTriple5Utonal = exports.ehejipnNaturalTriple5Utonal = exports.ehejipnFlatTriple5Utonal = exports.ehejipnDoubleFlatTriple5Utonal = exports.ehejipnDoubleSharpTriple5Otonal = exports.ehejipnSharpTriple5Otonal = exports.ehejipnNaturalTriple5Otonal = exports.ehejipnFlatTriple5Otonal = exports.ehejipnDoubleFlatTriple5Otonal = exports.ehejipnDoubleSharpDouble5Utonal = exports.ehejipnSharpDouble5Utonal = exports.ehejipnNaturalDouble5Utonal = exports.ehejipnFlatDouble5Utonal = exports.ehejipnDoubleFlatDouble5Utonal = exports.ehejipnDoubleSharpDouble5Otonal = exports.ehejipnSharpDouble5Otonal = exports.ehejipnNaturalDouble5Otonal = exports.ehejipnFlatDouble5Otonal = exports.ehejipnDoubleFlatDouble5Otonal = exports.ehejipnDoubleSharp5Utonal = exports.ehejipnSharp5Utonal = exports.ehejipnNatural5Utonal = exports.ehejipnFlat5Utonal = exports.ehejipnDoubleFlat5Utonal = exports.ehejipnDoubleSharp5Otonal = exports.ehejipnSharp5Otonal = exports.ehejipnNatural5Otonal = exports.ehejipnFlat5Otonal = exports.ehejipnDoubleFlat5Otonal = exports.EHEJIPN_ACCIDENTALS = void 0;
-exports.accidentalThreeQuarterTonesFlatZimmermann = exports.ehejipnEnharmonicallyReinterpretEquals = exports.ehejipnEnharmonicallyReinterpretAlmostEqual = exports.ehejipnEnharmonicallyReinterpret = exports.ehejipn53Utonal = exports.ehejipn53Otonal = exports.ehejipnQuarterSharpTemperedSemitone = exports.ehejipnQuarterFlatTemperedSemitone = exports.ehejipnDoubleSharpTemperedSemitone = exports.ehejipnSharpTemperedSemitone = void 0;
-const types_1 = __webpack_require__(10);
-const conventional_1 = __webpack_require__(250);
-const unconventional_1 = __webpack_require__(252);
-// See: ttps://w3c.github.io/smufl/gitbook/tables/extended-helmholtz-ellis-accidentals-just-intonation.html
-// All EHEJIPN staffCodes start with a dot (full-stop). Unicodes are successive below.
-const ehejipnDoubleFlat5Otonal = ""; // U+E2C0
-exports.ehejipnDoubleFlat5Otonal = ehejipnDoubleFlat5Otonal;
-const ehejipnFlat5Otonal = ""; // U+E2C1
-exports.ehejipnFlat5Otonal = ehejipnFlat5Otonal;
-const ehejipnNatural5Otonal = ""; // U+E2C2
-exports.ehejipnNatural5Otonal = ehejipnNatural5Otonal;
-const ehejipnSharp5Otonal = ""; // U+E2C3
-exports.ehejipnSharp5Otonal = ehejipnSharp5Otonal;
-const ehejipnDoubleSharp5Otonal = ""; // U+E2C4
-exports.ehejipnDoubleSharp5Otonal = ehejipnDoubleSharp5Otonal;
-const ehejipnDoubleFlat5Utonal = ""; // U+E2C5
-exports.ehejipnDoubleFlat5Utonal = ehejipnDoubleFlat5Utonal;
-const ehejipnFlat5Utonal = ""; // U+E2C6
-exports.ehejipnFlat5Utonal = ehejipnFlat5Utonal;
-const ehejipnNatural5Utonal = ""; // U+E2C7
-exports.ehejipnNatural5Utonal = ehejipnNatural5Utonal;
-const ehejipnSharp5Utonal = ""; // U+E2C8
-exports.ehejipnSharp5Utonal = ehejipnSharp5Utonal;
-const ehejipnDoubleSharp5Utonal = ""; // U+E2C9
-exports.ehejipnDoubleSharp5Utonal = ehejipnDoubleSharp5Utonal;
-const ehejipnDoubleFlatDouble5Otonal = ""; // U+E2CA
-exports.ehejipnDoubleFlatDouble5Otonal = ehejipnDoubleFlatDouble5Otonal;
-const ehejipnFlatDouble5Otonal = ""; // U+E2CB
-exports.ehejipnFlatDouble5Otonal = ehejipnFlatDouble5Otonal;
-const ehejipnNaturalDouble5Otonal = ""; // U+E2CC
-exports.ehejipnNaturalDouble5Otonal = ehejipnNaturalDouble5Otonal;
-const ehejipnSharpDouble5Otonal = ""; // U+E2CD
-exports.ehejipnSharpDouble5Otonal = ehejipnSharpDouble5Otonal;
-const ehejipnDoubleSharpDouble5Otonal = ""; // U+E2CE
-exports.ehejipnDoubleSharpDouble5Otonal = ehejipnDoubleSharpDouble5Otonal;
-const ehejipnDoubleFlatDouble5Utonal = ""; // U+E2CF
-exports.ehejipnDoubleFlatDouble5Utonal = ehejipnDoubleFlatDouble5Utonal;
-const ehejipnFlatDouble5Utonal = ""; // U+E2D0
-exports.ehejipnFlatDouble5Utonal = ehejipnFlatDouble5Utonal;
-const ehejipnNaturalDouble5Utonal = ""; // U+E2D1
-exports.ehejipnNaturalDouble5Utonal = ehejipnNaturalDouble5Utonal;
-const ehejipnSharpDouble5Utonal = ""; // U+E2D2
-exports.ehejipnSharpDouble5Utonal = ehejipnSharpDouble5Utonal;
-const ehejipnDoubleSharpDouble5Utonal = ""; // U+E2D3
-exports.ehejipnDoubleSharpDouble5Utonal = ehejipnDoubleSharpDouble5Utonal;
-const ehejipnDoubleFlatTriple5Otonal = ""; // U+E2D4
-exports.ehejipnDoubleFlatTriple5Otonal = ehejipnDoubleFlatTriple5Otonal;
-const ehejipnFlatTriple5Otonal = ""; // U+E2D5
-exports.ehejipnFlatTriple5Otonal = ehejipnFlatTriple5Otonal;
-const ehejipnNaturalTriple5Otonal = ""; // U+E2D6
-exports.ehejipnNaturalTriple5Otonal = ehejipnNaturalTriple5Otonal;
-const ehejipnSharpTriple5Otonal = ""; // U+E2D7
-exports.ehejipnSharpTriple5Otonal = ehejipnSharpTriple5Otonal;
-const ehejipnDoubleSharpTriple5Otonal = ""; // U+E2D8
-exports.ehejipnDoubleSharpTriple5Otonal = ehejipnDoubleSharpTriple5Otonal;
-const ehejipnDoubleFlatTriple5Utonal = ""; // U+E2D9
-exports.ehejipnDoubleFlatTriple5Utonal = ehejipnDoubleFlatTriple5Utonal;
-const ehejipnFlatTriple5Utonal = ""; // U+E2DA
-exports.ehejipnFlatTriple5Utonal = ehejipnFlatTriple5Utonal;
-const ehejipnNaturalTriple5Utonal = ""; // U+E2DB
-exports.ehejipnNaturalTriple5Utonal = ehejipnNaturalTriple5Utonal;
-const ehejipnSharpTriple5Utonal = ""; // U+E2DC
-exports.ehejipnSharpTriple5Utonal = ehejipnSharpTriple5Utonal;
-const ehejipnDoubleSharpTriple5Utonal = ""; // U+E2DD
-exports.ehejipnDoubleSharpTriple5Utonal = ehejipnDoubleSharpTriple5Utonal;
-const ehejipn7Otonal = ""; // U+E2DE   lowercase L here, but people would type it uppercase
-exports.ehejipn7Otonal = ehejipn7Otonal;
-const ehejipn7Utonal = ""; // U+E2DF   people would type it uppercase
-exports.ehejipn7Utonal = ehejipn7Utonal;
-const ehejipnDouble7Otonal = ""; // U+E2E0   lowercase LL here, but people would type them uppercase
-exports.ehejipnDouble7Otonal = ehejipnDouble7Otonal;
-const ehejipnDouble7Utonal = ""; // U+E2E1   people would type them uppercase
-exports.ehejipnDouble7Utonal = ehejipnDouble7Utonal;
-const ehejipn11Utonal = ""; // U+E2E2
-exports.ehejipn11Utonal = ehejipn11Utonal;
-const ehejipn11Otonal = ""; // U+E2E3
-exports.ehejipn11Otonal = ehejipn11Otonal;
-const ehejipn13Otonal = ""; // U+E2E4
-exports.ehejipn13Otonal = ehejipn13Otonal;
-const ehejipn13Utonal = ""; // U+E2E5
-exports.ehejipn13Utonal = ehejipn13Utonal;
-const ehejipn17Otonal = ""; // U+E2E6
-exports.ehejipn17Otonal = ehejipn17Otonal;
-const ehejipn17Utonal = ""; // U+E2E7
-exports.ehejipn17Utonal = ehejipn17Utonal;
-const ehejipn19Utonal = ""; // U+E2E8
-exports.ehejipn19Utonal = ehejipn19Utonal;
-const ehejipn19Otonal = ""; // U+E2E9
-exports.ehejipn19Otonal = ehejipn19Otonal;
-const ehejipn23Otonal = ""; // U+E2EA
-exports.ehejipn23Otonal = ehejipn23Otonal;
-const ehejipn23Utonal = ""; // U+E2EB
-exports.ehejipn23Utonal = ehejipn23Utonal;
-const ehejipnCombiningOpenCurlyBrace = ""; // U+E2EE
-exports.ehejipnCombiningOpenCurlyBrace = ehejipnCombiningOpenCurlyBrace;
-const ehejipnCombiningCloseCurlyBrace = ""; // U+E2EF
-exports.ehejipnCombiningCloseCurlyBrace = ehejipnCombiningCloseCurlyBrace;
-const ehejipnDoubleFlatTemperedSemitone = ""; // U+E2F0
-exports.ehejipnDoubleFlatTemperedSemitone = ehejipnDoubleFlatTemperedSemitone;
-const ehejipnFlatTemperedSemitone = ""; // U+E2F1
-exports.ehejipnFlatTemperedSemitone = ehejipnFlatTemperedSemitone;
-const ehejipnNaturalTemperedSemitone = ""; // U+E2F2
-exports.ehejipnNaturalTemperedSemitone = ehejipnNaturalTemperedSemitone;
-const ehejipnSharpTemperedSemitone = ""; // U+E2F3
-exports.ehejipnSharpTemperedSemitone = ehejipnSharpTemperedSemitone;
-const ehejipnDoubleSharpTemperedSemitone = ""; // U+E2F4
-exports.ehejipnDoubleSharpTemperedSemitone = ehejipnDoubleSharpTemperedSemitone;
-const ehejipnQuarterFlatTemperedSemitone = ""; // U+E2F5
-exports.ehejipnQuarterFlatTemperedSemitone = ehejipnQuarterFlatTemperedSemitone;
-const ehejipnQuarterSharpTemperedSemitone = ""; // U+E2F6
-exports.ehejipnQuarterSharpTemperedSemitone = ehejipnQuarterSharpTemperedSemitone;
-const ehejipn53Otonal = ""; // U+E2F7
-exports.ehejipn53Otonal = ehejipn53Otonal;
-const ehejipn53Utonal = ""; // U+E2F8
-exports.ehejipn53Utonal = ehejipn53Utonal;
-const ehejipnEnharmonicallyReinterpret = ""; // U+E2F9
-exports.ehejipnEnharmonicallyReinterpret = ehejipnEnharmonicallyReinterpret;
-const ehejipnEnharmonicallyReinterpretAlmostEqual = ""; // U+E2FA
-exports.ehejipnEnharmonicallyReinterpretAlmostEqual = ehejipnEnharmonicallyReinterpretAlmostEqual;
-const ehejipnEnharmonicallyReinterpretEquals = ""; // U+E2FB
-exports.ehejipnEnharmonicallyReinterpretEquals = ehejipnEnharmonicallyReinterpretEquals;
-const accidentalThreeQuarterTonesFlatZimmermann = ""; // U+E281
-exports.accidentalThreeQuarterTonesFlatZimmermann = accidentalThreeQuarterTonesFlatZimmermann;
-const EHEJIPN_ACCIDENTALS = {
-    [types_1.Code[".bbv"]]: ehejipnDoubleFlat5Otonal,
-    [types_1.Code[".bv"]]: ehejipnFlat5Otonal,
-    [types_1.Code[".nv"]]: ehejipnNatural5Otonal,
-    [types_1.Code[".#v"]]: ehejipnSharp5Otonal,
-    [types_1.Code[".xv"]]: ehejipnDoubleSharp5Otonal,
-    [types_1.Code[".bb^"]]: ehejipnDoubleFlat5Utonal,
-    [types_1.Code[".b^"]]: ehejipnFlat5Utonal,
-    [types_1.Code[".n^"]]: ehejipnNatural5Utonal,
-    [types_1.Code[".#^"]]: ehejipnSharp5Utonal,
-    [types_1.Code[".x^"]]: ehejipnDoubleSharp5Utonal,
-    [types_1.Code[".bbvv"]]: ehejipnDoubleFlatDouble5Otonal,
-    [types_1.Code[".bvv"]]: ehejipnFlatDouble5Otonal,
-    [types_1.Code[".nvv"]]: ehejipnNaturalDouble5Otonal,
-    [types_1.Code[".#vv"]]: ehejipnSharpDouble5Otonal,
-    [types_1.Code[".xvv"]]: ehejipnDoubleSharpDouble5Otonal,
-    [types_1.Code[".bb^^"]]: ehejipnDoubleFlatDouble5Utonal,
-    [types_1.Code[".b^^"]]: ehejipnFlatDouble5Utonal,
-    [types_1.Code[".n^^"]]: ehejipnNaturalDouble5Utonal,
-    [types_1.Code[".#^^"]]: ehejipnSharpDouble5Utonal,
-    [types_1.Code[".x^^"]]: ehejipnDoubleSharpDouble5Utonal,
-    [types_1.Code[".bbvvv"]]: ehejipnDoubleFlatTriple5Otonal,
-    [types_1.Code[".bvvv"]]: ehejipnFlatTriple5Otonal,
-    [types_1.Code[".nvvv"]]: ehejipnNaturalTriple5Otonal,
-    [types_1.Code[".#vvv"]]: ehejipnSharpTriple5Otonal,
-    [types_1.Code[".xvvv"]]: ehejipnDoubleSharpTriple5Otonal,
-    [types_1.Code[".bb^^^"]]: ehejipnDoubleFlatTriple5Utonal,
-    [types_1.Code[".b^^^"]]: ehejipnFlatTriple5Utonal,
-    [types_1.Code[".n^^^"]]: ehejipnNaturalTriple5Utonal,
-    [types_1.Code[".#^^^"]]: ehejipnSharpTriple5Utonal,
-    [types_1.Code[".x^^^"]]: ehejipnDoubleSharpTriple5Utonal,
-    [types_1.Code[".l"]]: ehejipn7Otonal,
-    [types_1.Code[".p"]]: ehejipn7Utonal,
-    [types_1.Code[".ll"]]: ehejipnDouble7Otonal,
-    [types_1.Code[".pp"]]: ehejipnDouble7Utonal,
-    [types_1.Code[".<"]]: ehejipn11Utonal,
-    [types_1.Code[".>"]]: ehejipn11Otonal,
-    [types_1.Code[".<|"]]: ehejipn13Otonal,
-    [types_1.Code[".>|"]]: ehejipn13Utonal,
-    [types_1.Code[".\\\\"]]: ehejipn17Otonal,
-    [types_1.Code[".//"]]: ehejipn17Utonal,
-    [types_1.Code[".\\"]]: ehejipn19Utonal,
-    [types_1.Code["./"]]: ehejipn19Otonal,
-    [types_1.Code[".^"]]: ehejipn23Otonal,
-    [types_1.Code[".v"]]: ehejipn23Utonal,
-    [types_1.Code[".{"]]: ehejipnCombiningOpenCurlyBrace,
-    [types_1.Code[".}"]]: ehejipnCombiningCloseCurlyBrace,
-    [types_1.Code[".bbt"]]: ehejipnDoubleFlatTemperedSemitone,
-    [types_1.Code[".bt"]]: ehejipnFlatTemperedSemitone,
-    [types_1.Code[".nt"]]: ehejipnNaturalTemperedSemitone,
-    [types_1.Code[".#t"]]: ehejipnSharpTemperedSemitone,
-    [types_1.Code[".xt"]]: ehejipnDoubleSharpTemperedSemitone,
-    [types_1.Code[".<t"]]: ehejipnQuarterFlatTemperedSemitone,
-    [types_1.Code[".>t"]]: ehejipnQuarterSharpTemperedSemitone,
-    [types_1.Code[".\\\\\\"]]: ehejipn53Otonal,
-    [types_1.Code[".///"]]: ehejipn53Utonal,
-    [types_1.Code[".~"]]: ehejipnEnharmonicallyReinterpret,
-    [types_1.Code[".~~"]]: ehejipnEnharmonicallyReinterpretAlmostEqual,
-    [types_1.Code[".="]]: ehejipnEnharmonicallyReinterpretEquals,
-    // For convenience of EHEJIPN users, standard accidentals with dots at the start of their codes
-    // See: https://w3c.github.io/smufl/gitbook/tables/standard-accidentals-12-edo.html
-    [types_1.Code[".bb"]]: conventional_1.bb,
-    [types_1.Code[".b"]]: conventional_1.b,
-    [types_1.Code[".n"]]: conventional_1.n,
-    [types_1.Code[".#"]]: conventional_1.sharp,
-    [types_1.Code[".x"]]: conventional_1.smallDoubleSharp,
-    [types_1.Code[".<b"]]: accidentalThreeQuarterTonesFlatZimmermann,
-    [types_1.Code[".>#"]]: unconventional_1.sesquisharp,
-};
-exports.EHEJIPN_ACCIDENTALS = EHEJIPN_ACCIDENTALS;
-
-
-/***/ }),
-/* 252 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.wilsonMinus = exports.wilsonPlus = exports.sesquiflat = exports.sesquisharp = exports.semiflat = exports.semisharp = exports.UNCONVENTIONAL_ACCIDENTALS = void 0;
-const types_1 = __webpack_require__(10);
-// See: https://w3c.github.io/smufl/gitbook/tables/stein-zimmermann-accidentals-24-edo.html
-// And: https://w3c.github.io/smufl/gitbook/tables/other-accidentals.html
-const semisharp = ""; // U+E282   Half sharp (quarter-tone sharp) (Stein)
-exports.semisharp = semisharp;
-const semiflat = ""; // U+E284   Narrow reversed flat (quarter-tone flat)
-exports.semiflat = semiflat;
-const sesquisharp = ""; // U+E283   One and a half sharps (three-quarter-tones sharp) (Stein)
-exports.sesquisharp = sesquisharp;
-const sesquiflat = ""; // U+E285   Narrow reversed flat and flat (three-quarter-tones flat)
-exports.sesquiflat = sesquiflat;
-const wilsonPlus = ""; // U+E47B   Wilson plus (5 comma up)
-exports.wilsonPlus = wilsonPlus;
-const wilsonMinus = ""; // U+E47C   Wilson minus (5 comma down)
-exports.wilsonMinus = wilsonMinus;
-const UNCONVENTIONAL_ACCIDENTALS = {
-    [types_1.Code[">"]]: semisharp,
-    [types_1.Code["<"]]: semiflat,
-    [types_1.Code[">#"]]: sesquisharp,
-    [types_1.Code["<b"]]: sesquiflat,
-    [types_1.Code["+"]]: wilsonPlus,
-    [types_1.Code["-"]]: wilsonMinus,
-};
-exports.UNCONVENTIONAL_ACCIDENTALS = UNCONVENTIONAL_ACCIDENTALS;
-
-
-/***/ }),
-/* 253 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16745,28 +16469,7 @@ exports.SAGITTAL_ACCIDENTALS = SAGITTAL_ACCIDENTALS;
 
 
 /***/ }),
-/* 254 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.down = exports.up = exports.UPS_AND_DOWNS_ACCIDENTALS = void 0;
-const types_1 = __webpack_require__(10);
-// See: https://w3c.github.io/smufl/gitbook/tables/arrows-and-arrowheads.html
-const up = ""; // U+EB88
-exports.up = up;
-const down = ""; // U+EB8C
-exports.down = down;
-const UPS_AND_DOWNS_ACCIDENTALS = {
-    [types_1.Code["^"]]: up,
-    [types_1.Code["v"]]: down,
-};
-exports.UPS_AND_DOWNS_ACCIDENTALS = UPS_AND_DOWNS_ACCIDENTALS;
-
-
-/***/ }),
-/* 255 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16974,17 +16677,17 @@ exports.COMBINING_STAFF_POSITIONS = COMBINING_STAFF_POSITIONS;
 
 
 /***/ }),
-/* 256 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUnicode = void 0;
-const combiningStaffPositions_1 = __webpack_require__(255);
+const combiningStaffPositions_1 = __webpack_require__(251);
 const types_1 = __webpack_require__(10);
-const unicodeFromUnknownCode_1 = __webpack_require__(257);
-const unicodeMap_1 = __webpack_require__(258);
+const unicodeFromUnknownCode_1 = __webpack_require__(253);
+const unicodeMap_1 = __webpack_require__(254);
 // TODO: accept a user custom codes JSON object to merge in here too
 const CODES_WITH_BASS = {
     ...unicodeMap_1.CODES,
@@ -17005,7 +16708,7 @@ exports.getUnicode = getUnicode;
 
 
 /***/ }),
-/* 257 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17018,7 +16721,7 @@ exports.unicodeFromUnknownCode = unicodeFromUnknownCode;
 
 
 /***/ }),
-/* 258 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17026,7 +16729,7 @@ exports.unicodeFromUnknownCode = unicodeFromUnknownCode;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.nt2 = exports.nt1 = exports.ntdb = exports.TIME_SIGNATURES = exports.tmdn = exports.tmnm = exports.tmcm = exports.tm9 = exports.tm8 = exports.tm7 = exports.tm6 = exports.tm5 = exports.tm4 = exports.tm3 = exports.tm2 = exports.tm1 = exports.tm0 = exports.CLEFS = exports._8vb = exports._8va = exports.bscf = exports.alcf = exports.tbcf = exports.BARS = exports.brlndb = exports.brln = exports.LEDGER_LINES = exports.STAFF_LINES = exports.lgln = exports.st = exports.st24 = exports.st16 = exports.st8 = exports.SPACES = exports.sp16 = exports.sp15 = exports.sp14 = exports.sp13 = exports.sp12 = exports.sp11 = exports.sp10 = exports.sp9 = exports.sp8 = exports.sp7 = exports.sp6 = exports.sp5 = exports.sp4 = exports.sp3 = exports.sp2 = exports.sp1 = void 0;
 exports.CODES = exports.BEAMED_GROUPS_OF_NOTES = exports.tp3 = exports.bm16 = exports.bm8 = exports.ntbm16 = exports.ntbm8 = exports.ntbmst = exports.DOTS = exports.agdt = exports.dt = exports.RESTS = exports.rs = exports.rs16 = exports.rs8 = exports.rs4 = exports.rs2 = exports.rs1 = exports.rsdb = exports.NOTES = exports.nt = exports.nt16dn = exports.nt16 = exports.nt8dn = exports.nt8 = exports.nt4dn = exports.nt4 = exports.nt2dn = void 0;
-const accidentals_1 = __webpack_require__(249);
+const accidentals_1 = __webpack_require__(255);
 const types_1 = __webpack_require__(10);
 const sp1 = " "; // U+200A                   HAIR SPACE
 exports.sp1 = sp1;
@@ -17278,6 +16981,289 @@ exports.CODES = CODES;
 
 
 /***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ACCIDENTALS = void 0;
+const conventional_1 = __webpack_require__(249);
+const ehejipn_1 = __webpack_require__(256);
+const sagittal_1 = __webpack_require__(250);
+const unconventional_1 = __webpack_require__(257);
+const upsAndDowns_1 = __webpack_require__(258);
+const ACCIDENTALS = {
+    ...conventional_1.CONVENTIONAL_ACCIDENTALS,
+    ...ehejipn_1.EHEJIPN_ACCIDENTALS,
+    ...sagittal_1.SAGITTAL_ACCIDENTALS,
+    ...unconventional_1.UNCONVENTIONAL_ACCIDENTALS,
+    ...upsAndDowns_1.UPS_AND_DOWNS_ACCIDENTALS,
+};
+exports.ACCIDENTALS = ACCIDENTALS;
+
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// tslint:disable max-line-length
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ehejipnNaturalTemperedSemitone = exports.ehejipnFlatTemperedSemitone = exports.ehejipnDoubleFlatTemperedSemitone = exports.ehejipnCombiningCloseCurlyBrace = exports.ehejipnCombiningOpenCurlyBrace = exports.ehejipn23Utonal = exports.ehejipn23Otonal = exports.ehejipn19Otonal = exports.ehejipn19Utonal = exports.ehejipn17Utonal = exports.ehejipn17Otonal = exports.ehejipn13Utonal = exports.ehejipn13Otonal = exports.ehejipn11Otonal = exports.ehejipn11Utonal = exports.ehejipnDouble7Utonal = exports.ehejipnDouble7Otonal = exports.ehejipn7Utonal = exports.ehejipn7Otonal = exports.ehejipnDoubleSharpTriple5Utonal = exports.ehejipnSharpTriple5Utonal = exports.ehejipnNaturalTriple5Utonal = exports.ehejipnFlatTriple5Utonal = exports.ehejipnDoubleFlatTriple5Utonal = exports.ehejipnDoubleSharpTriple5Otonal = exports.ehejipnSharpTriple5Otonal = exports.ehejipnNaturalTriple5Otonal = exports.ehejipnFlatTriple5Otonal = exports.ehejipnDoubleFlatTriple5Otonal = exports.ehejipnDoubleSharpDouble5Utonal = exports.ehejipnSharpDouble5Utonal = exports.ehejipnNaturalDouble5Utonal = exports.ehejipnFlatDouble5Utonal = exports.ehejipnDoubleFlatDouble5Utonal = exports.ehejipnDoubleSharpDouble5Otonal = exports.ehejipnSharpDouble5Otonal = exports.ehejipnNaturalDouble5Otonal = exports.ehejipnFlatDouble5Otonal = exports.ehejipnDoubleFlatDouble5Otonal = exports.ehejipnDoubleSharp5Utonal = exports.ehejipnSharp5Utonal = exports.ehejipnNatural5Utonal = exports.ehejipnFlat5Utonal = exports.ehejipnDoubleFlat5Utonal = exports.ehejipnDoubleSharp5Otonal = exports.ehejipnSharp5Otonal = exports.ehejipnNatural5Otonal = exports.ehejipnFlat5Otonal = exports.ehejipnDoubleFlat5Otonal = exports.EHEJIPN_ACCIDENTALS = void 0;
+exports.accidentalThreeQuarterTonesFlatZimmermann = exports.ehejipnEnharmonicallyReinterpretEquals = exports.ehejipnEnharmonicallyReinterpretAlmostEqual = exports.ehejipnEnharmonicallyReinterpret = exports.ehejipn53Utonal = exports.ehejipn53Otonal = exports.ehejipnQuarterSharpTemperedSemitone = exports.ehejipnQuarterFlatTemperedSemitone = exports.ehejipnDoubleSharpTemperedSemitone = exports.ehejipnSharpTemperedSemitone = void 0;
+const types_1 = __webpack_require__(10);
+const conventional_1 = __webpack_require__(249);
+const unconventional_1 = __webpack_require__(257);
+// See: ttps://w3c.github.io/smufl/gitbook/tables/extended-helmholtz-ellis-accidentals-just-intonation.html
+// All EHEJIPN staffCodes start with a dot (full-stop). Unicodes are successive below.
+const ehejipnDoubleFlat5Otonal = ""; // U+E2C0
+exports.ehejipnDoubleFlat5Otonal = ehejipnDoubleFlat5Otonal;
+const ehejipnFlat5Otonal = ""; // U+E2C1
+exports.ehejipnFlat5Otonal = ehejipnFlat5Otonal;
+const ehejipnNatural5Otonal = ""; // U+E2C2
+exports.ehejipnNatural5Otonal = ehejipnNatural5Otonal;
+const ehejipnSharp5Otonal = ""; // U+E2C3
+exports.ehejipnSharp5Otonal = ehejipnSharp5Otonal;
+const ehejipnDoubleSharp5Otonal = ""; // U+E2C4
+exports.ehejipnDoubleSharp5Otonal = ehejipnDoubleSharp5Otonal;
+const ehejipnDoubleFlat5Utonal = ""; // U+E2C5
+exports.ehejipnDoubleFlat5Utonal = ehejipnDoubleFlat5Utonal;
+const ehejipnFlat5Utonal = ""; // U+E2C6
+exports.ehejipnFlat5Utonal = ehejipnFlat5Utonal;
+const ehejipnNatural5Utonal = ""; // U+E2C7
+exports.ehejipnNatural5Utonal = ehejipnNatural5Utonal;
+const ehejipnSharp5Utonal = ""; // U+E2C8
+exports.ehejipnSharp5Utonal = ehejipnSharp5Utonal;
+const ehejipnDoubleSharp5Utonal = ""; // U+E2C9
+exports.ehejipnDoubleSharp5Utonal = ehejipnDoubleSharp5Utonal;
+const ehejipnDoubleFlatDouble5Otonal = ""; // U+E2CA
+exports.ehejipnDoubleFlatDouble5Otonal = ehejipnDoubleFlatDouble5Otonal;
+const ehejipnFlatDouble5Otonal = ""; // U+E2CB
+exports.ehejipnFlatDouble5Otonal = ehejipnFlatDouble5Otonal;
+const ehejipnNaturalDouble5Otonal = ""; // U+E2CC
+exports.ehejipnNaturalDouble5Otonal = ehejipnNaturalDouble5Otonal;
+const ehejipnSharpDouble5Otonal = ""; // U+E2CD
+exports.ehejipnSharpDouble5Otonal = ehejipnSharpDouble5Otonal;
+const ehejipnDoubleSharpDouble5Otonal = ""; // U+E2CE
+exports.ehejipnDoubleSharpDouble5Otonal = ehejipnDoubleSharpDouble5Otonal;
+const ehejipnDoubleFlatDouble5Utonal = ""; // U+E2CF
+exports.ehejipnDoubleFlatDouble5Utonal = ehejipnDoubleFlatDouble5Utonal;
+const ehejipnFlatDouble5Utonal = ""; // U+E2D0
+exports.ehejipnFlatDouble5Utonal = ehejipnFlatDouble5Utonal;
+const ehejipnNaturalDouble5Utonal = ""; // U+E2D1
+exports.ehejipnNaturalDouble5Utonal = ehejipnNaturalDouble5Utonal;
+const ehejipnSharpDouble5Utonal = ""; // U+E2D2
+exports.ehejipnSharpDouble5Utonal = ehejipnSharpDouble5Utonal;
+const ehejipnDoubleSharpDouble5Utonal = ""; // U+E2D3
+exports.ehejipnDoubleSharpDouble5Utonal = ehejipnDoubleSharpDouble5Utonal;
+const ehejipnDoubleFlatTriple5Otonal = ""; // U+E2D4
+exports.ehejipnDoubleFlatTriple5Otonal = ehejipnDoubleFlatTriple5Otonal;
+const ehejipnFlatTriple5Otonal = ""; // U+E2D5
+exports.ehejipnFlatTriple5Otonal = ehejipnFlatTriple5Otonal;
+const ehejipnNaturalTriple5Otonal = ""; // U+E2D6
+exports.ehejipnNaturalTriple5Otonal = ehejipnNaturalTriple5Otonal;
+const ehejipnSharpTriple5Otonal = ""; // U+E2D7
+exports.ehejipnSharpTriple5Otonal = ehejipnSharpTriple5Otonal;
+const ehejipnDoubleSharpTriple5Otonal = ""; // U+E2D8
+exports.ehejipnDoubleSharpTriple5Otonal = ehejipnDoubleSharpTriple5Otonal;
+const ehejipnDoubleFlatTriple5Utonal = ""; // U+E2D9
+exports.ehejipnDoubleFlatTriple5Utonal = ehejipnDoubleFlatTriple5Utonal;
+const ehejipnFlatTriple5Utonal = ""; // U+E2DA
+exports.ehejipnFlatTriple5Utonal = ehejipnFlatTriple5Utonal;
+const ehejipnNaturalTriple5Utonal = ""; // U+E2DB
+exports.ehejipnNaturalTriple5Utonal = ehejipnNaturalTriple5Utonal;
+const ehejipnSharpTriple5Utonal = ""; // U+E2DC
+exports.ehejipnSharpTriple5Utonal = ehejipnSharpTriple5Utonal;
+const ehejipnDoubleSharpTriple5Utonal = ""; // U+E2DD
+exports.ehejipnDoubleSharpTriple5Utonal = ehejipnDoubleSharpTriple5Utonal;
+const ehejipn7Otonal = ""; // U+E2DE   lowercase L here, but people would type it uppercase
+exports.ehejipn7Otonal = ehejipn7Otonal;
+const ehejipn7Utonal = ""; // U+E2DF   people would type it uppercase
+exports.ehejipn7Utonal = ehejipn7Utonal;
+const ehejipnDouble7Otonal = ""; // U+E2E0   lowercase LL here, but people would type them uppercase
+exports.ehejipnDouble7Otonal = ehejipnDouble7Otonal;
+const ehejipnDouble7Utonal = ""; // U+E2E1   people would type them uppercase
+exports.ehejipnDouble7Utonal = ehejipnDouble7Utonal;
+const ehejipn11Utonal = ""; // U+E2E2
+exports.ehejipn11Utonal = ehejipn11Utonal;
+const ehejipn11Otonal = ""; // U+E2E3
+exports.ehejipn11Otonal = ehejipn11Otonal;
+const ehejipn13Otonal = ""; // U+E2E4
+exports.ehejipn13Otonal = ehejipn13Otonal;
+const ehejipn13Utonal = ""; // U+E2E5
+exports.ehejipn13Utonal = ehejipn13Utonal;
+const ehejipn17Otonal = ""; // U+E2E6
+exports.ehejipn17Otonal = ehejipn17Otonal;
+const ehejipn17Utonal = ""; // U+E2E7
+exports.ehejipn17Utonal = ehejipn17Utonal;
+const ehejipn19Utonal = ""; // U+E2E8
+exports.ehejipn19Utonal = ehejipn19Utonal;
+const ehejipn19Otonal = ""; // U+E2E9
+exports.ehejipn19Otonal = ehejipn19Otonal;
+const ehejipn23Otonal = ""; // U+E2EA
+exports.ehejipn23Otonal = ehejipn23Otonal;
+const ehejipn23Utonal = ""; // U+E2EB
+exports.ehejipn23Utonal = ehejipn23Utonal;
+const ehejipnCombiningOpenCurlyBrace = ""; // U+E2EE
+exports.ehejipnCombiningOpenCurlyBrace = ehejipnCombiningOpenCurlyBrace;
+const ehejipnCombiningCloseCurlyBrace = ""; // U+E2EF
+exports.ehejipnCombiningCloseCurlyBrace = ehejipnCombiningCloseCurlyBrace;
+const ehejipnDoubleFlatTemperedSemitone = ""; // U+E2F0
+exports.ehejipnDoubleFlatTemperedSemitone = ehejipnDoubleFlatTemperedSemitone;
+const ehejipnFlatTemperedSemitone = ""; // U+E2F1
+exports.ehejipnFlatTemperedSemitone = ehejipnFlatTemperedSemitone;
+const ehejipnNaturalTemperedSemitone = ""; // U+E2F2
+exports.ehejipnNaturalTemperedSemitone = ehejipnNaturalTemperedSemitone;
+const ehejipnSharpTemperedSemitone = ""; // U+E2F3
+exports.ehejipnSharpTemperedSemitone = ehejipnSharpTemperedSemitone;
+const ehejipnDoubleSharpTemperedSemitone = ""; // U+E2F4
+exports.ehejipnDoubleSharpTemperedSemitone = ehejipnDoubleSharpTemperedSemitone;
+const ehejipnQuarterFlatTemperedSemitone = ""; // U+E2F5
+exports.ehejipnQuarterFlatTemperedSemitone = ehejipnQuarterFlatTemperedSemitone;
+const ehejipnQuarterSharpTemperedSemitone = ""; // U+E2F6
+exports.ehejipnQuarterSharpTemperedSemitone = ehejipnQuarterSharpTemperedSemitone;
+const ehejipn53Otonal = ""; // U+E2F7
+exports.ehejipn53Otonal = ehejipn53Otonal;
+const ehejipn53Utonal = ""; // U+E2F8
+exports.ehejipn53Utonal = ehejipn53Utonal;
+const ehejipnEnharmonicallyReinterpret = ""; // U+E2F9
+exports.ehejipnEnharmonicallyReinterpret = ehejipnEnharmonicallyReinterpret;
+const ehejipnEnharmonicallyReinterpretAlmostEqual = ""; // U+E2FA
+exports.ehejipnEnharmonicallyReinterpretAlmostEqual = ehejipnEnharmonicallyReinterpretAlmostEqual;
+const ehejipnEnharmonicallyReinterpretEquals = ""; // U+E2FB
+exports.ehejipnEnharmonicallyReinterpretEquals = ehejipnEnharmonicallyReinterpretEquals;
+const accidentalThreeQuarterTonesFlatZimmermann = ""; // U+E281
+exports.accidentalThreeQuarterTonesFlatZimmermann = accidentalThreeQuarterTonesFlatZimmermann;
+const EHEJIPN_ACCIDENTALS = {
+    [types_1.Code[".bbv"]]: ehejipnDoubleFlat5Otonal,
+    [types_1.Code[".bv"]]: ehejipnFlat5Otonal,
+    [types_1.Code[".nv"]]: ehejipnNatural5Otonal,
+    [types_1.Code[".#v"]]: ehejipnSharp5Otonal,
+    [types_1.Code[".xv"]]: ehejipnDoubleSharp5Otonal,
+    [types_1.Code[".bb^"]]: ehejipnDoubleFlat5Utonal,
+    [types_1.Code[".b^"]]: ehejipnFlat5Utonal,
+    [types_1.Code[".n^"]]: ehejipnNatural5Utonal,
+    [types_1.Code[".#^"]]: ehejipnSharp5Utonal,
+    [types_1.Code[".x^"]]: ehejipnDoubleSharp5Utonal,
+    [types_1.Code[".bbvv"]]: ehejipnDoubleFlatDouble5Otonal,
+    [types_1.Code[".bvv"]]: ehejipnFlatDouble5Otonal,
+    [types_1.Code[".nvv"]]: ehejipnNaturalDouble5Otonal,
+    [types_1.Code[".#vv"]]: ehejipnSharpDouble5Otonal,
+    [types_1.Code[".xvv"]]: ehejipnDoubleSharpDouble5Otonal,
+    [types_1.Code[".bb^^"]]: ehejipnDoubleFlatDouble5Utonal,
+    [types_1.Code[".b^^"]]: ehejipnFlatDouble5Utonal,
+    [types_1.Code[".n^^"]]: ehejipnNaturalDouble5Utonal,
+    [types_1.Code[".#^^"]]: ehejipnSharpDouble5Utonal,
+    [types_1.Code[".x^^"]]: ehejipnDoubleSharpDouble5Utonal,
+    [types_1.Code[".bbvvv"]]: ehejipnDoubleFlatTriple5Otonal,
+    [types_1.Code[".bvvv"]]: ehejipnFlatTriple5Otonal,
+    [types_1.Code[".nvvv"]]: ehejipnNaturalTriple5Otonal,
+    [types_1.Code[".#vvv"]]: ehejipnSharpTriple5Otonal,
+    [types_1.Code[".xvvv"]]: ehejipnDoubleSharpTriple5Otonal,
+    [types_1.Code[".bb^^^"]]: ehejipnDoubleFlatTriple5Utonal,
+    [types_1.Code[".b^^^"]]: ehejipnFlatTriple5Utonal,
+    [types_1.Code[".n^^^"]]: ehejipnNaturalTriple5Utonal,
+    [types_1.Code[".#^^^"]]: ehejipnSharpTriple5Utonal,
+    [types_1.Code[".x^^^"]]: ehejipnDoubleSharpTriple5Utonal,
+    [types_1.Code[".l"]]: ehejipn7Otonal,
+    [types_1.Code[".p"]]: ehejipn7Utonal,
+    [types_1.Code[".ll"]]: ehejipnDouble7Otonal,
+    [types_1.Code[".pp"]]: ehejipnDouble7Utonal,
+    [types_1.Code[".<"]]: ehejipn11Utonal,
+    [types_1.Code[".>"]]: ehejipn11Otonal,
+    [types_1.Code[".<|"]]: ehejipn13Otonal,
+    [types_1.Code[".>|"]]: ehejipn13Utonal,
+    [types_1.Code[".\\\\"]]: ehejipn17Otonal,
+    [types_1.Code[".//"]]: ehejipn17Utonal,
+    [types_1.Code[".\\"]]: ehejipn19Utonal,
+    [types_1.Code["./"]]: ehejipn19Otonal,
+    [types_1.Code[".^"]]: ehejipn23Otonal,
+    [types_1.Code[".v"]]: ehejipn23Utonal,
+    [types_1.Code[".{"]]: ehejipnCombiningOpenCurlyBrace,
+    [types_1.Code[".}"]]: ehejipnCombiningCloseCurlyBrace,
+    [types_1.Code[".bbt"]]: ehejipnDoubleFlatTemperedSemitone,
+    [types_1.Code[".bt"]]: ehejipnFlatTemperedSemitone,
+    [types_1.Code[".nt"]]: ehejipnNaturalTemperedSemitone,
+    [types_1.Code[".#t"]]: ehejipnSharpTemperedSemitone,
+    [types_1.Code[".xt"]]: ehejipnDoubleSharpTemperedSemitone,
+    [types_1.Code[".<t"]]: ehejipnQuarterFlatTemperedSemitone,
+    [types_1.Code[".>t"]]: ehejipnQuarterSharpTemperedSemitone,
+    [types_1.Code[".\\\\\\"]]: ehejipn53Otonal,
+    [types_1.Code[".///"]]: ehejipn53Utonal,
+    [types_1.Code[".~"]]: ehejipnEnharmonicallyReinterpret,
+    [types_1.Code[".~~"]]: ehejipnEnharmonicallyReinterpretAlmostEqual,
+    [types_1.Code[".="]]: ehejipnEnharmonicallyReinterpretEquals,
+    // For convenience of EHEJIPN users, standard accidentals with dots at the start of their codes
+    // See: https://w3c.github.io/smufl/gitbook/tables/standard-accidentals-12-edo.html
+    [types_1.Code[".bb"]]: conventional_1.bb,
+    [types_1.Code[".b"]]: conventional_1.b,
+    [types_1.Code[".n"]]: conventional_1.n,
+    [types_1.Code[".#"]]: conventional_1.sharp,
+    [types_1.Code[".x"]]: conventional_1.smallDoubleSharp,
+    [types_1.Code[".<b"]]: accidentalThreeQuarterTonesFlatZimmermann,
+    [types_1.Code[".>#"]]: unconventional_1.sesquisharp,
+};
+exports.EHEJIPN_ACCIDENTALS = EHEJIPN_ACCIDENTALS;
+
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.wilsonMinus = exports.wilsonPlus = exports.sesquiflat = exports.sesquisharp = exports.semiflat = exports.semisharp = exports.UNCONVENTIONAL_ACCIDENTALS = void 0;
+const types_1 = __webpack_require__(10);
+// See: https://w3c.github.io/smufl/gitbook/tables/stein-zimmermann-accidentals-24-edo.html
+// And: https://w3c.github.io/smufl/gitbook/tables/other-accidentals.html
+const semisharp = ""; // U+E282   Half sharp (quarter-tone sharp) (Stein)
+exports.semisharp = semisharp;
+const semiflat = ""; // U+E284   Narrow reversed flat (quarter-tone flat)
+exports.semiflat = semiflat;
+const sesquisharp = ""; // U+E283   One and a half sharps (three-quarter-tones sharp) (Stein)
+exports.sesquisharp = sesquisharp;
+const sesquiflat = ""; // U+E285   Narrow reversed flat and flat (three-quarter-tones flat)
+exports.sesquiflat = sesquiflat;
+const wilsonPlus = ""; // U+E47B   Wilson plus (5 comma up)
+exports.wilsonPlus = wilsonPlus;
+const wilsonMinus = ""; // U+E47C   Wilson minus (5 comma down)
+exports.wilsonMinus = wilsonMinus;
+const UNCONVENTIONAL_ACCIDENTALS = {
+    [types_1.Code[">"]]: semisharp,
+    [types_1.Code["<"]]: semiflat,
+    [types_1.Code[">#"]]: sesquisharp,
+    [types_1.Code["<b"]]: sesquiflat,
+    [types_1.Code["+"]]: wilsonPlus,
+    [types_1.Code["-"]]: wilsonMinus,
+};
+exports.UNCONVENTIONAL_ACCIDENTALS = UNCONVENTIONAL_ACCIDENTALS;
+
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.down = exports.up = exports.UPS_AND_DOWNS_ACCIDENTALS = void 0;
+const types_1 = __webpack_require__(10);
+// See: https://w3c.github.io/smufl/gitbook/tables/arrows-and-arrowheads.html
+const up = ""; // U+EB88
+exports.up = up;
+const down = ""; // U+EB8C
+exports.down = down;
+const UPS_AND_DOWNS_ACCIDENTALS = {
+    [types_1.Code["^"]]: up,
+    [types_1.Code["v"]]: down,
+};
+exports.UPS_AND_DOWNS_ACCIDENTALS = UPS_AND_DOWNS_ACCIDENTALS;
+
+
+/***/ }),
 /* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17299,7 +17285,7 @@ exports.staffState = staffState;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeSpaceUnicode = void 0;
 const general_1 = __webpack_require__(12);
-const unicodeMap_1 = __webpack_require__(258);
+const unicodeMap_1 = __webpack_require__(254);
 const BIGGEST_SPACE = 16;
 // TODO: ugh names are so bad
 const SPACES_ARRAY = [
