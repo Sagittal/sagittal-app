@@ -3,6 +3,7 @@
 import {Code, Uni} from "../types"
 
 // TODO: I considered pulling these unicodes in from @sagittal/system, but decided not to bloat it for the forum
+//  Probably revisit this decision after extracting staffCode to its own repo
 
 const _5v7kUp = "" as Uni                  // U+E300   5:7 kleisma up, (5:7k, ~11:13k, 7C less 5C)
 const _5v7kDown = "" as Uni                // U+E301   5:7 kleisma down

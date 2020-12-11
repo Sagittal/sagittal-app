@@ -22,14 +22,10 @@ staffCode assumes your site loads the BravuraTextBB font. We suggest you locate 
 assets/fonts folder. Please do not load it from another forum's assets, for your own performance.
 */
 
-import "../../styles"
+import "../../../styles"
 import {replaceStaffCodeWithUnicodeBBCode} from "./replace"
 
 document.querySelectorAll("div.staff").forEach(replaceStaffCodeWithUnicodeBBCode)
-
-export {
-    replaceStaffCodeWithUnicodeBBCode,
-}
 
 // TODO: I could theoretically add a script that would programmatically SFTP changes up to the site
 //  If it does, it should abort if the thing up there currently does not match what we have here
