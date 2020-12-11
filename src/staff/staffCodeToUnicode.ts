@@ -86,7 +86,7 @@ const canBePositioned = (unicode: Uni): boolean =>
  */
 
 
-const applySmartSpace = (): Uni => {
+const applySmartSpace = (space: number): Uni => {
     if (!staffState.smartStaffOn) { // TODO: this could probably be simppiflied
         const spaceUnicode = computeSpaceUnicode(staffState.smartSpace)
         staffState.smartSpace = 0
@@ -94,16 +94,16 @@ const applySmartSpace = (): Uni => {
     }
 
     // We've got enough staff ahead of us still to apply the advance and still be within it
-    if (staffState.smartStaff >= staffState.smartSpace) {
-        const spaceUnicode = computeSpaceUnicode(staffState.smartSpace)
+    if (staffState.smartStaff >= space) {
+        const spaceUnicode = computeSpaceUnicode(space)
 
-        staffState.smartStaff = staffState.smartStaff - staffState.smartSpace
+        staffState.smartStaff = staffState.smartStaff - space
         staffState.smartSpace = 0
 
         return spaceUnicode
     } else {
         const useUpExistingStaffSpaceUnicode = computeSpaceUnicode(staffState.smartStaff)
-        const remainingSpaceWeNeedToApply = staffState.smartSpace - staffState.smartStaff
+        const remainingSpaceWeNeedToApply = space - staffState.smartStaff
         const remainingStaffSpaceUnicode = computeSpaceUnicode(remainingSpaceWeNeedToApply)
 
         staffState.smartStaff = 24 - remainingSpaceWeNeedToApply
@@ -114,25 +114,26 @@ const applySmartSpace = (): Uni => {
 }
 
 const getSpaceForUnicode = (unicode: Uni): number => {
-    if ([...Object.values(CLEFS)].includes(unicode)) return 23
-    else if ([ntdb].includes(unicode)) return 22
-    // 21
-    else if ([nt8, nt16].includes(unicode)) return 20
+    if ([...Object.values(CLEFS)].includes(unicode)) return 24
+    else if ([ntdb].includes(unicode)) return 23
+        // 22
+    else if ([nt8, nt16].includes(unicode)) return 21
+        // 20
         // 19
         // 18
-    // 17
-    else if ([tm0, tm1, tm2, tm3, tm4, tm5, tm6, tm7, tm8, tm9, tmcm].includes(unicode)) return 16
-    // 15
-    else if ([bb].includes(unicode)) return 14
-    else if ([_35LUp, _35LDown].includes(unicode)) return 13
-    else if ([lgln, nt1, nt2, nt4, nt2dn, nt4dn, nt8dn, nt16dn, x, _11LUp, _11LDown, _11MUp, _11MDown].includes(unicode)) return 12
-    // 11
-    else if ([_35MUp, _35MDown].includes(unicode)) return 10
-    else if ([sharp, smallDoubleSharp, _25SUp, _25SDown].includes(unicode)) return 9
-    else if ([b].includes(unicode)) return 8
-    // 7
-    else if ([n, _5v7kUp, _5v7kDown, _5CUp, _5CDown, _7CUp, _7CDown].includes(unicode)) return 6
-    else if ([agdt].includes(unicode)) return 5
+    else if ([tm0, tm1, tm2, tm3, tm4, tm5, tm6, tm7, tm8, tm9, tmcm].includes(unicode)) return 17
+    // 16
+    else if ([bb].includes(unicode)) return 15
+    else if ([_35LUp, _35LDown].includes(unicode)) return 14
+    else if ([lgln, nt1, nt2, nt4, nt2dn, nt4dn, nt8dn, nt16dn, x, _11LUp, _11LDown, _11MUp, _11MDown].includes(unicode)) return 13
+    // 12
+    else if ([_35MUp, _35MDown].includes(unicode)) return 11
+    else if ([sharp, smallDoubleSharp, _25SUp, _25SDown].includes(unicode)) return 10
+    else if ([b].includes(unicode)) return 9
+    // 8
+    else if ([n, _5v7kUp, _5v7kDown, _5CUp, _5CDown, _7CUp, _7CDown].includes(unicode)) return 7
+    else if ([agdt].includes(unicode)) return 6
+        // 5
         // 4
         // 3
         // 2
@@ -166,7 +167,10 @@ const staffCodeToUnicode = (staffCode: Io): Uni => {
         .split(" ")
         .map((userInput: Io): Uni => {
             if (userInput === "sp") {
-                return applySmartSpace()
+                return applySmartSpace(staffState.smartSpace)
+            } else if (userInput.match("sp") && staffState.smartStaffOn) {
+                const amount = parseInt(userInput.replace("sp", ""))
+                return applySmartSpace(amount)
             }
 
             if (["st", "st8", "st16", "st24"].includes(userInput)) {
