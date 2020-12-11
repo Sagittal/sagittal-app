@@ -1,9 +1,9 @@
-import {controlsDiv} from "./staffCodeInput"
-import {svgWrapper} from "./vectorize"
+import {svgContainer} from "./dom"
 
 const saveSvg = (): void => {
-    const svg: SVGElement | null = svgWrapper.querySelector("svg")
+    const svg: SVGElement | null = svgContainer.querySelector("svg")
     if (!svg) return
+    // TODO: do we really need to clone?
     const clonedSvg: SVGElement = svg.cloneNode(true) as SVGElement
 
     const outerHTML = clonedSvg.outerHTML
@@ -21,10 +21,6 @@ const saveSvg = (): void => {
     window.URL.revokeObjectURL(blobURL)
 }
 
-const buttonDiv = document.createElement("div")
-const button = document.createElement("button")
-button.textContent = "Download"
-button.addEventListener("click", saveSvg)
-
-buttonDiv.appendChild(button)
-controlsDiv.appendChild(buttonDiv)
+export {
+    saveSvg,
+}

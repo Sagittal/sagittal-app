@@ -1,8 +1,6 @@
+import {svgContainer} from "./dom"
+
 const vectorizeText = require("vectorize-text")
-
-const svgWrapper = document.createElement("div")
-
-// TODO: Probably don't need to actually display the SVG once the concept is proven out
 
 const HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT = 57
 const MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER = 256
@@ -33,10 +31,12 @@ const vectorize = (text: string): void => {
     })
     svg.push("</svg>")
 
-    svgWrapper.innerHTML = svg.join("")
+    // TODO: can we maybe just have this set the innerHTML of the svg, rather than an svgContainer which is confusing
+    //  Compared with a wrapper? I named them different bc they have very different intentions, but this one maybe
+    //  Is just unnecessary
+    svgContainer.innerHTML = svg.join("")
 }
 
 export {
     vectorize,
-    svgWrapper,
 }

@@ -1,6 +1,5 @@
-import {staffCodeInput} from "./staffCodeInput"
+import {staffCodeInput, staffDiv} from "./dom"
 import {staffCodeToUnicode} from "./staffCodeToUnicode"
-import {staffDiv} from "./staffDiv"
 import {vectorize} from "./vectorize"
 
 const replaceStaffCodeWithUnicodeApp = (): void => {

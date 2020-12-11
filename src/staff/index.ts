@@ -1,6 +1,5 @@
 import "../styles"
-// TODO: this is horrible. eventually use React to have some actual control over the layout
-import "./download"
+import "./dom"
 import {replaceStaffCodeWithUnicodeApp} from "./replace"
 
 replaceStaffCodeWithUnicodeApp()
