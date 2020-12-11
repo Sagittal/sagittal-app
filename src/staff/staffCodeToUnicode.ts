@@ -1,4 +1,4 @@
-import {Io, max, sumTexts} from "@sagittal/general"
+import {Io, max, setAllPropertiesOfObjectOnAnother, sumTexts} from "@sagittal/general"
 import {ACCIDENTALS} from "./accidentals"
 // TODO: clean these up
 // tslint:disable-next-line:no-reaching-imports
@@ -20,11 +20,12 @@ import {
     _5v7kUp,
     _7CDown,
     _7CUp,
-// tslint:disable-next-line:no-reaching-imports
+    // tslint:disable-next-line:no-reaching-imports
 } from "./accidentals/sagittal"
 import {COMBINING_STAFF_POSITIONS} from "./combiningStaffPositions"
+import {INITIAL_STAFF_STATE} from "./constants"
 import {getUnicode} from "./getUnicode"
-import {staffGlobals} from "./globals"
+import {staffState} from "./globals"
 import {computeSpaceUnicode} from "./space"
 import {Clef, Code, Uni} from "./types"
 import {
@@ -42,7 +43,9 @@ import {
     nt4dn,
     nt8,
     nt8dn,
-    ntdb, st, STAFF_LINES,
+    ntdb,
+    st,
+    STAFF_LINES,
     tm0,
     tm1,
     tm2,
@@ -84,35 +87,27 @@ const canBePositioned = (unicode: Uni): boolean =>
 
 
 const applySmartSpace = (): Uni => {
-    // console.log("is smsartstaff on?", staffGlobals.smartStaffOn)
-    if (!staffGlobals.smartStaffOn) { // TODO: this could probably be simppiflied
-        const spaceUnicode = computeSpaceUnicode(staffGlobals.smartSpace)
-        staffGlobals.smartSpace = 0
+    if (!staffState.smartStaffOn) { // TODO: this could probably be simppiflied
+        const spaceUnicode = computeSpaceUnicode(staffState.smartSpace)
+        staffState.smartSpace = 0
         return spaceUnicode
     }
 
     // We've got enough staff ahead of us still to apply the advance and still be within it
-    if (staffGlobals.smartStaff >= staffGlobals.smartSpace) {
-        // console.log("ok have enough staff ahead of us", staffGlobals.smartStaff, "because we only need to apply this much space", staffGlobals.smartSpace)
-        const spaceUnicode = computeSpaceUnicode(staffGlobals.smartSpace)
+    if (staffState.smartStaff >= staffState.smartSpace) {
+        const spaceUnicode = computeSpaceUnicode(staffState.smartSpace)
 
-        staffGlobals.smartStaff = staffGlobals.smartStaff - staffGlobals.smartSpace
-        staffGlobals.smartSpace = 0
-        // console.log("there's now 0 space left, and ", staffGlobals.smartStaff, "staff left")
+        staffState.smartStaff = staffState.smartStaff - staffState.smartSpace
+        staffState.smartSpace = 0
 
         return spaceUnicode
     } else {
-        // console.log("ok we have", staffGlobals.smartStaff, "staff ahead of us still")
-        // console.log("and this much space/advance we're going to apply now, which is more than that", staffGlobals.smartSpace)
-
-        const useUpExistingStaffSpaceUnicode = computeSpaceUnicode(staffGlobals.smartStaff)
-
-        const remainingSpaceWeNeedToApply = staffGlobals.smartSpace - staffGlobals.smartStaff
-        // console.log("having used that up we have this much space left", remainingSpaceWeNeedToApply)
+        const useUpExistingStaffSpaceUnicode = computeSpaceUnicode(staffState.smartStaff)
+        const remainingSpaceWeNeedToApply = staffState.smartSpace - staffState.smartStaff
         const remainingStaffSpaceUnicode = computeSpaceUnicode(remainingSpaceWeNeedToApply)
 
-        staffGlobals.smartStaff = 24 - remainingSpaceWeNeedToApply
-        staffGlobals.smartSpace = 0
+        staffState.smartStaff = 24 - remainingSpaceWeNeedToApply
+        staffState.smartSpace = 0
 
         return sumTexts(useUpExistingStaffSpaceUnicode, st, remainingStaffSpaceUnicode)
     }
@@ -148,28 +143,23 @@ const getSpaceForUnicode = (unicode: Uni): number => {
 }
 
 const recordSpace = (unicode: Uni): void => {
-    staffGlobals.smartSpace = max(staffGlobals.smartSpace, getSpaceForUnicode(unicode))
+    staffState.smartSpace = max(staffState.smartSpace, getSpaceForUnicode(unicode))
 }
 
 const recordStaff = (userInput: Io): void => {
-    // console.log("we are recordin' some smart staff so we are turning it ON")
-    staffGlobals.smartStaffOn = true
-    if (userInput === Code["st"]) staffGlobals.smartStaff = staffGlobals.smartStaff + 24
-    if (userInput === Code["st8"]) staffGlobals.smartStaff = staffGlobals.smartStaff + 8
-    if (userInput === Code["st16"]) staffGlobals.smartStaff = staffGlobals.smartStaff + 16
-    if (userInput === Code["st24"]) staffGlobals.smartStaff = staffGlobals.smartStaff + 24
+    staffState.smartStaffOn = true
+    if (userInput === Code["st"]) staffState.smartStaff = staffState.smartStaff + 24
+    if (userInput === Code["st8"]) staffState.smartStaff = staffState.smartStaff + 8
+    if (userInput === Code["st16"]) staffState.smartStaff = staffState.smartStaff + 16
+    if (userInput === Code["st24"]) staffState.smartStaff = staffState.smartStaff + 24
 }
 
 const staffCodeToUnicode = (staffCode: Io): Uni => {
-    // TODO: just reset. and this should be test covered, integration test?
-    staffGlobals.smartStaffOn = false
-    staffGlobals.smartStaff = 0
-    staffGlobals.smartSpace = 0
+    setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 
     let staffPosition = "" as Uni // TODO: blank uni constant
 
     return `${staffCode.toLowerCase()} sp`
-    // return staffCode.toLowerCase()
         .replace(/<br>/g, " ")
         .replace(/\n/g, " ")
         .replace(/\t/g, " ")

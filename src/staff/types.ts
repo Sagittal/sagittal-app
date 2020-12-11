@@ -1,3 +1,12 @@
+import {staffState} from "./globals"
+
+interface StaffState {
+    smartSpace: number,
+    // TODO: look on forum to see if there's a good word for what these units are and make a nominal type for them
+    smartStaff: number,
+    smartStaffOn: boolean,
+}
+
 enum Clef {
     TREBLE = "treble",
     BASS = "bass",
@@ -424,4 +433,5 @@ export {
     Clef,
     Uni,
     Code,
+    StaffState,
 }

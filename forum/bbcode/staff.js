@@ -159,11 +159,12 @@ const accidentals_1 = __webpack_require__(240);
 const conventional_1 = __webpack_require__(241);
 const sagittal_1 = __webpack_require__(245);
 const combiningStaffPositions_1 = __webpack_require__(247);
-const getUnicode_1 = __webpack_require__(248);
-const globals_1 = __webpack_require__(251);
-const space_1 = __webpack_require__(252);
+const constants_1 = __webpack_require__(248);
+const getUnicode_1 = __webpack_require__(249);
+const globals_1 = __webpack_require__(252);
+const space_1 = __webpack_require__(253);
 const types_1 = __webpack_require__(242);
-const unicodeMap_1 = __webpack_require__(250);
+const unicodeMap_1 = __webpack_require__(251);
 const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).includes(unicode)
     || Object.values(unicodeMap_1.NOTES).includes(unicode)
     || Object.values(unicodeMap_1.BEAMED_GROUPS_OF_NOTES).includes(unicode)
@@ -186,30 +187,24 @@ const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).in
 \uEC30 to \uEC3F // Kievan square notation
  */
 const applySmartSpace = () => {
-    // console.log("is smsartstaff on?", staffGlobals.smartStaffOn)
-    if (!globals_1.staffGlobals.smartStaffOn) { // TODO: this could probably be simppiflied
-        const spaceUnicode = space_1.computeSpaceUnicode(globals_1.staffGlobals.smartSpace);
-        globals_1.staffGlobals.smartSpace = 0;
+    if (!globals_1.staffState.smartStaffOn) { // TODO: this could probably be simppiflied
+        const spaceUnicode = space_1.computeSpaceUnicode(globals_1.staffState.smartSpace);
+        globals_1.staffState.smartSpace = 0;
         return spaceUnicode;
     }
     // We've got enough staff ahead of us still to apply the advance and still be within it
-    if (globals_1.staffGlobals.smartStaff >= globals_1.staffGlobals.smartSpace) {
-        // console.log("ok have enough staff ahead of us", staffGlobals.smartStaff, "because we only need to apply this much space", staffGlobals.smartSpace)
-        const spaceUnicode = space_1.computeSpaceUnicode(globals_1.staffGlobals.smartSpace);
-        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff - globals_1.staffGlobals.smartSpace;
-        globals_1.staffGlobals.smartSpace = 0;
-        // console.log("there's now 0 space left, and ", staffGlobals.smartStaff, "staff left")
+    if (globals_1.staffState.smartStaff >= globals_1.staffState.smartSpace) {
+        const spaceUnicode = space_1.computeSpaceUnicode(globals_1.staffState.smartSpace);
+        globals_1.staffState.smartStaff = globals_1.staffState.smartStaff - globals_1.staffState.smartSpace;
+        globals_1.staffState.smartSpace = 0;
         return spaceUnicode;
     }
     else {
-        // console.log("ok we have", staffGlobals.smartStaff, "staff ahead of us still")
-        // console.log("and this much space/advance we're going to apply now, which is more than that", staffGlobals.smartSpace)
-        const useUpExistingStaffSpaceUnicode = space_1.computeSpaceUnicode(globals_1.staffGlobals.smartStaff);
-        const remainingSpaceWeNeedToApply = globals_1.staffGlobals.smartSpace - globals_1.staffGlobals.smartStaff;
-        // console.log("having used that up we have this much space left", remainingSpaceWeNeedToApply)
+        const useUpExistingStaffSpaceUnicode = space_1.computeSpaceUnicode(globals_1.staffState.smartStaff);
+        const remainingSpaceWeNeedToApply = globals_1.staffState.smartSpace - globals_1.staffState.smartStaff;
         const remainingStaffSpaceUnicode = space_1.computeSpaceUnicode(remainingSpaceWeNeedToApply);
-        globals_1.staffGlobals.smartStaff = 24 - remainingSpaceWeNeedToApply;
-        globals_1.staffGlobals.smartSpace = 0;
+        globals_1.staffState.smartStaff = 24 - remainingSpaceWeNeedToApply;
+        globals_1.staffState.smartSpace = 0;
         return general_1.sumTexts(useUpExistingStaffSpaceUnicode, unicodeMap_1.st, remainingStaffSpaceUnicode);
     }
 };
@@ -254,28 +249,23 @@ const getSpaceForUnicode = (unicode) => {
     return 11;
 };
 const recordSpace = (unicode) => {
-    globals_1.staffGlobals.smartSpace = general_1.max(globals_1.staffGlobals.smartSpace, getSpaceForUnicode(unicode));
+    globals_1.staffState.smartSpace = general_1.max(globals_1.staffState.smartSpace, getSpaceForUnicode(unicode));
 };
 const recordStaff = (userInput) => {
-    // console.log("we are recordin' some smart staff so we are turning it ON")
-    globals_1.staffGlobals.smartStaffOn = true;
+    globals_1.staffState.smartStaffOn = true;
     if (userInput === types_1.Code["st"])
-        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff + 24;
+        globals_1.staffState.smartStaff = globals_1.staffState.smartStaff + 24;
     if (userInput === types_1.Code["st8"])
-        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff + 8;
+        globals_1.staffState.smartStaff = globals_1.staffState.smartStaff + 8;
     if (userInput === types_1.Code["st16"])
-        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff + 16;
+        globals_1.staffState.smartStaff = globals_1.staffState.smartStaff + 16;
     if (userInput === types_1.Code["st24"])
-        globals_1.staffGlobals.smartStaff = globals_1.staffGlobals.smartStaff + 24;
+        globals_1.staffState.smartStaff = globals_1.staffState.smartStaff + 24;
 };
 const staffCodeToUnicode = (staffCode) => {
-    // TODO: just reset. and this should be test covered, integration test?
-    globals_1.staffGlobals.smartStaffOn = false;
-    globals_1.staffGlobals.smartStaff = 0;
-    globals_1.staffGlobals.smartSpace = 0;
+    general_1.setAllPropertiesOfObjectOnAnother({ objectToChange: globals_1.staffState, objectWithProperties: constants_1.INITIAL_STAFF_STATE });
     let staffPosition = ""; // TODO: blank uni constant
     return `${staffCode.toLowerCase()} sp`
-        // return staffCode.toLowerCase()
         .replace(/<br>/g, " ")
         .replace(/\n/g, " ")
         .replace(/\t/g, " ")
@@ -16500,11 +16490,27 @@ exports.COMBINING_STAFF_POSITIONS = COMBINING_STAFF_POSITIONS;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.INITIAL_STAFF_STATE = void 0;
+const INITIAL_STAFF_STATE = {
+    smartSpace: 0,
+    smartStaff: 0,
+    smartStaffOn: false,
+};
+exports.INITIAL_STAFF_STATE = INITIAL_STAFF_STATE;
+
+
+/***/ }),
+/* 249 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUnicode = void 0;
 const combiningStaffPositions_1 = __webpack_require__(247);
 const types_1 = __webpack_require__(242);
-const unicodeFromUnknownCode_1 = __webpack_require__(249);
-const unicodeMap_1 = __webpack_require__(250);
+const unicodeFromUnknownCode_1 = __webpack_require__(250);
+const unicodeMap_1 = __webpack_require__(251);
 const CODES_WITH_BASS = {
     ...unicodeMap_1.CODES,
     ...combiningStaffPositions_1.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
@@ -16524,7 +16530,7 @@ exports.getUnicode = getUnicode;
 
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16537,7 +16543,7 @@ exports.unicodeFromUnknownCode = unicodeFromUnknownCode;
 
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16797,23 +16803,20 @@ exports.CODES = CODES;
 
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.staffGlobals = void 0;
-let staffGlobals = {
-    smartSpace: 0,
-    smartStaff: 0,
-    smartStaffOn: false,
-};
-exports.staffGlobals = staffGlobals;
+exports.staffState = void 0;
+const constants_1 = __webpack_require__(248);
+const staffState = JSON.parse(JSON.stringify(constants_1.INITIAL_STAFF_STATE));
+exports.staffState = staffState;
 
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16821,7 +16824,7 @@ exports.staffGlobals = staffGlobals;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeSpaceUnicode = void 0;
 const general_1 = __webpack_require__(3);
-const unicodeMap_1 = __webpack_require__(250);
+const unicodeMap_1 = __webpack_require__(251);
 const BIGGEST_SPACE = 16;
 // TODO: ugh names are so bad
 const SPACES_ARRAY = [

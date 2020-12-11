@@ -1,7 +1,7 @@
-import {staffGlobals} from "../../../../src/staff/globals"
+import {setAllPropertiesOfObjectOnAnother} from "@sagittal/general"
+import {INITIAL_STAFF_STATE} from "../../../../src/staff/constants"
+import {staffState} from "../../../../src/staff/globals"
 
 afterEach((): void => {
-    staffGlobals.smartSpace = 0
-    staffGlobals.smartStaff = 0 // TODO: use the provided helpers and an initial state
-    staffGlobals.smartStaffOn = false
+    setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 })
