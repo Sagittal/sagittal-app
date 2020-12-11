@@ -61,6 +61,8 @@ import {
     tmnm,
 } from "./unicodeMap"
 
+// TODO: obviously break this huge file down a lot
+
 const canBePositioned = (unicode: Uni): boolean =>
     Object.values(ACCIDENTALS).includes(unicode)
     || Object.values(NOTES).includes(unicode)
@@ -85,9 +87,11 @@ const canBePositioned = (unicode: Uni): boolean =>
 \uEC30 to \uEC3F // Kievan square notation
  */
 
-
+// TODO: maybe Auto Staff opt-out, rather than opt-in.
+// TODO: and related, do not take clef as a bbCode argument
+//  See forum post after this one: http://forum.sagittal.org/viewtopic.php?p=3095#p3095
 const applySmartSpace = (space: number): Uni => {
-    if (!staffState.smartStaffOn) { // TODO: this could probably be simppiflied
+    if (!staffState.smartStaffOn) { // TODO: this could probably be simplified
         const spaceUnicode = computeSpaceUnicode(staffState.smartSpace)
         staffState.smartSpace = 0
         return spaceUnicode

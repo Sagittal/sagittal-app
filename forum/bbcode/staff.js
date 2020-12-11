@@ -119,6 +119,8 @@ const replace_1 = __webpack_require__(1);
 Object.defineProperty(exports, "replaceStaffCodeWithUnicodeBBCode", { enumerable: true, get: function () { return replace_1.replaceStaffCodeWithUnicodeBBCode; } });
 document.querySelectorAll("div.staff.unprocessed").forEach(replace_1.replaceStaffCodeWithUnicodeBBCode);
 // TODO: I could theoretically add a script that would programmatically SFTP changes up to the site
+//  If it does, it should abort if the thing up there currently does not match what we have here
+//  Maybe I could even find where bbCode replacements and usages are stored...? or are those probably in the DB...?
 
 
 /***/ }),
@@ -129,16 +131,15 @@ document.querySelectorAll("div.staff.unprocessed").forEach(replace_1.replaceStaf
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.replaceStaffCodeWithUnicodeBBCode = void 0;
-const staffCodeToUnicode_1 = __webpack_require__(2);
-const types_1 = __webpack_require__(242);
-const BASS_CLEF_INITIATION = `${types_1.Code["st24"]} ${types_1.Code["bscf"]} sp `;
-const TREBLE_CLEF_INITIATION = `${types_1.Code["st24"]} ${types_1.Code["tbcf"]} sp `;
+const constants_1 = __webpack_require__(2);
+const staffCodeToUnicode_1 = __webpack_require__(4);
+const types_1 = __webpack_require__(3);
 const replaceStaffCodeWithUnicodeBBCode = (staffDiv) => {
     const clef = staffDiv.classList[2];
     staffDiv.classList.remove("unprocessed");
     // TODO: support the clef initiation feature on the web
     // TODO: test cover that this doesn't default to treble
-    const clefInitiation = clef === types_1.Clef.BASS ? BASS_CLEF_INITIATION : clef === types_1.Clef.TREBLE ? TREBLE_CLEF_INITIATION : "";
+    const clefInitiation = clef === types_1.Clef.BASS ? constants_1.BASS_CLEF_INITIATION : clef === types_1.Clef.TREBLE ? constants_1.TREBLE_CLEF_INITIATION : "";
     staffDiv.textContent = staffCodeToUnicode_1.staffCodeToUnicode(`${clefInitiation}${staffDiv.textContent}`);
 };
 exports.replaceStaffCodeWithUnicodeBBCode = replaceStaffCodeWithUnicodeBBCode;
@@ -151,19 +152,472 @@ exports.replaceStaffCodeWithUnicodeBBCode = replaceStaffCodeWithUnicodeBBCode;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.INITIAL_STAFF_STATE = exports.TREBLE_CLEF_INITIATION = exports.BASS_CLEF_INITIATION = void 0;
+const types_1 = __webpack_require__(3);
+const BASS_CLEF_INITIATION = `${types_1.Code["st"]} ${types_1.Code["bscf"]} sp `;
+exports.BASS_CLEF_INITIATION = BASS_CLEF_INITIATION;
+const TREBLE_CLEF_INITIATION = `${types_1.Code["st"]} ${types_1.Code["tbcf"]} sp `;
+exports.TREBLE_CLEF_INITIATION = TREBLE_CLEF_INITIATION;
+const INITIAL_STAFF_STATE = {
+    smartSpace: 0,
+    smartStaff: 0,
+    smartStaffOn: false,
+};
+exports.INITIAL_STAFF_STATE = INITIAL_STAFF_STATE;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Code = exports.Clef = void 0;
+var Clef;
+(function (Clef) {
+    Clef["TREBLE"] = "treble";
+    Clef["BASS"] = "bass";
+})(Clef || (Clef = {}));
+exports.Clef = Clef;
+var Code;
+(function (Code) {
+    Code["sp1"] = "sp1";
+    Code["sp2"] = "sp2";
+    Code["sp3"] = "sp3";
+    Code["sp4"] = "sp4";
+    Code["sp5"] = "sp5";
+    Code["sp6"] = "sp6";
+    Code["sp7"] = "sp7";
+    Code["sp8"] = "sp8";
+    Code["sp9"] = "sp9";
+    Code["sp10"] = "sp10";
+    Code["sp11"] = "sp11";
+    Code["sp12"] = "sp12";
+    Code["sp13"] = "sp13";
+    Code["sp14"] = "sp14";
+    Code["sp15"] = "sp15";
+    Code["sp16"] = "sp16";
+    Code["st8"] = "st8";
+    Code["st16"] = "st16";
+    Code["st24"] = "st24";
+    Code["st"] = "st";
+    Code["lgln"] = "lgln";
+    Code["brln"] = "brln";
+    Code["brlndb"] = "brlndb";
+    Code["tbcf"] = "tbcf";
+    Code["alcf"] = "alcf";
+    Code["bscf"] = "bscf";
+    Code["8va"] = "8va";
+    Code["8vb"] = "8vb";
+    Code["tm0"] = "tm0";
+    Code["tm1"] = "tm1";
+    Code["tm2"] = "tm2";
+    Code["tm3"] = "tm3";
+    Code["tm4"] = "tm4";
+    Code["tm5"] = "tm5";
+    Code["tm6"] = "tm6";
+    Code["tm7"] = "tm7";
+    Code["tm8"] = "tm8";
+    Code["tm9"] = "tm9";
+    Code["tmcm"] = "tmcm";
+    Code["tmnm"] = "tmnm";
+    Code["tmdn"] = "tmdn";
+    Code["ntdb"] = "ntdb";
+    Code["nt1"] = "nt1";
+    Code["nt2"] = "nt2";
+    Code["nt2dn"] = "nt2dn";
+    Code["nt4"] = "nt4";
+    Code["nt4dn"] = "nt4dn";
+    Code["nt8"] = "nt8";
+    Code["nt8dn"] = "nt8dn";
+    Code["nt16"] = "nt16";
+    Code["nt16dn"] = "nt16dn";
+    Code["nt"] = "nt";
+    Code["rsdb"] = "rsdb";
+    Code["rs1"] = "rs1";
+    Code["rs2"] = "rs2";
+    Code["rs4"] = "rs4";
+    Code["rs8"] = "rs8";
+    Code["rs16"] = "rs16";
+    Code["rs"] = "rs";
+    Code["dt"] = "dt";
+    Code["agdt"] = "agdt";
+    Code["ntbmst"] = "ntbmst";
+    Code["ntbm8"] = "ntbm8";
+    Code["ntbm16"] = "ntbm16";
+    Code["bm8"] = "bm8";
+    Code["bm16"] = "bm16";
+    Code["tp3"] = "tp3";
+    Code["c6"] = "c6";
+    Code["b5"] = "b5";
+    Code["a5"] = "a5";
+    Code["g5"] = "g5";
+    Code["f5"] = "f5";
+    Code["e5"] = "e5";
+    Code["d5"] = "d5";
+    Code["c5"] = "c5";
+    Code["b4"] = "b4";
+    Code["a4"] = "a4";
+    Code["g4"] = "g4";
+    Code["f4"] = "f4";
+    Code["e4"] = "e4";
+    Code["d4"] = "d4";
+    Code["c4"] = "c4";
+    Code["b3"] = "b3";
+    Code["a3"] = "a3";
+    Code["g3"] = "g3";
+    Code["f3"] = "f3";
+    Code["e3"] = "e3";
+    Code["d3"] = "d3";
+    Code["c3"] = "c3";
+    Code["b2"] = "b2";
+    Code["a2"] = "a2";
+    Code["g2"] = "g2";
+    Code["f2"] = "f2";
+    Code["e2"] = "e2";
+    Code["d2"] = "d2";
+    Code["c2"] = "c2";
+    Code["h"] = "h";
+    Code["n"] = "n";
+    Code["b"] = "b";
+    Code["#"] = "#";
+    Code["bb"] = "bb";
+    Code["x"] = "x";
+    Code["smallDoubleSharp"] = "smallDoubleSharp";
+    Code["^"] = "^";
+    Code["v"] = "v";
+    Code[".bbv"] = ".bbv";
+    Code[".bv"] = ".bv";
+    Code[".nv"] = ".nv";
+    Code[".#v"] = ".#v";
+    Code[".xv"] = ".xv";
+    Code[".bb^"] = ".bb^";
+    Code[".b^"] = ".b^";
+    Code[".n^"] = ".n^";
+    Code[".#^"] = ".#^";
+    Code[".x^"] = ".x^";
+    Code[".bbvv"] = ".bbvv";
+    Code[".bvv"] = ".bvv";
+    Code[".nvv"] = ".nvv";
+    Code[".#vv"] = ".#vv";
+    Code[".xvv"] = ".xvv";
+    Code[".bb^^"] = ".bb^^";
+    Code[".b^^"] = ".b^^";
+    Code[".n^^"] = ".n^^";
+    Code[".#^^"] = ".#^^";
+    Code[".x^^"] = ".x^^";
+    Code[".bbvvv"] = ".bbvvv";
+    Code[".bvvv"] = ".bvvv";
+    Code[".nvvv"] = ".nvvv";
+    Code[".#vvv"] = ".#vvv";
+    Code[".xvvv"] = ".xvvv";
+    Code[".bb^^^"] = ".bb^^^";
+    Code[".b^^^"] = ".b^^^";
+    Code[".n^^^"] = ".n^^^";
+    Code[".#^^^"] = ".#^^^";
+    Code[".x^^^"] = ".x^^^";
+    Code[".l"] = ".l";
+    Code[".p"] = ".p";
+    Code[".ll"] = ".ll";
+    Code[".pp"] = ".pp";
+    Code[".<"] = ".<";
+    Code[".>"] = ".>";
+    Code[".<|"] = ".<|";
+    Code[".>|"] = ".>|";
+    Code[".\\\\"] = ".\\\\";
+    Code[".//"] = ".//";
+    Code[".\\"] = ".\\";
+    Code["./"] = "./";
+    Code[".^"] = ".^";
+    Code[".v"] = ".v";
+    Code[".{"] = ".{";
+    Code[".}"] = ".}";
+    Code[".bbt"] = ".bbt";
+    Code[".bt"] = ".bt";
+    Code[".nt"] = ".nt";
+    Code[".#t"] = ".#t";
+    Code[".xt"] = ".xt";
+    Code[".<t"] = ".<t";
+    Code[".>t"] = ".>t";
+    Code[".\\\\\\"] = ".\\\\\\";
+    Code[".///"] = ".///";
+    Code[".~"] = ".~";
+    Code[".~~"] = ".~~";
+    Code[".="] = ".=";
+    Code[".bb"] = ".bb";
+    Code[".b"] = ".b";
+    Code[".n"] = ".n";
+    Code[".#"] = ".#";
+    Code[".x"] = ".x";
+    Code[".<b"] = ".<b";
+    Code[".>#"] = ">#";
+    Code[">"] = ">";
+    Code["<"] = "<";
+    Code[">#"] = ">#";
+    Code["<b"] = "<b";
+    Code["+"] = "+";
+    Code["-"] = "-";
+    Code["|("] = "|(";
+    Code["!("] = "!(";
+    Code["/|"] = "/|";
+    Code["\\!"] = "\\!";
+    Code["|)"] = "|)";
+    Code["!)"] = "!)";
+    Code["//|"] = "//|";
+    Code["\\\\!"] = "\\\\!";
+    Code["/|)"] = "/|)";
+    Code["\\!)"] = "\\!)";
+    Code["/|\\"] = "/|\\";
+    Code["\\!/"] = "\\!/";
+    Code["(|)"] = "(|)";
+    Code["(!)"] = "(!)";
+    Code["(|\\"] = "(|\\";
+    Code["(!/"] = "(!/";
+    Code[")||("] = ")||(";
+    Code[")!!("] = ")!!(";
+    Code["||)"] = "||)";
+    Code["!!)"] = "!!)";
+    Code["||\\"] = "||\\";
+    Code["!!/"] = "!!/";
+    Code["/||)"] = "/||)";
+    Code["\\!!)"] = "\\!!)";
+    Code["/||\\"] = "/||\\";
+    Code["\\!!/"] = "\\!!/";
+    Code["|||("] = "|||(";
+    Code["!!!("] = "!!!(";
+    Code["/|||"] = "/|||";
+    Code["\\!!!"] = "\\!!!";
+    Code["|||)"] = "|||)";
+    Code["!!!)"] = "!!!)";
+    Code["//|||"] = "//|||";
+    Code["\\\\!!!"] = "\\\\!!!";
+    Code["/|||)"] = "/|||)";
+    Code["\\!!!)"] = "\\!!!)";
+    Code["/|||\\"] = "/|||\\";
+    Code["\\!!!/"] = "\\!!!/";
+    Code["(|||)"] = "(|||)";
+    Code["(!!!)"] = "(!!!)";
+    Code["(|||\\"] = "(|||\\";
+    Code["(!!!/"] = "(!!!/";
+    Code[")X("] = ")X(";
+    Code[")Y("] = ")Y(";
+    Code["X)"] = "X)";
+    Code["Y)"] = "Y)";
+    Code["X\\"] = "X\\";
+    Code["Y/"] = "Y/";
+    Code["/X)"] = "/X)";
+    Code["\\Y)"] = "\\Y)";
+    Code["/X\\"] = "/X\\";
+    Code["\\Y/"] = "\\Y/";
+    Code[")|("] = ")|(";
+    Code[")!("] = ")!(";
+    Code["~|("] = "~|(";
+    Code["~!("] = "~!(";
+    Code["|\\"] = "|\\";
+    Code["!/"] = "!/";
+    Code["(|"] = "(|";
+    Code["(!"] = "(!";
+    Code["(|("] = "(|(";
+    Code["(!("] = "(!(";
+    Code["~||("] = "~||(";
+    Code["~!!("] = "~!!(";
+    Code[")||~"] = ")||~";
+    Code[")!!~"] = ")!!~";
+    Code["/||"] = "/||";
+    Code["\\!!"] = "\\!!";
+    Code["(||("] = "(||(";
+    Code["(!!("] = "(!!(";
+    Code["//||"] = "//||";
+    Code["\\\\!!"] = "\\\\!!";
+    Code[")|||("] = ")|||(";
+    Code[")!!!("] = ")!!!(";
+    Code["~|||("] = "~|||(";
+    Code["~!!!("] = "~!!!(";
+    Code["|||\\"] = "|||\\";
+    Code["!!!/"] = "!!!/";
+    Code["(|||"] = "(|||";
+    Code["(!!!"] = "(!!!";
+    Code["(|||("] = "(|||(";
+    Code["(!!!("] = "(!!!(";
+    Code["~X("] = "~X(";
+    Code["~Y("] = "~Y(";
+    Code[")X~"] = ")X~";
+    Code[")Y~"] = ")Y~";
+    Code["/X"] = "/X";
+    Code["\\Y"] = "\\Y";
+    Code["(X("] = "(X(";
+    Code["(Y("] = "(Y(";
+    Code["//X"] = "//X";
+    Code["\\\\Y"] = "\\\\Y";
+    Code["|~"] = "|~";
+    Code["!~"] = "!~";
+    Code[")/|"] = ")/|";
+    Code[")\\!"] = ")\\!";
+    Code["/|~"] = "/|~";
+    Code["\\!~"] = "\\!~";
+    Code["||~"] = "||~";
+    Code["!!~"] = "!!~";
+    Code[")||)"] = ")||)";
+    Code[")!!)"] = ")!!)";
+    Code["/||~"] = "/||~";
+    Code["\\!!~"] = "\\!!~";
+    Code["|||~"] = "|||~";
+    Code["!!!~"] = "!!!~";
+    Code[")/|||"] = ")/|||";
+    Code[")\\!!!"] = ")\\!!!";
+    Code["/|||~"] = "/|||~";
+    Code["\\!!!~"] = "\\!!!~";
+    Code["X~"] = "X~";
+    Code["Y~"] = "Y~";
+    Code[")X)"] = ")X)";
+    Code[")Y)"] = ")Y)";
+    Code["/X~"] = "/X~";
+    Code["\\Y~"] = "\\Y~";
+    Code[")|"] = ")|";
+    Code[")!"] = ")!";
+    Code["~|"] = "~|";
+    Code["~!"] = "~!";
+    Code[")~|"] = ")~|";
+    Code[")~!"] = ")~!";
+    Code["~~|"] = "~~|";
+    Code["~~!"] = "~~!";
+    Code[")|~"] = ")|~";
+    Code[")!~"] = ")!~";
+    Code[")|)"] = ")|)";
+    Code[")!)"] = ")!)";
+    Code["~|)"] = "~|)";
+    Code["~!)"] = "~!)";
+    Code["~|\\"] = "~|\\";
+    Code["~!/"] = "~!/";
+    Code[")//|"] = ")//|";
+    Code[")\\\\!"] = ")\\\\!";
+    Code["(|~"] = "(|~";
+    Code["(!~"] = "(!~";
+    Code["(/|"] = "(/|";
+    Code["(\\!"] = "(\\!";
+    Code[")/|\\"] = ")/|\\";
+    Code[")\\!/"] = ")\\!/";
+    Code["|\\)"] = "|\\)";
+    Code["!/)"] = "!/)";
+    Code["|\\\\"] = "|\\\\";
+    Code["!//"] = "!//";
+    Code[")|\\\\"] = ")|\\\\";
+    Code[")!//"] = ")!//";
+    Code[")~||"] = ")~||";
+    Code[")~!!"] = ")~!!";
+    Code["~~||"] = "~~||";
+    Code["~~!!"] = "~~!!";
+    Code[")/||"] = ")/||";
+    Code[")\\!!"] = ")\\!!";
+    Code["(||"] = "(||";
+    Code["(!!"] = "(!!";
+    Code["~||)"] = "~||)";
+    Code["~!!)"] = "~!!)";
+    Code["~||\\"] = "~||\\";
+    Code["~!!/"] = "~!!/";
+    Code[")//||"] = ")//||";
+    Code[")\\\\!!"] = ")\\\\!!";
+    Code["(||~"] = "(||~";
+    Code["(!!~"] = "(!!~";
+    Code[")|||"] = ")|||";
+    Code[")!!!"] = ")!!!";
+    Code["~|||"] = "~|||";
+    Code["~!!!"] = "~!!!";
+    Code[")~|||"] = ")~|||";
+    Code[")~!!!"] = ")~!!!";
+    Code["~~|||"] = "~~|||";
+    Code["~~!!!"] = "~~!!!";
+    Code[")|||~"] = ")|||~";
+    Code[")!!!~"] = ")!!!~";
+    Code[")|||)"] = ")|||)";
+    Code[")!!!)"] = ")!!!)";
+    Code["~|||)"] = "~|||)";
+    Code["~!!!)"] = "~!!!)";
+    Code["~|||\\"] = "~|||\\";
+    Code["~!!!/"] = "~!!!/";
+    Code[")//|||"] = ")//|||";
+    Code[")\\\\!!!"] = ")\\\\!!!";
+    Code["(|||~"] = "(|||~";
+    Code["(!!!~"] = "(!!!~";
+    Code["(/|||"] = "(/|||";
+    Code["(\\!!!"] = "(\\!!!";
+    Code[")/|||\\"] = ")/|||\\";
+    Code[")\\!!!/"] = ")\\!!!/";
+    Code["|||\\)"] = "|||\\)";
+    Code["!!!/)"] = "!!!/)";
+    Code["|||\\\\"] = "|||\\\\";
+    Code["!!!//"] = "!!!//";
+    Code[")|||\\\\"] = ")|||\\\\";
+    Code[")!!!//"] = ")!!!//";
+    Code[")~X"] = ")~X";
+    Code[")~Y"] = ")~Y";
+    Code["~~X"] = "~~X";
+    Code["~~Y"] = "~~Y";
+    Code[")/X"] = ")/X";
+    Code[")\\Y"] = ")\\Y";
+    Code["(X"] = "(X";
+    Code["(Y"] = "(Y";
+    Code["~X)"] = "~X)";
+    Code["~Y)"] = "~Y)";
+    Code["~X\\"] = "~X\\";
+    Code["~Y/"] = "~Y/";
+    Code[")//X"] = ")//X";
+    Code[")\\\\Y"] = ")\\\\Y";
+    Code["(X~"] = "(X~";
+    Code["(Y~"] = "(Y~";
+    Code["|"] = "|";
+    Code["!"] = "!";
+    Code["'"] = "'";
+    Code["."] = ".";
+    Code["`"] = "`";
+    Code[","] = ",";
+    Code["``"] = "``";
+    Code[",,"] = ",,";
+    Code["@1"] = "@1";
+    Code["l1"] = "l1";
+    Code["@2"] = "@2";
+    Code["l2"] = "l2";
+    Code["@3"] = "@3";
+    Code["l3"] = "l3";
+    Code["@4"] = "@4";
+    Code["l4"] = "l4";
+    Code["@5"] = "@5";
+    Code["l5"] = "l5";
+    Code["@6"] = "@6";
+    Code["l6"] = "l6";
+    Code["@7"] = "@7";
+    Code["l7"] = "l7";
+    Code["@8"] = "@8";
+    Code["l8"] = "l8";
+    Code["@9"] = "@9";
+    Code["l9"] = "l9";
+    Code["@."] = "@.";
+    Code["l."] = "l.";
+})(Code || (Code = {}));
+exports.Code = Code;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.staffCodeToUnicode = void 0;
-const general_1 = __webpack_require__(3);
-const accidentals_1 = __webpack_require__(240);
+const general_1 = __webpack_require__(5);
+const accidentals_1 = __webpack_require__(242);
 // TODO: clean these up
 // tslint:disable-next-line:no-reaching-imports
-const conventional_1 = __webpack_require__(241);
-const sagittal_1 = __webpack_require__(245);
-const combiningStaffPositions_1 = __webpack_require__(247);
-const constants_1 = __webpack_require__(248);
+const conventional_1 = __webpack_require__(243);
+const sagittal_1 = __webpack_require__(246);
+const combiningStaffPositions_1 = __webpack_require__(248);
+const constants_1 = __webpack_require__(2);
 const getUnicode_1 = __webpack_require__(249);
 const globals_1 = __webpack_require__(252);
 const space_1 = __webpack_require__(253);
-const types_1 = __webpack_require__(242);
+const types_1 = __webpack_require__(3);
 const unicodeMap_1 = __webpack_require__(251);
 const canBePositioned = (unicode) => Object.values(accidentals_1.ACCIDENTALS).includes(unicode)
     || Object.values(unicodeMap_1.NOTES).includes(unicode)
@@ -303,7 +757,7 @@ exports.staffCodeToUnicode = staffCodeToUnicode;
 
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -314,7 +768,7 @@ exports.computeCombinations = exports.ceil = exports.BASE_2 = exports.abs = expo
 exports.isQuotientRational = exports.computeDecimalFromQuotient = exports.doForEachRationalMonzo = exports.radiansToDegrees = exports.computeAngle = exports.isIntegerDecimalRough = exports.computeRationalDecimalGpf = exports.isDecimalInteger = exports.computeLowestTermsRationalQuotient = exports.areMonzosEqual = exports.computeDecimalFromMonzo = exports.add = exports.TWO_PRIME_INDEX = exports.computeSubQuotient = exports.computeRoughRationalQuotient = exports.THREE_SMOOTHNESS = exports.THREE_PRIME_INDEX = exports.computeSuperQuotient = exports.sumMonzos = exports.sum = exports.round = exports.computePrimes = exports.pow = exports.ONE = exports.negative = exports.multiply = exports.isMonzoSuper = exports.mod = exports.min = exports.max = exports.log = exports.invertMonzo = exports.integerDivide = exports.QuotientPartType = exports.floor = exports.FIVE_ROUGHNESS = exports.THREE_ROUGHNESS = exports.FIVE_PRIME_INDEX = exports.dividesEvenly = exports.Direction = exports.subtract = exports.count = exports.computeTriangularNumber = exports.computeSuperMonzo = exports.computeRoughRationalMonzo = exports.computeQuotientFromMonzo = exports.computePrimeCount = exports.computeRationalMonzoFromRationalQuotient = exports.isMonzoSub = exports.computeDistributions = void 0;
 exports.computeRationalQuotientSmoothness = exports.sumRationalScamons = exports.divide = exports.scaleScamon = exports.computeRationalDecimalCopf = exports.isEven = exports.computePatentVal = exports.computeMonzoMapping = exports.subtractRationalScamons = exports.invertQuotient = exports.isLowestTerms = exports.multiplyScamon = exports.invertScamon = exports.computeRationalQuotientFromRationalScamon = exports.isRationalScamonSmooth = exports.computeRationalScamonSmoothness = exports.isRationalScamonRough = exports.computeRationalScamonGeometricMean = exports.computeIrrationalDecimalFromScamon = exports.addRationalScamons = exports.isRationalScamonUnison = exports.isRationalScamonSub = exports.computeRationalScamonFromRationalMonzo = exports.areRationalScamonsEqual = exports.addScamons = exports.computeScamonFromQuotient = exports.computeScamonFromMonzo = exports.computeRationalScamonSopfr = exports.computeRationalScamonCopfr = exports.HALF_SCALER = exports.computeScamonFromDecimal = exports.halveScamon = exports.isScamonRational = exports.isScamonUnison = exports.isScamonSub = exports.isScamonLesserOrEqual = exports.isScamonGreaterOrEqual = exports.isScamonLesser = exports.isScamonGreater = exports.computeSuperScamon = exports.areScamonsEqual = exports.MeanType = exports.reciprocal = exports.EMPTY_MONZO = exports.computeRationalMonzoSmoothness = exports.computeRationalMonzoSopfr = exports.computeRationalMonzoCopfr = exports.computeRationalMonzoFromRationalDecimal = exports.isMonzoRational = exports.computeRationalDecimalCopfr = void 0;
 exports.runScriptAndGetConsoleOutput = exports.customMatchers = exports.slowReporter = exports.specNameReporter = exports.specReporter = exports.onlyRunInCi = exports.catchEmptyFiles = exports.catchBadSpecFiles = exports.catchBadMainDescriptions = exports.computePossibilities = exports.computeParameterValues = exports.computePitchExpectation = exports.two3FreeClassFixture = exports.computeLowerAndUpperExclusive = exports.SYNTONIC_COMMA = exports.SEPTIMAL_KLEISMA = exports.SEPTIMAL_COMMA = exports.SCHISMINA = exports.SCHISMA = exports.APOTOME = exports.OCTAVE_WINDOW = exports.THIRTYONE_THREE_COMMA = exports.PYTHAGOREAN_WHOLE_TONE = exports.PYTHAGOREAN_LARGE_DIESIS = exports.SUPERCOMPLEX_PYTHAGOREAN_KLEISMA = exports.PYTHAGOREAN_SCHISMA = exports.PYTHAGOREAN_LIMMA = exports.PYTHAGOREAN_COMMA = exports.TWO_3_FREE_CLASS_SIGN = exports.TWO_3_FREE = exports.format23FreeClass = exports.compute23FreeClassName = exports.computeCentsFromPitch = exports.THREE_PRIME_LIMIT = exports.compute23FreeClass = exports.COMMA_POPULARITIES = exports.computePitchFromCents = exports.UNISON = exports.subtractPitch = exports.dividePitch = exports.CENTS_PER_OCTAVE = exports.maxScamon = exports.computeArithmeticMean = exports.computeIrrationalMonzoFromScamon = exports.IRRATIONAL_SCAMON_BASE_MONZO = exports.computeRationalMonzoFromRationalScamon = exports.FIVE_SMOOTHNESS = exports.computeRationalScamonFromRationalQuotient = void 0;
-var code_1 = __webpack_require__(4);
+var code_1 = __webpack_require__(6);
 Object.defineProperty(exports, "DEFAULT_PRECISION", { enumerable: true, get: function () { return code_1.DEFAULT_PRECISION; } });
 Object.defineProperty(exports, "computeDeepDistinct", { enumerable: true, get: function () { return code_1.computeDeepDistinct; } });
 Object.defineProperty(exports, "computeExtensionBase", { enumerable: true, get: function () { return code_1.computeExtensionBase; } });
@@ -358,7 +812,7 @@ Object.defineProperty(exports, "cleanObject", { enumerable: true, get: function 
 Object.defineProperty(exports, "setAllPropertiesOfObjectOnAnother", { enumerable: true, get: function () { return code_1.setAllPropertiesOfObjectOnAnother; } });
 Object.defineProperty(exports, "cleanArray", { enumerable: true, get: function () { return code_1.cleanArray; } });
 Object.defineProperty(exports, "camelCaseToConstantCase", { enumerable: true, get: function () { return code_1.camelCaseToConstantCase; } });
-var io_1 = __webpack_require__(62);
+var io_1 = __webpack_require__(64);
 Object.defineProperty(exports, "sumTexts", { enumerable: true, get: function () { return io_1.sumTexts; } });
 Object.defineProperty(exports, "alignFormattedDecimal", { enumerable: true, get: function () { return io_1.alignFormattedDecimal; } });
 Object.defineProperty(exports, "IDENTIFYING_COMMA_NAME_CHARS", { enumerable: true, get: function () { return io_1.IDENTIFYING_COMMA_NAME_CHARS; } });
@@ -412,7 +866,7 @@ Object.defineProperty(exports, "MERGED_CELL_INDICATOR", { enumerable: true, get:
 Object.defineProperty(exports, "formatBound", { enumerable: true, get: function () { return io_1.formatBound; } });
 Object.defineProperty(exports, "DEFAULT_IO_SETTINGS", { enumerable: true, get: function () { return io_1.DEFAULT_IO_SETTINGS; } });
 Object.defineProperty(exports, "program", { enumerable: true, get: function () { return io_1.program; } });
-var math_1 = __webpack_require__(6);
+var math_1 = __webpack_require__(8);
 Object.defineProperty(exports, "abs", { enumerable: true, get: function () { return math_1.abs; } });
 Object.defineProperty(exports, "BASE_2", { enumerable: true, get: function () { return math_1.BASE_2; } });
 Object.defineProperty(exports, "ceil", { enumerable: true, get: function () { return math_1.ceil; } });
@@ -524,7 +978,7 @@ Object.defineProperty(exports, "IRRATIONAL_SCAMON_BASE_MONZO", { enumerable: tru
 Object.defineProperty(exports, "computeIrrationalMonzoFromScamon", { enumerable: true, get: function () { return math_1.computeIrrationalMonzoFromScamon; } });
 Object.defineProperty(exports, "computeArithmeticMean", { enumerable: true, get: function () { return math_1.computeArithmeticMean; } });
 Object.defineProperty(exports, "maxScamon", { enumerable: true, get: function () { return math_1.maxScamon; } });
-var music_1 = __webpack_require__(135);
+var music_1 = __webpack_require__(137);
 Object.defineProperty(exports, "CENTS_PER_OCTAVE", { enumerable: true, get: function () { return music_1.CENTS_PER_OCTAVE; } });
 Object.defineProperty(exports, "dividePitch", { enumerable: true, get: function () { return music_1.dividePitch; } });
 Object.defineProperty(exports, "subtractPitch", { enumerable: true, get: function () { return music_1.subtractPitch; } });
@@ -555,10 +1009,10 @@ Object.defineProperty(exports, "SYNTONIC_COMMA", { enumerable: true, get: functi
 Object.defineProperty(exports, "computeLowerAndUpperExclusive", { enumerable: true, get: function () { return music_1.computeLowerAndUpperExclusive; } });
 Object.defineProperty(exports, "two3FreeClassFixture", { enumerable: true, get: function () { return music_1.two3FreeClassFixture; } });
 Object.defineProperty(exports, "computePitchExpectation", { enumerable: true, get: function () { return music_1.computePitchExpectation; } });
-var lfc_1 = __webpack_require__(222);
+var lfc_1 = __webpack_require__(224);
 Object.defineProperty(exports, "computeParameterValues", { enumerable: true, get: function () { return lfc_1.computeParameterValues; } });
 Object.defineProperty(exports, "computePossibilities", { enumerable: true, get: function () { return lfc_1.computePossibilities; } });
-var spec_1 = __webpack_require__(225);
+var spec_1 = __webpack_require__(227);
 Object.defineProperty(exports, "catchBadMainDescriptions", { enumerable: true, get: function () { return spec_1.catchBadMainDescriptions; } });
 Object.defineProperty(exports, "catchBadSpecFiles", { enumerable: true, get: function () { return spec_1.catchBadSpecFiles; } });
 Object.defineProperty(exports, "catchEmptyFiles", { enumerable: true, get: function () { return spec_1.catchEmptyFiles; } });
@@ -571,33 +1025,33 @@ Object.defineProperty(exports, "runScriptAndGetConsoleOutput", { enumerable: tru
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RankStrategy = exports.ExtensionBaseType = exports.isObject = exports.isString = exports.isArray = exports.isUndefined = exports.isNumber = exports.offset = exports.setAt = exports.now = exports.decrement = exports.increment = exports.allElementsEqual = exports.computeTrimmedArray = exports.sort = exports.shuffle = exports.rank = exports.computeRange = exports.computePlusOrMinusRange = exports.merge = exports.isSingleton = exports.isEmpty = exports.isCloseTo = exports.indexOfFinalElement = exports.finalElement = exports.computeExtensionBase = exports.doOnNextEventLoop = exports.dig = exports.computeExampleElement = exports.parseBoolean = exports.deepEquals = exports.computeDeepDistinct = exports.MIN_JS_VALUE_PRESERVING_MAX_PRECISION = exports.MAX_JS_VALUE_PRESERVING_MAX_PRECISION = exports.MAX_JS_PRECISION = exports.NOT_FOUND = exports.MAX_JS_INTEGER_VALUE = exports.ZERO_ONE_INDEX_DIFF = exports.DEFAULT_PRECISION = exports.concat = exports.deepMap = exports.shallowClone = exports.deepClone = exports.setAllPropertiesOfObjectOnAnother = exports.camelCaseToConstantCase = exports.cleanArray = exports.cleanObject = exports.computeKeyPath = exports.computeCardinality = void 0;
-var cardinality_1 = __webpack_require__(5);
+var cardinality_1 = __webpack_require__(7);
 Object.defineProperty(exports, "computeCardinality", { enumerable: true, get: function () { return cardinality_1.computeCardinality; } });
-var keyPath_1 = __webpack_require__(190);
+var keyPath_1 = __webpack_require__(192);
 Object.defineProperty(exports, "computeKeyPath", { enumerable: true, get: function () { return keyPath_1.computeKeyPath; } });
-var cleanObject_1 = __webpack_require__(192);
+var cleanObject_1 = __webpack_require__(194);
 Object.defineProperty(exports, "cleanObject", { enumerable: true, get: function () { return cleanObject_1.cleanObject; } });
-var cleanArray_1 = __webpack_require__(193);
+var cleanArray_1 = __webpack_require__(195);
 Object.defineProperty(exports, "cleanArray", { enumerable: true, get: function () { return cleanArray_1.cleanArray; } });
-var case_1 = __webpack_require__(194);
+var case_1 = __webpack_require__(196);
 Object.defineProperty(exports, "camelCaseToConstantCase", { enumerable: true, get: function () { return case_1.camelCaseToConstantCase; } });
-var setAllPropertiesOfObjectOnAnother_1 = __webpack_require__(195);
+var setAllPropertiesOfObjectOnAnother_1 = __webpack_require__(197);
 Object.defineProperty(exports, "setAllPropertiesOfObjectOnAnother", { enumerable: true, get: function () { return setAllPropertiesOfObjectOnAnother_1.setAllPropertiesOfObjectOnAnother; } });
-var clone_1 = __webpack_require__(196);
+var clone_1 = __webpack_require__(198);
 Object.defineProperty(exports, "deepClone", { enumerable: true, get: function () { return clone_1.deepClone; } });
 Object.defineProperty(exports, "shallowClone", { enumerable: true, get: function () { return clone_1.shallowClone; } });
-var deepMap_1 = __webpack_require__(197);
+var deepMap_1 = __webpack_require__(199);
 Object.defineProperty(exports, "deepMap", { enumerable: true, get: function () { return deepMap_1.deepMap; } });
-var concat_1 = __webpack_require__(198);
+var concat_1 = __webpack_require__(200);
 Object.defineProperty(exports, "concat", { enumerable: true, get: function () { return concat_1.concat; } });
-var constants_1 = __webpack_require__(199);
+var constants_1 = __webpack_require__(201);
 Object.defineProperty(exports, "DEFAULT_PRECISION", { enumerable: true, get: function () { return constants_1.DEFAULT_PRECISION; } });
 Object.defineProperty(exports, "ZERO_ONE_INDEX_DIFF", { enumerable: true, get: function () { return constants_1.ZERO_ONE_INDEX_DIFF; } });
 Object.defineProperty(exports, "MAX_JS_INTEGER_VALUE", { enumerable: true, get: function () { return constants_1.MAX_JS_INTEGER_VALUE; } });
@@ -605,74 +1059,74 @@ Object.defineProperty(exports, "NOT_FOUND", { enumerable: true, get: function ()
 Object.defineProperty(exports, "MAX_JS_PRECISION", { enumerable: true, get: function () { return constants_1.MAX_JS_PRECISION; } });
 Object.defineProperty(exports, "MAX_JS_VALUE_PRESERVING_MAX_PRECISION", { enumerable: true, get: function () { return constants_1.MAX_JS_VALUE_PRESERVING_MAX_PRECISION; } });
 Object.defineProperty(exports, "MIN_JS_VALUE_PRESERVING_MAX_PRECISION", { enumerable: true, get: function () { return constants_1.MIN_JS_VALUE_PRESERVING_MAX_PRECISION; } });
-var deepDistinct_1 = __webpack_require__(200);
+var deepDistinct_1 = __webpack_require__(202);
 Object.defineProperty(exports, "computeDeepDistinct", { enumerable: true, get: function () { return deepDistinct_1.computeDeepDistinct; } });
-var deepEquals_1 = __webpack_require__(201);
+var deepEquals_1 = __webpack_require__(203);
 Object.defineProperty(exports, "deepEquals", { enumerable: true, get: function () { return deepEquals_1.deepEquals; } });
-var parseBoolean_1 = __webpack_require__(203);
+var parseBoolean_1 = __webpack_require__(205);
 Object.defineProperty(exports, "parseBoolean", { enumerable: true, get: function () { return parseBoolean_1.parseBoolean; } });
-var exampleElement_1 = __webpack_require__(204);
+var exampleElement_1 = __webpack_require__(206);
 Object.defineProperty(exports, "computeExampleElement", { enumerable: true, get: function () { return exampleElement_1.computeExampleElement; } });
-var dig_1 = __webpack_require__(205);
+var dig_1 = __webpack_require__(207);
 Object.defineProperty(exports, "dig", { enumerable: true, get: function () { return dig_1.dig; } });
-var doOnNextEventLoop_1 = __webpack_require__(206);
+var doOnNextEventLoop_1 = __webpack_require__(208);
 Object.defineProperty(exports, "doOnNextEventLoop", { enumerable: true, get: function () { return doOnNextEventLoop_1.doOnNextEventLoop; } });
-var extensionBase_1 = __webpack_require__(207);
+var extensionBase_1 = __webpack_require__(209);
 Object.defineProperty(exports, "computeExtensionBase", { enumerable: true, get: function () { return extensionBase_1.computeExtensionBase; } });
-var finalElement_1 = __webpack_require__(191);
+var finalElement_1 = __webpack_require__(193);
 Object.defineProperty(exports, "finalElement", { enumerable: true, get: function () { return finalElement_1.finalElement; } });
 Object.defineProperty(exports, "indexOfFinalElement", { enumerable: true, get: function () { return finalElement_1.indexOfFinalElement; } });
-var isCloseTo_1 = __webpack_require__(202);
+var isCloseTo_1 = __webpack_require__(204);
 Object.defineProperty(exports, "isCloseTo", { enumerable: true, get: function () { return isCloseTo_1.isCloseTo; } });
-var isEmpty_1 = __webpack_require__(209);
+var isEmpty_1 = __webpack_require__(211);
 Object.defineProperty(exports, "isEmpty", { enumerable: true, get: function () { return isEmpty_1.isEmpty; } });
 Object.defineProperty(exports, "isSingleton", { enumerable: true, get: function () { return isEmpty_1.isSingleton; } });
-var merge_1 = __webpack_require__(210);
+var merge_1 = __webpack_require__(212);
 Object.defineProperty(exports, "merge", { enumerable: true, get: function () { return merge_1.merge; } });
-var plusOrMinusRange_1 = __webpack_require__(211);
+var plusOrMinusRange_1 = __webpack_require__(213);
 Object.defineProperty(exports, "computePlusOrMinusRange", { enumerable: true, get: function () { return plusOrMinusRange_1.computePlusOrMinusRange; } });
-var range_1 = __webpack_require__(212);
+var range_1 = __webpack_require__(214);
 Object.defineProperty(exports, "computeRange", { enumerable: true, get: function () { return range_1.computeRange; } });
-var rank_1 = __webpack_require__(213);
+var rank_1 = __webpack_require__(215);
 Object.defineProperty(exports, "rank", { enumerable: true, get: function () { return rank_1.rank; } });
-var shuffle_1 = __webpack_require__(216);
+var shuffle_1 = __webpack_require__(218);
 Object.defineProperty(exports, "shuffle", { enumerable: true, get: function () { return shuffle_1.shuffle; } });
-var sort_1 = __webpack_require__(215);
+var sort_1 = __webpack_require__(217);
 Object.defineProperty(exports, "sort", { enumerable: true, get: function () { return sort_1.sort; } });
-var trim_1 = __webpack_require__(217);
+var trim_1 = __webpack_require__(219);
 Object.defineProperty(exports, "computeTrimmedArray", { enumerable: true, get: function () { return trim_1.computeTrimmedArray; } });
-var allElementsEqual_1 = __webpack_require__(218);
+var allElementsEqual_1 = __webpack_require__(220);
 Object.defineProperty(exports, "allElementsEqual", { enumerable: true, get: function () { return allElementsEqual_1.allElementsEqual; } });
-var crement_1 = __webpack_require__(214);
+var crement_1 = __webpack_require__(216);
 Object.defineProperty(exports, "increment", { enumerable: true, get: function () { return crement_1.increment; } });
 Object.defineProperty(exports, "decrement", { enumerable: true, get: function () { return crement_1.decrement; } });
-var typedOperations_1 = __webpack_require__(219);
+var typedOperations_1 = __webpack_require__(221);
 Object.defineProperty(exports, "now", { enumerable: true, get: function () { return typedOperations_1.now; } });
-var setAt_1 = __webpack_require__(220);
+var setAt_1 = __webpack_require__(222);
 Object.defineProperty(exports, "setAt", { enumerable: true, get: function () { return setAt_1.setAt; } });
-var offset_1 = __webpack_require__(221);
+var offset_1 = __webpack_require__(223);
 Object.defineProperty(exports, "offset", { enumerable: true, get: function () { return offset_1.offset; } });
-var typeGuards_1 = __webpack_require__(189);
+var typeGuards_1 = __webpack_require__(191);
 Object.defineProperty(exports, "isNumber", { enumerable: true, get: function () { return typeGuards_1.isNumber; } });
 Object.defineProperty(exports, "isUndefined", { enumerable: true, get: function () { return typeGuards_1.isUndefined; } });
 Object.defineProperty(exports, "isArray", { enumerable: true, get: function () { return typeGuards_1.isArray; } });
 Object.defineProperty(exports, "isString", { enumerable: true, get: function () { return typeGuards_1.isString; } });
 Object.defineProperty(exports, "isObject", { enumerable: true, get: function () { return typeGuards_1.isObject; } });
-var types_1 = __webpack_require__(208);
+var types_1 = __webpack_require__(210);
 Object.defineProperty(exports, "ExtensionBaseType", { enumerable: true, get: function () { return types_1.ExtensionBaseType; } });
 Object.defineProperty(exports, "RankStrategy", { enumerable: true, get: function () { return types_1.RankStrategy; } });
 
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeCardinality = void 0;
-var math_1 = __webpack_require__(6);
-var typeGuards_1 = __webpack_require__(189);
+var math_1 = __webpack_require__(8);
+var typeGuards_1 = __webpack_require__(191);
 var computeCardinality = function (array) {
     var cardinality = [];
     var cursor = array;
@@ -686,7 +1140,7 @@ exports.computeCardinality = computeCardinality;
 
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -695,12 +1149,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.scaleScamon = exports.computePatentVal = exports.computeMonzoMapping = exports.invertQuotient = exports.multiplyScamon = exports.invertScamon = exports.addScamons = exports.computeScamonFromQuotient = exports.computeScamonFromMonzo = exports.computeScamonFromDecimal = exports.halveScamon = exports.isScamonGreaterOrEqual = exports.isScamonLesserOrEqual = exports.isScamonLesser = exports.isScamonGreater = exports.areScamonsEqual = exports.computeSuperScamon = exports.isScamonUnison = exports.isScamonSuper = exports.isScamonSub = exports.addMonzos = exports.areDecimalsEqual = exports.reciprocal = exports.EMPTY_MONZO = exports.subtractMonzos = exports.mod = exports.isDecimalUnison = exports.isDecimalSuper = exports.isDecimalSub = exports.areQuotientsEqual = exports.computeQuotientFromMonzo = exports.Direction = exports.areMonzosEqual = exports.computeDecimalFromMonzo = exports.isMonzoUnison = exports.sumMonzos = exports.isMonzoSuper = exports.invertMonzo = exports.computeSuperMonzo = exports.isMonzoSub = exports.computeDecimalFromQuotient = exports.computeSubQuotient = exports.isQuotientUnison = exports.computeSuperQuotient = exports.QuotientPartType = exports.isQuotientSuper = exports.isQuotientSub = exports.ADDITIVE_IDENTITY = exports.BASE_2 = exports.computeCombinations = void 0;
 exports.computeRationalDecimalCopfr = exports.computeRationalDecimalGpf = exports.doForEachRationalMonzo = exports.isIntegerDecimalRough = exports.computeLowestTermsRationalQuotient = exports.isRationalMonzoRough = exports.isQuotientRational = exports.computeRationalQuotientFromRationalDecimal = exports.isRationalMonzoSmooth = exports.computeRoughRationalMonzo = exports.computeRationalMonzoFromRationalQuotient = exports.isRationalQuotientSmooth = exports.computeRoughRationalQuotient = exports.isRationalQuotientRough = exports.isDecimalInteger = exports.integerDivide = exports.floor = exports.ceil = exports.computePrimes = exports.computePrimeCount = exports.TWO_PRIME_INDEX = exports.THREE_SMOOTHNESS = exports.THREE_ROUGHNESS = exports.THREE_PRIME_INDEX = exports.ONE = exports.FIVE_ROUGHNESS = exports.FIVE_PRIME_INDEX = exports.MeanType = exports.sum = exports.divide = exports.add = exports.round = exports.pow = exports.negative = exports.multiply = exports.min = exports.max = exports.log = exports.subtract = exports.count = exports.abs = exports.computeTriangularNumber = exports.radiansToDegrees = exports.computeAngle = exports.isOdd = exports.isEven = exports.dividesEvenly = exports.computeDistributions = exports.maxScamon = exports.computeArithmeticMean = void 0;
 exports.computeIrrationalMonzoFromScamon = exports.IRRATIONAL_SCAMON_BASE_MONZO = exports.computeIrrationalDecimalFromScamon = exports.HALF_SCALER = exports.computeRationalMonzoFromRationalScamon = exports.computeRationalScamonFromRationalQuotient = exports.FIVE_SMOOTHNESS = exports.computeRationalQuotientSmoothness = exports.sumRationalScamons = exports.computeRationalDecimalCopf = exports.subtractRationalScamons = exports.isLowestTerms = exports.computeRationalQuotientFromRationalScamon = exports.isRationalScamonSmooth = exports.computeRationalScamonSmoothness = exports.isRationalScamonRough = exports.computeRationalScamonGeometricMean = exports.addRationalScamons = exports.isRationalScamonUnison = exports.isRationalScamonSub = exports.areRationalScamonsEqual = exports.computeRationalScamonSopfr = exports.computeRationalScamonCopfr = exports.isScamonRational = exports.computeRationalScamonFromRationalMonzo = exports.isMonzoRational = exports.computeRationalMonzoFromRationalDecimal = exports.isDecimalRational = exports.computeRationalMonzoSopfr = exports.computeRationalMonzoSmoothness = exports.computeRationalMonzoCopfr = void 0;
-var combinations_1 = __webpack_require__(7);
+var combinations_1 = __webpack_require__(9);
 Object.defineProperty(exports, "computeCombinations", { enumerable: true, get: function () { return combinations_1.computeCombinations; } });
-var constants_1 = __webpack_require__(9);
+var constants_1 = __webpack_require__(11);
 Object.defineProperty(exports, "BASE_2", { enumerable: true, get: function () { return constants_1.BASE_2; } });
 Object.defineProperty(exports, "ADDITIVE_IDENTITY", { enumerable: true, get: function () { return constants_1.ADDITIVE_IDENTITY; } });
-var numeric_1 = __webpack_require__(10);
+var numeric_1 = __webpack_require__(12);
 Object.defineProperty(exports, "isQuotientSub", { enumerable: true, get: function () { return numeric_1.isQuotientSub; } });
 Object.defineProperty(exports, "isQuotientSuper", { enumerable: true, get: function () { return numeric_1.isQuotientSuper; } });
 Object.defineProperty(exports, "QuotientPartType", { enumerable: true, get: function () { return numeric_1.QuotientPartType; } });
@@ -750,18 +1204,18 @@ Object.defineProperty(exports, "computePatentVal", { enumerable: true, get: func
 Object.defineProperty(exports, "scaleScamon", { enumerable: true, get: function () { return numeric_1.scaleScamon; } });
 Object.defineProperty(exports, "computeArithmeticMean", { enumerable: true, get: function () { return numeric_1.computeArithmeticMean; } });
 Object.defineProperty(exports, "maxScamon", { enumerable: true, get: function () { return numeric_1.maxScamon; } });
-var distributions_1 = __webpack_require__(185);
+var distributions_1 = __webpack_require__(187);
 Object.defineProperty(exports, "computeDistributions", { enumerable: true, get: function () { return distributions_1.computeDistributions; } });
-var dividesEvenly_1 = __webpack_require__(28);
+var dividesEvenly_1 = __webpack_require__(30);
 Object.defineProperty(exports, "dividesEvenly", { enumerable: true, get: function () { return dividesEvenly_1.dividesEvenly; } });
 Object.defineProperty(exports, "isEven", { enumerable: true, get: function () { return dividesEvenly_1.isEven; } });
 Object.defineProperty(exports, "isOdd", { enumerable: true, get: function () { return dividesEvenly_1.isOdd; } });
-var angle_1 = __webpack_require__(186);
+var angle_1 = __webpack_require__(188);
 Object.defineProperty(exports, "computeAngle", { enumerable: true, get: function () { return angle_1.computeAngle; } });
 Object.defineProperty(exports, "radiansToDegrees", { enumerable: true, get: function () { return angle_1.radiansToDegrees; } });
-var triangularNumber_1 = __webpack_require__(187);
+var triangularNumber_1 = __webpack_require__(189);
 Object.defineProperty(exports, "computeTriangularNumber", { enumerable: true, get: function () { return triangularNumber_1.computeTriangularNumber; } });
-var typedOperations_1 = __webpack_require__(8);
+var typedOperations_1 = __webpack_require__(10);
 Object.defineProperty(exports, "abs", { enumerable: true, get: function () { return typedOperations_1.abs; } });
 Object.defineProperty(exports, "count", { enumerable: true, get: function () { return typedOperations_1.count; } });
 Object.defineProperty(exports, "subtract", { enumerable: true, get: function () { return typedOperations_1.subtract; } });
@@ -775,9 +1229,9 @@ Object.defineProperty(exports, "round", { enumerable: true, get: function () { r
 Object.defineProperty(exports, "add", { enumerable: true, get: function () { return typedOperations_1.add; } });
 Object.defineProperty(exports, "divide", { enumerable: true, get: function () { return typedOperations_1.divide; } });
 Object.defineProperty(exports, "sum", { enumerable: true, get: function () { return typedOperations_1.sum; } });
-var types_1 = __webpack_require__(188);
+var types_1 = __webpack_require__(190);
 Object.defineProperty(exports, "MeanType", { enumerable: true, get: function () { return types_1.MeanType; } });
-var rational_1 = __webpack_require__(13);
+var rational_1 = __webpack_require__(15);
 Object.defineProperty(exports, "FIVE_PRIME_INDEX", { enumerable: true, get: function () { return rational_1.FIVE_PRIME_INDEX; } });
 Object.defineProperty(exports, "FIVE_ROUGHNESS", { enumerable: true, get: function () { return rational_1.FIVE_ROUGHNESS; } });
 Object.defineProperty(exports, "ONE", { enumerable: true, get: function () { return rational_1.ONE; } });
@@ -832,7 +1286,7 @@ Object.defineProperty(exports, "computeRationalQuotientSmoothness", { enumerable
 Object.defineProperty(exports, "FIVE_SMOOTHNESS", { enumerable: true, get: function () { return rational_1.FIVE_SMOOTHNESS; } });
 Object.defineProperty(exports, "computeRationalScamonFromRationalQuotient", { enumerable: true, get: function () { return rational_1.computeRationalScamonFromRationalQuotient; } });
 Object.defineProperty(exports, "computeRationalMonzoFromRationalScamon", { enumerable: true, get: function () { return rational_1.computeRationalMonzoFromRationalScamon; } });
-var irrational_1 = __webpack_require__(169);
+var irrational_1 = __webpack_require__(171);
 Object.defineProperty(exports, "HALF_SCALER", { enumerable: true, get: function () { return irrational_1.HALF_SCALER; } });
 Object.defineProperty(exports, "computeIrrationalDecimalFromScamon", { enumerable: true, get: function () { return irrational_1.computeIrrationalDecimalFromScamon; } });
 Object.defineProperty(exports, "IRRATIONAL_SCAMON_BASE_MONZO", { enumerable: true, get: function () { return irrational_1.IRRATIONAL_SCAMON_BASE_MONZO; } });
@@ -840,15 +1294,15 @@ Object.defineProperty(exports, "computeIrrationalMonzoFromScamon", { enumerable:
 
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeCombinationsWithRepetitions = exports.computeCombinations = void 0;
-var code_1 = __webpack_require__(4);
-var typedOperations_1 = __webpack_require__(8);
+var code_1 = __webpack_require__(6);
+var typedOperations_1 = __webpack_require__(10);
 var computeCombinations = function (array, comboCount, _a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.withRepeatedElements, withRepeatedElements = _c === void 0 ? false : _c;
     if (withRepeatedElements) {
@@ -902,7 +1356,7 @@ exports.computeCombinationsWithRepetitions = computeCombinationsWithRepetitions;
 
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -929,8 +1383,8 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.count = exports.log = exports.pow = exports.min = exports.max = exports.abs = exports.round = exports.negative = exports.divide = exports.multiply = exports.subtract = exports.add = exports.product = exports.sum = void 0;
-var code_1 = __webpack_require__(4);
-var constants_1 = __webpack_require__(9);
+var code_1 = __webpack_require__(6);
+var constants_1 = __webpack_require__(11);
 var count = function (array) {
     return array.length;
 };
@@ -1016,7 +1470,7 @@ exports.log = log;
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1038,7 +1492,7 @@ exports.DEGREES_TO_RADIANS = DEGREES_TO_RADIANS;
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1046,7 +1500,7 @@ exports.DEGREES_TO_RADIANS = DEGREES_TO_RADIANS;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.maxScamon = exports.scaleScamon = exports.multiplyScamon = exports.invertScamon = exports.addScamons = exports.computeScamonFromQuotient = exports.computeScamonFromMonzo = exports.computeScamonFromDecimal = exports.halveScamon = exports.isScamonGreaterOrEqual = exports.isScamonLesserOrEqual = exports.isScamonLesser = exports.isScamonGreater = exports.areScamonsEqual = exports.computeSuperScamon = exports.isScamonUnison = exports.isScamonSuper = exports.isScamonSub = exports.computePatentVal = exports.computeMonzoMapping = exports.addMonzos = exports.EMPTY_MONZO = exports.subtractMonzos = exports.areMonzosEqual = exports.isMonzoUnison = exports.sumMonzos = exports.isMonzoSuper = exports.invertMonzo = exports.computeSuperMonzo = exports.isMonzoSub = exports.halveQuotient = exports.computeQuotientProduct = exports.areQuotientsEqual = exports.computeQuotientFromMonzo = exports.invertQuotient = exports.computeSubQuotient = exports.isQuotientUnison = exports.computeSuperQuotient = exports.QuotientPartType = exports.isQuotientSuper = exports.isQuotientSub = exports.computeArithmeticMean = exports.areDecimalsEqual = exports.reciprocal = exports.mod = exports.isDecimalUnison = exports.isDecimalSuper = exports.isDecimalSub = exports.computeDecimalFromMonzo = exports.computeDecimalFromQuotient = void 0;
 exports.Direction = void 0;
-var decimal_1 = __webpack_require__(11);
+var decimal_1 = __webpack_require__(13);
 Object.defineProperty(exports, "computeDecimalFromQuotient", { enumerable: true, get: function () { return decimal_1.computeDecimalFromQuotient; } });
 Object.defineProperty(exports, "computeDecimalFromMonzo", { enumerable: true, get: function () { return decimal_1.computeDecimalFromMonzo; } });
 Object.defineProperty(exports, "isDecimalSub", { enumerable: true, get: function () { return decimal_1.isDecimalSub; } });
@@ -1056,7 +1510,7 @@ Object.defineProperty(exports, "mod", { enumerable: true, get: function () { ret
 Object.defineProperty(exports, "reciprocal", { enumerable: true, get: function () { return decimal_1.reciprocal; } });
 Object.defineProperty(exports, "areDecimalsEqual", { enumerable: true, get: function () { return decimal_1.areDecimalsEqual; } });
 Object.defineProperty(exports, "computeArithmeticMean", { enumerable: true, get: function () { return decimal_1.computeArithmeticMean; } });
-var quotient_1 = __webpack_require__(161);
+var quotient_1 = __webpack_require__(163);
 Object.defineProperty(exports, "isQuotientSub", { enumerable: true, get: function () { return quotient_1.isQuotientSub; } });
 Object.defineProperty(exports, "isQuotientSuper", { enumerable: true, get: function () { return quotient_1.isQuotientSuper; } });
 Object.defineProperty(exports, "QuotientPartType", { enumerable: true, get: function () { return quotient_1.QuotientPartType; } });
@@ -1068,7 +1522,7 @@ Object.defineProperty(exports, "computeQuotientFromMonzo", { enumerable: true, g
 Object.defineProperty(exports, "areQuotientsEqual", { enumerable: true, get: function () { return quotient_1.areQuotientsEqual; } });
 Object.defineProperty(exports, "computeQuotientProduct", { enumerable: true, get: function () { return quotient_1.computeQuotientProduct; } });
 Object.defineProperty(exports, "halveQuotient", { enumerable: true, get: function () { return quotient_1.halveQuotient; } });
-var monzo_1 = __webpack_require__(57);
+var monzo_1 = __webpack_require__(59);
 Object.defineProperty(exports, "isMonzoSub", { enumerable: true, get: function () { return monzo_1.isMonzoSub; } });
 Object.defineProperty(exports, "computeSuperMonzo", { enumerable: true, get: function () { return monzo_1.computeSuperMonzo; } });
 Object.defineProperty(exports, "invertMonzo", { enumerable: true, get: function () { return monzo_1.invertMonzo; } });
@@ -1081,7 +1535,7 @@ Object.defineProperty(exports, "EMPTY_MONZO", { enumerable: true, get: function 
 Object.defineProperty(exports, "addMonzos", { enumerable: true, get: function () { return monzo_1.addMonzos; } });
 Object.defineProperty(exports, "computeMonzoMapping", { enumerable: true, get: function () { return monzo_1.computeMonzoMapping; } });
 Object.defineProperty(exports, "computePatentVal", { enumerable: true, get: function () { return monzo_1.computePatentVal; } });
-var scamon_1 = __webpack_require__(167);
+var scamon_1 = __webpack_require__(169);
 Object.defineProperty(exports, "isScamonSub", { enumerable: true, get: function () { return scamon_1.isScamonSub; } });
 Object.defineProperty(exports, "isScamonSuper", { enumerable: true, get: function () { return scamon_1.isScamonSuper; } });
 Object.defineProperty(exports, "isScamonUnison", { enumerable: true, get: function () { return scamon_1.isScamonUnison; } });
@@ -1100,29 +1554,29 @@ Object.defineProperty(exports, "invertScamon", { enumerable: true, get: function
 Object.defineProperty(exports, "multiplyScamon", { enumerable: true, get: function () { return scamon_1.multiplyScamon; } });
 Object.defineProperty(exports, "scaleScamon", { enumerable: true, get: function () { return scamon_1.scaleScamon; } });
 Object.defineProperty(exports, "maxScamon", { enumerable: true, get: function () { return scamon_1.maxScamon; } });
-var types_1 = __webpack_require__(184);
+var types_1 = __webpack_require__(186);
 Object.defineProperty(exports, "Direction", { enumerable: true, get: function () { return types_1.Direction; } });
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.invertDecimal = exports.isDecimalSub = exports.isDecimalUnison = exports.isDecimalSuper = exports.computeDecimalFromQuotient = exports.computeArithmeticMean = exports.reciprocal = exports.mod = exports.areDecimalsEqual = exports.computeDecimalFromMonzo = void 0;
-var fromMonzo_1 = __webpack_require__(12);
+var fromMonzo_1 = __webpack_require__(14);
 Object.defineProperty(exports, "computeDecimalFromMonzo", { enumerable: true, get: function () { return fromMonzo_1.computeDecimalFromMonzo; } });
-var comparison_1 = __webpack_require__(157);
+var comparison_1 = __webpack_require__(159);
 Object.defineProperty(exports, "areDecimalsEqual", { enumerable: true, get: function () { return comparison_1.areDecimalsEqual; } });
-var typedOperations_1 = __webpack_require__(158);
+var typedOperations_1 = __webpack_require__(160);
 Object.defineProperty(exports, "mod", { enumerable: true, get: function () { return typedOperations_1.mod; } });
 Object.defineProperty(exports, "reciprocal", { enumerable: true, get: function () { return typedOperations_1.reciprocal; } });
 Object.defineProperty(exports, "computeArithmeticMean", { enumerable: true, get: function () { return typedOperations_1.computeArithmeticMean; } });
-var fromQuotient_1 = __webpack_require__(159);
+var fromQuotient_1 = __webpack_require__(161);
 Object.defineProperty(exports, "computeDecimalFromQuotient", { enumerable: true, get: function () { return fromQuotient_1.computeDecimalFromQuotient; } });
-var direction_1 = __webpack_require__(160);
+var direction_1 = __webpack_require__(162);
 Object.defineProperty(exports, "isDecimalSuper", { enumerable: true, get: function () { return direction_1.isDecimalSuper; } });
 Object.defineProperty(exports, "isDecimalUnison", { enumerable: true, get: function () { return direction_1.isDecimalUnison; } });
 Object.defineProperty(exports, "isDecimalSub", { enumerable: true, get: function () { return direction_1.isDecimalSub; } });
@@ -1130,18 +1584,18 @@ Object.defineProperty(exports, "invertDecimal", { enumerable: true, get: functio
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeDecimalFromMonzo = void 0;
-var code_1 = __webpack_require__(4);
-var constants_1 = __webpack_require__(9);
-var rational_1 = __webpack_require__(13);
-var typedOperations_1 = __webpack_require__(8);
-var monzo_1 = __webpack_require__(57);
+var code_1 = __webpack_require__(6);
+var constants_1 = __webpack_require__(11);
+var rational_1 = __webpack_require__(15);
+var typedOperations_1 = __webpack_require__(10);
+var monzo_1 = __webpack_require__(59);
 var isDecimalWithLostPrecision = function (decimal) {
     return isNaN(decimal) || decimal > code_1.MAX_JS_VALUE_PRESERVING_MAX_PRECISION || decimal < code_1.MIN_JS_VALUE_PRESERVING_MAX_PRECISION;
 };
@@ -1190,7 +1644,7 @@ exports.computeDecimalFromMonzo = computeDecimalFromMonzo;
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1198,7 +1652,7 @@ exports.computeDecimalFromMonzo = computeDecimalFromMonzo;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isScamonRational = exports.computeRationalScamonFromRationalQuotient = exports.computeRationalScamonFromRationalMonzo = exports.computeRationalScamonFromRationalDecimal = exports.computeRationalMonzoFromRationalScamon = exports.isRationalMonzoSmooth = exports.isMonzoRational = exports.computeRationalMonzoSopfr = exports.computeRationalMonzoSmoothness = exports.computeRationalMonzoCopfr = exports.computeRationalMonzoFromRationalDecimal = exports.doForEachRationalMonzo = exports.isRationalMonzoRough = exports.computeRoughRationalMonzo = exports.computeRationalMonzoFromRationalQuotient = exports.computeRationalQuotientSmoothness = exports.isLowestTerms = exports.computeRationalQuotientFromRationalScamon = exports.areRationalQuotientsEqual = exports.computeLowestTermsRationalQuotient = exports.isQuotientRational = exports.computeRationalQuotientFromRationalDecimal = exports.isRationalQuotientSmooth = exports.computeRoughRationalQuotient = exports.isRationalQuotientRough = exports.computeRationalDecimalCopf = exports.computeRationalDecimalGpf = exports.computeRationalDecimalCopfr = exports.isDecimalRational = exports.integerDivide = exports.floor = exports.ceil = exports.computeRationalDecimalSmoothness = exports.computeIntegerDecimalSmoothness = exports.isIntegerDecimalRough = exports.isDecimalInteger = exports.computeGreatestCommonDivisor = exports.primes = exports.computePrimes = exports.computeSmoothnessIndex = exports.computeRoughnessIndex = exports.computePrimeCount = exports.FIVE_SMOOTHNESS = exports.TWO_PRIME_INDEX = exports.THREE_SMOOTHNESS = exports.THREE_ROUGHNESS = exports.THREE_PRIME_INDEX = exports.ONE = exports.FIVE_ROUGHNESS = exports.FIVE_PRIME_INDEX = void 0;
 exports.sumRationalScamons = exports.subtractRationalScamons = exports.isRationalScamonSmooth = exports.computeRationalScamonSmoothness = exports.isRationalScamonRough = exports.computeRationalScamonGeometricMean = exports.addRationalScamons = exports.isRationalScamonUnison = exports.isRationalScamonSub = exports.areRationalScamonsEqual = exports.computeRationalScamonSopfr = exports.computeRationalScamonCopfr = void 0;
-var constants_1 = __webpack_require__(14);
+var constants_1 = __webpack_require__(16);
 Object.defineProperty(exports, "FIVE_PRIME_INDEX", { enumerable: true, get: function () { return constants_1.FIVE_PRIME_INDEX; } });
 Object.defineProperty(exports, "FIVE_ROUGHNESS", { enumerable: true, get: function () { return constants_1.FIVE_ROUGHNESS; } });
 Object.defineProperty(exports, "ONE", { enumerable: true, get: function () { return constants_1.ONE; } });
@@ -1207,16 +1661,16 @@ Object.defineProperty(exports, "THREE_ROUGHNESS", { enumerable: true, get: funct
 Object.defineProperty(exports, "THREE_SMOOTHNESS", { enumerable: true, get: function () { return constants_1.THREE_SMOOTHNESS; } });
 Object.defineProperty(exports, "TWO_PRIME_INDEX", { enumerable: true, get: function () { return constants_1.TWO_PRIME_INDEX; } });
 Object.defineProperty(exports, "FIVE_SMOOTHNESS", { enumerable: true, get: function () { return constants_1.FIVE_SMOOTHNESS; } });
-var primeCount_1 = __webpack_require__(15);
+var primeCount_1 = __webpack_require__(17);
 Object.defineProperty(exports, "computePrimeCount", { enumerable: true, get: function () { return primeCount_1.computePrimeCount; } });
 Object.defineProperty(exports, "computeRoughnessIndex", { enumerable: true, get: function () { return primeCount_1.computeRoughnessIndex; } });
 Object.defineProperty(exports, "computeSmoothnessIndex", { enumerable: true, get: function () { return primeCount_1.computeSmoothnessIndex; } });
-var primes_1 = __webpack_require__(16);
+var primes_1 = __webpack_require__(18);
 Object.defineProperty(exports, "computePrimes", { enumerable: true, get: function () { return primes_1.computePrimes; } });
 Object.defineProperty(exports, "primes", { enumerable: true, get: function () { return primes_1.primes; } });
-var common_1 = __webpack_require__(17);
+var common_1 = __webpack_require__(19);
 Object.defineProperty(exports, "computeGreatestCommonDivisor", { enumerable: true, get: function () { return common_1.computeGreatestCommonDivisor; } });
-var decimal_1 = __webpack_require__(18);
+var decimal_1 = __webpack_require__(20);
 Object.defineProperty(exports, "isDecimalInteger", { enumerable: true, get: function () { return decimal_1.isDecimalInteger; } });
 Object.defineProperty(exports, "isIntegerDecimalRough", { enumerable: true, get: function () { return decimal_1.isIntegerDecimalRough; } });
 Object.defineProperty(exports, "computeIntegerDecimalSmoothness", { enumerable: true, get: function () { return decimal_1.computeIntegerDecimalSmoothness; } });
@@ -1228,7 +1682,7 @@ Object.defineProperty(exports, "isDecimalRational", { enumerable: true, get: fun
 Object.defineProperty(exports, "computeRationalDecimalCopfr", { enumerable: true, get: function () { return decimal_1.computeRationalDecimalCopfr; } });
 Object.defineProperty(exports, "computeRationalDecimalGpf", { enumerable: true, get: function () { return decimal_1.computeRationalDecimalGpf; } });
 Object.defineProperty(exports, "computeRationalDecimalCopf", { enumerable: true, get: function () { return decimal_1.computeRationalDecimalCopf; } });
-var quotient_1 = __webpack_require__(22);
+var quotient_1 = __webpack_require__(24);
 Object.defineProperty(exports, "isRationalQuotientRough", { enumerable: true, get: function () { return quotient_1.isRationalQuotientRough; } });
 Object.defineProperty(exports, "computeRoughRationalQuotient", { enumerable: true, get: function () { return quotient_1.computeRoughRationalQuotient; } });
 Object.defineProperty(exports, "isRationalQuotientSmooth", { enumerable: true, get: function () { return quotient_1.isRationalQuotientSmooth; } });
@@ -1239,7 +1693,7 @@ Object.defineProperty(exports, "areRationalQuotientsEqual", { enumerable: true, 
 Object.defineProperty(exports, "computeRationalQuotientFromRationalScamon", { enumerable: true, get: function () { return quotient_1.computeRationalQuotientFromRationalScamon; } });
 Object.defineProperty(exports, "isLowestTerms", { enumerable: true, get: function () { return quotient_1.isLowestTerms; } });
 Object.defineProperty(exports, "computeRationalQuotientSmoothness", { enumerable: true, get: function () { return quotient_1.computeRationalQuotientSmoothness; } });
-var monzo_1 = __webpack_require__(20);
+var monzo_1 = __webpack_require__(22);
 Object.defineProperty(exports, "computeRationalMonzoFromRationalQuotient", { enumerable: true, get: function () { return monzo_1.computeRationalMonzoFromRationalQuotient; } });
 Object.defineProperty(exports, "computeRoughRationalMonzo", { enumerable: true, get: function () { return monzo_1.computeRoughRationalMonzo; } });
 Object.defineProperty(exports, "isRationalMonzoRough", { enumerable: true, get: function () { return monzo_1.isRationalMonzoRough; } });
@@ -1251,7 +1705,7 @@ Object.defineProperty(exports, "computeRationalMonzoSopfr", { enumerable: true, 
 Object.defineProperty(exports, "isMonzoRational", { enumerable: true, get: function () { return monzo_1.isMonzoRational; } });
 Object.defineProperty(exports, "isRationalMonzoSmooth", { enumerable: true, get: function () { return monzo_1.isRationalMonzoSmooth; } });
 Object.defineProperty(exports, "computeRationalMonzoFromRationalScamon", { enumerable: true, get: function () { return monzo_1.computeRationalMonzoFromRationalScamon; } });
-var scamon_1 = __webpack_require__(47);
+var scamon_1 = __webpack_require__(49);
 Object.defineProperty(exports, "computeRationalScamonFromRationalDecimal", { enumerable: true, get: function () { return scamon_1.computeRationalScamonFromRationalDecimal; } });
 Object.defineProperty(exports, "computeRationalScamonFromRationalMonzo", { enumerable: true, get: function () { return scamon_1.computeRationalScamonFromRationalMonzo; } });
 Object.defineProperty(exports, "computeRationalScamonFromRationalQuotient", { enumerable: true, get: function () { return scamon_1.computeRationalScamonFromRationalQuotient; } });
@@ -1271,7 +1725,7 @@ Object.defineProperty(exports, "sumRationalScamons", { enumerable: true, get: fu
 
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1299,16 +1753,16 @@ exports.SMOOTH_ROUGH_OFFSET = SMOOTH_ROUGH_OFFSET;
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeSmoothnessIndex = exports.computeRoughnessIndex = exports.computePrimeCount = void 0;
-var code_1 = __webpack_require__(4);
-var constants_1 = __webpack_require__(14);
-var primes_1 = __webpack_require__(16);
+var code_1 = __webpack_require__(6);
+var constants_1 = __webpack_require__(16);
+var primes_1 = __webpack_require__(18);
 // Prime Counting Function (π)
 // See: https://mathworld.wolfram.com/PrimeCountingFunction.html
 var computePrimeCount = function (number) {
@@ -1333,14 +1787,14 @@ exports.computeSmoothnessIndex = computeSmoothnessIndex;
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.primes = exports.computePrimes = exports.MAX_PRIME_GAP_AT_MAX_POSSIBLE_PRIME_ABLE_TO_BE_COMPUTED = exports.MAX_POSSIBLE_PRIME_THAT_SHOULD_BE_COMPUTED = void 0;
-var code_1 = __webpack_require__(4);
+var code_1 = __webpack_require__(6);
 var primes = [
     2,
     3,
@@ -1546,7 +2000,7 @@ var MAX_MAX_POSSIBLE_PRIME_BEFORE_JUST_COMPUTE_ALL_ABLE = 50000;
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1573,10 +2027,10 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeGreatestCommonDivisor = exports.computeLeastCommonMultiple = void 0;
-var code_1 = __webpack_require__(4);
-var numeric_1 = __webpack_require__(10);
-var typedOperations_1 = __webpack_require__(8);
-var constants_1 = __webpack_require__(14);
+var code_1 = __webpack_require__(6);
+var numeric_1 = __webpack_require__(12);
+var typedOperations_1 = __webpack_require__(10);
+var constants_1 = __webpack_require__(16);
 var computeLowestCommonMultipleOfTwoIntegerDecimals = function (integerDecimalA, integerDecimalB) {
     return typedOperations_1.abs(typedOperations_1.divide(integerDecimalA * integerDecimalB, computeGreatestCommonDivisor(integerDecimalA, integerDecimalB)));
 };
@@ -1635,82 +2089,35 @@ exports.computeGreatestCommonDivisor = computeGreatestCommonDivisor;
 
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.integerDivide = exports.floor = exports.ceil = exports.isIntegerDecimalRough = exports.computeRoughIntegerDecimal = exports.computeIntegerDecimalSmoothness = exports.computeRationalDecimalSmoothness = exports.isIntegerDecimalSmooth = exports.isDecimalInteger = exports.isDecimalRational = exports.computeRationalDecimalGpf = exports.computeRationalDecimalFromRationalScamon = exports.computeRationalDecimalCopf = exports.computeRationalDecimalCopfr = void 0;
-var copfr_1 = __webpack_require__(19);
-Object.defineProperty(exports, "computeRationalDecimalCopfr", { enumerable: true, get: function () { return copfr_1.computeRationalDecimalCopfr; } });
-var copf_1 = __webpack_require__(40);
-Object.defineProperty(exports, "computeRationalDecimalCopf", { enumerable: true, get: function () { return copf_1.computeRationalDecimalCopf; } });
-var fromScamon_1 = __webpack_require__(41);
-Object.defineProperty(exports, "computeRationalDecimalFromRationalScamon", { enumerable: true, get: function () { return fromScamon_1.computeRationalDecimalFromRationalScamon; } });
-var gpf_1 = __webpack_require__(42);
-Object.defineProperty(exports, "computeRationalDecimalGpf", { enumerable: true, get: function () { return gpf_1.computeRationalDecimalGpf; } });
-var typeGuards_1 = __webpack_require__(46);
-Object.defineProperty(exports, "isDecimalRational", { enumerable: true, get: function () { return typeGuards_1.isDecimalRational; } });
-Object.defineProperty(exports, "isDecimalInteger", { enumerable: true, get: function () { return typeGuards_1.isDecimalInteger; } });
-var smoothness_1 = __webpack_require__(43);
-Object.defineProperty(exports, "isIntegerDecimalSmooth", { enumerable: true, get: function () { return smoothness_1.isIntegerDecimalSmooth; } });
-Object.defineProperty(exports, "computeRationalDecimalSmoothness", { enumerable: true, get: function () { return smoothness_1.computeRationalDecimalSmoothness; } });
-Object.defineProperty(exports, "computeIntegerDecimalSmoothness", { enumerable: true, get: function () { return smoothness_1.computeIntegerDecimalSmoothness; } });
-var roughness_1 = __webpack_require__(44);
-Object.defineProperty(exports, "computeRoughIntegerDecimal", { enumerable: true, get: function () { return roughness_1.computeRoughIntegerDecimal; } });
-Object.defineProperty(exports, "isIntegerDecimalRough", { enumerable: true, get: function () { return roughness_1.isIntegerDecimalRough; } });
-var typedOperations_1 = __webpack_require__(45);
-Object.defineProperty(exports, "ceil", { enumerable: true, get: function () { return typedOperations_1.ceil; } });
-Object.defineProperty(exports, "floor", { enumerable: true, get: function () { return typedOperations_1.floor; } });
-Object.defineProperty(exports, "integerDivide", { enumerable: true, get: function () { return typedOperations_1.integerDivide; } });
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeRationalDecimalCopfr = void 0;
-var monzo_1 = __webpack_require__(20);
-// Count Of Prime Factors with Repetition (big omega, Ω)
-var computeRationalDecimalCopfr = function (rationalDecimal) {
-    var rationalMonzo = monzo_1.computeRationalMonzoFromRationalDecimal(rationalDecimal);
-    return monzo_1.computeRationalMonzoCopfr(rationalMonzo);
-};
-exports.computeRationalDecimalCopfr = computeRationalDecimalCopfr;
-
-
-/***/ }),
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeRationalMonzoFromRationalScamon = exports.doForEachRationalMonzo = exports.isMonzoRational = exports.computeRationalMonzoSopfr = exports.computeRationalMonzoCopfr = exports.computeRationalMonzoSmoothness = exports.isRationalMonzoSmooth = exports.computeRoughRationalMonzo = exports.isRationalMonzoRough = exports.computeRationalMonzoFromRationalQuotient = exports.computeRationalMonzoFromRationalDecimal = void 0;
-var fromDecimal_1 = __webpack_require__(21);
-Object.defineProperty(exports, "computeRationalMonzoFromRationalDecimal", { enumerable: true, get: function () { return fromDecimal_1.computeRationalMonzoFromRationalDecimal; } });
-var fromQuotient_1 = __webpack_require__(32);
-Object.defineProperty(exports, "computeRationalMonzoFromRationalQuotient", { enumerable: true, get: function () { return fromQuotient_1.computeRationalMonzoFromRationalQuotient; } });
-var roughness_1 = __webpack_require__(33);
-Object.defineProperty(exports, "isRationalMonzoRough", { enumerable: true, get: function () { return roughness_1.isRationalMonzoRough; } });
-Object.defineProperty(exports, "computeRoughRationalMonzo", { enumerable: true, get: function () { return roughness_1.computeRoughRationalMonzo; } });
-var smoothness_1 = __webpack_require__(34);
-Object.defineProperty(exports, "isRationalMonzoSmooth", { enumerable: true, get: function () { return smoothness_1.isRationalMonzoSmooth; } });
-Object.defineProperty(exports, "computeRationalMonzoSmoothness", { enumerable: true, get: function () { return smoothness_1.computeRationalMonzoSmoothness; } });
-var copfr_1 = __webpack_require__(35);
-Object.defineProperty(exports, "computeRationalMonzoCopfr", { enumerable: true, get: function () { return copfr_1.computeRationalMonzoCopfr; } });
-var sopfr_1 = __webpack_require__(36);
-Object.defineProperty(exports, "computeRationalMonzoSopfr", { enumerable: true, get: function () { return sopfr_1.computeRationalMonzoSopfr; } });
-var typeGuards_1 = __webpack_require__(37);
-Object.defineProperty(exports, "isMonzoRational", { enumerable: true, get: function () { return typeGuards_1.isMonzoRational; } });
-var doForEachMonzo_1 = __webpack_require__(38);
-Object.defineProperty(exports, "doForEachRationalMonzo", { enumerable: true, get: function () { return doForEachMonzo_1.doForEachRationalMonzo; } });
-var fromScamon_1 = __webpack_require__(39);
-Object.defineProperty(exports, "computeRationalMonzoFromRationalScamon", { enumerable: true, get: function () { return fromScamon_1.computeRationalMonzoFromRationalScamon; } });
+exports.integerDivide = exports.floor = exports.ceil = exports.isIntegerDecimalRough = exports.computeRoughIntegerDecimal = exports.computeIntegerDecimalSmoothness = exports.computeRationalDecimalSmoothness = exports.isIntegerDecimalSmooth = exports.isDecimalInteger = exports.isDecimalRational = exports.computeRationalDecimalGpf = exports.computeRationalDecimalFromRationalScamon = exports.computeRationalDecimalCopf = exports.computeRationalDecimalCopfr = void 0;
+var copfr_1 = __webpack_require__(21);
+Object.defineProperty(exports, "computeRationalDecimalCopfr", { enumerable: true, get: function () { return copfr_1.computeRationalDecimalCopfr; } });
+var copf_1 = __webpack_require__(42);
+Object.defineProperty(exports, "computeRationalDecimalCopf", { enumerable: true, get: function () { return copf_1.computeRationalDecimalCopf; } });
+var fromScamon_1 = __webpack_require__(43);
+Object.defineProperty(exports, "computeRationalDecimalFromRationalScamon", { enumerable: true, get: function () { return fromScamon_1.computeRationalDecimalFromRationalScamon; } });
+var gpf_1 = __webpack_require__(44);
+Object.defineProperty(exports, "computeRationalDecimalGpf", { enumerable: true, get: function () { return gpf_1.computeRationalDecimalGpf; } });
+var typeGuards_1 = __webpack_require__(48);
+Object.defineProperty(exports, "isDecimalRational", { enumerable: true, get: function () { return typeGuards_1.isDecimalRational; } });
+Object.defineProperty(exports, "isDecimalInteger", { enumerable: true, get: function () { return typeGuards_1.isDecimalInteger; } });
+var smoothness_1 = __webpack_require__(45);
+Object.defineProperty(exports, "isIntegerDecimalSmooth", { enumerable: true, get: function () { return smoothness_1.isIntegerDecimalSmooth; } });
+Object.defineProperty(exports, "computeRationalDecimalSmoothness", { enumerable: true, get: function () { return smoothness_1.computeRationalDecimalSmoothness; } });
+Object.defineProperty(exports, "computeIntegerDecimalSmoothness", { enumerable: true, get: function () { return smoothness_1.computeIntegerDecimalSmoothness; } });
+var roughness_1 = __webpack_require__(46);
+Object.defineProperty(exports, "computeRoughIntegerDecimal", { enumerable: true, get: function () { return roughness_1.computeRoughIntegerDecimal; } });
+Object.defineProperty(exports, "isIntegerDecimalRough", { enumerable: true, get: function () { return roughness_1.isIntegerDecimalRough; } });
+var typedOperations_1 = __webpack_require__(47);
+Object.defineProperty(exports, "ceil", { enumerable: true, get: function () { return typedOperations_1.ceil; } });
+Object.defineProperty(exports, "floor", { enumerable: true, get: function () { return typedOperations_1.floor; } });
+Object.defineProperty(exports, "integerDivide", { enumerable: true, get: function () { return typedOperations_1.integerDivide; } });
 
 
 /***/ }),
@@ -1720,11 +2127,58 @@ Object.defineProperty(exports, "computeRationalMonzoFromRationalScamon", { enume
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeRationalDecimalCopfr = void 0;
+var monzo_1 = __webpack_require__(22);
+// Count Of Prime Factors with Repetition (big omega, Ω)
+var computeRationalDecimalCopfr = function (rationalDecimal) {
+    var rationalMonzo = monzo_1.computeRationalMonzoFromRationalDecimal(rationalDecimal);
+    return monzo_1.computeRationalMonzoCopfr(rationalMonzo);
+};
+exports.computeRationalDecimalCopfr = computeRationalDecimalCopfr;
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeRationalMonzoFromRationalScamon = exports.doForEachRationalMonzo = exports.isMonzoRational = exports.computeRationalMonzoSopfr = exports.computeRationalMonzoCopfr = exports.computeRationalMonzoSmoothness = exports.isRationalMonzoSmooth = exports.computeRoughRationalMonzo = exports.isRationalMonzoRough = exports.computeRationalMonzoFromRationalQuotient = exports.computeRationalMonzoFromRationalDecimal = void 0;
+var fromDecimal_1 = __webpack_require__(23);
+Object.defineProperty(exports, "computeRationalMonzoFromRationalDecimal", { enumerable: true, get: function () { return fromDecimal_1.computeRationalMonzoFromRationalDecimal; } });
+var fromQuotient_1 = __webpack_require__(34);
+Object.defineProperty(exports, "computeRationalMonzoFromRationalQuotient", { enumerable: true, get: function () { return fromQuotient_1.computeRationalMonzoFromRationalQuotient; } });
+var roughness_1 = __webpack_require__(35);
+Object.defineProperty(exports, "isRationalMonzoRough", { enumerable: true, get: function () { return roughness_1.isRationalMonzoRough; } });
+Object.defineProperty(exports, "computeRoughRationalMonzo", { enumerable: true, get: function () { return roughness_1.computeRoughRationalMonzo; } });
+var smoothness_1 = __webpack_require__(36);
+Object.defineProperty(exports, "isRationalMonzoSmooth", { enumerable: true, get: function () { return smoothness_1.isRationalMonzoSmooth; } });
+Object.defineProperty(exports, "computeRationalMonzoSmoothness", { enumerable: true, get: function () { return smoothness_1.computeRationalMonzoSmoothness; } });
+var copfr_1 = __webpack_require__(37);
+Object.defineProperty(exports, "computeRationalMonzoCopfr", { enumerable: true, get: function () { return copfr_1.computeRationalMonzoCopfr; } });
+var sopfr_1 = __webpack_require__(38);
+Object.defineProperty(exports, "computeRationalMonzoSopfr", { enumerable: true, get: function () { return sopfr_1.computeRationalMonzoSopfr; } });
+var typeGuards_1 = __webpack_require__(39);
+Object.defineProperty(exports, "isMonzoRational", { enumerable: true, get: function () { return typeGuards_1.isMonzoRational; } });
+var doForEachMonzo_1 = __webpack_require__(40);
+Object.defineProperty(exports, "doForEachRationalMonzo", { enumerable: true, get: function () { return doForEachMonzo_1.doForEachRationalMonzo; } });
+var fromScamon_1 = __webpack_require__(41);
+Object.defineProperty(exports, "computeRationalMonzoFromRationalScamon", { enumerable: true, get: function () { return fromScamon_1.computeRationalMonzoFromRationalScamon; } });
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeIntegerMonzoFromIntegerDecimal = exports.computeRationalMonzoFromRationalDecimal = void 0;
-var code_1 = __webpack_require__(4);
-var primes_1 = __webpack_require__(16);
-var quotient_1 = __webpack_require__(22);
-var fromQuotient_1 = __webpack_require__(32);
+var code_1 = __webpack_require__(6);
+var primes_1 = __webpack_require__(18);
+var quotient_1 = __webpack_require__(24);
+var fromQuotient_1 = __webpack_require__(34);
 var computeRationalMonzoFromRationalDecimal = function (rationalDecimal) {
     if (rationalDecimal < 0)
         throw new Error("Cannot convert " + rationalDecimal + " to a monzo because it is negative.");
@@ -1762,36 +2216,36 @@ exports.computeIntegerMonzoFromIntegerDecimal = computeIntegerMonzoFromIntegerDe
 
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalQuotientFromRationalScamon = exports.isLowestTerms = exports.computeLowestTermsRationalQuotient = exports.computeRationalQuotientProduct = exports.areRationalQuotientsEqual = exports.isQuotientRational = exports.computeRationalQuotientFromRationalDecimal = exports.computeRationalQuotientSmoothness = exports.isRationalQuotientSmooth = exports.computeRoughRationalQuotient = exports.isRationalQuotientRough = void 0;
-var roughness_1 = __webpack_require__(23);
+var roughness_1 = __webpack_require__(25);
 Object.defineProperty(exports, "isRationalQuotientRough", { enumerable: true, get: function () { return roughness_1.isRationalQuotientRough; } });
 Object.defineProperty(exports, "computeRoughRationalQuotient", { enumerable: true, get: function () { return roughness_1.computeRoughRationalQuotient; } });
-var smoothness_1 = __webpack_require__(24);
+var smoothness_1 = __webpack_require__(26);
 Object.defineProperty(exports, "isRationalQuotientSmooth", { enumerable: true, get: function () { return smoothness_1.isRationalQuotientSmooth; } });
 Object.defineProperty(exports, "computeRationalQuotientSmoothness", { enumerable: true, get: function () { return smoothness_1.computeRationalQuotientSmoothness; } });
-var fromDecimal_1 = __webpack_require__(25);
+var fromDecimal_1 = __webpack_require__(27);
 Object.defineProperty(exports, "computeRationalQuotientFromRationalDecimal", { enumerable: true, get: function () { return fromDecimal_1.computeRationalQuotientFromRationalDecimal; } });
-var typeGuards_1 = __webpack_require__(27);
+var typeGuards_1 = __webpack_require__(29);
 Object.defineProperty(exports, "isQuotientRational", { enumerable: true, get: function () { return typeGuards_1.isQuotientRational; } });
-var comparison_1 = __webpack_require__(29);
+var comparison_1 = __webpack_require__(31);
 Object.defineProperty(exports, "areRationalQuotientsEqual", { enumerable: true, get: function () { return comparison_1.areRationalQuotientsEqual; } });
-var typedOperations_1 = __webpack_require__(30);
+var typedOperations_1 = __webpack_require__(32);
 Object.defineProperty(exports, "computeRationalQuotientProduct", { enumerable: true, get: function () { return typedOperations_1.computeRationalQuotientProduct; } });
-var lowestTerms_1 = __webpack_require__(26);
+var lowestTerms_1 = __webpack_require__(28);
 Object.defineProperty(exports, "computeLowestTermsRationalQuotient", { enumerable: true, get: function () { return lowestTerms_1.computeLowestTermsRationalQuotient; } });
 Object.defineProperty(exports, "isLowestTerms", { enumerable: true, get: function () { return lowestTerms_1.isLowestTerms; } });
-var fromScamon_1 = __webpack_require__(31);
+var fromScamon_1 = __webpack_require__(33);
 Object.defineProperty(exports, "computeRationalQuotientFromRationalScamon", { enumerable: true, get: function () { return fromScamon_1.computeRationalQuotientFromRationalScamon; } });
 
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1814,7 +2268,7 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isRationalQuotientRough = exports.computeRoughRationalQuotient = void 0;
-var decimal_1 = __webpack_require__(18);
+var decimal_1 = __webpack_require__(20);
 var computeRoughRationalQuotient = function (_a, roughness) {
     var _b = __read(_a, 2), numerator = _b[0], denominator = _b[1];
     // @ts-ignore
@@ -1826,71 +2280,6 @@ var isRationalQuotientRough = function (candidateRoughRationalQuotient, roughnes
     return decimal_1.isIntegerDecimalRough(numerator, roughness) && decimal_1.isIntegerDecimalRough(denominator, roughness);
 };
 exports.isRationalQuotientRough = isRationalQuotientRough;
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __read = (this && this.__read) || function (o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeRationalQuotientSmoothness = exports.isRationalQuotientSmooth = void 0;
-var typedOperations_1 = __webpack_require__(8);
-var decimal_1 = __webpack_require__(18);
-var isRationalQuotientSmooth = function (rationalQuotient, smoothness) {
-    var _a = __read(rationalQuotient, 2), numerator = _a[0], denominator = _a[1];
-    return decimal_1.isIntegerDecimalSmooth(numerator, smoothness) && decimal_1.isIntegerDecimalSmooth(denominator, smoothness);
-};
-exports.isRationalQuotientSmooth = isRationalQuotientSmooth;
-var computeRationalQuotientSmoothness = function (rationalQuotient) {
-    var _a = __read(rationalQuotient, 2), numerator = _a[0], denominator = _a[1];
-    return typedOperations_1.max(decimal_1.computeIntegerDecimalSmoothness(numerator), decimal_1.computeIntegerDecimalSmoothness(denominator));
-};
-exports.computeRationalQuotientSmoothness = computeRationalQuotientSmoothness;
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeRationalQuotientFromRationalDecimal = void 0;
-var typedOperations_1 = __webpack_require__(8);
-var decimal_1 = __webpack_require__(18);
-var lowestTerms_1 = __webpack_require__(26);
-var computeRationalQuotientFromRationalDecimal = function (rationalDecimal) {
-    var integerDenominator = 1;
-    var rationalNumerator = rationalDecimal;
-    while (!decimal_1.isDecimalInteger(rationalNumerator)) {
-        integerDenominator = typedOperations_1.multiply(integerDenominator, 10);
-        rationalNumerator = rationalNumerator * 10;
-    }
-    var rationalQuotient = [
-        rationalNumerator,
-        integerDenominator,
-    ];
-    return lowestTerms_1.computeLowestTermsRationalQuotient(rationalQuotient);
-};
-exports.computeRationalQuotientFromRationalDecimal = computeRationalQuotientFromRationalDecimal;
 
 
 /***/ }),
@@ -1916,10 +2305,75 @@ var __read = (this && this.__read) || function (o, n) {
     return ar;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeRationalQuotientSmoothness = exports.isRationalQuotientSmooth = void 0;
+var typedOperations_1 = __webpack_require__(10);
+var decimal_1 = __webpack_require__(20);
+var isRationalQuotientSmooth = function (rationalQuotient, smoothness) {
+    var _a = __read(rationalQuotient, 2), numerator = _a[0], denominator = _a[1];
+    return decimal_1.isIntegerDecimalSmooth(numerator, smoothness) && decimal_1.isIntegerDecimalSmooth(denominator, smoothness);
+};
+exports.isRationalQuotientSmooth = isRationalQuotientSmooth;
+var computeRationalQuotientSmoothness = function (rationalQuotient) {
+    var _a = __read(rationalQuotient, 2), numerator = _a[0], denominator = _a[1];
+    return typedOperations_1.max(decimal_1.computeIntegerDecimalSmoothness(numerator), decimal_1.computeIntegerDecimalSmoothness(denominator));
+};
+exports.computeRationalQuotientSmoothness = computeRationalQuotientSmoothness;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeRationalQuotientFromRationalDecimal = void 0;
+var typedOperations_1 = __webpack_require__(10);
+var decimal_1 = __webpack_require__(20);
+var lowestTerms_1 = __webpack_require__(28);
+var computeRationalQuotientFromRationalDecimal = function (rationalDecimal) {
+    var integerDenominator = 1;
+    var rationalNumerator = rationalDecimal;
+    while (!decimal_1.isDecimalInteger(rationalNumerator)) {
+        integerDenominator = typedOperations_1.multiply(integerDenominator, 10);
+        rationalNumerator = rationalNumerator * 10;
+    }
+    var rationalQuotient = [
+        rationalNumerator,
+        integerDenominator,
+    ];
+    return lowestTerms_1.computeLowestTermsRationalQuotient(rationalQuotient);
+};
+exports.computeRationalQuotientFromRationalDecimal = computeRationalQuotientFromRationalDecimal;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeLowestTermsRationalQuotient = exports.isLowestTerms = void 0;
-var code_1 = __webpack_require__(4);
-var typedOperations_1 = __webpack_require__(8);
-var common_1 = __webpack_require__(17);
+var code_1 = __webpack_require__(6);
+var typedOperations_1 = __webpack_require__(10);
+var common_1 = __webpack_require__(19);
 var computeLowestTermsRationalQuotient = function (_a) {
     var _b = __read(_a, 2), numerator = _b[0], denominator = _b[1];
     var greatestCommonDivisor = common_1.computeGreatestCommonDivisor(numerator, denominator);
@@ -1936,7 +2390,7 @@ exports.isLowestTerms = isLowestTerms;
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1959,8 +2413,8 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isQuotientInteger = exports.isQuotientRational = void 0;
-var dividesEvenly_1 = __webpack_require__(28);
-var decimal_1 = __webpack_require__(18);
+var dividesEvenly_1 = __webpack_require__(30);
+var decimal_1 = __webpack_require__(20);
 var isQuotientRational = function (candidateRationalQuotient) {
     var _a = __read(candidateRationalQuotient, 2), numerator = _a[0], denominator = _a[1];
     return decimal_1.isDecimalInteger(numerator) && decimal_1.isDecimalInteger(denominator);
@@ -1974,7 +2428,7 @@ exports.isQuotientInteger = isQuotientInteger;
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1996,15 +2450,15 @@ exports.isOdd = isOdd;
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.areRationalQuotientsEqual = void 0;
-var code_1 = __webpack_require__(4);
-var lowestTerms_1 = __webpack_require__(26);
+var code_1 = __webpack_require__(6);
+var lowestTerms_1 = __webpack_require__(28);
 var areRationalQuotientsEqual = function (rationalQuotientA, rationalQuotientB) {
     return code_1.deepEquals(lowestTerms_1.computeLowestTermsRationalQuotient(rationalQuotientA), lowestTerms_1.computeLowestTermsRationalQuotient(rationalQuotientB));
 };
@@ -2012,7 +2466,7 @@ exports.areRationalQuotientsEqual = areRationalQuotientsEqual;
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2039,8 +2493,8 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalQuotientProduct = void 0;
-var numeric_1 = __webpack_require__(10);
-var lowestTerms_1 = __webpack_require__(26);
+var numeric_1 = __webpack_require__(12);
+var lowestTerms_1 = __webpack_require__(28);
 var computeRationalQuotientProduct = function () {
     var rationalQuotients = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -2055,14 +2509,14 @@ var halveRationalQuotient = function (rationalQuotient) {
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalQuotientFromRationalScamon = void 0;
-var numeric_1 = __webpack_require__(10);
+var numeric_1 = __webpack_require__(12);
 var computeRationalQuotientFromRationalScamon = function (rationalScamon) {
     return numeric_1.computeQuotientFromMonzo(rationalScamon.monzo);
 };
@@ -2070,7 +2524,7 @@ exports.computeRationalQuotientFromRationalScamon = computeRationalQuotientFromR
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2093,8 +2547,8 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalMonzoFromRationalQuotient = void 0;
-var numeric_1 = __webpack_require__(10);
-var fromDecimal_1 = __webpack_require__(21);
+var numeric_1 = __webpack_require__(12);
+var fromDecimal_1 = __webpack_require__(23);
 var computeRationalMonzoFromRationalQuotient = function (_a) {
     var _b = __read(_a, 2), numerator = _b[0], denominator = _b[1];
     var positiveFactors = fromDecimal_1.computeIntegerMonzoFromIntegerDecimal(numerator);
@@ -2105,15 +2559,15 @@ exports.computeRationalMonzoFromRationalQuotient = computeRationalMonzoFromRatio
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isRationalMonzoRough = exports.computeRoughRationalMonzo = void 0;
-var code_1 = __webpack_require__(4);
-var primeCount_1 = __webpack_require__(15);
+var code_1 = __webpack_require__(6);
+var primeCount_1 = __webpack_require__(17);
 var computeRoughRationalMonzo = function (rationalMonzo, roughness) {
     var roughnessIndex = primeCount_1.computeRoughnessIndex(roughness);
     return code_1.computeTrimmedArray(rationalMonzo.map(function (primeExponent, index) {
@@ -2137,17 +2591,17 @@ exports.isRationalMonzoRough = isRationalMonzoRough;
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalMonzoSmoothness = exports.isRationalMonzoSmooth = void 0;
-var code_1 = __webpack_require__(4);
-var typedOperations_1 = __webpack_require__(8);
-var primeCount_1 = __webpack_require__(15);
-var primes_1 = __webpack_require__(16);
+var code_1 = __webpack_require__(6);
+var typedOperations_1 = __webpack_require__(10);
+var primeCount_1 = __webpack_require__(17);
+var primes_1 = __webpack_require__(18);
 var isRationalMonzoSmooth = function (candidateSmoothRationalMonzo, smoothness) {
     var smoothnessIndex = primeCount_1.computeSmoothnessIndex(smoothness);
     while (smoothnessIndex < typedOperations_1.count(candidateSmoothRationalMonzo)) {
@@ -2170,14 +2624,14 @@ exports.computeRationalMonzoSmoothness = computeRationalMonzoSmoothness;
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalMonzoCopfr = void 0;
-var typedOperations_1 = __webpack_require__(8);
+var typedOperations_1 = __webpack_require__(10);
 // Count Of Prime Factors with Repetition (big omega, Ω)
 var computeRationalMonzoCopfr = function (rationalMonzo) {
     return rationalMonzo.reduce(function (copfr, primeExponent) {
@@ -2188,15 +2642,15 @@ exports.computeRationalMonzoCopfr = computeRationalMonzoCopfr;
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalMonzoSopfr = void 0;
-var typedOperations_1 = __webpack_require__(8);
-var primes_1 = __webpack_require__(16);
+var typedOperations_1 = __webpack_require__(10);
+var primes_1 = __webpack_require__(18);
 // Sum Of Prime Factors with Repetition
 var computeRationalMonzoSopfr = function (rationalMonzo) {
     var primes = primes_1.computePrimes();
@@ -2209,14 +2663,14 @@ exports.computeRationalMonzoSopfr = computeRationalMonzoSopfr;
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isMonzoRational = exports.isMonzoInteger = void 0;
-var decimal_1 = __webpack_require__(18);
+var decimal_1 = __webpack_require__(20);
 var isMonzoRational = function (candidateRationalMonzo) {
     return candidateRationalMonzo.every(function (primeExponent) { return decimal_1.isDecimalInteger(primeExponent); });
 };
@@ -2229,7 +2683,7 @@ exports.isMonzoInteger = isMonzoInteger;
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2256,7 +2710,7 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.doForEachRationalMonzo = void 0;
-var code_1 = __webpack_require__(4);
+var code_1 = __webpack_require__(6);
 var doForEachRationalMonzo = function (primeExponentExtremas, workFunction) {
     var args = [];
     for (var _i = 2; _i < arguments.length; _i++) {
@@ -2306,7 +2760,7 @@ exports.doForEachRationalMonzo = doForEachRationalMonzo;
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2320,14 +2774,14 @@ exports.computeRationalMonzoFromRationalScamon = computeRationalMonzoFromRationa
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalDecimalCopf = void 0;
-var monzo_1 = __webpack_require__(20);
+var monzo_1 = __webpack_require__(22);
 // Count Of Prime Factors (without repetition) (little omega, ω)
 var computeRationalDecimalCopf = function (rationalDecimal) {
     var rationalMonzo = monzo_1.computeRationalMonzoFromRationalDecimal(rationalDecimal);
@@ -2339,14 +2793,14 @@ exports.computeRationalDecimalCopf = computeRationalDecimalCopf;
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalDecimalFromRationalScamon = void 0;
-var numeric_1 = __webpack_require__(10);
+var numeric_1 = __webpack_require__(12);
 var computeRationalDecimalFromRationalScamon = function (rationalScamon) {
     return numeric_1.computeDecimalFromMonzo(rationalScamon.monzo);
 };
@@ -2354,14 +2808,14 @@ exports.computeRationalDecimalFromRationalScamon = computeRationalDecimalFromRat
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalDecimalGpf = void 0;
-var smoothness_1 = __webpack_require__(43);
+var smoothness_1 = __webpack_require__(45);
 // Greatest Prime Factor
 var computeRationalDecimalGpf = function (rationalDecimal) {
     return smoothness_1.computeRationalDecimalSmoothness(rationalDecimal);
@@ -2370,18 +2824,18 @@ exports.computeRationalDecimalGpf = computeRationalDecimalGpf;
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalDecimalSmoothness = exports.computeIntegerDecimalSmoothness = exports.isIntegerDecimalSmooth = void 0;
-var constants_1 = __webpack_require__(9);
-var constants_2 = __webpack_require__(14);
-var monzo_1 = __webpack_require__(20);
-var quotient_1 = __webpack_require__(22);
-var roughness_1 = __webpack_require__(44);
+var constants_1 = __webpack_require__(11);
+var constants_2 = __webpack_require__(16);
+var monzo_1 = __webpack_require__(22);
+var quotient_1 = __webpack_require__(24);
+var roughness_1 = __webpack_require__(46);
 var isIntegerDecimalSmooth = function (integerDecimal, smoothness) {
     return roughness_1.computeRoughIntegerDecimal(integerDecimal, smoothness + constants_2.SMOOTH_ROUGH_OFFSET) === constants_1.MULTIPLICATIVE_IDENTITY;
 };
@@ -2399,18 +2853,18 @@ exports.computeRationalDecimalSmoothness = computeRationalDecimalSmoothness;
 
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRoughIntegerDecimal = exports.isIntegerDecimalRough = void 0;
-var code_1 = __webpack_require__(4);
-var dividesEvenly_1 = __webpack_require__(28);
-var primeCount_1 = __webpack_require__(15);
-var primes_1 = __webpack_require__(16);
-var typedOperations_1 = __webpack_require__(45);
+var code_1 = __webpack_require__(6);
+var dividesEvenly_1 = __webpack_require__(30);
+var primeCount_1 = __webpack_require__(17);
+var primes_1 = __webpack_require__(18);
+var typedOperations_1 = __webpack_require__(47);
 var isIntegerDecimalRough = function (integerDecimal, roughness) {
     var isRough = true;
     var primes = primes_1.computePrimes(integerDecimal);
@@ -2448,14 +2902,14 @@ exports.computeRoughIntegerDecimal = computeRoughIntegerDecimal;
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ceil = exports.floor = exports.integerDivide = void 0;
-var typedOperations_1 = __webpack_require__(8);
+var typedOperations_1 = __webpack_require__(10);
 var integerDivide = function (dividend, divisor) {
     return floor(typedOperations_1.divide(dividend, divisor));
 };
@@ -2471,16 +2925,16 @@ exports.ceil = ceil;
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isDecimalInteger = exports.isDecimalRational = void 0;
-var code_1 = __webpack_require__(4);
-var dividesEvenly_1 = __webpack_require__(28);
-var typedOperations_1 = __webpack_require__(8);
+var code_1 = __webpack_require__(6);
+var dividesEvenly_1 = __webpack_require__(30);
+var typedOperations_1 = __webpack_require__(10);
 var isDecimalRational = function (candidateRationalDecimal) {
     return candidateRationalDecimal === typedOperations_1.round(candidateRationalDecimal, code_1.DEFAULT_PRECISION);
 };
@@ -2492,73 +2946,43 @@ exports.isDecimalInteger = isDecimalInteger;
 
 
 /***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.sumRationalScamons = exports.computeRationalScamonGeometricMean = exports.subtractRationalScamons = exports.addRationalScamons = exports.computeRationalScamonFromRationalQuotient = exports.computeRationalScamonFromRationalMonzo = exports.computeRationalScamonFromRationalDecimal = exports.isRationalScamonUnison = exports.isRationalScamonSuper = exports.isRationalScamonSub = exports.isRationalScamonLesserOrEqual = exports.isRationalScamonLesser = exports.isRationalScamonGreaterOrEqual = exports.isRationalScamonGreater = exports.areRationalScamonsEqual = exports.computeRationalScamonSopfr = exports.computeRationalScamonCopfr = exports.isRationalScamonSmooth = exports.computeRationalScamonSmoothness = exports.isRationalScamonRough = exports.isScamonRational = void 0;
-var typeGuards_1 = __webpack_require__(48);
-Object.defineProperty(exports, "isScamonRational", { enumerable: true, get: function () { return typeGuards_1.isScamonRational; } });
-var roughness_1 = __webpack_require__(49);
-Object.defineProperty(exports, "isRationalScamonRough", { enumerable: true, get: function () { return roughness_1.isRationalScamonRough; } });
-var smoothness_1 = __webpack_require__(50);
-Object.defineProperty(exports, "computeRationalScamonSmoothness", { enumerable: true, get: function () { return smoothness_1.computeRationalScamonSmoothness; } });
-Object.defineProperty(exports, "isRationalScamonSmooth", { enumerable: true, get: function () { return smoothness_1.isRationalScamonSmooth; } });
-var copfr_1 = __webpack_require__(51);
-Object.defineProperty(exports, "computeRationalScamonCopfr", { enumerable: true, get: function () { return copfr_1.computeRationalScamonCopfr; } });
-var sopfr_1 = __webpack_require__(52);
-Object.defineProperty(exports, "computeRationalScamonSopfr", { enumerable: true, get: function () { return sopfr_1.computeRationalScamonSopfr; } });
-var comparison_1 = __webpack_require__(53);
-Object.defineProperty(exports, "areRationalScamonsEqual", { enumerable: true, get: function () { return comparison_1.areRationalScamonsEqual; } });
-Object.defineProperty(exports, "isRationalScamonGreater", { enumerable: true, get: function () { return comparison_1.isRationalScamonGreater; } });
-Object.defineProperty(exports, "isRationalScamonGreaterOrEqual", { enumerable: true, get: function () { return comparison_1.isRationalScamonGreaterOrEqual; } });
-Object.defineProperty(exports, "isRationalScamonLesser", { enumerable: true, get: function () { return comparison_1.isRationalScamonLesser; } });
-Object.defineProperty(exports, "isRationalScamonLesserOrEqual", { enumerable: true, get: function () { return comparison_1.isRationalScamonLesserOrEqual; } });
-var direction_1 = __webpack_require__(54);
-Object.defineProperty(exports, "isRationalScamonSub", { enumerable: true, get: function () { return direction_1.isRationalScamonSub; } });
-Object.defineProperty(exports, "isRationalScamonSuper", { enumerable: true, get: function () { return direction_1.isRationalScamonSuper; } });
-Object.defineProperty(exports, "isRationalScamonUnison", { enumerable: true, get: function () { return direction_1.isRationalScamonUnison; } });
-var from_1 = __webpack_require__(55);
-Object.defineProperty(exports, "computeRationalScamonFromRationalDecimal", { enumerable: true, get: function () { return from_1.computeRationalScamonFromRationalDecimal; } });
-Object.defineProperty(exports, "computeRationalScamonFromRationalMonzo", { enumerable: true, get: function () { return from_1.computeRationalScamonFromRationalMonzo; } });
-Object.defineProperty(exports, "computeRationalScamonFromRationalQuotient", { enumerable: true, get: function () { return from_1.computeRationalScamonFromRationalQuotient; } });
-var typedOperations_1 = __webpack_require__(56);
-Object.defineProperty(exports, "addRationalScamons", { enumerable: true, get: function () { return typedOperations_1.addRationalScamons; } });
-Object.defineProperty(exports, "subtractRationalScamons", { enumerable: true, get: function () { return typedOperations_1.subtractRationalScamons; } });
-Object.defineProperty(exports, "computeRationalScamonGeometricMean", { enumerable: true, get: function () { return typedOperations_1.computeRationalScamonGeometricMean; } });
-Object.defineProperty(exports, "sumRationalScamons", { enumerable: true, get: function () { return typedOperations_1.sumRationalScamons; } });
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isScamonRational = void 0;
-var code_1 = __webpack_require__(4);
-var isScamonRational = function (candidateRationalScamon) {
-    return code_1.isUndefined(candidateRationalScamon.scaler);
-};
-exports.isScamonRational = isScamonRational;
-
-
-/***/ }),
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isRationalScamonRough = void 0;
-var monzo_1 = __webpack_require__(20);
-var isRationalScamonRough = function (candidateRoughRationalScamon, roughness) {
-    return monzo_1.isRationalMonzoRough(candidateRoughRationalScamon.monzo, roughness);
-};
-exports.isRationalScamonRough = isRationalScamonRough;
+exports.sumRationalScamons = exports.computeRationalScamonGeometricMean = exports.subtractRationalScamons = exports.addRationalScamons = exports.computeRationalScamonFromRationalQuotient = exports.computeRationalScamonFromRationalMonzo = exports.computeRationalScamonFromRationalDecimal = exports.isRationalScamonUnison = exports.isRationalScamonSuper = exports.isRationalScamonSub = exports.isRationalScamonLesserOrEqual = exports.isRationalScamonLesser = exports.isRationalScamonGreaterOrEqual = exports.isRationalScamonGreater = exports.areRationalScamonsEqual = exports.computeRationalScamonSopfr = exports.computeRationalScamonCopfr = exports.isRationalScamonSmooth = exports.computeRationalScamonSmoothness = exports.isRationalScamonRough = exports.isScamonRational = void 0;
+var typeGuards_1 = __webpack_require__(50);
+Object.defineProperty(exports, "isScamonRational", { enumerable: true, get: function () { return typeGuards_1.isScamonRational; } });
+var roughness_1 = __webpack_require__(51);
+Object.defineProperty(exports, "isRationalScamonRough", { enumerable: true, get: function () { return roughness_1.isRationalScamonRough; } });
+var smoothness_1 = __webpack_require__(52);
+Object.defineProperty(exports, "computeRationalScamonSmoothness", { enumerable: true, get: function () { return smoothness_1.computeRationalScamonSmoothness; } });
+Object.defineProperty(exports, "isRationalScamonSmooth", { enumerable: true, get: function () { return smoothness_1.isRationalScamonSmooth; } });
+var copfr_1 = __webpack_require__(53);
+Object.defineProperty(exports, "computeRationalScamonCopfr", { enumerable: true, get: function () { return copfr_1.computeRationalScamonCopfr; } });
+var sopfr_1 = __webpack_require__(54);
+Object.defineProperty(exports, "computeRationalScamonSopfr", { enumerable: true, get: function () { return sopfr_1.computeRationalScamonSopfr; } });
+var comparison_1 = __webpack_require__(55);
+Object.defineProperty(exports, "areRationalScamonsEqual", { enumerable: true, get: function () { return comparison_1.areRationalScamonsEqual; } });
+Object.defineProperty(exports, "isRationalScamonGreater", { enumerable: true, get: function () { return comparison_1.isRationalScamonGreater; } });
+Object.defineProperty(exports, "isRationalScamonGreaterOrEqual", { enumerable: true, get: function () { return comparison_1.isRationalScamonGreaterOrEqual; } });
+Object.defineProperty(exports, "isRationalScamonLesser", { enumerable: true, get: function () { return comparison_1.isRationalScamonLesser; } });
+Object.defineProperty(exports, "isRationalScamonLesserOrEqual", { enumerable: true, get: function () { return comparison_1.isRationalScamonLesserOrEqual; } });
+var direction_1 = __webpack_require__(56);
+Object.defineProperty(exports, "isRationalScamonSub", { enumerable: true, get: function () { return direction_1.isRationalScamonSub; } });
+Object.defineProperty(exports, "isRationalScamonSuper", { enumerable: true, get: function () { return direction_1.isRationalScamonSuper; } });
+Object.defineProperty(exports, "isRationalScamonUnison", { enumerable: true, get: function () { return direction_1.isRationalScamonUnison; } });
+var from_1 = __webpack_require__(57);
+Object.defineProperty(exports, "computeRationalScamonFromRationalDecimal", { enumerable: true, get: function () { return from_1.computeRationalScamonFromRationalDecimal; } });
+Object.defineProperty(exports, "computeRationalScamonFromRationalMonzo", { enumerable: true, get: function () { return from_1.computeRationalScamonFromRationalMonzo; } });
+Object.defineProperty(exports, "computeRationalScamonFromRationalQuotient", { enumerable: true, get: function () { return from_1.computeRationalScamonFromRationalQuotient; } });
+var typedOperations_1 = __webpack_require__(58);
+Object.defineProperty(exports, "addRationalScamons", { enumerable: true, get: function () { return typedOperations_1.addRationalScamons; } });
+Object.defineProperty(exports, "subtractRationalScamons", { enumerable: true, get: function () { return typedOperations_1.subtractRationalScamons; } });
+Object.defineProperty(exports, "computeRationalScamonGeometricMean", { enumerable: true, get: function () { return typedOperations_1.computeRationalScamonGeometricMean; } });
+Object.defineProperty(exports, "sumRationalScamons", { enumerable: true, get: function () { return typedOperations_1.sumRationalScamons; } });
 
 
 /***/ }),
@@ -2568,8 +2992,38 @@ exports.isRationalScamonRough = isRationalScamonRough;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isScamonRational = void 0;
+var code_1 = __webpack_require__(6);
+var isScamonRational = function (candidateRationalScamon) {
+    return code_1.isUndefined(candidateRationalScamon.scaler);
+};
+exports.isScamonRational = isScamonRational;
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isRationalScamonRough = void 0;
+var monzo_1 = __webpack_require__(22);
+var isRationalScamonRough = function (candidateRoughRationalScamon, roughness) {
+    return monzo_1.isRationalMonzoRough(candidateRoughRationalScamon.monzo, roughness);
+};
+exports.isRationalScamonRough = isRationalScamonRough;
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalScamonSmoothness = exports.isRationalScamonSmooth = void 0;
-var monzo_1 = __webpack_require__(20);
+var monzo_1 = __webpack_require__(22);
 var isRationalScamonSmooth = function (candidateSmoothRationalScamon, smoothness) {
     return monzo_1.isRationalMonzoSmooth(candidateSmoothRationalScamon.monzo, smoothness);
 };
@@ -2582,14 +3036,14 @@ exports.computeRationalScamonSmoothness = computeRationalScamonSmoothness;
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalScamonCopfr = void 0;
-var monzo_1 = __webpack_require__(20);
+var monzo_1 = __webpack_require__(22);
 // Count Of Prime Factors with Repetition (big omega, Ω)
 var computeRationalScamonCopfr = function (_a) {
     var monzo = _a.monzo;
@@ -2599,14 +3053,14 @@ exports.computeRationalScamonCopfr = computeRationalScamonCopfr;
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalScamonSopfr = void 0;
-var monzo_1 = __webpack_require__(20);
+var monzo_1 = __webpack_require__(22);
 // Sum Of Prime Factors with Repetition
 var computeRationalScamonSopfr = function (_a) {
     var monzo = _a.monzo;
@@ -2616,16 +3070,16 @@ exports.computeRationalScamonSopfr = computeRationalScamonSopfr;
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isRationalScamonLesserOrEqual = exports.isRationalScamonGreaterOrEqual = exports.isRationalScamonLesser = exports.isRationalScamonGreater = exports.areRationalScamonsEqual = void 0;
-var code_1 = __webpack_require__(4);
-var numeric_1 = __webpack_require__(10);
-var decimal_1 = __webpack_require__(18);
+var code_1 = __webpack_require__(6);
+var numeric_1 = __webpack_require__(12);
+var decimal_1 = __webpack_require__(20);
 var areRationalScamonsEqual = function (rationalScamonA, rationalScamonB, precision) {
     if (precision === void 0) { precision = code_1.MAX_JS_PRECISION; }
     return numeric_1.areMonzosEqual(rationalScamonA.monzo, rationalScamonB.monzo, precision);
@@ -2660,14 +3114,14 @@ exports.isRationalScamonLesserOrEqual = isRationalScamonLesserOrEqual;
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isRationalScamonUnison = exports.isRationalScamonSub = exports.isRationalScamonSuper = void 0;
-var numeric_1 = __webpack_require__(10);
+var numeric_1 = __webpack_require__(12);
 var isRationalScamonSuper = function (candidateSuperRationalScamon) {
     return numeric_1.isMonzoSuper(candidateSuperRationalScamon.monzo);
 };
@@ -2685,14 +3139,14 @@ exports.isRationalScamonUnison = isRationalScamonUnison;
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRationalScamonFromRationalQuotient = exports.computeRationalScamonFromRationalMonzo = exports.computeRationalScamonFromRationalDecimal = void 0;
-var monzo_1 = __webpack_require__(20);
+var monzo_1 = __webpack_require__(22);
 var computeRationalScamonFromRationalDecimal = function (rationalDecimal) {
     return ({
         monzo: monzo_1.computeRationalMonzoFromRationalDecimal(rationalDecimal),
@@ -2710,7 +3164,7 @@ exports.computeRationalScamonFromRationalQuotient = computeRationalScamonFromRat
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2737,8 +3191,8 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sumRationalScamons = exports.computeRationalScamonGeometricMean = exports.addRationalScamons = exports.subtractRationalScamons = void 0;
-var numeric_1 = __webpack_require__(10);
-var monzo_1 = __webpack_require__(20);
+var numeric_1 = __webpack_require__(12);
+var monzo_1 = __webpack_require__(22);
 var addRationalScamons = function (augendScamon, addendScamon) {
     return ({
         monzo: numeric_1.addMonzos(augendScamon.monzo, addendScamon.monzo),
@@ -2775,43 +3229,43 @@ exports.sumRationalScamons = sumRationalScamons;
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EMPTY_MONZO = exports.computePatentVal = exports.computeMonzoMapping = exports.areMonzosEqual = exports.addMonzos = exports.subtractMonzos = exports.sumMonzos = exports.isMonzoUnison = exports.invertMonzo = exports.isMonzoSuper = exports.isMonzoSub = exports.computeSuperMonzo = void 0;
-var direction_1 = __webpack_require__(58);
+var direction_1 = __webpack_require__(60);
 Object.defineProperty(exports, "computeSuperMonzo", { enumerable: true, get: function () { return direction_1.computeSuperMonzo; } });
 Object.defineProperty(exports, "isMonzoSub", { enumerable: true, get: function () { return direction_1.isMonzoSub; } });
 Object.defineProperty(exports, "isMonzoSuper", { enumerable: true, get: function () { return direction_1.isMonzoSuper; } });
 Object.defineProperty(exports, "invertMonzo", { enumerable: true, get: function () { return direction_1.invertMonzo; } });
 Object.defineProperty(exports, "isMonzoUnison", { enumerable: true, get: function () { return direction_1.isMonzoUnison; } });
-var typedOperations_1 = __webpack_require__(59);
+var typedOperations_1 = __webpack_require__(61);
 Object.defineProperty(exports, "sumMonzos", { enumerable: true, get: function () { return typedOperations_1.sumMonzos; } });
 Object.defineProperty(exports, "subtractMonzos", { enumerable: true, get: function () { return typedOperations_1.subtractMonzos; } });
 Object.defineProperty(exports, "addMonzos", { enumerable: true, get: function () { return typedOperations_1.addMonzos; } });
-var comparison_1 = __webpack_require__(60);
+var comparison_1 = __webpack_require__(62);
 Object.defineProperty(exports, "areMonzosEqual", { enumerable: true, get: function () { return comparison_1.areMonzosEqual; } });
-var mapping_1 = __webpack_require__(61);
+var mapping_1 = __webpack_require__(63);
 Object.defineProperty(exports, "computeMonzoMapping", { enumerable: true, get: function () { return mapping_1.computeMonzoMapping; } });
-var patentVal_1 = __webpack_require__(155);
+var patentVal_1 = __webpack_require__(157);
 Object.defineProperty(exports, "computePatentVal", { enumerable: true, get: function () { return patentVal_1.computePatentVal; } });
-var constants_1 = __webpack_require__(156);
+var constants_1 = __webpack_require__(158);
 Object.defineProperty(exports, "EMPTY_MONZO", { enumerable: true, get: function () { return constants_1.EMPTY_MONZO; } });
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.invertMonzo = exports.computeSubMonzo = exports.computeSuperMonzo = exports.isMonzoUnison = exports.isMonzoSuper = exports.isMonzoSub = void 0;
-var constants_1 = __webpack_require__(9);
-var decimal_1 = __webpack_require__(11);
+var constants_1 = __webpack_require__(11);
+var decimal_1 = __webpack_require__(13);
 var isMonzoSub = function (candidateSubMonzo) {
     if (candidateSubMonzo.length &&
         candidateSubMonzo.every(function (primeExponent) { return primeExponent >= 0; })) {
@@ -2855,7 +3309,7 @@ exports.invertMonzo = invertMonzo;
 
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2882,8 +3336,8 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.multiplyMonzo = exports.subtractMonzos = exports.addMonzos = exports.sumMonzos = void 0;
-var code_1 = __webpack_require__(4);
-var math_1 = __webpack_require__(6);
+var code_1 = __webpack_require__(6);
+var math_1 = __webpack_require__(8);
 var sumMonzos = function () {
     var monzos = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -2922,14 +3376,14 @@ exports.multiplyMonzo = multiplyMonzo;
 
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.areMonzosEqual = void 0;
-var code_1 = __webpack_require__(4);
+var code_1 = __webpack_require__(6);
 var areMonzosEqual = function (monzoA, monzoB, precision) {
     if (precision === void 0) { precision = code_1.MAX_JS_PRECISION; }
     return code_1.deepEquals(code_1.computeTrimmedArray(monzoA), code_1.computeTrimmedArray(monzoB), precision);
@@ -2938,14 +3392,14 @@ exports.areMonzosEqual = areMonzosEqual;
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeMonzoMapping = void 0;
-var io_1 = __webpack_require__(62);
+var io_1 = __webpack_require__(64);
 var computeMonzoMapping = function (monzo, val) {
     if (val.length < monzo.length) {
         throw new Error("Please provide a val with a prime limit at least as high as the monzo it is mapping. This val " + io_1.formatVal(val) + " could not map monzo " + io_1.formatMonzo(monzo) + ".");
@@ -2958,7 +3412,7 @@ exports.computeMonzoMapping = computeMonzoMapping;
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2966,11 +3420,11 @@ exports.computeMonzoMapping = computeMonzoMapping;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimePrecision = exports.formatCents = exports.formatPitch = exports.formatTime = exports.formatQuotient = exports.formatDecimal = exports.formatVal = exports.formatMonzo = exports.formatIntegerDecimal = exports.alignFormattedDecimal = exports.computePx = exports.split = exports.join = exports.sumTexts = exports.MERGED_CELL_INDICATOR = exports.Alignment = exports.TableFormat = exports.splitFieldTitlesIntoRowsBySpaces = exports.formatTable = exports.stringify = exports.removeColor = exports.DOT_OPERATOR = exports.parseDecimal = exports.parseInteger = exports.parseCents = exports.parseQuotient = exports.parseMonzo = exports.parse23FreeClass = exports.setupScriptAndIo = exports.ScriptFlag = exports.setLogTargets = exports.saveLog = exports.LogTarget = exports.clearLogFiles = exports.DEFAULT_IO_SETTINGS = exports.NUMERIC_CHARS = exports.IDENTIFYING_QUOTIENT_CHARS = exports.IDENTIFYING_CENTS_CHARS = exports.COMMA = exports.TAB = exports.SUPERSCRIPT_NUMBERS = exports.SPACE = exports.NEWLINE = exports.IO_PRECISION = exports.BLANK = exports.IDENTIFYING_ACCIDENTAL_CHARS = exports.IDENTIFYING_MONZO_CHARS = exports.IDENTIFYING_COMMA_NAME_CHARS = exports.colorize = exports.ioSettings = void 0;
 exports.readLines = exports.program = exports.time = exports.formatBound = void 0;
-var globals_1 = __webpack_require__(63);
+var globals_1 = __webpack_require__(65);
 Object.defineProperty(exports, "ioSettings", { enumerable: true, get: function () { return globals_1.ioSettings; } });
-var colorize_1 = __webpack_require__(77);
+var colorize_1 = __webpack_require__(79);
 Object.defineProperty(exports, "colorize", { enumerable: true, get: function () { return colorize_1.colorize; } });
-var constants_1 = __webpack_require__(64);
+var constants_1 = __webpack_require__(66);
 Object.defineProperty(exports, "IDENTIFYING_COMMA_NAME_CHARS", { enumerable: true, get: function () { return constants_1.IDENTIFYING_COMMA_NAME_CHARS; } });
 Object.defineProperty(exports, "IDENTIFYING_MONZO_CHARS", { enumerable: true, get: function () { return constants_1.IDENTIFYING_MONZO_CHARS; } });
 Object.defineProperty(exports, "IDENTIFYING_ACCIDENTAL_CHARS", { enumerable: true, get: function () { return constants_1.IDENTIFYING_ACCIDENTAL_CHARS; } });
@@ -2985,14 +3439,14 @@ Object.defineProperty(exports, "IDENTIFYING_CENTS_CHARS", { enumerable: true, ge
 Object.defineProperty(exports, "IDENTIFYING_QUOTIENT_CHARS", { enumerable: true, get: function () { return constants_1.IDENTIFYING_QUOTIENT_CHARS; } });
 Object.defineProperty(exports, "NUMERIC_CHARS", { enumerable: true, get: function () { return constants_1.NUMERIC_CHARS; } });
 Object.defineProperty(exports, "DEFAULT_IO_SETTINGS", { enumerable: true, get: function () { return constants_1.DEFAULT_IO_SETTINGS; } });
-var scripts_1 = __webpack_require__(80);
+var scripts_1 = __webpack_require__(82);
 Object.defineProperty(exports, "clearLogFiles", { enumerable: true, get: function () { return scripts_1.clearLogFiles; } });
 Object.defineProperty(exports, "LogTarget", { enumerable: true, get: function () { return scripts_1.LogTarget; } });
 Object.defineProperty(exports, "saveLog", { enumerable: true, get: function () { return scripts_1.saveLog; } });
 Object.defineProperty(exports, "setLogTargets", { enumerable: true, get: function () { return scripts_1.setLogTargets; } });
 Object.defineProperty(exports, "ScriptFlag", { enumerable: true, get: function () { return scripts_1.ScriptFlag; } });
 Object.defineProperty(exports, "setupScriptAndIo", { enumerable: true, get: function () { return scripts_1.setupScriptAndIo; } });
-var parse_1 = __webpack_require__(116);
+var parse_1 = __webpack_require__(118);
 Object.defineProperty(exports, "parse23FreeClass", { enumerable: true, get: function () { return parse_1.parse23FreeClass; } });
 Object.defineProperty(exports, "parseMonzo", { enumerable: true, get: function () { return parse_1.parseMonzo; } });
 Object.defineProperty(exports, "parseQuotient", { enumerable: true, get: function () { return parse_1.parseQuotient; } });
@@ -3000,23 +3454,23 @@ Object.defineProperty(exports, "parseCents", { enumerable: true, get: function (
 Object.defineProperty(exports, "parseInteger", { enumerable: true, get: function () { return parse_1.parseInteger; } });
 Object.defineProperty(exports, "parseDecimal", { enumerable: true, get: function () { return parse_1.parseDecimal; } });
 Object.defineProperty(exports, "DOT_OPERATOR", { enumerable: true, get: function () { return parse_1.DOT_OPERATOR; } });
-var removeColor_1 = __webpack_require__(89);
+var removeColor_1 = __webpack_require__(91);
 Object.defineProperty(exports, "removeColor", { enumerable: true, get: function () { return removeColor_1.removeColor; } });
-var stringify_1 = __webpack_require__(123);
+var stringify_1 = __webpack_require__(125);
 Object.defineProperty(exports, "stringify", { enumerable: true, get: function () { return stringify_1.stringify; } });
-var table_1 = __webpack_require__(65);
+var table_1 = __webpack_require__(67);
 Object.defineProperty(exports, "formatTable", { enumerable: true, get: function () { return table_1.formatTable; } });
 Object.defineProperty(exports, "splitFieldTitlesIntoRowsBySpaces", { enumerable: true, get: function () { return table_1.splitFieldTitlesIntoRowsBySpaces; } });
 Object.defineProperty(exports, "TableFormat", { enumerable: true, get: function () { return table_1.TableFormat; } });
 Object.defineProperty(exports, "Alignment", { enumerable: true, get: function () { return table_1.Alignment; } });
 Object.defineProperty(exports, "MERGED_CELL_INDICATOR", { enumerable: true, get: function () { return table_1.MERGED_CELL_INDICATOR; } });
-var typedOperations_1 = __webpack_require__(71);
+var typedOperations_1 = __webpack_require__(73);
 Object.defineProperty(exports, "sumTexts", { enumerable: true, get: function () { return typedOperations_1.sumTexts; } });
 Object.defineProperty(exports, "join", { enumerable: true, get: function () { return typedOperations_1.join; } });
 Object.defineProperty(exports, "split", { enumerable: true, get: function () { return typedOperations_1.split; } });
-var image_1 = __webpack_require__(124);
+var image_1 = __webpack_require__(126);
 Object.defineProperty(exports, "computePx", { enumerable: true, get: function () { return image_1.computePx; } });
-var format_1 = __webpack_require__(126);
+var format_1 = __webpack_require__(128);
 Object.defineProperty(exports, "alignFormattedDecimal", { enumerable: true, get: function () { return format_1.alignFormattedDecimal; } });
 Object.defineProperty(exports, "formatIntegerDecimal", { enumerable: true, get: function () { return format_1.formatIntegerDecimal; } });
 Object.defineProperty(exports, "formatMonzo", { enumerable: true, get: function () { return format_1.formatMonzo; } });
@@ -3028,36 +3482,36 @@ Object.defineProperty(exports, "formatPitch", { enumerable: true, get: function 
 Object.defineProperty(exports, "formatCents", { enumerable: true, get: function () { return format_1.formatCents; } });
 Object.defineProperty(exports, "TimePrecision", { enumerable: true, get: function () { return format_1.TimePrecision; } });
 Object.defineProperty(exports, "formatBound", { enumerable: true, get: function () { return format_1.formatBound; } });
-var time_1 = __webpack_require__(152);
+var time_1 = __webpack_require__(154);
 Object.defineProperty(exports, "time", { enumerable: true, get: function () { return time_1.time; } });
-var program_1 = __webpack_require__(153);
+var program_1 = __webpack_require__(155);
 Object.defineProperty(exports, "program", { enumerable: true, get: function () { return program_1.program; } });
-var lines_1 = __webpack_require__(154);
+var lines_1 = __webpack_require__(156);
 Object.defineProperty(exports, "readLines", { enumerable: true, get: function () { return lines_1.readLines; } });
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ioSettings = void 0;
-var constants_1 = __webpack_require__(64);
+var constants_1 = __webpack_require__(66);
 var ioSettings = JSON.parse(JSON.stringify(constants_1.DEFAULT_IO_SETTINGS));
 exports.ioSettings = ioSettings;
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WINDOWS_CARRIAGE_RETURN = exports.NUMERIC_CHARS = exports.DEFAULT_IO_SETTINGS = exports.IDENTIFYING_ACCIDENTAL_CHARS = exports.IDENTIFYING_QUOTIENT_CHARS = exports.IDENTIFYING_CENTS_CHARS = exports.IDENTIFYING_COMMA_NAME_CHARS = exports.COMMA = exports.TAB = exports.BLANK = exports.SPACE = exports.NEWLINE = exports.SUPERSCRIPT_NUMBERS = exports.IDENTIFYING_MONZO_CHARS = exports.IO_PRECISION = void 0;
-var table_1 = __webpack_require__(65);
+var table_1 = __webpack_require__(67);
 var IO_PRECISION = 3;
 exports.IO_PRECISION = IO_PRECISION;
 var IDENTIFYING_MONZO_CHARS = /[\[\]⟩|>]/;
@@ -3098,33 +3552,33 @@ exports.DEFAULT_IO_SETTINGS = DEFAULT_IO_SETTINGS;
 
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Alignment = exports.TableFormat = exports.formatTable = exports.MERGED_CELL_INDICATOR = exports.splitFieldTitlesIntoRowsBySpaces = void 0;
-var splitFieldTitlesIntoRowsBySpaces_1 = __webpack_require__(66);
+var splitFieldTitlesIntoRowsBySpaces_1 = __webpack_require__(68);
 Object.defineProperty(exports, "splitFieldTitlesIntoRowsBySpaces", { enumerable: true, get: function () { return splitFieldTitlesIntoRowsBySpaces_1.splitFieldTitlesIntoRowsBySpaces; } });
-var constants_1 = __webpack_require__(68);
+var constants_1 = __webpack_require__(70);
 Object.defineProperty(exports, "MERGED_CELL_INDICATOR", { enumerable: true, get: function () { return constants_1.MERGED_CELL_INDICATOR; } });
-var table_1 = __webpack_require__(69);
+var table_1 = __webpack_require__(71);
 Object.defineProperty(exports, "formatTable", { enumerable: true, get: function () { return table_1.formatTable; } });
-var types_1 = __webpack_require__(73);
+var types_1 = __webpack_require__(75);
 Object.defineProperty(exports, "TableFormat", { enumerable: true, get: function () { return types_1.TableFormat; } });
 Object.defineProperty(exports, "Alignment", { enumerable: true, get: function () { return types_1.Alignment; } });
 
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.splitFieldTitlesIntoRowsBySpaces = void 0;
-var headerRowsFromFieldTitleColumns_1 = __webpack_require__(67);
+var headerRowsFromFieldTitleColumns_1 = __webpack_require__(69);
 var splitFieldTitlesIntoRowsBySpaces = function (fieldTitles, options) {
     if (options === void 0) { options = {}; }
     var popular23FreeClassesFieldTitleColumns = fieldTitles.map(function (fieldTitle) {
@@ -3136,7 +3590,7 @@ exports.splitFieldTitlesIntoRowsBySpaces = splitFieldTitlesIntoRowsBySpaces;
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3163,9 +3617,9 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeHeaderRowsFromFieldTitleColumns = void 0;
-var code_1 = __webpack_require__(4);
-var math_1 = __webpack_require__(6);
-var constants_1 = __webpack_require__(64);
+var code_1 = __webpack_require__(6);
+var math_1 = __webpack_require__(8);
+var constants_1 = __webpack_require__(66);
 var computeHeaderRowsFromFieldTitleColumns = function (fieldTitleColumns, _a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.includeSpacerRow, includeSpacerRow = _c === void 0 ? false : _c;
     var maxFieldTitleHeaderRowCount = code_1.isEmpty(fieldTitleColumns) ? 0 : math_1.max.apply(void 0, __spread(fieldTitleColumns.map(function (fieldTitleColumn) {
@@ -3189,7 +3643,7 @@ exports.computeHeaderRowsFromFieldTitleColumns = computeHeaderRowsFromFieldTitle
 
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3207,20 +3661,20 @@ exports.MERGED_CELL_INDICATOR = MERGED_CELL_INDICATOR;
 
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatTable = void 0;
-var code_1 = __webpack_require__(4);
-var math_1 = __webpack_require__(6);
-var globals_1 = __webpack_require__(63);
-var tableForForum_1 = __webpack_require__(70);
-var tableForSpreadsheet_1 = __webpack_require__(76);
-var tableForTerminal_1 = __webpack_require__(79);
-var types_1 = __webpack_require__(73);
+var code_1 = __webpack_require__(6);
+var math_1 = __webpack_require__(8);
+var globals_1 = __webpack_require__(65);
+var tableForForum_1 = __webpack_require__(72);
+var tableForSpreadsheet_1 = __webpack_require__(78);
+var tableForTerminal_1 = __webpack_require__(81);
+var types_1 = __webpack_require__(75);
 var formatTable = function (table, options) {
     var rowLengths = table.map(function (row) {
         return math_1.count(row);
@@ -3243,21 +3697,21 @@ exports.formatTable = formatTable;
 
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatTableForForum = void 0;
-var code_1 = __webpack_require__(4);
-var constants_1 = __webpack_require__(64);
-var typedOperations_1 = __webpack_require__(71);
-var alignment_1 = __webpack_require__(72);
-var columnRange_1 = __webpack_require__(74);
-var columnSpans_1 = __webpack_require__(75);
-var constants_2 = __webpack_require__(68);
-var types_1 = __webpack_require__(73);
+var code_1 = __webpack_require__(6);
+var constants_1 = __webpack_require__(66);
+var typedOperations_1 = __webpack_require__(73);
+var alignment_1 = __webpack_require__(74);
+var columnRange_1 = __webpack_require__(76);
+var columnSpans_1 = __webpack_require__(77);
+var constants_2 = __webpack_require__(70);
+var types_1 = __webpack_require__(75);
 var computeMaybeColoredCell = function (cell, color) {
     return code_1.isUndefined(color) ? (cell || constants_1.BLANK) : "[hilite=" + color + "]" + cell + "[/hilite]";
 };
@@ -3300,14 +3754,14 @@ exports.formatTableForForum = formatTableForForum;
 
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.split = exports.join = exports.length = exports.sumTexts = void 0;
-var constants_1 = __webpack_require__(64);
+var constants_1 = __webpack_require__(66);
 var sumTexts = function () {
     var strings = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -3331,17 +3785,17 @@ exports.split = split;
 
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.alignCellIo = exports.computeColumnWidths = exports.computeColumnAlignments = void 0;
-var code_1 = __webpack_require__(4);
-var constants_1 = __webpack_require__(64);
-var typedOperations_1 = __webpack_require__(71);
-var types_1 = __webpack_require__(73);
+var code_1 = __webpack_require__(6);
+var constants_1 = __webpack_require__(66);
+var typedOperations_1 = __webpack_require__(73);
+var types_1 = __webpack_require__(75);
 var computeColumnAlignments = function (tableAlignment, columnRange) {
     return code_1.isUndefined(tableAlignment) ?
         columnRange.map(function (_) { return undefined; }) :
@@ -3386,7 +3840,7 @@ exports.alignCellIo = alignCellIo;
 
 
 /***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3411,7 +3865,7 @@ exports.TableFormat = TableFormat;
 
 
 /***/ }),
-/* 74 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3447,15 +3901,15 @@ exports.computeColumnRange = computeColumnRange;
 
 
 /***/ }),
-/* 75 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeColumnSpans = void 0;
-var code_1 = __webpack_require__(4);
-var constants_1 = __webpack_require__(68);
+var code_1 = __webpack_require__(6);
+var constants_1 = __webpack_require__(70);
 var computeColumnSpans = function (row) {
     var columnSpans = [];
     var mergeCounter = 0;
@@ -3481,19 +3935,19 @@ exports.computeColumnSpans = computeColumnSpans;
 
 
 /***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatTableForSpreadsheet = void 0;
-var code_1 = __webpack_require__(4);
-var colorize_1 = __webpack_require__(77);
-var constants_1 = __webpack_require__(64);
-var typedOperations_1 = __webpack_require__(71);
-var constants_2 = __webpack_require__(68);
-var maybeColorize_1 = __webpack_require__(78);
+var code_1 = __webpack_require__(6);
+var colorize_1 = __webpack_require__(79);
+var constants_1 = __webpack_require__(66);
+var typedOperations_1 = __webpack_require__(73);
+var constants_2 = __webpack_require__(70);
+var maybeColorize_1 = __webpack_require__(80);
 var formatTableForSpreadsheet = function (table, options) {
     var _a = options || {}, _b = _a.colors, colors = _b === void 0 ? constants_2.DEFAULT_FORMAT_TABLE_OPTIONS.colors : _b, _c = _a.headerRowCount, headerRowCount = _c === void 0 ? constants_2.DEFAULT_FORMAT_TABLE_OPTIONS.headerRowCount : _c;
     var formattedRows = table.map(function (row, rowIndex) {
@@ -3515,14 +3969,14 @@ exports.formatTableForSpreadsheet = formatTableForSpreadsheet;
 
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.colorize = void 0;
-var globals_1 = __webpack_require__(63);
+var globals_1 = __webpack_require__(65);
 var colorize = function (io, color) {
     if (globals_1.ioSettings.disableColors)
         return io;
@@ -3533,15 +3987,15 @@ exports.colorize = colorize;
 
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.maybeColorize = void 0;
-var code_1 = __webpack_require__(4);
-var colorize_1 = __webpack_require__(77);
+var code_1 = __webpack_require__(6);
+var colorize_1 = __webpack_require__(79);
 var maybeColorize = function (rowIo, rowIndex, colors) {
     if (code_1.isUndefined(colors)) {
         return rowIo;
@@ -3553,21 +4007,21 @@ exports.maybeColorize = maybeColorize;
 
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatTableForTerminal = void 0;
-var code_1 = __webpack_require__(4);
-var colorize_1 = __webpack_require__(77);
-var constants_1 = __webpack_require__(64);
-var typedOperations_1 = __webpack_require__(71);
-var alignment_1 = __webpack_require__(72);
-var columnRange_1 = __webpack_require__(74);
-var constants_2 = __webpack_require__(68);
-var maybeColorize_1 = __webpack_require__(78);
+var code_1 = __webpack_require__(6);
+var colorize_1 = __webpack_require__(79);
+var constants_1 = __webpack_require__(66);
+var typedOperations_1 = __webpack_require__(73);
+var alignment_1 = __webpack_require__(74);
+var columnRange_1 = __webpack_require__(76);
+var constants_2 = __webpack_require__(70);
+var maybeColorize_1 = __webpack_require__(80);
 var formatTableForTerminal = function (table, options) {
     var _a = options || {}, _b = _a.tableAlignment, tableAlignment = _b === void 0 ? constants_2.DEFAULT_FORMAT_TABLE_OPTIONS.tableAlignment : _b, _c = _a.colors, colors = _c === void 0 ? constants_2.DEFAULT_FORMAT_TABLE_OPTIONS.colors : _c, _d = _a.headerRowCount, headerRowCount = _d === void 0 ? constants_2.DEFAULT_FORMAT_TABLE_OPTIONS.headerRowCount : _d;
     var columnRange = columnRange_1.computeColumnRange(table);
@@ -3594,29 +4048,29 @@ exports.formatTableForTerminal = formatTableForTerminal;
 
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScriptFlag = exports.setupScriptAndIo = exports.LogTarget = exports.setLogTargets = exports.saveLog = exports.clearLogFiles = void 0;
-var clear_1 = __webpack_require__(81);
+var clear_1 = __webpack_require__(83);
 Object.defineProperty(exports, "clearLogFiles", { enumerable: true, get: function () { return clear_1.clearLogFiles; } });
-var save_1 = __webpack_require__(85);
+var save_1 = __webpack_require__(87);
 Object.defineProperty(exports, "saveLog", { enumerable: true, get: function () { return save_1.saveLog; } });
-var set_1 = __webpack_require__(91);
+var set_1 = __webpack_require__(93);
 Object.defineProperty(exports, "setLogTargets", { enumerable: true, get: function () { return set_1.setLogTargets; } });
-var types_1 = __webpack_require__(87);
+var types_1 = __webpack_require__(89);
 Object.defineProperty(exports, "LogTarget", { enumerable: true, get: function () { return types_1.LogTarget; } });
-var setup_1 = __webpack_require__(92);
+var setup_1 = __webpack_require__(94);
 Object.defineProperty(exports, "setupScriptAndIo", { enumerable: true, get: function () { return setup_1.setupScriptAndIo; } });
-var types_2 = __webpack_require__(87);
+var types_2 = __webpack_require__(89);
 Object.defineProperty(exports, "ScriptFlag", { enumerable: true, get: function () { return types_2.ScriptFlag; } });
 
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3653,8 +4107,8 @@ var __values = (this && this.__values) || function(o) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.clearLogFiles = void 0;
-var fs = __importStar(__webpack_require__(82));
-var path = __importStar(__webpack_require__(83));
+var fs = __importStar(__webpack_require__(84));
+var path = __importStar(__webpack_require__(85));
 var clearLogFiles = function (logDir) {
     var e_1, _a;
     if (!fs.existsSync("log"))
@@ -3681,13 +4135,13 @@ exports.clearLogFiles = clearLogFiles;
 
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports) {
 
 module.exports = {};
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
@@ -3993,10 +4447,10 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(84)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86)))
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -4186,18 +4640,18 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.saveLog = void 0;
-var colorize_1 = __webpack_require__(77);
-var globals_1 = __webpack_require__(63);
-var colors_1 = __webpack_require__(86);
-var types_1 = __webpack_require__(87);
-var write_1 = __webpack_require__(88);
+var colorize_1 = __webpack_require__(79);
+var globals_1 = __webpack_require__(65);
+var colors_1 = __webpack_require__(88);
+var types_1 = __webpack_require__(89);
+var write_1 = __webpack_require__(90);
 var saveLog = function (message, target) {
     if (target === void 0) { target = types_1.LogTarget.ALL; }
     if (globals_1.ioSettings.logTargets[types_1.LogTarget.NONE]) {
@@ -4213,7 +4667,7 @@ exports.saveLog = saveLog;
 
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4221,7 +4675,7 @@ exports.saveLog = saveLog;
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.targetColors = void 0;
-var types_1 = __webpack_require__(87);
+var types_1 = __webpack_require__(89);
 var targetColors = (_a = {},
     _a[types_1.LogTarget.ALL] = "white",
     _a[types_1.LogTarget.ERROR] = "red",
@@ -4237,7 +4691,7 @@ exports.targetColors = targetColors;
 
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4303,7 +4757,7 @@ exports.ScriptFlag = ScriptFlag;
 
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4329,12 +4783,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.write = void 0;
-var fs = __importStar(__webpack_require__(82));
-var constants_1 = __webpack_require__(64);
-var globals_1 = __webpack_require__(63);
-var removeColor_1 = __webpack_require__(89);
-var table_1 = __webpack_require__(65);
-var constants_2 = __webpack_require__(90);
+var fs = __importStar(__webpack_require__(84));
+var constants_1 = __webpack_require__(66);
+var globals_1 = __webpack_require__(65);
+var removeColor_1 = __webpack_require__(91);
+var table_1 = __webpack_require__(67);
+var constants_2 = __webpack_require__(92);
 var write = function (message, target, logDir) {
     fs.existsSync("log") || fs.mkdirSync("log");
     fs.existsSync("log/" + logDir) || fs.mkdirSync("log/" + logDir);
@@ -4355,14 +4809,14 @@ exports.write = write;
 
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeColor = void 0;
-var constants_1 = __webpack_require__(64);
+var constants_1 = __webpack_require__(66);
 var removeColor = function (io) {
     return io.replace(/\x1B\[\d+m/g, constants_1.BLANK);
 };
@@ -4370,7 +4824,7 @@ exports.removeColor = removeColor;
 
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4382,7 +4836,7 @@ exports.BOM = BOM;
 
 
 /***/ }),
-/* 91 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4400,9 +4854,9 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setLogTargets = void 0;
-var constants_1 = __webpack_require__(64);
-var globals_1 = __webpack_require__(63);
-var types_1 = __webpack_require__(87);
+var constants_1 = __webpack_require__(66);
+var globals_1 = __webpack_require__(65);
+var types_1 = __webpack_require__(89);
 var setLogTargets = function (logTargetsCommaSeparatedString) {
     if (logTargetsCommaSeparatedString === void 0) { logTargetsCommaSeparatedString = constants_1.BLANK; }
     globals_1.ioSettings.logTargets = Object.keys(types_1.LogTarget).reduce(function (logTargets, logTarget) {
@@ -4423,21 +4877,21 @@ exports.setLogTargets = setLogTargets;
 
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupScriptAndIo = void 0;
-__webpack_require__(93);
-var commander_1 = __webpack_require__(109);
-var code_1 = __webpack_require__(4);
-var constants_1 = __webpack_require__(64);
-var globals_1 = __webpack_require__(63);
-var clear_1 = __webpack_require__(81);
-var set_1 = __webpack_require__(91);
-var types_1 = __webpack_require__(87);
+__webpack_require__(95);
+var commander_1 = __webpack_require__(111);
+var code_1 = __webpack_require__(6);
+var constants_1 = __webpack_require__(66);
+var globals_1 = __webpack_require__(65);
+var clear_1 = __webpack_require__(83);
+var set_1 = __webpack_require__(93);
+var types_1 = __webpack_require__(89);
 var setupScriptAndIo = function (logDir, defaultLogTargets) {
     if (!code_1.isUndefined(logDir))
         globals_1.ioSettings.logDir = logDir;
@@ -4459,13 +4913,13 @@ var setupScriptAndIo = function (logDir, defaultLogTargets) {
 };
 exports.setupScriptAndIo = setupScriptAndIo;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(84)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86)))
 
 /***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var colors = __webpack_require__(94);
+var colors = __webpack_require__(96);
 module['exports'] = colors;
 
 // Remark: By default, colors will add style properties to String.prototype.
@@ -4477,11 +4931,11 @@ module['exports'] = colors;
 //   colors.red("foo")
 //
 //
-__webpack_require__(108)();
+__webpack_require__(110)();
 
 
 /***/ }),
-/* 94 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -4519,12 +4973,12 @@ module['exports'] = colors;
 
 colors.themes = {};
 
-var util = __webpack_require__(95);
-var ansiStyles = colors.styles = __webpack_require__(98);
+var util = __webpack_require__(97);
+var ansiStyles = colors.styles = __webpack_require__(100);
 var defineProps = Object.defineProperties;
 var newLineRegex = new RegExp(/[\r\n]+/g);
 
-colors.supportsColor = __webpack_require__(99).supportsColor;
+colors.supportsColor = __webpack_require__(101).supportsColor;
 
 if (typeof colors.enabled === 'undefined') {
   colors.enabled = colors.supportsColor() !== false;
@@ -4676,15 +5130,15 @@ var sequencer = function sequencer(map, str) {
 };
 
 // custom formatter methods
-colors.trap = __webpack_require__(102);
-colors.zalgo = __webpack_require__(103);
+colors.trap = __webpack_require__(104);
+colors.zalgo = __webpack_require__(105);
 
 // maps
 colors.maps = {};
-colors.maps.america = __webpack_require__(104)(colors);
-colors.maps.zebra = __webpack_require__(105)(colors);
-colors.maps.rainbow = __webpack_require__(106)(colors);
-colors.maps.random = __webpack_require__(107)(colors);
+colors.maps.america = __webpack_require__(106)(colors);
+colors.maps.zebra = __webpack_require__(107)(colors);
+colors.maps.rainbow = __webpack_require__(108)(colors);
+colors.maps.random = __webpack_require__(109)(colors);
 
 for (var map in colors.maps) {
   (function(map) {
@@ -4698,7 +5152,7 @@ defineProps(colors, init());
 
 
 /***/ }),
-/* 95 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -5236,7 +5690,7 @@ function isPrimitive(arg) {
 }
 exports.isPrimitive = isPrimitive;
 
-exports.isBuffer = __webpack_require__(96);
+exports.isBuffer = __webpack_require__(98);
 
 function objectToString(o) {
   return Object.prototype.toString.call(o);
@@ -5280,7 +5734,7 @@ exports.log = function() {
  *     prototype.
  * @param {function} superCtor Constructor function to inherit prototype from.
  */
-exports.inherits = __webpack_require__(97);
+exports.inherits = __webpack_require__(99);
 
 exports._extend = function(origin, add) {
   // Don't do anything if add isn't an object
@@ -5405,10 +5859,10 @@ function callbackify(original) {
 }
 exports.callbackify = callbackify;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(84)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86)))
 
 /***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, exports) {
 
 module.exports = function isBuffer(arg) {
@@ -5419,7 +5873,7 @@ module.exports = function isBuffer(arg) {
 }
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports) {
 
 if (typeof Object.create === 'function') {
@@ -5448,7 +5902,7 @@ if (typeof Object.create === 'function') {
 
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports) {
 
 /*
@@ -5549,7 +6003,7 @@ Object.keys(codes).forEach(function(key) {
 
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5580,8 +6034,8 @@ THE SOFTWARE.
 
 
 
-var os = __webpack_require__(100);
-var hasFlag = __webpack_require__(101);
+var os = __webpack_require__(102);
+var hasFlag = __webpack_require__(103);
 
 var env = process.env;
 
@@ -5705,10 +6159,10 @@ module.exports = {
   stderr: getSupportLevel(process.stderr),
 };
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(84)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86)))
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports) {
 
 exports.endianness = function () { return 'LE' };
@@ -5763,7 +6217,7 @@ exports.homedir = function () {
 
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5803,10 +6257,10 @@ module.exports = function(flag, argv) {
   return pos !== -1 && (terminatorPos === -1 ? true : pos < terminatorPos);
 };
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(84)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86)))
 
 /***/ }),
-/* 102 */
+/* 104 */
 /***/ (function(module, exports) {
 
 module['exports'] = function runTheTrap(text, options) {
@@ -5858,7 +6312,7 @@ module['exports'] = function runTheTrap(text, options) {
 
 
 /***/ }),
-/* 103 */
+/* 105 */
 /***/ (function(module, exports) {
 
 // please no
@@ -5974,7 +6428,7 @@ module['exports'] = function zalgo(text, options) {
 
 
 /***/ }),
-/* 104 */
+/* 106 */
 /***/ (function(module, exports) {
 
 module['exports'] = function(colors) {
@@ -5990,7 +6444,7 @@ module['exports'] = function(colors) {
 
 
 /***/ }),
-/* 105 */
+/* 107 */
 /***/ (function(module, exports) {
 
 module['exports'] = function(colors) {
@@ -6001,7 +6455,7 @@ module['exports'] = function(colors) {
 
 
 /***/ }),
-/* 106 */
+/* 108 */
 /***/ (function(module, exports) {
 
 module['exports'] = function(colors) {
@@ -6019,7 +6473,7 @@ module['exports'] = function(colors) {
 
 
 /***/ }),
-/* 107 */
+/* 109 */
 /***/ (function(module, exports) {
 
 module['exports'] = function(colors) {
@@ -6036,10 +6490,10 @@ module['exports'] = function(colors) {
 
 
 /***/ }),
-/* 108 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var colors = __webpack_require__(94);
+var colors = __webpack_require__(96);
 
 module['exports'] = function() {
   //
@@ -6152,17 +6606,17 @@ module['exports'] = function() {
 
 
 /***/ }),
-/* 109 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, Buffer) {/**
  * Module dependencies.
  */
 
-const EventEmitter = __webpack_require__(115).EventEmitter;
-const spawn = __webpack_require__(82).spawn;
-const path = __webpack_require__(83);
-const fs = __webpack_require__(82);
+const EventEmitter = __webpack_require__(117).EventEmitter;
+const spawn = __webpack_require__(84).spawn;
+const path = __webpack_require__(85);
+const fs = __webpack_require__(84);
 
 // @ts-check
 
@@ -7912,10 +8366,10 @@ function incrementNodeInspectorPort(args) {
   });
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(84), __webpack_require__(110).Buffer))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86), __webpack_require__(112).Buffer))
 
 /***/ }),
-/* 110 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7929,9 +8383,9 @@ function incrementNodeInspectorPort(args) {
 
 
 
-var base64 = __webpack_require__(112)
-var ieee754 = __webpack_require__(113)
-var isArray = __webpack_require__(114)
+var base64 = __webpack_require__(114)
+var ieee754 = __webpack_require__(115)
+var isArray = __webpack_require__(116)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -9709,10 +10163,10 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(111)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(113)))
 
 /***/ }),
-/* 111 */
+/* 113 */
 /***/ (function(module, exports) {
 
 var g;
@@ -9738,7 +10192,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 112 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9895,7 +10349,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 113 */
+/* 115 */
 /***/ (function(module, exports) {
 
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
@@ -9986,7 +10440,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 114 */
+/* 116 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -9997,7 +10451,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 115 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10480,38 +10934,38 @@ function once(emitter, name) {
 
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseInteger = exports.parseDecimal = exports.DOT_OPERATOR = exports.parseCents = exports.parseQuotient = exports.parseMonzo = exports.parse23FreeClass = void 0;
-var two3FreeClass_1 = __webpack_require__(117);
+var two3FreeClass_1 = __webpack_require__(119);
 Object.defineProperty(exports, "parse23FreeClass", { enumerable: true, get: function () { return two3FreeClass_1.parse23FreeClass; } });
-var monzo_1 = __webpack_require__(121);
+var monzo_1 = __webpack_require__(123);
 Object.defineProperty(exports, "parseMonzo", { enumerable: true, get: function () { return monzo_1.parseMonzo; } });
-var quotient_1 = __webpack_require__(118);
+var quotient_1 = __webpack_require__(120);
 Object.defineProperty(exports, "parseQuotient", { enumerable: true, get: function () { return quotient_1.parseQuotient; } });
-var cents_1 = __webpack_require__(122);
+var cents_1 = __webpack_require__(124);
 Object.defineProperty(exports, "parseCents", { enumerable: true, get: function () { return cents_1.parseCents; } });
-var constants_1 = __webpack_require__(119);
+var constants_1 = __webpack_require__(121);
 Object.defineProperty(exports, "DOT_OPERATOR", { enumerable: true, get: function () { return constants_1.DOT_OPERATOR; } });
-var decimal_1 = __webpack_require__(120);
+var decimal_1 = __webpack_require__(122);
 Object.defineProperty(exports, "parseDecimal", { enumerable: true, get: function () { return decimal_1.parseDecimal; } });
 Object.defineProperty(exports, "parseInteger", { enumerable: true, get: function () { return decimal_1.parseInteger; } });
 
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parse23FreeClass = void 0;
-var math_1 = __webpack_require__(6);
-var quotient_1 = __webpack_require__(118);
+var math_1 = __webpack_require__(8);
+var quotient_1 = __webpack_require__(120);
 var parse23FreeClass = function (two3FreeClassIo) {
     var two3FreeQuotient = quotient_1.parseQuotient(two3FreeClassIo);
     if (!math_1.isQuotientRational(two3FreeQuotient)) {
@@ -10529,17 +10983,17 @@ exports.parse23FreeClass = parse23FreeClass;
 
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseQuotient = void 0;
-var constants_1 = __webpack_require__(64);
-var typedOperations_1 = __webpack_require__(71);
-var constants_2 = __webpack_require__(119);
-var decimal_1 = __webpack_require__(120);
+var constants_1 = __webpack_require__(66);
+var typedOperations_1 = __webpack_require__(73);
+var constants_2 = __webpack_require__(121);
+var decimal_1 = __webpack_require__(122);
 var superscriptNumbers = constants_1.SUPERSCRIPT_NUMBERS.join();
 var parseQuotient = function (quotientIo) {
     var quotient = typedOperations_1.split(quotientIo, /[\/:]/).map(function (quotientPartIo) {
@@ -10573,7 +11027,7 @@ exports.parseQuotient = parseQuotient;
 
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10585,7 +11039,7 @@ exports.DOT_OPERATOR = DOT_OPERATOR;
 
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10603,7 +11057,7 @@ exports.parseInteger = parseInteger;
 
 
 /***/ }),
-/* 121 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10641,14 +11095,14 @@ exports.parseMonzo = parseMonzo;
 
 
 /***/ }),
-/* 122 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseCents = void 0;
-var constants_1 = __webpack_require__(64);
+var constants_1 = __webpack_require__(66);
 var parseCents = function (centsIo) {
     var preparsedCentsText = centsIo.replace("c", constants_1.BLANK).replace("¢", constants_1.BLANK);
     return parseFloat(preparsedCentsText);
@@ -10657,7 +11111,7 @@ exports.parseCents = parseCents;
 
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10672,19 +11126,19 @@ exports.stringify = stringify;
 
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computePx = void 0;
-var scale_1 = __webpack_require__(125);
+var scale_1 = __webpack_require__(127);
 Object.defineProperty(exports, "computePx", { enumerable: true, get: function () { return scale_1.computePx; } });
 
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10698,37 +11152,37 @@ exports.computePx = computePx;
 
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatBound = exports.formatCents = exports.formatPitch = exports.formatTime = exports.formatQuotient = exports.alignFormattedDecimal = exports.formatIntegerDecimal = exports.formatDecimal = exports.formatVal = exports.formatMonzo = exports.TimePrecision = void 0;
-var types_1 = __webpack_require__(127);
+var types_1 = __webpack_require__(129);
 Object.defineProperty(exports, "TimePrecision", { enumerable: true, get: function () { return types_1.TimePrecision; } });
-var monzo_1 = __webpack_require__(128);
+var monzo_1 = __webpack_require__(130);
 Object.defineProperty(exports, "formatMonzo", { enumerable: true, get: function () { return monzo_1.formatMonzo; } });
-var val_1 = __webpack_require__(130);
+var val_1 = __webpack_require__(132);
 Object.defineProperty(exports, "formatVal", { enumerable: true, get: function () { return val_1.formatVal; } });
-var decimal_1 = __webpack_require__(131);
+var decimal_1 = __webpack_require__(133);
 Object.defineProperty(exports, "formatDecimal", { enumerable: true, get: function () { return decimal_1.formatDecimal; } });
 Object.defineProperty(exports, "formatIntegerDecimal", { enumerable: true, get: function () { return decimal_1.formatIntegerDecimal; } });
 Object.defineProperty(exports, "alignFormattedDecimal", { enumerable: true, get: function () { return decimal_1.alignFormattedDecimal; } });
-var quotient_1 = __webpack_require__(132);
+var quotient_1 = __webpack_require__(134);
 Object.defineProperty(exports, "formatQuotient", { enumerable: true, get: function () { return quotient_1.formatQuotient; } });
-var time_1 = __webpack_require__(133);
+var time_1 = __webpack_require__(135);
 Object.defineProperty(exports, "formatTime", { enumerable: true, get: function () { return time_1.formatTime; } });
-var pitch_1 = __webpack_require__(134);
+var pitch_1 = __webpack_require__(136);
 Object.defineProperty(exports, "formatPitch", { enumerable: true, get: function () { return pitch_1.formatPitch; } });
-var cents_1 = __webpack_require__(150);
+var cents_1 = __webpack_require__(152);
 Object.defineProperty(exports, "formatCents", { enumerable: true, get: function () { return cents_1.formatCents; } });
-var bound_1 = __webpack_require__(151);
+var bound_1 = __webpack_require__(153);
 Object.defineProperty(exports, "formatBound", { enumerable: true, get: function () { return bound_1.formatBound; } });
 
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10747,16 +11201,16 @@ exports.TimePrecision = TimePrecision;
 
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatMonzo = void 0;
-var code_1 = __webpack_require__(4);
-var constants_1 = __webpack_require__(64);
-var spaceMonzoOrValExponent_1 = __webpack_require__(129);
+var code_1 = __webpack_require__(6);
+var constants_1 = __webpack_require__(66);
+var spaceMonzoOrValExponent_1 = __webpack_require__(131);
 var maybeSpaceMonzoOrValExponent = function (primeExponent, _a) {
     var abbreviated = _a.abbreviated;
     return abbreviated ?
@@ -10807,7 +11261,7 @@ exports.formatMonzo = formatMonzo;
 
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10825,14 +11279,14 @@ exports.spaceMonzoOrValExponent = spaceMonzoOrValExponent;
 
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatVal = void 0;
-var monzo_1 = __webpack_require__(128);
+var monzo_1 = __webpack_require__(130);
 var formatVal = function (val, options) {
     return monzo_1.formatMonzo(val, options)
         .replace("[", "⟨")
@@ -10842,17 +11296,17 @@ exports.formatVal = formatVal;
 
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatIntegerDecimal = exports.formatDecimal = exports.alignFormattedDecimal = void 0;
-var math_1 = __webpack_require__(6);
-var constants_1 = __webpack_require__(64);
-var globals_1 = __webpack_require__(63);
-var table_1 = __webpack_require__(65);
+var math_1 = __webpack_require__(8);
+var constants_1 = __webpack_require__(66);
+var globals_1 = __webpack_require__(65);
+var table_1 = __webpack_require__(67);
 var alignFormattedDecimal = function (formattedDecimal) {
     while (formattedDecimal.length < 7) {
         formattedDecimal = " " + formattedDecimal;
@@ -10891,7 +11345,7 @@ exports.formatIntegerDecimal = formatIntegerDecimal;
 
 
 /***/ }),
-/* 132 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10914,9 +11368,9 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatQuotient = void 0;
-var math_1 = __webpack_require__(6);
-var globals_1 = __webpack_require__(63);
-var table_1 = __webpack_require__(65);
+var math_1 = __webpack_require__(8);
+var globals_1 = __webpack_require__(65);
+var table_1 = __webpack_require__(67);
 var formatQuotient = function (inputQuotient, _a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.directed, directed = _c === void 0 ? true : _c, _d = _b.noLaTeXScaler, noLaTeXScaler = _d === void 0 ? false : _d;
     var _e = __read(directed ? inputQuotient : math_1.computeSuperQuotient(inputQuotient), 2), numerator = _e[0], denominator = _e[1];
@@ -10945,15 +11399,15 @@ exports.formatQuotient = formatQuotient;
 
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatTime = void 0;
-var math_1 = __webpack_require__(6);
-var types_1 = __webpack_require__(127);
+var math_1 = __webpack_require__(8);
+var types_1 = __webpack_require__(129);
 var formatTime = function (ms, timePrecision) {
     if (timePrecision === void 0) { timePrecision = types_1.TimePrecision.MS; }
     var rawMilliseconds = ms % 1000;
@@ -10983,18 +11437,18 @@ exports.formatTime = formatTime;
 
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatPitch = void 0;
-var math_1 = __webpack_require__(6);
-var music_1 = __webpack_require__(135);
-var cents_1 = __webpack_require__(150);
-var monzo_1 = __webpack_require__(128);
-var quotient_1 = __webpack_require__(132);
+var math_1 = __webpack_require__(8);
+var music_1 = __webpack_require__(137);
+var cents_1 = __webpack_require__(152);
+var monzo_1 = __webpack_require__(130);
+var quotient_1 = __webpack_require__(134);
 var formatPitch = function (pitch, options) {
     if (options === void 0) { options = {}; }
     if (math_1.isScamonRational(pitch)) {
@@ -11014,23 +11468,23 @@ exports.formatPitch = formatPitch;
 
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computePitchExpectation = exports.two3FreeClassFixture = exports.SYNTONIC_COMMA = exports.SEPTIMAL_KLEISMA = exports.SEPTIMAL_COMMA = exports.SCHISMINA = exports.SCHISMA = exports.APOTOME = exports.OCTAVE_WINDOW = exports.THIRTYONE_THREE_COMMA = exports.PYTHAGOREAN_WHOLE_TONE = exports.PYTHAGOREAN_LARGE_DIESIS = exports.SUPERCOMPLEX_PYTHAGOREAN_KLEISMA = exports.PYTHAGOREAN_SCHISMA = exports.PYTHAGOREAN_LIMMA = exports.PYTHAGOREAN_COMMA = exports.TWO_3_FREE_CLASS_SIGN = exports.TWO_3_FREE = exports.UNISON = exports.format23FreeClass = exports.compute23FreeClassName = exports.COMMA_POPULARITIES = exports.THREE_PRIME_LIMIT = exports.compute23FreeClass = exports.computeLowerAndUpperExclusive = exports.CENTS_PER_OCTAVE = exports.computePitchFromCents = exports.computeCentsFromPitch = exports.subtractPitch = exports.dividePitch = void 0;
-var cents_1 = __webpack_require__(136);
+var cents_1 = __webpack_require__(138);
 Object.defineProperty(exports, "dividePitch", { enumerable: true, get: function () { return cents_1.dividePitch; } });
 Object.defineProperty(exports, "subtractPitch", { enumerable: true, get: function () { return cents_1.subtractPitch; } });
 Object.defineProperty(exports, "computeCentsFromPitch", { enumerable: true, get: function () { return cents_1.computeCentsFromPitch; } });
 Object.defineProperty(exports, "computePitchFromCents", { enumerable: true, get: function () { return cents_1.computePitchFromCents; } });
-var constants_1 = __webpack_require__(137);
+var constants_1 = __webpack_require__(139);
 Object.defineProperty(exports, "CENTS_PER_OCTAVE", { enumerable: true, get: function () { return constants_1.CENTS_PER_OCTAVE; } });
-var zone_1 = __webpack_require__(138);
+var zone_1 = __webpack_require__(140);
 Object.defineProperty(exports, "computeLowerAndUpperExclusive", { enumerable: true, get: function () { return zone_1.computeLowerAndUpperExclusive; } });
-var ji_1 = __webpack_require__(139);
+var ji_1 = __webpack_require__(141);
 Object.defineProperty(exports, "compute23FreeClass", { enumerable: true, get: function () { return ji_1.compute23FreeClass; } });
 Object.defineProperty(exports, "THREE_PRIME_LIMIT", { enumerable: true, get: function () { return ji_1.THREE_PRIME_LIMIT; } });
 Object.defineProperty(exports, "COMMA_POPULARITIES", { enumerable: true, get: function () { return ji_1.COMMA_POPULARITIES; } });
@@ -11053,21 +11507,21 @@ Object.defineProperty(exports, "SCHISMINA", { enumerable: true, get: function ()
 Object.defineProperty(exports, "SEPTIMAL_COMMA", { enumerable: true, get: function () { return ji_1.SEPTIMAL_COMMA; } });
 Object.defineProperty(exports, "SEPTIMAL_KLEISMA", { enumerable: true, get: function () { return ji_1.SEPTIMAL_KLEISMA; } });
 Object.defineProperty(exports, "SYNTONIC_COMMA", { enumerable: true, get: function () { return ji_1.SYNTONIC_COMMA; } });
-var specHelpers_1 = __webpack_require__(147);
+var specHelpers_1 = __webpack_require__(149);
 Object.defineProperty(exports, "two3FreeClassFixture", { enumerable: true, get: function () { return specHelpers_1.two3FreeClassFixture; } });
 Object.defineProperty(exports, "computePitchExpectation", { enumerable: true, get: function () { return specHelpers_1.computePitchExpectation; } });
 
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeCentsFromPitch = exports.computePitchFromCents = exports.subtractPitch = exports.dividePitch = void 0;
-var math_1 = __webpack_require__(6);
-var constants_1 = __webpack_require__(137);
+var math_1 = __webpack_require__(8);
+var constants_1 = __webpack_require__(139);
 var computePitchFromCents = function (cents) {
     return math_1.computeScamonFromDecimal(Math.pow(2, (cents / constants_1.CENTS_PER_OCTAVE)));
 };
@@ -11087,7 +11541,7 @@ exports.subtractPitch = subtractPitch;
 
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11099,7 +11553,7 @@ exports.CENTS_PER_OCTAVE = CENTS_PER_OCTAVE;
 
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11122,7 +11576,7 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeLowerAndUpperExclusive = void 0;
-var code_1 = __webpack_require__(4);
+var code_1 = __webpack_require__(6);
 var computeLowerAndUpperExclusive = function (exclusive) {
     if (code_1.isArray(exclusive)) {
         var _a = __read(exclusive, 2), lowerExclusive = _a[0], upperExclusive = _a[1];
@@ -11139,14 +11593,14 @@ exports.computeLowerAndUpperExclusive = computeLowerAndUpperExclusive;
 
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TWO_3_FREE_CLASS_SIGN = exports.TWO_3_FREE = exports.COMMA_POPULARITIES = exports.compute23FreeClass = exports.format23FreeClass = exports.compute23FreeClassName = exports.SYNTONIC_COMMA = exports.SEPTIMAL_KLEISMA = exports.SEPTIMAL_COMMA = exports.SCHISMINA = exports.SCHISMA = exports.APOTOME = exports.OCTAVE_WINDOW = exports.THIRTYONE_THREE_COMMA = exports.PYTHAGOREAN_WHOLE_TONE = exports.PYTHAGOREAN_LARGE_DIESIS = exports.SUPERCOMPLEX_PYTHAGOREAN_KLEISMA = exports.PYTHAGOREAN_SCHISMA = exports.PYTHAGOREAN_LIMMA = exports.PYTHAGOREAN_COMMA = exports.UNISON = exports.THREE_PRIME_LIMIT = void 0;
-var constants_1 = __webpack_require__(140);
+var constants_1 = __webpack_require__(142);
 Object.defineProperty(exports, "THREE_PRIME_LIMIT", { enumerable: true, get: function () { return constants_1.THREE_PRIME_LIMIT; } });
 Object.defineProperty(exports, "UNISON", { enumerable: true, get: function () { return constants_1.UNISON; } });
 Object.defineProperty(exports, "PYTHAGOREAN_COMMA", { enumerable: true, get: function () { return constants_1.PYTHAGOREAN_COMMA; } });
@@ -11163,7 +11617,7 @@ Object.defineProperty(exports, "SCHISMINA", { enumerable: true, get: function ()
 Object.defineProperty(exports, "SEPTIMAL_COMMA", { enumerable: true, get: function () { return constants_1.SEPTIMAL_COMMA; } });
 Object.defineProperty(exports, "SEPTIMAL_KLEISMA", { enumerable: true, get: function () { return constants_1.SEPTIMAL_KLEISMA; } });
 Object.defineProperty(exports, "SYNTONIC_COMMA", { enumerable: true, get: function () { return constants_1.SYNTONIC_COMMA; } });
-var two3FreeClass_1 = __webpack_require__(141);
+var two3FreeClass_1 = __webpack_require__(143);
 Object.defineProperty(exports, "compute23FreeClassName", { enumerable: true, get: function () { return two3FreeClass_1.compute23FreeClassName; } });
 Object.defineProperty(exports, "format23FreeClass", { enumerable: true, get: function () { return two3FreeClass_1.format23FreeClass; } });
 Object.defineProperty(exports, "compute23FreeClass", { enumerable: true, get: function () { return two3FreeClass_1.compute23FreeClass; } });
@@ -11173,7 +11627,7 @@ Object.defineProperty(exports, "TWO_3_FREE_CLASS_SIGN", { enumerable: true, get:
 
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11226,28 +11680,28 @@ exports.SEPTIMAL_COMMA = SEPTIMAL_COMMA;
 
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TWO_3_FREE_CLASS_SIGN = exports.TWO_3_FREE = exports.compute23FreeClassName = exports.format23FreeClass = exports.compute23FreeClass = exports.COMMA_POPULARITIES = void 0;
-var popularities_1 = __webpack_require__(142);
+var popularities_1 = __webpack_require__(144);
 Object.defineProperty(exports, "COMMA_POPULARITIES", { enumerable: true, get: function () { return popularities_1.COMMA_POPULARITIES; } });
-var two3FreeClass_1 = __webpack_require__(143);
+var two3FreeClass_1 = __webpack_require__(145);
 Object.defineProperty(exports, "compute23FreeClass", { enumerable: true, get: function () { return two3FreeClass_1.compute23FreeClass; } });
-var format_1 = __webpack_require__(145);
+var format_1 = __webpack_require__(147);
 Object.defineProperty(exports, "format23FreeClass", { enumerable: true, get: function () { return format_1.format23FreeClass; } });
-var name_1 = __webpack_require__(146);
+var name_1 = __webpack_require__(148);
 Object.defineProperty(exports, "compute23FreeClassName", { enumerable: true, get: function () { return name_1.compute23FreeClassName; } });
-var constants_1 = __webpack_require__(144);
+var constants_1 = __webpack_require__(146);
 Object.defineProperty(exports, "TWO_3_FREE", { enumerable: true, get: function () { return constants_1.TWO_3_FREE; } });
 Object.defineProperty(exports, "TWO_3_FREE_CLASS_SIGN", { enumerable: true, get: function () { return constants_1.TWO_3_FREE_CLASS_SIGN; } });
 
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11651,15 +12105,15 @@ exports.COMMA_POPULARITIES = COMMA_POPULARITIES;
 
 
 /***/ }),
-/* 143 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.compute23FreeClass = void 0;
-var math_1 = __webpack_require__(6);
-var constants_1 = __webpack_require__(144);
+var math_1 = __webpack_require__(8);
+var constants_1 = __webpack_require__(146);
 var compute23FreeClass = function (_a) {
     var monzo = _a.monzo;
     var two3FreeClass = {};
@@ -11671,7 +12125,7 @@ exports.compute23FreeClass = compute23FreeClass;
 
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11685,7 +12139,7 @@ exports.TWO_3_FREE_CLASS_SIGN = TWO_3_FREE_CLASS_SIGN;
 
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11708,9 +12162,9 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.format23FreeClass = void 0;
-var io_1 = __webpack_require__(62);
-var math_1 = __webpack_require__(6);
-var name_1 = __webpack_require__(146);
+var io_1 = __webpack_require__(64);
+var math_1 = __webpack_require__(8);
+var name_1 = __webpack_require__(148);
 var format23FreeClass = function (two3FreeClass) {
     var _a = __read(math_1.computeQuotientFromMonzo(two3FreeClass.monzo), 2), numerator = _a[0], denominator = _a[1];
     return io_1.ioSettings.tableFormat === io_1.TableFormat.FORUM ?
@@ -11723,16 +12177,16 @@ exports.format23FreeClass = format23FreeClass;
 
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.compute23FreeClassName = void 0;
-var io_1 = __webpack_require__(62);
-var math_1 = __webpack_require__(6);
-var constants_1 = __webpack_require__(144);
+var io_1 = __webpack_require__(64);
+var math_1 = __webpack_require__(8);
+var constants_1 = __webpack_require__(146);
 var compute23FreeClassName = function (two3FreeClass) {
     var quotient = math_1.computeQuotientFromMonzo(two3FreeClass.monzo);
     return "{" + io_1.formatQuotient(quotient) + "}" + constants_1.TWO_3_FREE_CLASS_SIGN;
@@ -11741,21 +12195,21 @@ exports.compute23FreeClassName = compute23FreeClassName;
 
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computePitchExpectation = exports.two3FreeClassFixture = void 0;
-var fixtures_1 = __webpack_require__(148);
+var fixtures_1 = __webpack_require__(150);
 Object.defineProperty(exports, "two3FreeClassFixture", { enumerable: true, get: function () { return fixtures_1.two3FreeClassFixture; } });
-var pitchExpectation_1 = __webpack_require__(149);
+var pitchExpectation_1 = __webpack_require__(151);
 Object.defineProperty(exports, "computePitchExpectation", { enumerable: true, get: function () { return pitchExpectation_1.computePitchExpectation; } });
 
 
 /***/ }),
-/* 148 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11769,15 +12223,15 @@ exports.two3FreeClassFixture = two3FreeClassFixture;
 
 
 /***/ }),
-/* 149 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computePitchExpectation = void 0;
-var math_1 = __webpack_require__(6);
-var cents_1 = __webpack_require__(136);
+var math_1 = __webpack_require__(8);
+var cents_1 = __webpack_require__(138);
 var computePitchExpectation = function (pitch) {
     return ({
         pitch: pitch,
@@ -11790,16 +12244,16 @@ exports.computePitchExpectation = computePitchExpectation;
 
 
 /***/ }),
-/* 150 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatCents = void 0;
-var globals_1 = __webpack_require__(63);
-var table_1 = __webpack_require__(65);
-var decimal_1 = __webpack_require__(131);
+var globals_1 = __webpack_require__(65);
+var table_1 = __webpack_require__(67);
+var decimal_1 = __webpack_require__(133);
 var formatCents = function (cents, options) {
     if (options === void 0) { options = {}; }
     var formattedCents = decimal_1.formatDecimal(cents, options);
@@ -11817,15 +12271,15 @@ exports.formatCents = formatCents;
 
 
 /***/ }),
-/* 151 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatBound = void 0;
-var code_1 = __webpack_require__(4);
-var pitch_1 = __webpack_require__(134);
+var code_1 = __webpack_require__(6);
+var pitch_1 = __webpack_require__(136);
 var formatBound = function (bound, exclusive) {
     if (code_1.isUndefined(bound)) {
         return "(none)";
@@ -11838,17 +12292,17 @@ exports.formatBound = formatBound;
 
 
 /***/ }),
-/* 152 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.time = void 0;
-var code_1 = __webpack_require__(4);
-var math_1 = __webpack_require__(6);
-var format_1 = __webpack_require__(126);
-var globals_1 = __webpack_require__(63);
+var code_1 = __webpack_require__(6);
+var math_1 = __webpack_require__(8);
+var format_1 = __webpack_require__(128);
+var globals_1 = __webpack_require__(65);
 var time = function () {
     return format_1.formatTime(math_1.subtract(code_1.now(), globals_1.ioSettings.time));
 };
@@ -11856,19 +12310,19 @@ exports.time = time;
 
 
 /***/ }),
-/* 153 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.program = void 0;
-var commander_1 = __webpack_require__(109);
+var commander_1 = __webpack_require__(111);
 Object.defineProperty(exports, "program", { enumerable: true, get: function () { return commander_1.program; } });
 
 
 /***/ }),
-/* 154 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11894,8 +12348,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.readLines = void 0;
-var fs = __importStar(__webpack_require__(82));
-var constants_1 = __webpack_require__(64);
+var fs = __importStar(__webpack_require__(84));
+var constants_1 = __webpack_require__(66);
 var readLines = function (filename) {
     var lines = fs
         .readFileSync(filename, { encoding: "utf8" })
@@ -11908,16 +12362,16 @@ exports.readLines = readLines;
 
 
 /***/ }),
-/* 155 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computePatentVal = void 0;
-var code_1 = __webpack_require__(4);
-var rational_1 = __webpack_require__(13);
-var typedOperations_1 = __webpack_require__(8);
+var code_1 = __webpack_require__(6);
+var rational_1 = __webpack_require__(15);
+var typedOperations_1 = __webpack_require__(10);
 var computePatentVal = function (options) {
     var ed = options.ed, window = options.window, primeLimit = options.primeLimit;
     var stepSize = Math.pow(window, (1 / ed));
@@ -11952,7 +12406,7 @@ exports.computePatentVal = computePatentVal;
 
 
 /***/ }),
-/* 156 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11964,14 +12418,14 @@ exports.EMPTY_MONZO = EMPTY_MONZO;
 
 
 /***/ }),
-/* 157 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isDecimalLowerOrEqual = exports.isDecimalHigherOrEqual = exports.isDecimalLower = exports.isDecimalHigher = exports.areDecimalsEqual = void 0;
-var code_1 = __webpack_require__(4);
+var code_1 = __webpack_require__(6);
 var areDecimalsEqual = function (decimalA, decimalB, precision) {
     return code_1.isUndefined(precision) ?
         decimalA === decimalB :
@@ -12001,7 +12455,7 @@ exports.isDecimalLowerOrEqual = isDecimalLowerOrEqual;
 
 
 /***/ }),
-/* 158 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12028,7 +12482,7 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeGeometricMean = exports.computeArithmeticMean = exports.sqrt = exports.reciprocal = exports.mod = void 0;
-var typedOperations_1 = __webpack_require__(8);
+var typedOperations_1 = __webpack_require__(10);
 var mod = function (dividend, divisor) {
     return dividend % divisor;
 };
@@ -12060,7 +12514,7 @@ exports.computeGeometricMean = computeGeometricMean;
 
 
 /***/ }),
-/* 159 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12091,14 +12545,14 @@ exports.computeDecimalFromQuotient = computeDecimalFromQuotient;
 
 
 /***/ }),
-/* 160 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeSuperDecimal = exports.computeSubDecimal = exports.invertDecimal = exports.isDecimalUnison = exports.isDecimalSuper = exports.isDecimalSub = void 0;
-var constants_1 = __webpack_require__(9);
+var constants_1 = __webpack_require__(11);
 var isDecimalSuper = function (candidateSuperDecimal) {
     return candidateSuperDecimal > constants_1.MULTIPLICATIVE_IDENTITY;
 };
@@ -12130,34 +12584,34 @@ exports.invertDecimal = invertDecimal;
 
 
 /***/ }),
-/* 161 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.halveQuotient = exports.computeQuotientProduct = exports.computeSuperQuotient = exports.QuotientPartType = exports.computeQuotientFromMonzo = exports.areQuotientsEqual = exports.invertQuotient = exports.computeSubQuotient = exports.isQuotientUnison = exports.isQuotientSuper = exports.isQuotientSub = void 0;
-var direction_1 = __webpack_require__(162);
+var direction_1 = __webpack_require__(164);
 Object.defineProperty(exports, "isQuotientSub", { enumerable: true, get: function () { return direction_1.isQuotientSub; } });
 Object.defineProperty(exports, "isQuotientSuper", { enumerable: true, get: function () { return direction_1.isQuotientSuper; } });
 Object.defineProperty(exports, "isQuotientUnison", { enumerable: true, get: function () { return direction_1.isQuotientUnison; } });
 Object.defineProperty(exports, "computeSubQuotient", { enumerable: true, get: function () { return direction_1.computeSubQuotient; } });
 Object.defineProperty(exports, "invertQuotient", { enumerable: true, get: function () { return direction_1.invertQuotient; } });
-var comparison_1 = __webpack_require__(163);
+var comparison_1 = __webpack_require__(165);
 Object.defineProperty(exports, "areQuotientsEqual", { enumerable: true, get: function () { return comparison_1.areQuotientsEqual; } });
-var fromMonzo_1 = __webpack_require__(164);
+var fromMonzo_1 = __webpack_require__(166);
 Object.defineProperty(exports, "computeQuotientFromMonzo", { enumerable: true, get: function () { return fromMonzo_1.computeQuotientFromMonzo; } });
-var types_1 = __webpack_require__(165);
+var types_1 = __webpack_require__(167);
 Object.defineProperty(exports, "QuotientPartType", { enumerable: true, get: function () { return types_1.QuotientPartType; } });
-var direction_2 = __webpack_require__(162);
+var direction_2 = __webpack_require__(164);
 Object.defineProperty(exports, "computeSuperQuotient", { enumerable: true, get: function () { return direction_2.computeSuperQuotient; } });
-var typedOperations_1 = __webpack_require__(166);
+var typedOperations_1 = __webpack_require__(168);
 Object.defineProperty(exports, "computeQuotientProduct", { enumerable: true, get: function () { return typedOperations_1.computeQuotientProduct; } });
 Object.defineProperty(exports, "halveQuotient", { enumerable: true, get: function () { return typedOperations_1.halveQuotient; } });
 
 
 /***/ }),
-/* 162 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12218,16 +12672,16 @@ exports.invertQuotient = invertQuotient;
 
 
 /***/ }),
-/* 163 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.areQuotientsEqual = void 0;
-var code_1 = __webpack_require__(4);
-var rational_1 = __webpack_require__(13);
-var decimal_1 = __webpack_require__(11);
+var code_1 = __webpack_require__(6);
+var rational_1 = __webpack_require__(15);
+var decimal_1 = __webpack_require__(13);
 var areQuotientsEqual = function (quotientA, quotientB, precision) {
     if (precision === void 0) { precision = code_1.MAX_JS_PRECISION; }
     return rational_1.isQuotientRational(quotientA) && rational_1.isQuotientRational(quotientB) ?
@@ -12238,15 +12692,15 @@ exports.areQuotientsEqual = areQuotientsEqual;
 
 
 /***/ }),
-/* 164 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeQuotientFromMonzo = void 0;
-var typedOperations_1 = __webpack_require__(8);
-var decimal_1 = __webpack_require__(11);
+var typedOperations_1 = __webpack_require__(10);
+var decimal_1 = __webpack_require__(13);
 var computeQuotientFromMonzo = function (monzo) {
     var numeratorMonzo = monzo.map(function (primeExponent) {
         return primeExponent > 0 ? primeExponent : 0;
@@ -12262,7 +12716,7 @@ exports.computeQuotientFromMonzo = computeQuotientFromMonzo;
 
 
 /***/ }),
-/* 165 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12278,7 +12732,7 @@ exports.QuotientPartType = QuotientPartType;
 
 
 /***/ }),
-/* 166 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12301,7 +12755,7 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.halveQuotient = exports.computeQuotientProduct = void 0;
-var typedOperations_1 = __webpack_require__(8);
+var typedOperations_1 = __webpack_require__(10);
 var computeQuotientProduct = function () {
     var quotients = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -12328,75 +12782,37 @@ exports.halveQuotient = halveQuotient;
 
 
 /***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isScamonGreaterOrEqual = exports.isScamonLesserOrEqual = exports.isScamonLesser = exports.isScamonGreater = exports.areScamonsEqual = exports.maxScamon = exports.scaleScamon = exports.multiplyScamon = exports.addScamons = exports.halveScamon = exports.invertScamon = exports.computeSuperScamon = exports.isScamonUnison = exports.isScamonSuper = exports.isScamonSub = exports.computeScamonFromMonzo = exports.computeScamonFromQuotient = exports.computeScamonFromDecimal = void 0;
-var fromDecimal_1 = __webpack_require__(168);
-Object.defineProperty(exports, "computeScamonFromDecimal", { enumerable: true, get: function () { return fromDecimal_1.computeScamonFromDecimal; } });
-var fromQuotient_1 = __webpack_require__(179);
-Object.defineProperty(exports, "computeScamonFromQuotient", { enumerable: true, get: function () { return fromQuotient_1.computeScamonFromQuotient; } });
-var fromMonzo_1 = __webpack_require__(180);
-Object.defineProperty(exports, "computeScamonFromMonzo", { enumerable: true, get: function () { return fromMonzo_1.computeScamonFromMonzo; } });
-var direction_1 = __webpack_require__(181);
-Object.defineProperty(exports, "isScamonSub", { enumerable: true, get: function () { return direction_1.isScamonSub; } });
-Object.defineProperty(exports, "isScamonSuper", { enumerable: true, get: function () { return direction_1.isScamonSuper; } });
-Object.defineProperty(exports, "isScamonUnison", { enumerable: true, get: function () { return direction_1.isScamonUnison; } });
-Object.defineProperty(exports, "computeSuperScamon", { enumerable: true, get: function () { return direction_1.computeSuperScamon; } });
-Object.defineProperty(exports, "invertScamon", { enumerable: true, get: function () { return direction_1.invertScamon; } });
-var typedOperations_1 = __webpack_require__(182);
-Object.defineProperty(exports, "halveScamon", { enumerable: true, get: function () { return typedOperations_1.halveScamon; } });
-Object.defineProperty(exports, "addScamons", { enumerable: true, get: function () { return typedOperations_1.addScamons; } });
-Object.defineProperty(exports, "multiplyScamon", { enumerable: true, get: function () { return typedOperations_1.multiplyScamon; } });
-Object.defineProperty(exports, "scaleScamon", { enumerable: true, get: function () { return typedOperations_1.scaleScamon; } });
-Object.defineProperty(exports, "maxScamon", { enumerable: true, get: function () { return typedOperations_1.maxScamon; } });
-var comparison_1 = __webpack_require__(183);
-Object.defineProperty(exports, "areScamonsEqual", { enumerable: true, get: function () { return comparison_1.areScamonsEqual; } });
-Object.defineProperty(exports, "isScamonGreater", { enumerable: true, get: function () { return comparison_1.isScamonGreater; } });
-Object.defineProperty(exports, "isScamonLesser", { enumerable: true, get: function () { return comparison_1.isScamonLesser; } });
-Object.defineProperty(exports, "isScamonLesserOrEqual", { enumerable: true, get: function () { return comparison_1.isScamonLesserOrEqual; } });
-Object.defineProperty(exports, "isScamonGreaterOrEqual", { enumerable: true, get: function () { return comparison_1.isScamonGreaterOrEqual; } });
-
-
-/***/ }),
-/* 168 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeScamonFromDecimal = void 0;
-var irrational_1 = __webpack_require__(169);
-var rational_1 = __webpack_require__(13);
-var computeScamonFromDecimal = function (decimal) {
-    return rational_1.isDecimalRational(decimal) ?
-        rational_1.computeRationalScamonFromRationalDecimal(decimal) :
-        irrational_1.computeIrrationalScamonFromDecimal(decimal);
-};
-exports.computeScamonFromDecimal = computeScamonFromDecimal;
-
-
-/***/ }),
 /* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IRRATIONAL_SCAMON_BASE_MONZO = exports.HALF_SCALER = exports.computeIrrationalScamonFromQuotient = exports.computeIrrationalScamonFromMonzo = exports.computeIrrationalScamonFromDecimal = exports.computeIrrationalMonzoFromScamon = exports.computeIrrationalDecimalFromScamon = void 0;
-var decimal_1 = __webpack_require__(170);
-Object.defineProperty(exports, "computeIrrationalDecimalFromScamon", { enumerable: true, get: function () { return decimal_1.computeIrrationalDecimalFromScamon; } });
-var monzo_1 = __webpack_require__(172);
-Object.defineProperty(exports, "computeIrrationalMonzoFromScamon", { enumerable: true, get: function () { return monzo_1.computeIrrationalMonzoFromScamon; } });
-var scamon_1 = __webpack_require__(174);
-Object.defineProperty(exports, "computeIrrationalScamonFromDecimal", { enumerable: true, get: function () { return scamon_1.computeIrrationalScamonFromDecimal; } });
-Object.defineProperty(exports, "computeIrrationalScamonFromMonzo", { enumerable: true, get: function () { return scamon_1.computeIrrationalScamonFromMonzo; } });
-Object.defineProperty(exports, "computeIrrationalScamonFromQuotient", { enumerable: true, get: function () { return scamon_1.computeIrrationalScamonFromQuotient; } });
-Object.defineProperty(exports, "HALF_SCALER", { enumerable: true, get: function () { return scamon_1.HALF_SCALER; } });
-Object.defineProperty(exports, "IRRATIONAL_SCAMON_BASE_MONZO", { enumerable: true, get: function () { return scamon_1.IRRATIONAL_SCAMON_BASE_MONZO; } });
+exports.isScamonGreaterOrEqual = exports.isScamonLesserOrEqual = exports.isScamonLesser = exports.isScamonGreater = exports.areScamonsEqual = exports.maxScamon = exports.scaleScamon = exports.multiplyScamon = exports.addScamons = exports.halveScamon = exports.invertScamon = exports.computeSuperScamon = exports.isScamonUnison = exports.isScamonSuper = exports.isScamonSub = exports.computeScamonFromMonzo = exports.computeScamonFromQuotient = exports.computeScamonFromDecimal = void 0;
+var fromDecimal_1 = __webpack_require__(170);
+Object.defineProperty(exports, "computeScamonFromDecimal", { enumerable: true, get: function () { return fromDecimal_1.computeScamonFromDecimal; } });
+var fromQuotient_1 = __webpack_require__(181);
+Object.defineProperty(exports, "computeScamonFromQuotient", { enumerable: true, get: function () { return fromQuotient_1.computeScamonFromQuotient; } });
+var fromMonzo_1 = __webpack_require__(182);
+Object.defineProperty(exports, "computeScamonFromMonzo", { enumerable: true, get: function () { return fromMonzo_1.computeScamonFromMonzo; } });
+var direction_1 = __webpack_require__(183);
+Object.defineProperty(exports, "isScamonSub", { enumerable: true, get: function () { return direction_1.isScamonSub; } });
+Object.defineProperty(exports, "isScamonSuper", { enumerable: true, get: function () { return direction_1.isScamonSuper; } });
+Object.defineProperty(exports, "isScamonUnison", { enumerable: true, get: function () { return direction_1.isScamonUnison; } });
+Object.defineProperty(exports, "computeSuperScamon", { enumerable: true, get: function () { return direction_1.computeSuperScamon; } });
+Object.defineProperty(exports, "invertScamon", { enumerable: true, get: function () { return direction_1.invertScamon; } });
+var typedOperations_1 = __webpack_require__(184);
+Object.defineProperty(exports, "halveScamon", { enumerable: true, get: function () { return typedOperations_1.halveScamon; } });
+Object.defineProperty(exports, "addScamons", { enumerable: true, get: function () { return typedOperations_1.addScamons; } });
+Object.defineProperty(exports, "multiplyScamon", { enumerable: true, get: function () { return typedOperations_1.multiplyScamon; } });
+Object.defineProperty(exports, "scaleScamon", { enumerable: true, get: function () { return typedOperations_1.scaleScamon; } });
+Object.defineProperty(exports, "maxScamon", { enumerable: true, get: function () { return typedOperations_1.maxScamon; } });
+var comparison_1 = __webpack_require__(185);
+Object.defineProperty(exports, "areScamonsEqual", { enumerable: true, get: function () { return comparison_1.areScamonsEqual; } });
+Object.defineProperty(exports, "isScamonGreater", { enumerable: true, get: function () { return comparison_1.isScamonGreater; } });
+Object.defineProperty(exports, "isScamonLesser", { enumerable: true, get: function () { return comparison_1.isScamonLesser; } });
+Object.defineProperty(exports, "isScamonLesserOrEqual", { enumerable: true, get: function () { return comparison_1.isScamonLesserOrEqual; } });
+Object.defineProperty(exports, "isScamonGreaterOrEqual", { enumerable: true, get: function () { return comparison_1.isScamonGreaterOrEqual; } });
 
 
 /***/ }),
@@ -12406,9 +12822,15 @@ Object.defineProperty(exports, "IRRATIONAL_SCAMON_BASE_MONZO", { enumerable: tru
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeIrrationalDecimalFromScamon = void 0;
-var fromScamon_1 = __webpack_require__(171);
-Object.defineProperty(exports, "computeIrrationalDecimalFromScamon", { enumerable: true, get: function () { return fromScamon_1.computeIrrationalDecimalFromScamon; } });
+exports.computeScamonFromDecimal = void 0;
+var irrational_1 = __webpack_require__(171);
+var rational_1 = __webpack_require__(15);
+var computeScamonFromDecimal = function (decimal) {
+    return rational_1.isDecimalRational(decimal) ?
+        rational_1.computeRationalScamonFromRationalDecimal(decimal) :
+        irrational_1.computeIrrationalScamonFromDecimal(decimal);
+};
+exports.computeScamonFromDecimal = computeScamonFromDecimal;
 
 
 /***/ }),
@@ -12418,12 +12840,17 @@ Object.defineProperty(exports, "computeIrrationalDecimalFromScamon", { enumerabl
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeIrrationalDecimalFromScamon = void 0;
-var numeric_1 = __webpack_require__(10);
-var computeIrrationalDecimalFromScamon = function (scamon) {
-    return Math.pow(numeric_1.computeDecimalFromMonzo(scamon.monzo), numeric_1.computeDecimalFromQuotient(scamon.scaler || [1, 1]));
-};
-exports.computeIrrationalDecimalFromScamon = computeIrrationalDecimalFromScamon;
+exports.IRRATIONAL_SCAMON_BASE_MONZO = exports.HALF_SCALER = exports.computeIrrationalScamonFromQuotient = exports.computeIrrationalScamonFromMonzo = exports.computeIrrationalScamonFromDecimal = exports.computeIrrationalMonzoFromScamon = exports.computeIrrationalDecimalFromScamon = void 0;
+var decimal_1 = __webpack_require__(172);
+Object.defineProperty(exports, "computeIrrationalDecimalFromScamon", { enumerable: true, get: function () { return decimal_1.computeIrrationalDecimalFromScamon; } });
+var monzo_1 = __webpack_require__(174);
+Object.defineProperty(exports, "computeIrrationalMonzoFromScamon", { enumerable: true, get: function () { return monzo_1.computeIrrationalMonzoFromScamon; } });
+var scamon_1 = __webpack_require__(176);
+Object.defineProperty(exports, "computeIrrationalScamonFromDecimal", { enumerable: true, get: function () { return scamon_1.computeIrrationalScamonFromDecimal; } });
+Object.defineProperty(exports, "computeIrrationalScamonFromMonzo", { enumerable: true, get: function () { return scamon_1.computeIrrationalScamonFromMonzo; } });
+Object.defineProperty(exports, "computeIrrationalScamonFromQuotient", { enumerable: true, get: function () { return scamon_1.computeIrrationalScamonFromQuotient; } });
+Object.defineProperty(exports, "HALF_SCALER", { enumerable: true, get: function () { return scamon_1.HALF_SCALER; } });
+Object.defineProperty(exports, "IRRATIONAL_SCAMON_BASE_MONZO", { enumerable: true, get: function () { return scamon_1.IRRATIONAL_SCAMON_BASE_MONZO; } });
 
 
 /***/ }),
@@ -12433,9 +12860,9 @@ exports.computeIrrationalDecimalFromScamon = computeIrrationalDecimalFromScamon;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeIrrationalMonzoFromScamon = void 0;
+exports.computeIrrationalDecimalFromScamon = void 0;
 var fromScamon_1 = __webpack_require__(173);
-Object.defineProperty(exports, "computeIrrationalMonzoFromScamon", { enumerable: true, get: function () { return fromScamon_1.computeIrrationalMonzoFromScamon; } });
+Object.defineProperty(exports, "computeIrrationalDecimalFromScamon", { enumerable: true, get: function () { return fromScamon_1.computeIrrationalDecimalFromScamon; } });
 
 
 /***/ }),
@@ -12445,8 +12872,35 @@ Object.defineProperty(exports, "computeIrrationalMonzoFromScamon", { enumerable:
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeIrrationalDecimalFromScamon = void 0;
+var numeric_1 = __webpack_require__(12);
+var computeIrrationalDecimalFromScamon = function (scamon) {
+    return Math.pow(numeric_1.computeDecimalFromMonzo(scamon.monzo), numeric_1.computeDecimalFromQuotient(scamon.scaler || [1, 1]));
+};
+exports.computeIrrationalDecimalFromScamon = computeIrrationalDecimalFromScamon;
+
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeIrrationalMonzoFromScamon = void 0;
-var numeric_1 = __webpack_require__(10);
+var fromScamon_1 = __webpack_require__(175);
+Object.defineProperty(exports, "computeIrrationalMonzoFromScamon", { enumerable: true, get: function () { return fromScamon_1.computeIrrationalMonzoFromScamon; } });
+
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeIrrationalMonzoFromScamon = void 0;
+var numeric_1 = __webpack_require__(12);
 var computeIrrationalMonzoFromScamon = function (scamon) {
     return scamon.monzo
         .map(function (primeExponent) {
@@ -12457,26 +12911,26 @@ exports.computeIrrationalMonzoFromScamon = computeIrrationalMonzoFromScamon;
 
 
 /***/ }),
-/* 174 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeIrrationalScamonFromQuotient = exports.computeIrrationalScamonFromMonzo = exports.computeIrrationalScamonFromDecimal = exports.IRRATIONAL_SCAMON_BASE_MONZO = exports.HALF_SCALER = void 0;
-var constants_1 = __webpack_require__(175);
+var constants_1 = __webpack_require__(177);
 Object.defineProperty(exports, "HALF_SCALER", { enumerable: true, get: function () { return constants_1.HALF_SCALER; } });
 Object.defineProperty(exports, "IRRATIONAL_SCAMON_BASE_MONZO", { enumerable: true, get: function () { return constants_1.IRRATIONAL_SCAMON_BASE_MONZO; } });
-var fromDecimal_1 = __webpack_require__(176);
+var fromDecimal_1 = __webpack_require__(178);
 Object.defineProperty(exports, "computeIrrationalScamonFromDecimal", { enumerable: true, get: function () { return fromDecimal_1.computeIrrationalScamonFromDecimal; } });
-var fromMonzo_1 = __webpack_require__(177);
+var fromMonzo_1 = __webpack_require__(179);
 Object.defineProperty(exports, "computeIrrationalScamonFromMonzo", { enumerable: true, get: function () { return fromMonzo_1.computeIrrationalScamonFromMonzo; } });
-var fromQuotient_1 = __webpack_require__(178);
+var fromQuotient_1 = __webpack_require__(180);
 Object.defineProperty(exports, "computeIrrationalScamonFromQuotient", { enumerable: true, get: function () { return fromQuotient_1.computeIrrationalScamonFromQuotient; } });
 
 
 /***/ }),
-/* 175 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12490,17 +12944,17 @@ exports.IRRATIONAL_SCAMON_BASE_MONZO = IRRATIONAL_SCAMON_BASE_MONZO;
 
 
 /***/ }),
-/* 176 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeIrrationalScamonFromDecimal = void 0;
-var code_1 = __webpack_require__(4);
-var constants_1 = __webpack_require__(9);
-var typedOperations_1 = __webpack_require__(8);
-var constants_2 = __webpack_require__(175);
+var code_1 = __webpack_require__(6);
+var constants_1 = __webpack_require__(11);
+var typedOperations_1 = __webpack_require__(10);
+var constants_2 = __webpack_require__(177);
 var computeIrrationalScamonFromDecimal = function (decimal) {
     return ({
         monzo: code_1.shallowClone(constants_2.IRRATIONAL_SCAMON_BASE_MONZO),
@@ -12511,53 +12965,19 @@ exports.computeIrrationalScamonFromDecimal = computeIrrationalScamonFromDecimal;
 
 
 /***/ }),
-/* 177 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeIrrationalScamonFromMonzo = void 0;
-var numeric_1 = __webpack_require__(10);
-var fromDecimal_1 = __webpack_require__(176);
-var computeIrrationalScamonFromMonzo = function (monzo) {
-    return fromDecimal_1.computeIrrationalScamonFromDecimal(numeric_1.computeDecimalFromMonzo(monzo));
-};
-exports.computeIrrationalScamonFromMonzo = computeIrrationalScamonFromMonzo;
-
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeIrrationalScamonFromQuotient = void 0;
-var numeric_1 = __webpack_require__(10);
-var fromDecimal_1 = __webpack_require__(176);
-var computeIrrationalScamonFromQuotient = function (quotient) {
-    return fromDecimal_1.computeIrrationalScamonFromDecimal(numeric_1.computeDecimalFromQuotient(quotient));
-};
-exports.computeIrrationalScamonFromQuotient = computeIrrationalScamonFromQuotient;
-
-
-/***/ }),
 /* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeScamonFromQuotient = void 0;
-var irrational_1 = __webpack_require__(169);
-var rational_1 = __webpack_require__(13);
-var computeScamonFromQuotient = function (quotient) {
-    return rational_1.isQuotientRational(quotient) ?
-        rational_1.computeRationalScamonFromRationalQuotient(quotient) :
-        irrational_1.computeIrrationalScamonFromQuotient(quotient);
+exports.computeIrrationalScamonFromMonzo = void 0;
+var numeric_1 = __webpack_require__(12);
+var fromDecimal_1 = __webpack_require__(178);
+var computeIrrationalScamonFromMonzo = function (monzo) {
+    return fromDecimal_1.computeIrrationalScamonFromDecimal(numeric_1.computeDecimalFromMonzo(monzo));
 };
-exports.computeScamonFromQuotient = computeScamonFromQuotient;
+exports.computeIrrationalScamonFromMonzo = computeIrrationalScamonFromMonzo;
 
 
 /***/ }),
@@ -12567,15 +12987,13 @@ exports.computeScamonFromQuotient = computeScamonFromQuotient;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeScamonFromMonzo = void 0;
-var irrational_1 = __webpack_require__(169);
-var rational_1 = __webpack_require__(13);
-var computeScamonFromMonzo = function (monzo) {
-    return rational_1.isMonzoRational(monzo) ?
-        rational_1.computeRationalScamonFromRationalMonzo(monzo) :
-        irrational_1.computeIrrationalScamonFromMonzo(monzo);
+exports.computeIrrationalScamonFromQuotient = void 0;
+var numeric_1 = __webpack_require__(12);
+var fromDecimal_1 = __webpack_require__(178);
+var computeIrrationalScamonFromQuotient = function (quotient) {
+    return fromDecimal_1.computeIrrationalScamonFromDecimal(numeric_1.computeDecimalFromQuotient(quotient));
 };
-exports.computeScamonFromMonzo = computeScamonFromMonzo;
+exports.computeIrrationalScamonFromQuotient = computeIrrationalScamonFromQuotient;
 
 
 /***/ }),
@@ -12585,10 +13003,46 @@ exports.computeScamonFromMonzo = computeScamonFromMonzo;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeScamonFromQuotient = void 0;
+var irrational_1 = __webpack_require__(171);
+var rational_1 = __webpack_require__(15);
+var computeScamonFromQuotient = function (quotient) {
+    return rational_1.isQuotientRational(quotient) ?
+        rational_1.computeRationalScamonFromRationalQuotient(quotient) :
+        irrational_1.computeIrrationalScamonFromQuotient(quotient);
+};
+exports.computeScamonFromQuotient = computeScamonFromQuotient;
+
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeScamonFromMonzo = void 0;
+var irrational_1 = __webpack_require__(171);
+var rational_1 = __webpack_require__(15);
+var computeScamonFromMonzo = function (monzo) {
+    return rational_1.isMonzoRational(monzo) ?
+        rational_1.computeRationalScamonFromRationalMonzo(monzo) :
+        irrational_1.computeIrrationalScamonFromMonzo(monzo);
+};
+exports.computeScamonFromMonzo = computeScamonFromMonzo;
+
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.invertScamon = exports.computeSubScamon = exports.computeSuperScamon = exports.isScamonUnison = exports.isScamonSuper = exports.isScamonSub = void 0;
-var code_1 = __webpack_require__(4);
-var math_1 = __webpack_require__(6);
-var irrational_1 = __webpack_require__(169);
+var code_1 = __webpack_require__(6);
+var math_1 = __webpack_require__(8);
+var irrational_1 = __webpack_require__(171);
 var isScamonSuper = function (candidateSuperScamon) {
     return math_1.isDecimalSuper(irrational_1.computeIrrationalDecimalFromScamon(candidateSuperScamon));
 };
@@ -12622,7 +13076,7 @@ exports.invertScamon = invertScamon;
 
 
 /***/ }),
-/* 182 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12640,9 +13094,9 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.scaleScamon = exports.multiplyScamon = exports.subtractScamons = exports.minScamon = exports.maxScamon = exports.halveScamon = exports.addScamons = void 0;
-var math_1 = __webpack_require__(6);
-var irrational_1 = __webpack_require__(169);
-var quotient_1 = __webpack_require__(161);
+var math_1 = __webpack_require__(8);
+var irrational_1 = __webpack_require__(171);
+var quotient_1 = __webpack_require__(163);
 var addScamons = function (augendScamon, addendScamon) {
     return irrational_1.computeIrrationalScamonFromDecimal(math_1.multiply(irrational_1.computeIrrationalDecimalFromScamon(augendScamon), irrational_1.computeIrrationalDecimalFromScamon(addendScamon)));
 };
@@ -12700,16 +13154,16 @@ exports.minScamon = minScamon;
 
 
 /***/ }),
-/* 183 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isScamonLesserOrEqual = exports.isScamonGreaterOrEqual = exports.isScamonLesser = exports.isScamonGreater = exports.areScamonsEqual = void 0;
-var code_1 = __webpack_require__(4);
-var math_1 = __webpack_require__(6);
-var irrational_1 = __webpack_require__(169);
+var code_1 = __webpack_require__(6);
+var math_1 = __webpack_require__(8);
+var irrational_1 = __webpack_require__(171);
 var areScamonsEqual = function (scamonA, scamonB, precision) {
     if (precision === void 0) { precision = code_1.MAX_JS_PRECISION; }
     return (math_1.areMonzosEqual(scamonA.monzo, scamonB.monzo, precision)
@@ -12744,7 +13198,7 @@ exports.isScamonLesserOrEqual = isScamonLesserOrEqual;
 
 
 /***/ }),
-/* 184 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12761,7 +13215,7 @@ exports.Direction = Direction;
 
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12788,7 +13242,7 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeDistributions = void 0;
-var code_1 = __webpack_require__(4);
+var code_1 = __webpack_require__(6);
 var computeDistributions = function (array, binCount) {
     var emptyDistribution = __spread(Array(binCount).keys()).map(function (_) { return []; });
     var distributions = [emptyDistribution];
@@ -12812,7 +13266,7 @@ exports.computeDistributions = computeDistributions;
 
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12835,8 +13289,8 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.degreesToRadians = exports.radiansToDegrees = exports.computeAngle = void 0;
-var constants_1 = __webpack_require__(9);
-var typedOperations_1 = __webpack_require__(8);
+var constants_1 = __webpack_require__(11);
+var typedOperations_1 = __webpack_require__(10);
 var computeAngle = function (_a, _b) {
     var _c = __read(_a, 2), originX = _c[0], originY = _c[1];
     var _d = __read(_b, 2), pointX = _d[0], pointY = _d[1];
@@ -12857,7 +13311,7 @@ exports.degreesToRadians = degreesToRadians;
 
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12871,7 +13325,7 @@ exports.computeTriangularNumber = computeTriangularNumber;
 
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12888,7 +13342,7 @@ exports.MeanType = MeanType;
 
 
 /***/ }),
-/* 189 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12922,15 +13376,15 @@ exports.isBoolean = isBoolean;
 
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeKeyPathArray = exports.computeKeyPath = void 0;
-var finalElement_1 = __webpack_require__(191);
-var typeGuards_1 = __webpack_require__(189);
+var finalElement_1 = __webpack_require__(193);
+var typeGuards_1 = __webpack_require__(191);
 var computeKeyPath = function () {
     var _a;
     var path = [];
@@ -12975,7 +13429,7 @@ exports.computeKeyPathArray = computeKeyPathArray;
 
 
 /***/ }),
-/* 191 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12993,7 +13447,7 @@ exports.finalElement = finalElement;
 
 
 /***/ }),
-/* 192 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13011,7 +13465,7 @@ exports.cleanObject = cleanObject;
 
 
 /***/ }),
-/* 193 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13025,7 +13479,7 @@ exports.cleanArray = cleanArray;
 
 
 /***/ }),
-/* 194 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13056,7 +13510,7 @@ exports.camelCaseToUpperCase = camelCaseToUpperCase;
 
 
 /***/ }),
-/* 195 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13079,8 +13533,8 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setAllPropertiesOfObjectOnAnother = void 0;
-var clone_1 = __webpack_require__(196);
-var typeGuards_1 = __webpack_require__(189);
+var clone_1 = __webpack_require__(198);
+var typeGuards_1 = __webpack_require__(191);
 var setAllPropertiesOfObjectOnAnother = function (_a) {
     var objectToChange = _a.objectToChange, objectWithProperties = _a.objectWithProperties;
     Object.entries(objectWithProperties)
@@ -13093,7 +13547,7 @@ exports.setAllPropertiesOfObjectOnAnother = setAllPropertiesOfObjectOnAnother;
 
 
 /***/ }),
-/* 196 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13124,7 +13578,7 @@ exports.shallowClone = shallowClone;
 
 
 /***/ }),
-/* 197 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13162,7 +13616,7 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deepMap = void 0;
-var typeGuards_1 = __webpack_require__(189);
+var typeGuards_1 = __webpack_require__(191);
 var deepMap = function (value, fn) {
     var args = [];
     for (var _i = 2; _i < arguments.length; _i++) {
@@ -13189,7 +13643,7 @@ exports.deepMap = deepMap;
 
 
 /***/ }),
-/* 198 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13203,7 +13657,7 @@ exports.concat = concat;
 
 
 /***/ }),
-/* 199 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13241,7 +13695,7 @@ exports.NOT_FOUND = NOT_FOUND;
 
 
 /***/ }),
-/* 200 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13256,7 +13710,7 @@ exports.computeDeepDistinct = computeDeepDistinct;
 
 
 /***/ }),
-/* 201 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13279,8 +13733,8 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deepEquals = void 0;
-var isCloseTo_1 = __webpack_require__(202);
-var typeGuards_1 = __webpack_require__(189);
+var isCloseTo_1 = __webpack_require__(204);
+var typeGuards_1 = __webpack_require__(191);
 var deepEqualsArray = function (valueA, valueB, precision) {
     return typeGuards_1.isArray(valueA) &&
         valueA.length === valueB.length &&
@@ -13324,16 +13778,16 @@ exports.deepEquals = deepEquals;
 
 
 /***/ }),
-/* 202 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isCloseTo = void 0;
-var math_1 = __webpack_require__(6);
-var constants_1 = __webpack_require__(199);
-var typeGuards_1 = __webpack_require__(189);
+var math_1 = __webpack_require__(8);
+var constants_1 = __webpack_require__(201);
+var typeGuards_1 = __webpack_require__(191);
 var isCloseTo = function (actual, expected, precision) {
     if (precision === void 0) { precision = constants_1.DEFAULT_PRECISION; }
     if (actual === Infinity && expected === Infinity) {
@@ -13357,7 +13811,7 @@ exports.isCloseTo = isCloseTo;
 
 
 /***/ }),
-/* 203 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13371,7 +13825,7 @@ exports.parseBoolean = parseBoolean;
 
 
 /***/ }),
-/* 204 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13385,7 +13839,7 @@ exports.computeExampleElement = computeExampleElement;
 
 
 /***/ }),
-/* 205 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13403,10 +13857,10 @@ var __values = (this && this.__values) || function(o) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dig = void 0;
-var io_1 = __webpack_require__(62);
-var clone_1 = __webpack_require__(196);
-var keyPath_1 = __webpack_require__(190);
-var typeGuards_1 = __webpack_require__(189);
+var io_1 = __webpack_require__(64);
+var clone_1 = __webpack_require__(198);
+var keyPath_1 = __webpack_require__(192);
+var typeGuards_1 = __webpack_require__(191);
 var dig = function (object, keyPath, _a) {
     var e_1, _b;
     var _c = _a === void 0 ? {} : _a, _d = _c.parents, parents = _d === void 0 ? undefined : _d, _e = _c.strict, strict = _e === void 0 ? false : _e;
@@ -13443,7 +13897,7 @@ exports.dig = dig;
 
 
 /***/ }),
-/* 206 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13510,16 +13964,16 @@ exports.doOnNextEventLoop = doOnNextEventLoop;
 
 
 /***/ }),
-/* 207 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeExtensionBase = void 0;
-var clone_1 = __webpack_require__(196);
-var constants_1 = __webpack_require__(199);
-var types_1 = __webpack_require__(208);
+var clone_1 = __webpack_require__(198);
+var constants_1 = __webpack_require__(201);
+var types_1 = __webpack_require__(210);
 var computeExtensionBase = function (extensionBaseType) {
     return extensionBaseType === types_1.ExtensionBaseType.ARRAY ?
         clone_1.shallowClone(constants_1.ARRAY_EXTENSION_BASE) :
@@ -13529,7 +13983,7 @@ exports.computeExtensionBase = computeExtensionBase;
 
 
 /***/ }),
-/* 208 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13553,7 +14007,7 @@ exports.ExtensionBaseType = ExtensionBaseType;
 
 
 /***/ }),
-/* 209 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13571,7 +14025,7 @@ exports.isSingleton = isSingleton;
 
 
 /***/ }),
-/* 210 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13602,15 +14056,15 @@ exports.merge = merge;
 
 
 /***/ }),
-/* 211 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computePlusOrMinusRange = void 0;
-var math_1 = __webpack_require__(6);
-var range_1 = __webpack_require__(212);
+var math_1 = __webpack_require__(8);
+var range_1 = __webpack_require__(214);
 var computePlusOrMinusRange = function (value) {
     return range_1.computeRange(math_1.negative(value), value + 1);
 };
@@ -13618,7 +14072,7 @@ exports.computePlusOrMinusRange = computePlusOrMinusRange;
 
 
 /***/ }),
-/* 212 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13645,7 +14099,7 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeRange = void 0;
-var index_1 = __webpack_require__(4);
+var index_1 = __webpack_require__(6);
 var computeRange = function (firstParameter, secondParameter) {
     if (index_1.isUndefined(secondParameter)) {
         return __spread(Array(firstParameter).keys());
@@ -13656,7 +14110,7 @@ exports.computeRange = computeRange;
 
 
 /***/ }),
-/* 213 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13674,15 +14128,15 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.rank = void 0;
-var clone_1 = __webpack_require__(196);
-var constants_1 = __webpack_require__(199);
-var crement_1 = __webpack_require__(214);
-var dig_1 = __webpack_require__(205);
-var isCloseTo_1 = __webpack_require__(202);
-var keyPath_1 = __webpack_require__(190);
-var sort_1 = __webpack_require__(215);
-var typeGuards_1 = __webpack_require__(189);
-var types_1 = __webpack_require__(208);
+var clone_1 = __webpack_require__(198);
+var constants_1 = __webpack_require__(201);
+var crement_1 = __webpack_require__(216);
+var dig_1 = __webpack_require__(207);
+var isCloseTo_1 = __webpack_require__(204);
+var keyPath_1 = __webpack_require__(192);
+var sort_1 = __webpack_require__(217);
+var typeGuards_1 = __webpack_require__(191);
+var types_1 = __webpack_require__(210);
 var isCloseOrEqual = function (a, b, precision) {
     if (precision === void 0) { precision = constants_1.DEFAULT_PRECISION; }
     if (typeGuards_1.isUndefined(precision) || !typeGuards_1.isNumber(a) || !typeGuards_1.isNumber(b)) {
@@ -13763,7 +14217,7 @@ exports.rank = rank;
 
 
 /***/ }),
-/* 214 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13781,20 +14235,20 @@ exports.decrement = decrement;
 
 
 /***/ }),
-/* 215 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sort = void 0;
-var io_1 = __webpack_require__(62);
-var constants_1 = __webpack_require__(199);
-var crement_1 = __webpack_require__(214);
-var dig_1 = __webpack_require__(205);
-var exampleElement_1 = __webpack_require__(204);
-var isCloseTo_1 = __webpack_require__(202);
-var typeGuards_1 = __webpack_require__(189);
+var io_1 = __webpack_require__(64);
+var constants_1 = __webpack_require__(201);
+var crement_1 = __webpack_require__(216);
+var dig_1 = __webpack_require__(207);
+var exampleElement_1 = __webpack_require__(206);
+var isCloseTo_1 = __webpack_require__(204);
+var typeGuards_1 = __webpack_require__(191);
 var isNotClose = function (a, b, precision) {
     if (precision === void 0) { precision = constants_1.DEFAULT_PRECISION; }
     return typeGuards_1.isNumber(a) && typeGuards_1.isNumber(b) ?
@@ -13864,15 +14318,15 @@ exports.sort = sort;
 
 
 /***/ }),
-/* 216 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.shuffle = void 0;
-var math_1 = __webpack_require__(6);
-var finalElement_1 = __webpack_require__(191);
+var math_1 = __webpack_require__(8);
+var finalElement_1 = __webpack_require__(193);
 var shuffle = function (array) {
     for (var i = finalElement_1.indexOfFinalElement(array); i > 0; i--) {
         var j = math_1.floor(Math.random() * i);
@@ -13885,15 +14339,15 @@ exports.shuffle = shuffle;
 
 
 /***/ }),
-/* 217 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeTrimmedArray = void 0;
-var clone_1 = __webpack_require__(196);
-var finalElement_1 = __webpack_require__(191);
+var clone_1 = __webpack_require__(198);
+var finalElement_1 = __webpack_require__(193);
 var computeTrimmedArray = function (array) {
     var trimmedArray = clone_1.shallowClone(array);
     while (trimmedArray.length && !finalElement_1.finalElement(trimmedArray)) {
@@ -13905,14 +14359,14 @@ exports.computeTrimmedArray = computeTrimmedArray;
 
 
 /***/ }),
-/* 218 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.allElementsEqual = void 0;
-var deepEquals_1 = __webpack_require__(201);
+var deepEquals_1 = __webpack_require__(203);
 var allElementsEqual = function (array) {
     return array.every(function (element) {
         return deepEquals_1.deepEquals(element, array[0]);
@@ -13922,14 +14376,14 @@ exports.allElementsEqual = allElementsEqual;
 
 
 /***/ }),
-/* 219 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.now = void 0;
-var perf_hooks_1 = __webpack_require__(82);
+var perf_hooks_1 = __webpack_require__(84);
 var now = function () {
     return perf_hooks_1.performance.now();
 };
@@ -13937,7 +14391,7 @@ exports.now = now;
 
 
 /***/ }),
-/* 220 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13964,9 +14418,9 @@ var __spread = (this && this.__spread) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setAt = void 0;
-var dig_1 = __webpack_require__(205);
-var finalElement_1 = __webpack_require__(191);
-var keyPath_1 = __webpack_require__(190);
+var dig_1 = __webpack_require__(207);
+var finalElement_1 = __webpack_require__(193);
+var keyPath_1 = __webpack_require__(192);
 var setAt = function (object, keyPath, value, options) {
     if (options === void 0) { options = {}; }
     var keyPathArray = keyPath_1.computeKeyPathArray(keyPath);
@@ -13980,7 +14434,7 @@ exports.setAt = setAt;
 
 
 /***/ }),
-/* 221 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13994,21 +14448,21 @@ exports.offset = offset;
 
 
 /***/ }),
-/* 222 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computePossibilities = exports.computeParameterValues = void 0;
-var parameterValues_1 = __webpack_require__(223);
+var parameterValues_1 = __webpack_require__(225);
 Object.defineProperty(exports, "computeParameterValues", { enumerable: true, get: function () { return parameterValues_1.computeParameterValues; } });
-var possibilities_1 = __webpack_require__(224);
+var possibilities_1 = __webpack_require__(226);
 Object.defineProperty(exports, "computePossibilities", { enumerable: true, get: function () { return possibilities_1.computePossibilities; } });
 
 
 /***/ }),
-/* 223 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14051,7 +14505,7 @@ exports.computeParameterValues = computeParameterValues;
 
 
 /***/ }),
-/* 224 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14085,8 +14539,8 @@ var __read = (this && this.__read) || function (o, n) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computePossibilities = void 0;
-var code_1 = __webpack_require__(4);
-var parameterValues_1 = __webpack_require__(223);
+var code_1 = __webpack_require__(6);
+var parameterValues_1 = __webpack_require__(225);
 var computePossibilities = function (scope) {
     var possibilities = [code_1.computeExtensionBase(code_1.ExtensionBaseType.OBJECT)];
     var scopeEntries = Object.entries(scope);
@@ -14117,33 +14571,33 @@ exports.computePossibilities = computePossibilities;
 
 
 /***/ }),
-/* 225 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runScriptAndGetConsoleOutput = exports.slowReporter = exports.specNameReporter = exports.specReporter = exports.customMatchers = exports.onlyRunInCi = exports.catchEmptyFiles = exports.catchBadSpecFiles = exports.catchBadMainDescriptions = void 0;
-var catchBadMainDescriptions_1 = __webpack_require__(226);
+var catchBadMainDescriptions_1 = __webpack_require__(228);
 Object.defineProperty(exports, "catchBadMainDescriptions", { enumerable: true, get: function () { return catchBadMainDescriptions_1.catchBadMainDescriptions; } });
-var catchBadSpecFiles_1 = __webpack_require__(228);
+var catchBadSpecFiles_1 = __webpack_require__(230);
 Object.defineProperty(exports, "catchBadSpecFiles", { enumerable: true, get: function () { return catchBadSpecFiles_1.catchBadSpecFiles; } });
-var catchEmptyFiles_1 = __webpack_require__(229);
+var catchEmptyFiles_1 = __webpack_require__(231);
 Object.defineProperty(exports, "catchEmptyFiles", { enumerable: true, get: function () { return catchEmptyFiles_1.catchEmptyFiles; } });
-var onlyRunInCi_1 = __webpack_require__(230);
+var onlyRunInCi_1 = __webpack_require__(232);
 Object.defineProperty(exports, "onlyRunInCi", { enumerable: true, get: function () { return onlyRunInCi_1.onlyRunInCi; } });
-var customMatchers_1 = __webpack_require__(231);
+var customMatchers_1 = __webpack_require__(233);
 Object.defineProperty(exports, "customMatchers", { enumerable: true, get: function () { return customMatchers_1.customMatchers; } });
-var reporters_1 = __webpack_require__(232);
+var reporters_1 = __webpack_require__(234);
 Object.defineProperty(exports, "specReporter", { enumerable: true, get: function () { return reporters_1.specReporter; } });
 Object.defineProperty(exports, "specNameReporter", { enumerable: true, get: function () { return reporters_1.specNameReporter; } });
 Object.defineProperty(exports, "slowReporter", { enumerable: true, get: function () { return reporters_1.slowReporter; } });
-var scripts_1 = __webpack_require__(237);
+var scripts_1 = __webpack_require__(239);
 Object.defineProperty(exports, "runScriptAndGetConsoleOutput", { enumerable: true, get: function () { return scripts_1.runScriptAndGetConsoleOutput; } });
 
 
 /***/ }),
-/* 226 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14180,11 +14634,11 @@ var __values = (this && this.__values) || function(o) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.catchBadMainDescriptions = void 0;
-var fs = __importStar(__webpack_require__(82));
-var path = __importStar(__webpack_require__(83));
-var code_1 = __webpack_require__(4);
-var io_1 = __webpack_require__(62);
-var ciMode_1 = __webpack_require__(227);
+var fs = __importStar(__webpack_require__(84));
+var path = __importStar(__webpack_require__(85));
+var code_1 = __webpack_require__(6);
+var io_1 = __webpack_require__(64);
+var ciMode_1 = __webpack_require__(229);
 var INDEX_OF_CAPTURED_GROUP = 1;
 var catchBadMainDescriptions = function (basePath) {
     var e_1, _a;
@@ -14229,7 +14683,7 @@ exports.catchBadMainDescriptions = catchBadMainDescriptions;
 
 
 /***/ }),
-/* 227 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14239,10 +14693,10 @@ exports.CI_MODE = void 0;
 var CI_MODE = !!process.env.CI || process.argv[2] === "--ci=true";
 exports.CI_MODE = CI_MODE;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(84)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86)))
 
 /***/ }),
-/* 228 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14279,9 +14733,9 @@ var __values = (this && this.__values) || function(o) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.catchBadSpecFiles = void 0;
-var fs = __importStar(__webpack_require__(82));
-var path = __importStar(__webpack_require__(83));
-var ciMode_1 = __webpack_require__(227);
+var fs = __importStar(__webpack_require__(84));
+var path = __importStar(__webpack_require__(85));
+var ciMode_1 = __webpack_require__(229);
 var catchBadSpecFiles = function (basePath) {
     var e_1, _a;
     if (basePath === void 0) { basePath = ""; }
@@ -14317,7 +14771,7 @@ exports.catchBadSpecFiles = catchBadSpecFiles;
 
 
 /***/ }),
-/* 229 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14354,9 +14808,9 @@ var __values = (this && this.__values) || function(o) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.catchEmptyFiles = void 0;
-var fs = __importStar(__webpack_require__(82));
-var path = __importStar(__webpack_require__(83));
-var ciMode_1 = __webpack_require__(227);
+var fs = __importStar(__webpack_require__(84));
+var path = __importStar(__webpack_require__(85));
+var ciMode_1 = __webpack_require__(229);
 var catchEmptyFiles = function (basePath) {
     var e_1, _a;
     if (!ciMode_1.CI_MODE)
@@ -14387,14 +14841,14 @@ exports.catchEmptyFiles = catchEmptyFiles;
 
 
 /***/ }),
-/* 230 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.onlyRunInCi = void 0;
-var ciMode_1 = __webpack_require__(227);
+var ciMode_1 = __webpack_require__(229);
 var onlyRunInCi = function () {
     if (!ciMode_1.CI_MODE) {
         pending("slow test only run in CI");
@@ -14404,7 +14858,7 @@ exports.onlyRunInCi = onlyRunInCi;
 
 
 /***/ }),
-/* 231 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14412,9 +14866,9 @@ exports.onlyRunInCi = onlyRunInCi;
 // tslint:disable max-line-length
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.customMatchers = void 0;
-var code_1 = __webpack_require__(4);
-var io_1 = __webpack_require__(62);
-var math_1 = __webpack_require__(6);
+var code_1 = __webpack_require__(6);
+var io_1 = __webpack_require__(64);
+var math_1 = __webpack_require__(8);
 var precisionMessage = function (precision) {
     return code_1.isUndefined(precision) ? "" : ", with precision " + precision;
 };
@@ -14626,33 +15080,33 @@ exports.customMatchers = customMatchers;
 
 
 /***/ }),
-/* 232 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.specReporter = exports.specNameReporter = exports.slowReporter = void 0;
-var slowReporter_1 = __webpack_require__(233);
+var slowReporter_1 = __webpack_require__(235);
 Object.defineProperty(exports, "slowReporter", { enumerable: true, get: function () { return slowReporter_1.slowReporter; } });
-var specNameReporter_1 = __webpack_require__(235);
+var specNameReporter_1 = __webpack_require__(237);
 Object.defineProperty(exports, "specNameReporter", { enumerable: true, get: function () { return specNameReporter_1.specNameReporter; } });
-var specReporter_1 = __webpack_require__(236);
+var specReporter_1 = __webpack_require__(238);
 Object.defineProperty(exports, "specReporter", { enumerable: true, get: function () { return specReporter_1.specReporter; } });
 
 
 /***/ }),
-/* 233 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.slowReporter = void 0;
-var code_1 = __webpack_require__(4);
-var io_1 = __webpack_require__(62);
-var math_1 = __webpack_require__(6);
-var constants_1 = __webpack_require__(234);
+var code_1 = __webpack_require__(6);
+var io_1 = __webpack_require__(64);
+var math_1 = __webpack_require__(8);
+var constants_1 = __webpack_require__(236);
 var specTimes = [];
 var specStartedTime = 0;
 var slowReporter = {
@@ -14685,7 +15139,7 @@ exports.slowReporter = slowReporter;
 
 
 /***/ }),
-/* 234 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14701,14 +15155,14 @@ exports.COUNT_SLOW_SPECS_TO_SUMMARIZE = COUNT_SLOW_SPECS_TO_SUMMARIZE;
 
 
 /***/ }),
-/* 235 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.specNameReporter = void 0;
-var io_1 = __webpack_require__(62);
+var io_1 = __webpack_require__(64);
 // This is quite handy when the suite starts to hang, so you can identify where the issue is.
 var PRINT_NAMES = process.argv[3] === "--names=true";
 var specNameReporter = {
@@ -14719,37 +15173,37 @@ var specNameReporter = {
 };
 exports.specNameReporter = specNameReporter;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(84)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86)))
 
 /***/ }),
-/* 236 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.specReporter = void 0;
-var jasmine_spec_reporter_1 = __webpack_require__(82);
-var ciMode_1 = __webpack_require__(227);
+var jasmine_spec_reporter_1 = __webpack_require__(84);
+var ciMode_1 = __webpack_require__(229);
 var specReporter = process.env.TEST_MODE ? new jasmine_spec_reporter_1.SpecReporter({ summary: { displayPending: ciMode_1.CI_MODE } }) : {};
 exports.specReporter = specReporter;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(84)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(86)))
 
 /***/ }),
-/* 237 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runScriptAndGetConsoleOutput = void 0;
-var runScriptAndGetConsoleOutput_1 = __webpack_require__(238);
+var runScriptAndGetConsoleOutput_1 = __webpack_require__(240);
 Object.defineProperty(exports, "runScriptAndGetConsoleOutput", { enumerable: true, get: function () { return runScriptAndGetConsoleOutput_1.runScriptAndGetConsoleOutput; } });
 
 
 /***/ }),
-/* 238 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14775,10 +15229,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runScriptAndGetConsoleOutput = void 0;
-var cp = __importStar(__webpack_require__(82));
-var io_1 = __webpack_require__(62);
-var math_1 = __webpack_require__(6);
-var constants_1 = __webpack_require__(239);
+var cp = __importStar(__webpack_require__(84));
+var io_1 = __webpack_require__(64);
+var math_1 = __webpack_require__(8);
+var constants_1 = __webpack_require__(241);
 var runScriptAndGetConsoleOutput = function (script) {
     var consoleOutput = cp.execSync(script, { stdio: ["pipe", "pipe", "inherit"] }).toString();
     var consoleOutputLines = io_1.split(consoleOutput, io_1.NEWLINE);
@@ -14788,7 +15242,7 @@ exports.runScriptAndGetConsoleOutput = runScriptAndGetConsoleOutput;
 
 
 /***/ }),
-/* 239 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14802,18 +15256,18 @@ exports.SKIP_THE_FINAL_EMPTY_LINE = SKIP_THE_FINAL_EMPTY_LINE;
 
 
 /***/ }),
-/* 240 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ACCIDENTALS = void 0;
-const conventional_1 = __webpack_require__(241);
-const ehejipn_1 = __webpack_require__(243);
-const sagittal_1 = __webpack_require__(245);
-const unconventional_1 = __webpack_require__(244);
-const upsAndDowns_1 = __webpack_require__(246);
+const conventional_1 = __webpack_require__(243);
+const ehejipn_1 = __webpack_require__(244);
+const sagittal_1 = __webpack_require__(246);
+const unconventional_1 = __webpack_require__(245);
+const upsAndDowns_1 = __webpack_require__(247);
 const ACCIDENTALS = {
     ...conventional_1.CONVENTIONAL_ACCIDENTALS,
     ...ehejipn_1.EHEJIPN_ACCIDENTALS,
@@ -14825,14 +15279,14 @@ exports.ACCIDENTALS = ACCIDENTALS;
 
 
 /***/ }),
-/* 241 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.smallDoubleSharp = exports.bb = exports.x = exports.b = exports.sharp = exports.n = exports.h = exports.CONVENTIONAL_ACCIDENTALS = void 0;
-const types_1 = __webpack_require__(242);
+const types_1 = __webpack_require__(3);
 const h = ""; // U+E261   natural
 exports.h = h;
 const n = h;
@@ -14861,439 +15315,7 @@ exports.CONVENTIONAL_ACCIDENTALS = CONVENTIONAL_ACCIDENTALS;
 
 
 /***/ }),
-/* 242 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Code = exports.Clef = void 0;
-var Clef;
-(function (Clef) {
-    Clef["TREBLE"] = "treble";
-    Clef["BASS"] = "bass";
-})(Clef || (Clef = {}));
-exports.Clef = Clef;
-var Code;
-(function (Code) {
-    Code["sp1"] = "sp1";
-    Code["sp2"] = "sp2";
-    Code["sp3"] = "sp3";
-    Code["sp4"] = "sp4";
-    Code["sp5"] = "sp5";
-    Code["sp6"] = "sp6";
-    Code["sp7"] = "sp7";
-    Code["sp8"] = "sp8";
-    Code["sp9"] = "sp9";
-    Code["sp10"] = "sp10";
-    Code["sp11"] = "sp11";
-    Code["sp12"] = "sp12";
-    Code["sp13"] = "sp13";
-    Code["sp14"] = "sp14";
-    Code["sp15"] = "sp15";
-    Code["sp16"] = "sp16";
-    Code["st8"] = "st8";
-    Code["st16"] = "st16";
-    Code["st24"] = "st24";
-    Code["st"] = "st";
-    Code["lgln"] = "lgln";
-    Code["brln"] = "brln";
-    Code["brlndb"] = "brlndb";
-    Code["tbcf"] = "tbcf";
-    Code["alcf"] = "alcf";
-    Code["bscf"] = "bscf";
-    Code["8va"] = "8va";
-    Code["8vb"] = "8vb";
-    Code["tm0"] = "tm0";
-    Code["tm1"] = "tm1";
-    Code["tm2"] = "tm2";
-    Code["tm3"] = "tm3";
-    Code["tm4"] = "tm4";
-    Code["tm5"] = "tm5";
-    Code["tm6"] = "tm6";
-    Code["tm7"] = "tm7";
-    Code["tm8"] = "tm8";
-    Code["tm9"] = "tm9";
-    Code["tmcm"] = "tmcm";
-    Code["tmnm"] = "tmnm";
-    Code["tmdn"] = "tmdn";
-    Code["ntdb"] = "ntdb";
-    Code["nt1"] = "nt1";
-    Code["nt2"] = "nt2";
-    Code["nt2dn"] = "nt2dn";
-    Code["nt4"] = "nt4";
-    Code["nt4dn"] = "nt4dn";
-    Code["nt8"] = "nt8";
-    Code["nt8dn"] = "nt8dn";
-    Code["nt16"] = "nt16";
-    Code["nt16dn"] = "nt16dn";
-    Code["nt"] = "nt";
-    Code["rsdb"] = "rsdb";
-    Code["rs1"] = "rs1";
-    Code["rs2"] = "rs2";
-    Code["rs4"] = "rs4";
-    Code["rs8"] = "rs8";
-    Code["rs16"] = "rs16";
-    Code["rs"] = "rs";
-    Code["dt"] = "dt";
-    Code["agdt"] = "agdt";
-    Code["ntbmst"] = "ntbmst";
-    Code["ntbm8"] = "ntbm8";
-    Code["ntbm16"] = "ntbm16";
-    Code["bm8"] = "bm8";
-    Code["bm16"] = "bm16";
-    Code["tp3"] = "tp3";
-    Code["c6"] = "c6";
-    Code["b5"] = "b5";
-    Code["a5"] = "a5";
-    Code["g5"] = "g5";
-    Code["f5"] = "f5";
-    Code["e5"] = "e5";
-    Code["d5"] = "d5";
-    Code["c5"] = "c5";
-    Code["b4"] = "b4";
-    Code["a4"] = "a4";
-    Code["g4"] = "g4";
-    Code["f4"] = "f4";
-    Code["e4"] = "e4";
-    Code["d4"] = "d4";
-    Code["c4"] = "c4";
-    Code["b3"] = "b3";
-    Code["a3"] = "a3";
-    Code["g3"] = "g3";
-    Code["f3"] = "f3";
-    Code["e3"] = "e3";
-    Code["d3"] = "d3";
-    Code["c3"] = "c3";
-    Code["b2"] = "b2";
-    Code["a2"] = "a2";
-    Code["g2"] = "g2";
-    Code["f2"] = "f2";
-    Code["e2"] = "e2";
-    Code["d2"] = "d2";
-    Code["c2"] = "c2";
-    Code["h"] = "h";
-    Code["n"] = "n";
-    Code["b"] = "b";
-    Code["#"] = "#";
-    Code["bb"] = "bb";
-    Code["x"] = "x";
-    Code["smallDoubleSharp"] = "smallDoubleSharp";
-    Code["^"] = "^";
-    Code["v"] = "v";
-    Code[".bbv"] = ".bbv";
-    Code[".bv"] = ".bv";
-    Code[".nv"] = ".nv";
-    Code[".#v"] = ".#v";
-    Code[".xv"] = ".xv";
-    Code[".bb^"] = ".bb^";
-    Code[".b^"] = ".b^";
-    Code[".n^"] = ".n^";
-    Code[".#^"] = ".#^";
-    Code[".x^"] = ".x^";
-    Code[".bbvv"] = ".bbvv";
-    Code[".bvv"] = ".bvv";
-    Code[".nvv"] = ".nvv";
-    Code[".#vv"] = ".#vv";
-    Code[".xvv"] = ".xvv";
-    Code[".bb^^"] = ".bb^^";
-    Code[".b^^"] = ".b^^";
-    Code[".n^^"] = ".n^^";
-    Code[".#^^"] = ".#^^";
-    Code[".x^^"] = ".x^^";
-    Code[".bbvvv"] = ".bbvvv";
-    Code[".bvvv"] = ".bvvv";
-    Code[".nvvv"] = ".nvvv";
-    Code[".#vvv"] = ".#vvv";
-    Code[".xvvv"] = ".xvvv";
-    Code[".bb^^^"] = ".bb^^^";
-    Code[".b^^^"] = ".b^^^";
-    Code[".n^^^"] = ".n^^^";
-    Code[".#^^^"] = ".#^^^";
-    Code[".x^^^"] = ".x^^^";
-    Code[".l"] = ".l";
-    Code[".p"] = ".p";
-    Code[".ll"] = ".ll";
-    Code[".pp"] = ".pp";
-    Code[".<"] = ".<";
-    Code[".>"] = ".>";
-    Code[".<|"] = ".<|";
-    Code[".>|"] = ".>|";
-    Code[".\\\\"] = ".\\\\";
-    Code[".//"] = ".//";
-    Code[".\\"] = ".\\";
-    Code["./"] = "./";
-    Code[".^"] = ".^";
-    Code[".v"] = ".v";
-    Code[".{"] = ".{";
-    Code[".}"] = ".}";
-    Code[".bbt"] = ".bbt";
-    Code[".bt"] = ".bt";
-    Code[".nt"] = ".nt";
-    Code[".#t"] = ".#t";
-    Code[".xt"] = ".xt";
-    Code[".<t"] = ".<t";
-    Code[".>t"] = ".>t";
-    Code[".\\\\\\"] = ".\\\\\\";
-    Code[".///"] = ".///";
-    Code[".~"] = ".~";
-    Code[".~~"] = ".~~";
-    Code[".="] = ".=";
-    Code[".bb"] = ".bb";
-    Code[".b"] = ".b";
-    Code[".n"] = ".n";
-    Code[".#"] = ".#";
-    Code[".x"] = ".x";
-    Code[".<b"] = ".<b";
-    Code[".>#"] = ">#";
-    Code[">"] = ">";
-    Code["<"] = "<";
-    Code[">#"] = ">#";
-    Code["<b"] = "<b";
-    Code["+"] = "+";
-    Code["-"] = "-";
-    Code["|("] = "|(";
-    Code["!("] = "!(";
-    Code["/|"] = "/|";
-    Code["\\!"] = "\\!";
-    Code["|)"] = "|)";
-    Code["!)"] = "!)";
-    Code["//|"] = "//|";
-    Code["\\\\!"] = "\\\\!";
-    Code["/|)"] = "/|)";
-    Code["\\!)"] = "\\!)";
-    Code["/|\\"] = "/|\\";
-    Code["\\!/"] = "\\!/";
-    Code["(|)"] = "(|)";
-    Code["(!)"] = "(!)";
-    Code["(|\\"] = "(|\\";
-    Code["(!/"] = "(!/";
-    Code[")||("] = ")||(";
-    Code[")!!("] = ")!!(";
-    Code["||)"] = "||)";
-    Code["!!)"] = "!!)";
-    Code["||\\"] = "||\\";
-    Code["!!/"] = "!!/";
-    Code["/||)"] = "/||)";
-    Code["\\!!)"] = "\\!!)";
-    Code["/||\\"] = "/||\\";
-    Code["\\!!/"] = "\\!!/";
-    Code["|||("] = "|||(";
-    Code["!!!("] = "!!!(";
-    Code["/|||"] = "/|||";
-    Code["\\!!!"] = "\\!!!";
-    Code["|||)"] = "|||)";
-    Code["!!!)"] = "!!!)";
-    Code["//|||"] = "//|||";
-    Code["\\\\!!!"] = "\\\\!!!";
-    Code["/|||)"] = "/|||)";
-    Code["\\!!!)"] = "\\!!!)";
-    Code["/|||\\"] = "/|||\\";
-    Code["\\!!!/"] = "\\!!!/";
-    Code["(|||)"] = "(|||)";
-    Code["(!!!)"] = "(!!!)";
-    Code["(|||\\"] = "(|||\\";
-    Code["(!!!/"] = "(!!!/";
-    Code[")X("] = ")X(";
-    Code[")Y("] = ")Y(";
-    Code["X)"] = "X)";
-    Code["Y)"] = "Y)";
-    Code["X\\"] = "X\\";
-    Code["Y/"] = "Y/";
-    Code["/X)"] = "/X)";
-    Code["\\Y)"] = "\\Y)";
-    Code["/X\\"] = "/X\\";
-    Code["\\Y/"] = "\\Y/";
-    Code[")|("] = ")|(";
-    Code[")!("] = ")!(";
-    Code["~|("] = "~|(";
-    Code["~!("] = "~!(";
-    Code["|\\"] = "|\\";
-    Code["!/"] = "!/";
-    Code["(|"] = "(|";
-    Code["(!"] = "(!";
-    Code["(|("] = "(|(";
-    Code["(!("] = "(!(";
-    Code["~||("] = "~||(";
-    Code["~!!("] = "~!!(";
-    Code[")||~"] = ")||~";
-    Code[")!!~"] = ")!!~";
-    Code["/||"] = "/||";
-    Code["\\!!"] = "\\!!";
-    Code["(||("] = "(||(";
-    Code["(!!("] = "(!!(";
-    Code["//||"] = "//||";
-    Code["\\\\!!"] = "\\\\!!";
-    Code[")|||("] = ")|||(";
-    Code[")!!!("] = ")!!!(";
-    Code["~|||("] = "~|||(";
-    Code["~!!!("] = "~!!!(";
-    Code["|||\\"] = "|||\\";
-    Code["!!!/"] = "!!!/";
-    Code["(|||"] = "(|||";
-    Code["(!!!"] = "(!!!";
-    Code["(|||("] = "(|||(";
-    Code["(!!!("] = "(!!!(";
-    Code["~X("] = "~X(";
-    Code["~Y("] = "~Y(";
-    Code[")X~"] = ")X~";
-    Code[")Y~"] = ")Y~";
-    Code["/X"] = "/X";
-    Code["\\Y"] = "\\Y";
-    Code["(X("] = "(X(";
-    Code["(Y("] = "(Y(";
-    Code["//X"] = "//X";
-    Code["\\\\Y"] = "\\\\Y";
-    Code["|~"] = "|~";
-    Code["!~"] = "!~";
-    Code[")/|"] = ")/|";
-    Code[")\\!"] = ")\\!";
-    Code["/|~"] = "/|~";
-    Code["\\!~"] = "\\!~";
-    Code["||~"] = "||~";
-    Code["!!~"] = "!!~";
-    Code[")||)"] = ")||)";
-    Code[")!!)"] = ")!!)";
-    Code["/||~"] = "/||~";
-    Code["\\!!~"] = "\\!!~";
-    Code["|||~"] = "|||~";
-    Code["!!!~"] = "!!!~";
-    Code[")/|||"] = ")/|||";
-    Code[")\\!!!"] = ")\\!!!";
-    Code["/|||~"] = "/|||~";
-    Code["\\!!!~"] = "\\!!!~";
-    Code["X~"] = "X~";
-    Code["Y~"] = "Y~";
-    Code[")X)"] = ")X)";
-    Code[")Y)"] = ")Y)";
-    Code["/X~"] = "/X~";
-    Code["\\Y~"] = "\\Y~";
-    Code[")|"] = ")|";
-    Code[")!"] = ")!";
-    Code["~|"] = "~|";
-    Code["~!"] = "~!";
-    Code[")~|"] = ")~|";
-    Code[")~!"] = ")~!";
-    Code["~~|"] = "~~|";
-    Code["~~!"] = "~~!";
-    Code[")|~"] = ")|~";
-    Code[")!~"] = ")!~";
-    Code[")|)"] = ")|)";
-    Code[")!)"] = ")!)";
-    Code["~|)"] = "~|)";
-    Code["~!)"] = "~!)";
-    Code["~|\\"] = "~|\\";
-    Code["~!/"] = "~!/";
-    Code[")//|"] = ")//|";
-    Code[")\\\\!"] = ")\\\\!";
-    Code["(|~"] = "(|~";
-    Code["(!~"] = "(!~";
-    Code["(/|"] = "(/|";
-    Code["(\\!"] = "(\\!";
-    Code[")/|\\"] = ")/|\\";
-    Code[")\\!/"] = ")\\!/";
-    Code["|\\)"] = "|\\)";
-    Code["!/)"] = "!/)";
-    Code["|\\\\"] = "|\\\\";
-    Code["!//"] = "!//";
-    Code[")|\\\\"] = ")|\\\\";
-    Code[")!//"] = ")!//";
-    Code[")~||"] = ")~||";
-    Code[")~!!"] = ")~!!";
-    Code["~~||"] = "~~||";
-    Code["~~!!"] = "~~!!";
-    Code[")/||"] = ")/||";
-    Code[")\\!!"] = ")\\!!";
-    Code["(||"] = "(||";
-    Code["(!!"] = "(!!";
-    Code["~||)"] = "~||)";
-    Code["~!!)"] = "~!!)";
-    Code["~||\\"] = "~||\\";
-    Code["~!!/"] = "~!!/";
-    Code[")//||"] = ")//||";
-    Code[")\\\\!!"] = ")\\\\!!";
-    Code["(||~"] = "(||~";
-    Code["(!!~"] = "(!!~";
-    Code[")|||"] = ")|||";
-    Code[")!!!"] = ")!!!";
-    Code["~|||"] = "~|||";
-    Code["~!!!"] = "~!!!";
-    Code[")~|||"] = ")~|||";
-    Code[")~!!!"] = ")~!!!";
-    Code["~~|||"] = "~~|||";
-    Code["~~!!!"] = "~~!!!";
-    Code[")|||~"] = ")|||~";
-    Code[")!!!~"] = ")!!!~";
-    Code[")|||)"] = ")|||)";
-    Code[")!!!)"] = ")!!!)";
-    Code["~|||)"] = "~|||)";
-    Code["~!!!)"] = "~!!!)";
-    Code["~|||\\"] = "~|||\\";
-    Code["~!!!/"] = "~!!!/";
-    Code[")//|||"] = ")//|||";
-    Code[")\\\\!!!"] = ")\\\\!!!";
-    Code["(|||~"] = "(|||~";
-    Code["(!!!~"] = "(!!!~";
-    Code["(/|||"] = "(/|||";
-    Code["(\\!!!"] = "(\\!!!";
-    Code[")/|||\\"] = ")/|||\\";
-    Code[")\\!!!/"] = ")\\!!!/";
-    Code["|||\\)"] = "|||\\)";
-    Code["!!!/)"] = "!!!/)";
-    Code["|||\\\\"] = "|||\\\\";
-    Code["!!!//"] = "!!!//";
-    Code[")|||\\\\"] = ")|||\\\\";
-    Code[")!!!//"] = ")!!!//";
-    Code[")~X"] = ")~X";
-    Code[")~Y"] = ")~Y";
-    Code["~~X"] = "~~X";
-    Code["~~Y"] = "~~Y";
-    Code[")/X"] = ")/X";
-    Code[")\\Y"] = ")\\Y";
-    Code["(X"] = "(X";
-    Code["(Y"] = "(Y";
-    Code["~X)"] = "~X)";
-    Code["~Y)"] = "~Y)";
-    Code["~X\\"] = "~X\\";
-    Code["~Y/"] = "~Y/";
-    Code[")//X"] = ")//X";
-    Code[")\\\\Y"] = ")\\\\Y";
-    Code["(X~"] = "(X~";
-    Code["(Y~"] = "(Y~";
-    Code["|"] = "|";
-    Code["!"] = "!";
-    Code["'"] = "'";
-    Code["."] = ".";
-    Code["`"] = "`";
-    Code[","] = ",";
-    Code["``"] = "``";
-    Code[",,"] = ",,";
-    Code["@1"] = "@1";
-    Code["l1"] = "l1";
-    Code["@2"] = "@2";
-    Code["l2"] = "l2";
-    Code["@3"] = "@3";
-    Code["l3"] = "l3";
-    Code["@4"] = "@4";
-    Code["l4"] = "l4";
-    Code["@5"] = "@5";
-    Code["l5"] = "l5";
-    Code["@6"] = "@6";
-    Code["l6"] = "l6";
-    Code["@7"] = "@7";
-    Code["l7"] = "l7";
-    Code["@8"] = "@8";
-    Code["l8"] = "l8";
-    Code["@9"] = "@9";
-    Code["l9"] = "l9";
-    Code["@."] = "@.";
-    Code["l."] = "l.";
-})(Code || (Code = {}));
-exports.Code = Code;
-
-
-/***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15302,9 +15324,9 @@ exports.Code = Code;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ehejipnNaturalTemperedSemitone = exports.ehejipnFlatTemperedSemitone = exports.ehejipnDoubleFlatTemperedSemitone = exports.ehejipnCombiningCloseCurlyBrace = exports.ehejipnCombiningOpenCurlyBrace = exports.ehejipn23Utonal = exports.ehejipn23Otonal = exports.ehejipn19Otonal = exports.ehejipn19Utonal = exports.ehejipn17Utonal = exports.ehejipn17Otonal = exports.ehejipn13Utonal = exports.ehejipn13Otonal = exports.ehejipn11Otonal = exports.ehejipn11Utonal = exports.ehejipnDouble7Utonal = exports.ehejipnDouble7Otonal = exports.ehejipn7Utonal = exports.ehejipn7Otonal = exports.ehejipnDoubleSharpTriple5Utonal = exports.ehejipnSharpTriple5Utonal = exports.ehejipnNaturalTriple5Utonal = exports.ehejipnFlatTriple5Utonal = exports.ehejipnDoubleFlatTriple5Utonal = exports.ehejipnDoubleSharpTriple5Otonal = exports.ehejipnSharpTriple5Otonal = exports.ehejipnNaturalTriple5Otonal = exports.ehejipnFlatTriple5Otonal = exports.ehejipnDoubleFlatTriple5Otonal = exports.ehejipnDoubleSharpDouble5Utonal = exports.ehejipnSharpDouble5Utonal = exports.ehejipnNaturalDouble5Utonal = exports.ehejipnFlatDouble5Utonal = exports.ehejipnDoubleFlatDouble5Utonal = exports.ehejipnDoubleSharpDouble5Otonal = exports.ehejipnSharpDouble5Otonal = exports.ehejipnNaturalDouble5Otonal = exports.ehejipnFlatDouble5Otonal = exports.ehejipnDoubleFlatDouble5Otonal = exports.ehejipnDoubleSharp5Utonal = exports.ehejipnSharp5Utonal = exports.ehejipnNatural5Utonal = exports.ehejipnFlat5Utonal = exports.ehejipnDoubleFlat5Utonal = exports.ehejipnDoubleSharp5Otonal = exports.ehejipnSharp5Otonal = exports.ehejipnNatural5Otonal = exports.ehejipnFlat5Otonal = exports.ehejipnDoubleFlat5Otonal = exports.EHEJIPN_ACCIDENTALS = void 0;
 exports.accidentalThreeQuarterTonesFlatZimmermann = exports.ehejipnEnharmonicallyReinterpretEquals = exports.ehejipnEnharmonicallyReinterpretAlmostEqual = exports.ehejipnEnharmonicallyReinterpret = exports.ehejipn53Utonal = exports.ehejipn53Otonal = exports.ehejipnQuarterSharpTemperedSemitone = exports.ehejipnQuarterFlatTemperedSemitone = exports.ehejipnDoubleSharpTemperedSemitone = exports.ehejipnSharpTemperedSemitone = void 0;
-const types_1 = __webpack_require__(242);
-const conventional_1 = __webpack_require__(241);
-const unconventional_1 = __webpack_require__(244);
+const types_1 = __webpack_require__(3);
+const conventional_1 = __webpack_require__(243);
+const unconventional_1 = __webpack_require__(245);
 // See: ttps://w3c.github.io/smufl/gitbook/tables/extended-helmholtz-ellis-accidentals-just-intonation.html
 // All EHEJIPN staffCodes start with a dot (full-stop). Unicodes are successive below.
 const ehejipnDoubleFlat5Otonal = ""; // U+E2C0
@@ -15498,14 +15520,14 @@ exports.EHEJIPN_ACCIDENTALS = EHEJIPN_ACCIDENTALS;
 
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.wilsonMinus = exports.wilsonPlus = exports.sesquiflat = exports.sesquisharp = exports.semiflat = exports.semisharp = exports.UNCONVENTIONAL_ACCIDENTALS = void 0;
-const types_1 = __webpack_require__(242);
+const types_1 = __webpack_require__(3);
 // See: https://w3c.github.io/smufl/gitbook/tables/stein-zimmermann-accidentals-24-edo.html
 // And: https://w3c.github.io/smufl/gitbook/tables/other-accidentals.html
 const semisharp = ""; // U+E282   Half sharp (quarter-tone sharp) (Stein)
@@ -15532,7 +15554,7 @@ exports.UNCONVENTIONAL_ACCIDENTALS = UNCONVENTIONAL_ACCIDENTALS;
 
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15544,7 +15566,7 @@ exports.sharp5v23SDown = exports._5v23SDown = exports._5v23SUp = exports._5v19CD
 exports.sharp49SDown = exports.flat23SUp = exports.sharp23SDown = exports._5v13LDown = exports._5v13LUp = exports._11v19LDown = exports._11v19LUp = exports._49LDown = exports._49LUp = exports._5v49MDown = exports._5v49MUp = exports._49MDown = exports._49MUp = exports._11v19MDown = exports._11v19MUp = exports._5v13MDown = exports._5v13MUp = exports._23SDown = exports._23SUp = exports._49SDown = exports._49SUp = exports._7v19CDown = exports._7v19CUp = exports._19CDown = exports._19CUp = exports._11v49CDown = exports._11v49CUp = exports._143CDown = exports._143CUp = exports._17kDown = exports._17kUp = exports._19sDown = exports._19sUp = exports.doubleFlat23CUp = exports.doubleSharp23CDown = exports.doubleFlat5v19CUp = exports.doubleSharp5v19CDown = exports.doubleFlat5v23SUp = exports.doubleSharp5v23SDown = exports.flat5v23SDown = exports.sharp5v23SUp = exports.flat5v19CDown = exports.sharp5v19CUp = exports.flat23CDown = exports.sharp23CUp = exports.flat23CUp = exports.sharp23CDown = exports.flat5v19CUp = exports.sharp5v19CDown = exports.flat5v23SUp = void 0;
 exports.doubleSharp19CDown = exports.doubleFlat7v19CUp = exports.doubleSharp7v19CDown = exports.doubleFlat49SUp = exports.doubleSharp49SDown = exports.doubleFlat23SUp = exports.doubleSharp23SDown = exports.flat5v13LDown = exports.sharp5v13LUp = exports.flat11v19LDown = exports.sharp11v19LUp = exports.flat49LDown = exports.sharp49LUp = exports.flat5v49MDown = exports.sharp5v49MUp = exports.flat49MDown = exports.sharp49MUp = exports.flat11v19MDown = exports.sharp11v19MUp = exports.flat5v13MDown = exports.sharp5v13MUp = exports.flat23SDown = exports.sharp23SUp = exports.flat49SDown = exports.sharp49SUp = exports.flat7v19CDown = exports.sharp7v19CUp = exports.flat19CDown = exports.sharp19CUp = exports.flat11v49CDown = exports.sharp11v49CUp = exports.flat143CDown = exports.sharp143CUp = exports.flat17kDown = exports.sharp17kUp = exports.flat19sDown = exports.sharp19sUp = exports.flat19sUp = exports.sharp19sDown = exports.flat17kUp = exports.sharp17kDown = exports.flat143CUp = exports.sharp143CDown = exports.flat11v49CUp = exports.sharp11v49CDown = exports.flat19CUp = exports.sharp19CDown = exports.flat7v19CUp = exports.sharp7v19CDown = exports.flat49SUp = void 0;
 exports.dotDown = exports.dotUp = exports.wingbirdDown = exports.wingbirdUp = exports.wedgebirdDown = exports.wedgebirdUp = exports.hornbirdDown = exports.hornbirdUp = exports.mBirdDown = exports.mBirdUp = exports.wedgewingDown = exports.wedgewingUp = exports.hornwingDown = exports.hornwingUp = exports.mWingDown = exports.mWingUp = exports.wedgeDown = exports.wedgeUp = exports.hornDown = exports.hornUp = exports.birdDown = exports.birdUp = exports.wingDown = exports.wingUp = exports.tickDown = exports.tickUp = exports.shaftDown = exports.shaftUp = exports.doubleFlat19sUp = exports.doubleSharp19sDown = exports.doubleFlat17kUp = exports.doubleSharp17kDown = exports.doubleFlat143CUp = exports.doubleSharp143CDown = exports.doubleFlat11v49CUp = exports.doubleSharp11v49CDown = exports.doubleFlat19CUp = void 0;
-const types_1 = __webpack_require__(242);
+const types_1 = __webpack_require__(3);
 // TODO: I considered pulling these unicodes in from @sagittal/system, but decided not to bloat it for the forum
 const _5v7kUp = ""; // U+E300   5:7 kleisma up, (5:7k, ~11:13k, 7C less 5C)
 exports._5v7kUp = _5v7kUp;
@@ -16260,14 +16282,14 @@ exports.SAGITTAL_ACCIDENTALS = SAGITTAL_ACCIDENTALS;
 
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.down = exports.up = exports.UPS_AND_DOWNS_ACCIDENTALS = void 0;
-const types_1 = __webpack_require__(242);
+const types_1 = __webpack_require__(3);
 // See: https://w3c.github.io/smufl/gitbook/tables/arrows-and-arrowheads.html
 const up = ""; // U+EB88
 exports.up = up;
@@ -16281,7 +16303,7 @@ exports.UPS_AND_DOWNS_ACCIDENTALS = UPS_AND_DOWNS_ACCIDENTALS;
 
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16289,7 +16311,7 @@ exports.UPS_AND_DOWNS_ACCIDENTALS = UPS_AND_DOWNS_ACCIDENTALS;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bsf2 = exports.bsg2 = exports.bsa2 = exports.bsb2 = exports.bsc3 = exports.bsd3 = exports.bse3 = exports.bsf3 = exports.bsg3 = exports.bsa3 = exports.bsb3 = exports.bsc4 = exports.bsd4 = exports.bse4 = exports.tra3 = exports.trb3 = exports.trc4 = exports.trd4 = exports.tre4 = exports.trf4 = exports.trg4 = exports.tra4 = exports.trb4 = exports.trc5 = exports.trd5 = exports.tre5 = exports.trf5 = exports.trg5 = exports.tra5 = exports.trb5 = exports.trc6 = exports.staffPosLower8 = exports.staffPosLower7 = exports.staffPosLower6 = exports.staffPosLower5 = exports.staffPosLower4 = exports.staffPosLower3 = exports.staffPosLower2 = exports.staffPosLower1 = exports.staffPosCenter = exports.staffPosRaise1 = exports.staffPosRaise2 = exports.staffPosRaise3 = exports.staffPosRaise4 = exports.staffPosRaise5 = exports.staffPosRaise6 = exports.staffPosRaise7 = exports.staffPosRaise8 = exports.TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP = exports.BASS_COMBINING_STAFF_POSITION_UNICODE_MAP = void 0;
 exports.COMBINING_STAFF_POSITIONS = exports.a3 = exports.b3 = exports.c4 = exports.d4 = exports.e4 = exports.f4 = exports.g4 = exports.a4 = exports.b4 = exports.c5 = exports.d5 = exports.e5 = exports.f5 = exports.g5 = exports.a5 = exports.b5 = exports.c6 = exports.bsc2 = exports.bsd2 = exports.bse2 = void 0;
-const types_1 = __webpack_require__(242);
+const types_1 = __webpack_require__(3);
 const staffPosRaise8 = ""; // U+EB97
 exports.staffPosRaise8 = staffPosRaise8;
 const staffPosRaise7 = ""; // U+EB96
@@ -16489,22 +16511,6 @@ exports.COMBINING_STAFF_POSITIONS = COMBINING_STAFF_POSITIONS;
 
 
 /***/ }),
-/* 248 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.INITIAL_STAFF_STATE = void 0;
-const INITIAL_STAFF_STATE = {
-    smartSpace: 0,
-    smartStaff: 0,
-    smartStaffOn: false,
-};
-exports.INITIAL_STAFF_STATE = INITIAL_STAFF_STATE;
-
-
-/***/ }),
 /* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16512,8 +16518,8 @@ exports.INITIAL_STAFF_STATE = INITIAL_STAFF_STATE;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUnicode = void 0;
-const combiningStaffPositions_1 = __webpack_require__(247);
-const types_1 = __webpack_require__(242);
+const combiningStaffPositions_1 = __webpack_require__(248);
+const types_1 = __webpack_require__(3);
 const unicodeFromUnknownCode_1 = __webpack_require__(250);
 const unicodeMap_1 = __webpack_require__(251);
 const CODES_WITH_BASS = {
@@ -16556,8 +16562,8 @@ exports.unicodeFromUnknownCode = unicodeFromUnknownCode;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.nt2 = exports.nt1 = exports.ntdb = exports.TIME_SIGNATURES = exports.tmdn = exports.tmnm = exports.tmcm = exports.tm9 = exports.tm8 = exports.tm7 = exports.tm6 = exports.tm5 = exports.tm4 = exports.tm3 = exports.tm2 = exports.tm1 = exports.tm0 = exports.CLEFS = exports._8vb = exports._8va = exports.bscf = exports.alcf = exports.tbcf = exports.BARS = exports.brlndb = exports.brln = exports.LEDGER_LINES = exports.STAFF_LINES = exports.lgln = exports.st = exports.st24 = exports.st16 = exports.st8 = exports.SPACES = exports.sp16 = exports.sp15 = exports.sp14 = exports.sp13 = exports.sp12 = exports.sp11 = exports.sp10 = exports.sp9 = exports.sp8 = exports.sp7 = exports.sp6 = exports.sp5 = exports.sp4 = exports.sp3 = exports.sp2 = exports.sp1 = void 0;
 exports.CODES = exports.BEAMED_GROUPS_OF_NOTES = exports.tp3 = exports.bm16 = exports.bm8 = exports.ntbm16 = exports.ntbm8 = exports.ntbmst = exports.DOTS = exports.agdt = exports.dt = exports.RESTS = exports.rs = exports.rs16 = exports.rs8 = exports.rs4 = exports.rs2 = exports.rs1 = exports.rsdb = exports.NOTES = exports.nt = exports.nt16dn = exports.nt16 = exports.nt8dn = exports.nt8 = exports.nt4dn = exports.nt4 = exports.nt2dn = void 0;
-const accidentals_1 = __webpack_require__(240);
-const types_1 = __webpack_require__(242);
+const accidentals_1 = __webpack_require__(242);
+const types_1 = __webpack_require__(3);
 const sp1 = " "; // U+200A                   HAIR SPACE
 exports.sp1 = sp1;
 const sp2 = " "; // U+2009                   THIN SPACE
@@ -16815,7 +16821,7 @@ exports.CODES = CODES;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.staffState = void 0;
-const constants_1 = __webpack_require__(248);
+const constants_1 = __webpack_require__(2);
 const staffState = JSON.parse(JSON.stringify(constants_1.INITIAL_STAFF_STATE));
 exports.staffState = staffState;
 
@@ -16828,7 +16834,7 @@ exports.staffState = staffState;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.computeSpaceUnicode = void 0;
-const general_1 = __webpack_require__(3);
+const general_1 = __webpack_require__(5);
 const unicodeMap_1 = __webpack_require__(251);
 const BIGGEST_SPACE = 16;
 // TODO: ugh names are so bad

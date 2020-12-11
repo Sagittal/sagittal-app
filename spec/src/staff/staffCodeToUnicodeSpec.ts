@@ -94,6 +94,6 @@ describe("staffCodeToUnicode", (): void => {
     })
 
     it("automatically adds staff as needed, if a staff has been asked for at all", (): void => {
-        expect(staffCodeToUnicode("st nt8 sp nt4 sp")).toBe(st24 + nt8 + sp16 + sp5 + nt4 + sp3 + st24 + sp10)
+        expect(staffCodeToUnicode("st24 nt8 sp nt4 sp")).toBe(st24 + nt8 + sp16 + sp5 + nt4 + sp3 + st24 + sp10)
     })
 })
