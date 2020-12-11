@@ -20,8 +20,6 @@ module.exports = {
                 test: /\.ts$/,
                 loader: "ts-loader",
                 options: {
-                    // TODO: I actually think it should strip comments now, and see how much it reduces the file size
-                    //  Now that we're not planning to actually use the generated JS file to share with users
                     transpileOnly: true,
                 },
             },
