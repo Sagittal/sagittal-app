@@ -1,6 +1,6 @@
 {
   "name": "sagittal-app",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "web apps for the Sagittal microtonal notation system",
   "license": "MIT",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "rm -r dist/* && webpack",
+    "build": "rm -r dist/sagittal.github.io/* && webpack",
     "compile-staff-bbcode-script": "webpack --config webpack.bbcode.config.js && cp src/staff/bbCode/acp/* dist/forum/bbcode",
     "deploy": "sh bin/deploy.sh",
     "profile": "node --prof -r ts-node/register/transpile-only --max-old-space-size=131072 [[script.ts]] && node --prof-process isolate-*.log > processed.txt && rm isolate-*.log",

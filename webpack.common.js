@@ -1,10 +1,5 @@
 module.exports = {
-    // TODO: whoa okay including @sagittal/general made the generated .js way huger
-    //  There must be a way to do tree-shaking or whatever to help with that
-    //  I'm only pulling in "max" and "sumTexts"...
-    //  And it went from 98KB to 755KB...
-    //  Now of course it's even bigger now that it also includes the fonts
-    mode: "none",
+    mode: "production",
     resolve: {
         extensions: [".ts", ".scss", ".js"],
     },
@@ -20,8 +15,12 @@ module.exports = {
                 test: /\.ts$/,
                 loader: "ts-loader",
                 options: {
+                    compilerOptions: {
+                        module: "esnext",
+                    },
                     transpileOnly: true,
                 },
+                sideEffects: false,
             },
             {
                 test: /\.scss$/,

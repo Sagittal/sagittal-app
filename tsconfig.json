@@ -14,8 +14,8 @@
     "noImplicitAny": true,
     "pretty": true,
     "esModuleInterop": true,
-    "target": "ESNext",
+    "target": "esnext",
     "noEmit": true,
-    "removeComments": true
+    "removeComments": true,
   }
 }
