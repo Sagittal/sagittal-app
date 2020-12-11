@@ -7,6 +7,7 @@ const svgWrapper = document.createElement("div")
 const HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT = 57
 const MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER = 256
 
+// TODO: abstract this and pull back into @sagittal/general so the JI notation bound script can use it
 const vectorize = (text: string): void => {
     const polygons = vectorizeText(text, {
         polygons: true,
