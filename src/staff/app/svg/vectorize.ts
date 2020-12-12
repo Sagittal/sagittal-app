@@ -1,6 +1,7 @@
-const vectorizeText = require("vectorize-text")
+// @ts-ignore
+import * as vectorizeText from "vectorize-text"
+import {HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT} from "../dom"
 
-const HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT = 57
 const MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER = 256
 
 // TODO: REPO ORGANIZATION: EXTRACT VECTORIZE TO GENERAL?
@@ -12,6 +13,7 @@ const vectorizeSvg = (text: string, svg: SVGElement): void => {
     const polygons = vectorizeText(text, {
         polygons: true,
         height: HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT,
+        // TODO: SVG WIDTH - do whatever it takes to make the SVG's width match its contents
         textBaseline: "top",
         font: "Bravura Text BB",
         size: MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER,
@@ -37,4 +39,5 @@ const vectorizeSvg = (text: string, svg: SVGElement): void => {
 
 export {
     vectorizeSvg,
+    HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT,
 }

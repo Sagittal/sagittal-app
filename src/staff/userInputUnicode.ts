@@ -14,13 +14,10 @@ import {Clef, Width} from "./types"
 import {computeUnit} from "./unit"
 
 // TODO: FEATURE ADJUST: Smart Clefs™: if you type a treble clef, it knows to use treble, etc.
-//  If not that, then at least have some way in which you can change clef in the app. Awaiting Dave's feedback.
 
-// TODO: FEATURE ADJUST: maybe Auto Staff opt-out, rather than opt-in. Waiting on Dave's feedback.
+// TODO: FEATURE ADJUST: "stof" to turn off Auto Staff ("st" turns it back on).
 
-// TODO: FEATURE ADJUST: and related, do not take clef as a bbCode argument
-//  See forum post after this one: http://forum.sagittal.org/viewtopic.php?p=3095#p3095
-//  Also waiting on Dave's feedback.
+// TODO: FEATURE ADJUST: do not take clef as a bbCode argument / class. expect users to just type tbcf
 
 // TODO: FEATURE ADJUST: DON'T RECOMPILE ON EVERY SINGLE KEY
 //  Might be cool if it doesn't run if you have only one character in, unless it's ;
