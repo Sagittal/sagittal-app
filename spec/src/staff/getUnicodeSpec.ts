@@ -1,14 +1,14 @@
 import {Code, nt4} from "../../../src/staff/map"
-import {computeUnicode} from "../../../src/staff/mappedUnicode"
-import {Clef} from "../../../src/staff/types"
+import {Clef, Width} from "../../../src/staff/types"
+import {computeUnit} from "../../../src/staff/unit"
 
-describe("computeUnicode", (): void => {
-    it("basically works", (): void => {
+describe("computeUnit", (): void => {
+    it("gets you the unicode and width for the code", (): void => {
         const code = Code["nt4"]
         const clef = Clef.TREBLE
 
-        const actual = computeUnicode(code, clef)
+        const actual = computeUnit(code, clef)
 
-        expect(actual).toBe(nt4)
+        expect(actual).toEqual({unicode: nt4, width: 13 as Width})
     })
 })

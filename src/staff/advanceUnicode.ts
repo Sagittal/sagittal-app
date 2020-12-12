@@ -1,4 +1,5 @@
-import {max, sumTexts} from "@sagittal/general"
+import {isUndefined, max, sumTexts} from "@sagittal/general"
+import {DEFAULT_WIDTH} from "./constants"
 import {staffState} from "./globals"
 import {
     Code,
@@ -19,20 +20,17 @@ import {
     sp7,
     sp8,
     sp9,
-    st,
-    st16,
-    st24,
-    st8,
-    STAFF_LINES,
+    st, st16, st24, st8,
+    STAFF_LINES_UNICODES,
     Uni,
+    Unit,
 } from "./map"
 import {Width} from "./types"
-import {computeUnicodeWidth} from "./width"
 
-const SMART_ADVANCE_CODES = [Code["sp"], Code["ad"], Code[";"]]
+const SMART_ADVANCE_CODES: Code[] = [Code["sp"], Code["ad"], Code[";"]]
 const ADVANCE_CODE_PREFIX = "sp"
 
-const WIDTH_OF_BIGGEST_ADVANCE = 16
+const WIDTH_OF_BIGGEST_ADVANCE: Width = 16 as Width
 
 const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Uni[] = [
     EMPTY_UNICODE,
@@ -85,12 +83,13 @@ const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: 
     }
 }
 
-const recordSymbolWidthForSmartAdvance = (unicode: Uni): void => {
-    staffState.smartAdvanceWidth = max(staffState.smartAdvanceWidth, computeUnicodeWidth(unicode)) as number as Width
+const recordSymbolWidthForSmartAdvance = ({width}: Unit): void => {
+    staffState.smartAdvanceWidth =
+        max(staffState.smartAdvanceWidth, isUndefined(width) ? DEFAULT_WIDTH : width) as number as Width
 }
 
-const recordManualStaffWidthForAutoStaff = (unicode: Uni): void => {
-    if (!Object.values(STAFF_LINES).includes(unicode)) return
+const recordManualStaffWidthForAutoStaff = ({unicode}: Unit): void => {
+    if (!STAFF_LINES_UNICODES.includes(unicode)) return
 
     staffState.autoStaffOn = true
     if (unicode === st8) staffState.autoStaffWidth = staffState.autoStaffWidth + 8 as Width

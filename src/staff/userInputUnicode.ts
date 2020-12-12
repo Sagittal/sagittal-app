@@ -9,9 +9,9 @@ import {
 import {INITIAL_STAFF_STATE} from "./constants"
 import {staffState} from "./globals"
 import {Code, Uni} from "./map"
-import {computeUnicode} from "./mappedUnicode"
 import {computeMaybePositionedUnicode} from "./positionUnicode"
 import {Clef, Width} from "./types"
+import {computeUnit} from "./unit"
 
 // TODO: FEATURE ADJUST: Smart Clefs™: if you type a treble clef, it knows to use treble, etc.
 //  If not that, then at least have some way in which you can change clef in the app. Awaiting Dave's feedback.
@@ -29,6 +29,10 @@ import {Clef, Width} from "./types"
 // TODO: FEATURE ADJUST: END WITH ENOUGH STAFF?
 //  Is it best if includes an assumed ; at the end (unless it's actually an ; ) so that you get enough staff?
 //  Not even sure if this is a problem.
+
+// TODO: FEATURE ADJUST: CUSTOM JSON
+//  So that we can accept a user custom codes JSON object to merge in here too
+//  Eventually you should only need to export the maps from the map/ module, not the individual ones to get their widths
 
 const computeUserInputUnicode = (userInputSentence: Io): Uni => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
@@ -49,11 +53,11 @@ const computeUserInputUnicode = (userInputSentence: Io): Uni => {
                 return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(manualAdvanceWidth)
             }
 
-            const unicode = computeUnicode(code as Code, Clef.TREBLE)
-            recordSymbolWidthForSmartAdvance(unicode)
-            recordManualStaffWidthForAutoStaff(unicode)
+            const unit = computeUnit(code as Code, Clef.TREBLE)
+            recordSymbolWidthForSmartAdvance(unit)
+            recordManualStaffWidthForAutoStaff(unit)
 
-            return computeMaybePositionedUnicode(unicode)
+            return computeMaybePositionedUnicode(unit)
         })
         .join(BLANK) as Uni
 }

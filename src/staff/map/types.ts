@@ -1,4 +1,12 @@
+import {Width} from "../types"
+
 type Uni = string & {_UniBrand: boolean}
+
+interface Unit {
+    unicode: Uni,
+    width?: Width,
+    description?: string,
+}
 
 enum Code {
     "sp" = "sp",
@@ -421,4 +429,5 @@ enum Code {
 export {
     Uni,
     Code,
+    Unit,
 }

@@ -1,7 +1,6 @@
 import {BLANK} from "@sagittal/general"
 import {computeUserInputUnicodeBBCode} from "../../../../src/staff/bbCode/clefInitiation"
-import {sp16, sp8, st} from "../../../../src/staff/map"
-import {bscf, tbcf} from "../../../../src/staff/map/basics"
+import {bscf, sp16, sp8, st, tbcf} from "../../../../src/staff/map"
 import {Clef} from "../../../../src/staff/types"
 
 describe("computeUserInputUnicodeBBCode", (): void => {

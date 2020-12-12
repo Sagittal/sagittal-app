@@ -1,5 +1,5 @@
 export {
-    ACCIDENTALS,
+    ACCIDENTAL_MAP,
     b,
     bb,
     n,
@@ -24,15 +24,15 @@ export {
     _7CUp,
 } from "./accidentals"
 export {
-    BASS_COMBINING_STAFF_POSITIONS,
-    TREBLE_COMBINING_STAFF_POSITIONS,
-    COMBINING_STAFF_POSITIONS,
+    BASS_COMBINING_STAFF_POSITION_MAP,
+    TREBLE_COMBINING_STAFF_POSITION_MAP,
+    COMBINING_STAFF_POSITION_UNICODES,
 } from "./combiningStaffPositions"
-export {Code, Uni} from "./types"
+export {Code, Uni, Unit} from "./types"
 export {EMPTY_UNICODE} from "./constants"
 export {
     agdt,
-    CLEFS,
+    CLEF_MAP,
     lgln,
     nt1,
     nt16,
@@ -57,13 +57,19 @@ export {
     tmcm,
     tmdn,
     tmnm,
+    _8va,
+    _8vb,
+    alcf,
+    bscf,
+    tbcf,
 } from "./basics"
 export {
     st,
     st16,
     st24,
     st8,
-    STAFF_LINES,
+    STAFF_LINE_MAP,
+    STAFF_LINES_UNICODES,
 } from "./lines"
 export {
     sp1,

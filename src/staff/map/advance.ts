@@ -1,4 +1,5 @@
-import {Code, Uni} from "./types"
+import {W00} from "./constants"
+import {Code, Uni, Unit} from "./types"
 
 const sp1 = " " as Uni      // U+200A                   HAIR SPACE
 const sp2 = " " as Uni      // U+2009                   THIN SPACE
@@ -19,27 +20,27 @@ const sp16 = " " as Uni     // U+2003                   EM SPACE
 
 // * U+2001 EM QUAD, our desired sp14, is not in the font yet. Once it is, these should be replaced.
 
-const ADVANCES: Partial<Record<Code, Uni>> = {
-    [Code["sp1"]]: sp1,
-    [Code["sp2"]]: sp2,
-    [Code["sp3"]]: sp3,
-    [Code["sp4"]]: sp4,
-    [Code["sp5"]]: sp5,
-    [Code["sp6"]]: sp6,
-    [Code["sp7"]]: sp7,
-    [Code["sp8"]]: sp8,
-    [Code["sp9"]]: sp9,
-    [Code["sp10"]]: sp10,
-    [Code["sp11"]]: sp11,
-    [Code["sp12"]]: sp12,
-    [Code["sp13"]]: sp13,
-    [Code["sp14"]]: sp14,
-    [Code["sp15"]]: sp15,
-    [Code["sp16"]]: sp16,
+const ADVANCE_MAP: Partial<Record<Code, Unit>> = {
+    [Code["sp1"]]: {unicode: sp1},
+    [Code["sp2"]]: {unicode: sp2},
+    [Code["sp3"]]: {unicode: sp3},
+    [Code["sp4"]]: {unicode: sp4},
+    [Code["sp5"]]: {unicode: sp5},
+    [Code["sp6"]]: {unicode: sp6},
+    [Code["sp7"]]: {unicode: sp7},
+    [Code["sp8"]]: {unicode: sp8},
+    [Code["sp9"]]: {unicode: sp9},
+    [Code["sp10"]]: {unicode: sp10},
+    [Code["sp11"]]: {unicode: sp11},
+    [Code["sp12"]]: {unicode: sp12},
+    [Code["sp13"]]: {unicode: sp13},
+    [Code["sp14"]]: {unicode: sp14},
+    [Code["sp15"]]: {unicode: sp15},
+    [Code["sp16"]]: {unicode: sp16},
 }
 
 export {
-    ADVANCES,
+    ADVANCE_MAP,
     sp1,
     sp2,
     sp3,

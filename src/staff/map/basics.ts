@@ -1,15 +1,18 @@
-import {Code, Uni} from "./types"
+import {W00, W06, W13, W17, W21, W23, W24} from "./constants"
+import {Code, Uni, Unit} from "./types"
+
+// TODO: Move all these comments into the descriptions
 
 const lgln = "" as Uni     // U+E022    leger line
-const LEDGER_LINES: Partial<Record<Code, Uni>> = {
-    [Code["lgln"]]: lgln,
+const LEDGER_LINES: Partial<Record<Code, Unit>> = {
+    [Code["lgln"]]: {unicode: lgln, width: W13},
 }
 
 const brln = "" as Uni     // U+E030   bar line (single)
 const brlndb = "" as Uni   // U+E031   bar line double
-const BARS: Partial<Record<Code, Uni>> = {
-    [Code["brln"]]: brln,
-    [Code["brlndb"]]: brlndb,
+const BAR_MAP: Partial<Record<Code, Unit>> = {
+    [Code["brln"]]: {unicode: brln},
+    [Code["brlndb"]]: {unicode: brlndb},
 }
 
 const tbcf = "" as Uni    // U+E050    treble
@@ -17,12 +20,12 @@ const alcf = "" as Uni    // U+E05C    alto
 const bscf = "" as Uni    // U+E062    bass
 const _8va = "" as Uni    // U+E512    octave above
 const _8vb = "" as Uni    // U+E51C    octave below
-const CLEFS: Partial<Record<Code, Uni>> = {
-    [Code["tbcf"]]: tbcf,
-    [Code["alcf"]]: alcf,
-    [Code["bscf"]]: bscf,
-    [Code["8va"]]: _8va,
-    [Code["8va"]]: _8vb,
+const CLEF_MAP: Partial<Record<Code, Unit>> = {
+    [Code["tbcf"]]: {unicode: tbcf, width: W24},
+    [Code["alcf"]]: {unicode: alcf, width: W24},
+    [Code["bscf"]]: {unicode: bscf, width: W24},
+    [Code["8va"]]: {unicode: _8va, width: W24},
+    [Code["8va"]]: {unicode: _8vb, width: W24},
 }
 
 const tm0 = "" as Uni      // U+E080   time signature digit 0
@@ -38,20 +41,20 @@ const tm9 = "" as Uni      // U+E089   time signature digit 9
 const tmcm = "" as Uni     // U+E08A   common time
 const tmnm = "" as Uni     // U+E09E   time signature combining numerator position
 const tmdn = "" as Uni     // U+E09F   time signature combining denominator position
-const TIME_SIGNATURES: Partial<Record<Code, Uni>> = {
-    [Code["tm0"]]: tm0,
-    [Code["tm1"]]: tm1,
-    [Code["tm2"]]: tm2,
-    [Code["tm3"]]: tm3,
-    [Code["tm4"]]: tm4,
-    [Code["tm5"]]: tm5,
-    [Code["tm6"]]: tm6,
-    [Code["tm7"]]: tm7,
-    [Code["tm8"]]: tm8,
-    [Code["tm9"]]: tm9,
-    [Code["tmcm"]]: tmcm,
-    [Code["tmnm"]]: tmnm,
-    [Code["tmdn"]]: tmdn,
+const TIME_SIGNATURE_MAP: Partial<Record<Code, Unit>> = {
+    [Code["tm0"]]: {unicode: tm0, width: W17},
+    [Code["tm1"]]: {unicode: tm1, width: W17},
+    [Code["tm2"]]: {unicode: tm2, width: W17},
+    [Code["tm3"]]: {unicode: tm3, width: W17},
+    [Code["tm4"]]: {unicode: tm4, width: W17},
+    [Code["tm5"]]: {unicode: tm5, width: W17},
+    [Code["tm6"]]: {unicode: tm6, width: W17},
+    [Code["tm7"]]: {unicode: tm7, width: W17},
+    [Code["tm8"]]: {unicode: tm8, width: W17},
+    [Code["tm9"]]: {unicode: tm9, width: W17},
+    [Code["tmcm"]]: {unicode: tmcm, width: W17},
+    [Code["tmnm"]]: {unicode: tmnm, width: W00},
+    [Code["tmdn"]]: {unicode: tmdn, width: W00},
 }
 
 const ntdb = "" as Uni    // U+E1D0    double whole note
@@ -65,18 +68,18 @@ const nt8dn = "" as Uni   // U+E1D8    quarter note stem down
 const nt16 = "" as Uni    // U+E1D9    sixteenth note stem up
 const nt16dn = "" as Uni  // U+E1DA    sixteenth note stem down
 const nt = nt4
-const NOTES: Partial<Record<Code, Uni>> = {
-    [Code["ntdb"]]: ntdb,
-    [Code["nt1"]]: nt1,
-    [Code["nt2"]]: nt2,
-    [Code["nt2dn"]]: nt2dn,
-    [Code["nt4"]]: nt4,
-    [Code["nt4dn"]]: nt4dn,
-    [Code["nt8"]]: nt8,
-    [Code["nt8dn"]]: nt8dn,
-    [Code["nt16"]]: nt16,
-    [Code["nt16dn"]]: nt16dn,
-    [Code["nt"]]: nt,
+const NOTE_MAP: Partial<Record<Code, Unit>> = {
+    [Code["ntdb"]]: {unicode: ntdb, width: W23},
+    [Code["nt1"]]: {unicode: nt1, width: W13},
+    [Code["nt2"]]: {unicode: nt2, width: W13},
+    [Code["nt2dn"]]: {unicode: nt2dn, width: W13},
+    [Code["nt4"]]: {unicode: nt4, width: W13},
+    [Code["nt4dn"]]: {unicode: nt4dn, width: W13},
+    [Code["nt8"]]: {unicode: nt8, width: W21},
+    [Code["nt8dn"]]: {unicode: nt8dn, width: W13},
+    [Code["nt16"]]: {unicode: nt16, width: W21},
+    [Code["nt16dn"]]: {unicode: nt16dn, width: W13},
+    [Code["nt"]]: {unicode: nt, width: W13},
 }
 
 const rsdb = "" as Uni     // U+E4E2   double whole rest
@@ -86,21 +89,21 @@ const rs4 = "" as Uni      // U+E4E5   quarter rest
 const rs8 = "" as Uni      // U+E4E6   eighth rest
 const rs16 = "" as Uni     // U+E4E7   sixteenth rest
 const rs = rs4
-const RESTS: Partial<Record<Code, Uni>> = {
-    [Code["rsdb"]]: rsdb,
-    [Code["rs1"]]: rs1,
-    [Code["rs2"]]: rs2,
-    [Code["rs4"]]: rs4,
-    [Code["rs8"]]: rs8,
-    [Code["rs16"]]: rs16,
-    [Code["rs"]]: rs,
+const REST_MAP: Partial<Record<Code, Unit>> = {
+    [Code["rsdb"]]: {unicode: rsdb},
+    [Code["rs1"]]: {unicode: rs1},
+    [Code["rs2"]]: {unicode: rs2},
+    [Code["rs4"]]: {unicode: rs4},
+    [Code["rs8"]]: {unicode: rs8},
+    [Code["rs16"]]: {unicode: rs16},
+    [Code["rs"]]: {unicode: rs},
 }
 
 const dt = "" as Uni       // U+E1E7    augmentation dot
 const agdt = dt
-const DOTS: Partial<Record<Code, Uni>> = {
-    [Code["dt"]]: dt,
-    [Code["agdt"]]: agdt,
+const DOT_MAP: Partial<Record<Code, Unit>> = {
+    [Code["dt"]]: {unicode: dt, width: W06},
+    [Code["agdt"]]: {unicode: agdt, width: W06},
 }
 
 // See: https://w3c.github.io/smufl/gitbook/tables/beamed-groups-of-notes.html
@@ -110,13 +113,13 @@ const ntbm16 = "" as Uni   // U+E1F4   note for end of 16th beam, and possibl
 const bm8 = "" as Uni      // U+E1F7   eighth beam continuation (for short stems)
 const bm16 = "" as Uni     // U+E1F9   sixteenth beam continuation (for short stems)
 const tp3 = "" as Uni      // U+E1FF   tuplet digit 3 (for short stems)
-const BEAMED_GROUPS_OF_NOTES: Partial<Record<Code, Uni>> = {
-    [Code["ntbmst"]]: ntbmst,
-    [Code["ntbm8"]]: ntbm8,
-    [Code["ntbm16"]]: ntbm16,
-    [Code["bm8"]]: bm8,
-    [Code["bm16"]]: bm16,
-    [Code["tp3"]]: tp3,
+const BEAMS_MAP: Partial<Record<Code, Unit>> = {
+    [Code["ntbmst"]]: {unicode: ntbmst},
+    [Code["ntbm8"]]: {unicode: ntbm8},
+    [Code["ntbm16"]]: {unicode: ntbm16},
+    [Code["bm8"]]: {unicode: bm8},
+    [Code["bm16"]]: {unicode: bm16},
+    [Code["tp3"]]: {unicode: tp3},
 }
 
 export {
@@ -124,13 +127,13 @@ export {
     LEDGER_LINES,
     brln,
     brlndb,
-    BARS,
+    BAR_MAP,
     tbcf,
     alcf,
     bscf,
     _8va,
     _8vb,
-    CLEFS,
+    CLEF_MAP,
     tm0,
     tm1,
     tm2,
@@ -144,7 +147,7 @@ export {
     tmcm,
     tmnm,
     tmdn,
-    TIME_SIGNATURES,
+    TIME_SIGNATURE_MAP,
     ntdb,
     nt1,
     nt2,
@@ -156,7 +159,7 @@ export {
     nt16,
     nt16dn,
     nt,
-    NOTES,
+    NOTE_MAP,
     rsdb,
     rs1,
     rs2,
@@ -164,15 +167,15 @@ export {
     rs8,
     rs16,
     rs,
-    RESTS,
+    REST_MAP,
     dt,
     agdt,
-    DOTS,
+    DOT_MAP,
     ntbmst,
     ntbm8,
     ntbm16,
     bm8,
     bm16,
     tp3,
-    BEAMED_GROUPS_OF_NOTES,
+    BEAMS_MAP,
 }

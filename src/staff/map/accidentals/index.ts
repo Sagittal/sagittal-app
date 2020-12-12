@@ -1,7 +1,7 @@
-export {CONVENTIONAL_ACCIDENTALS, b, bb, n, sharp, smallDoubleSharp, x} from "./conventional"
-export {EHEJIPN_ACCIDENTALS} from "./ehejipn"
+export {CONVENTIONAL_ACCIDENTAL_MAP, b, bb, n, sharp, smallDoubleSharp, x} from "./conventional"
+export {EHEJIPN_ACCIDENTAL_MAP} from "./ehejipn"
 export {
-    SAGITTAL_ACCIDENTALS,
+    SAGITTAL_ACCIDENTAL_MAP,
     _11LDown,
     _11LUp,
     _11MDown,
@@ -19,6 +19,6 @@ export {
     _7CDown,
     _7CUp,
 } from "./sagittal"
-export {UNCONVENTIONAL_ACCIDENTALS} from "./unconventional"
-export {UPS_AND_DOWNS_ACCIDENTALS} from "./upsAndDowns"
-export {ACCIDENTALS} from "./accidentals"
+export {UNCONVENTIONAL_ACCIDENTAL_MAP} from "./unconventional"
+export {UPS_AND_DOWNS_ACCIDENTAL_MAP} from "./upsAndDowns"
+export {ACCIDENTAL_MAP} from "./accidentals"

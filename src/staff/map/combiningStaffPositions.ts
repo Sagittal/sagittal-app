@@ -1,5 +1,5 @@
-import {EMPTY_UNICODE} from "./constants"
-import {Code, Uni} from "./types"
+import {EMPTY_UNICODE, W00} from "./constants"
+import {Code, Uni, Unit} from "./types"
 
 const staffPosRaise8 = "" as Uni  // U+EB97
 const staffPosRaise7 = "" as Uni  // U+EB96
@@ -73,47 +73,47 @@ const c4 = trc4
 const b3 = trb3
 const a3 = tra3
 
-const TREBLE_COMBINING_STAFF_POSITIONS: Partial<Record<Code, Uni>> = {
-    [Code["c6"]]: trc6,
-    [Code["b5"]]: trb5,
-    [Code["a5"]]: tra5,
-    [Code["g5"]]: trg5,
-    [Code["f5"]]: trf5,
-    [Code["e5"]]: tre5,
-    [Code["d5"]]: trd5,
-    [Code["c5"]]: trc5,
-    [Code["b4"]]: trb4,
-    [Code["a4"]]: tra4,
-    [Code["g4"]]: trg4,
-    [Code["f4"]]: trf4,
-    [Code["e4"]]: tre4,
-    [Code["d4"]]: trd4,
-    [Code["c4"]]: trc4,
-    [Code["b3"]]: trb3,
-    [Code["a3"]]: tra3,
+const TREBLE_COMBINING_STAFF_POSITION_MAP: Partial<Record<Code, Unit>> = {
+    [Code["c6"]]: {unicode: trc6, width: W00},
+    [Code["b5"]]: {unicode: trb5, width: W00},
+    [Code["a5"]]: {unicode: tra5, width: W00},
+    [Code["g5"]]: {unicode: trg5, width: W00},
+    [Code["f5"]]: {unicode: trf5, width: W00},
+    [Code["e5"]]: {unicode: tre5, width: W00},
+    [Code["d5"]]: {unicode: trd5, width: W00},
+    [Code["c5"]]: {unicode: trc5, width: W00},
+    [Code["b4"]]: {unicode: trb4, width: W00},
+    [Code["a4"]]: {unicode: tra4, width: W00},
+    [Code["g4"]]: {unicode: trg4, width: W00},
+    [Code["f4"]]: {unicode: trf4, width: W00},
+    [Code["e4"]]: {unicode: tre4, width: W00},
+    [Code["d4"]]: {unicode: trd4, width: W00},
+    [Code["c4"]]: {unicode: trc4, width: W00},
+    [Code["b3"]]: {unicode: trb3, width: W00},
+    [Code["a3"]]: {unicode: tra3, width: W00},
 }
 
-const BASS_COMBINING_STAFF_POSITIONS = {
-    [Code["e4"]]: bse4,
-    [Code["d4"]]: bsd4,
-    [Code["c4"]]: bsc4,
-    [Code["b3"]]: bsb3,
-    [Code["a3"]]: bsa3,
-    [Code["g3"]]: bsg3,
-    [Code["f3"]]: bsf3,
-    [Code["e3"]]: bse3,
-    [Code["d3"]]: bsd3,
-    [Code["c3"]]: bsc3,
-    [Code["b2"]]: bsb2,
-    [Code["a2"]]: bsa2,
-    [Code["g2"]]: bsg2,
-    [Code["f2"]]: bsf2,
-    [Code["e2"]]: bse2,
-    [Code["d2"]]: bsd2,
-    [Code["c2"]]: bsc2,
+const BASS_COMBINING_STAFF_POSITION_MAP = {
+    [Code["e4"]]: {unicode: bse4, width: W00},
+    [Code["d4"]]: {unicode: bsd4, width: W00},
+    [Code["c4"]]: {unicode: bsc4, width: W00},
+    [Code["b3"]]: {unicode: bsb3, width: W00},
+    [Code["a3"]]: {unicode: bsa3, width: W00},
+    [Code["g3"]]: {unicode: bsg3, width: W00},
+    [Code["f3"]]: {unicode: bsf3, width: W00},
+    [Code["e3"]]: {unicode: bse3, width: W00},
+    [Code["d3"]]: {unicode: bsd3, width: W00},
+    [Code["c3"]]: {unicode: bsc3, width: W00},
+    [Code["b2"]]: {unicode: bsb2, width: W00},
+    [Code["a2"]]: {unicode: bsa2, width: W00},
+    [Code["g2"]]: {unicode: bsg2, width: W00},
+    [Code["f2"]]: {unicode: bsf2, width: W00},
+    [Code["e2"]]: {unicode: bse2, width: W00},
+    [Code["d2"]]: {unicode: bsd2, width: W00},
+    [Code["c2"]]: {unicode: bsc2, width: W00},
 }
 
-const COMBINING_STAFF_POSITIONS = [
+const COMBINING_STAFF_POSITION_UNICODES: Uni[] = [
     staffPosRaise8,
     staffPosRaise7,
     staffPosRaise6,
@@ -134,8 +134,8 @@ const COMBINING_STAFF_POSITIONS = [
 ]
 
 export {
-    BASS_COMBINING_STAFF_POSITIONS,
-    TREBLE_COMBINING_STAFF_POSITIONS,
+    BASS_COMBINING_STAFF_POSITION_MAP,
+    TREBLE_COMBINING_STAFF_POSITION_MAP,
     staffPosRaise8,
     staffPosRaise7,
     staffPosRaise6,
@@ -204,5 +204,6 @@ export {
     c4,
     b3,
     a3,
-    COMBINING_STAFF_POSITIONS,
+    // TODO: See if you can eliminate this confusing thing, and also STAFF_LINES_UNICODES
+    COMBINING_STAFF_POSITION_UNICODES,
 }

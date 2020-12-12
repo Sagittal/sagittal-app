@@ -1,18 +1,18 @@
-import {Code, Uni} from "../types"
-import {CONVENTIONAL_ACCIDENTALS} from "./conventional"
-import {EHEJIPN_ACCIDENTALS} from "./ehejipn"
-import {SAGITTAL_ACCIDENTALS} from "./sagittal"
-import {UNCONVENTIONAL_ACCIDENTALS} from "./unconventional"
-import {UPS_AND_DOWNS_ACCIDENTALS} from "./upsAndDowns"
+import {Code, Unit} from "../types"
+import {CONVENTIONAL_ACCIDENTAL_MAP} from "./conventional"
+import {EHEJIPN_ACCIDENTAL_MAP} from "./ehejipn"
+import {SAGITTAL_ACCIDENTAL_MAP} from "./sagittal"
+import {UNCONVENTIONAL_ACCIDENTAL_MAP} from "./unconventional"
+import {UPS_AND_DOWNS_ACCIDENTAL_MAP} from "./upsAndDowns"
 
-const ACCIDENTALS: Partial<Record<Code, Uni>> = {
-    ...CONVENTIONAL_ACCIDENTALS,
-    ...EHEJIPN_ACCIDENTALS,
-    ...SAGITTAL_ACCIDENTALS,
-    ...UNCONVENTIONAL_ACCIDENTALS,
-    ...UPS_AND_DOWNS_ACCIDENTALS,
+const ACCIDENTAL_MAP: Partial<Record<Code, Unit>> = {
+    ...CONVENTIONAL_ACCIDENTAL_MAP,
+    ...EHEJIPN_ACCIDENTAL_MAP,
+    ...SAGITTAL_ACCIDENTAL_MAP,
+    ...UNCONVENTIONAL_ACCIDENTAL_MAP,
+    ...UPS_AND_DOWNS_ACCIDENTAL_MAP,
 }
 
 export {
-    ACCIDENTALS,
+    ACCIDENTAL_MAP,
 }
