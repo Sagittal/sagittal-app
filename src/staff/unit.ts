@@ -1,12 +1,12 @@
 import {computeArbitraryUnit} from "./arbitraryUnit"
-import {BASS_COMBINING_STAFF_POSITION_MAP, Code, CODES, TREBLE_COMBINING_STAFF_POSITION_MAP, Uni, Unit} from "./map"
+import {BASS_COMBINING_STAFF_POSITION_MAP, Code, CODE_MAP, TREBLE_COMBINING_STAFF_POSITION_MAP, Uni, Unit} from "./map"
 import {Clef, Width} from "./types"
 
-const CODES_WITH_BASS: Record<Code, Unit> = {...CODES, ...BASS_COMBINING_STAFF_POSITION_MAP} as Record<Code, Unit>
-const CODES_WITH_TREBLE: Record<Code, Unit> = {...CODES, ...TREBLE_COMBINING_STAFF_POSITION_MAP} as Record<Code, Unit>
+const BASS_CODE_MAP: Record<Code, Unit> = {...CODE_MAP, ...BASS_COMBINING_STAFF_POSITION_MAP} as Record<Code, Unit>
+const TREBLE_CODE_MAP: Record<Code, Unit> = {...CODE_MAP, ...TREBLE_COMBINING_STAFF_POSITION_MAP} as Record<Code, Unit>
 
 const computeUnit = (code: Code, clef: Clef = Clef.TREBLE): Unit => {
-    const codeToUnitMap = clef === Clef.BASS ? CODES_WITH_BASS : CODES_WITH_TREBLE
+    const codeToUnitMap = clef === Clef.BASS ? BASS_CODE_MAP : TREBLE_CODE_MAP
 
     const mappedUnicode = codeToUnitMap[code]
 

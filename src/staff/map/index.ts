@@ -89,4 +89,4 @@ export {
     sp8,
     sp9,
 } from "./advance"
-export {CODES} from "./codes"
+export {CODE_MAP} from "./codes"

@@ -38,6 +38,7 @@ const computeUserInputUnicode = (userInputSentence: Io): Uni => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 
     return `${userInputSentence.toLowerCase()} ;`
+        // TODO: CLEAN: Extract a remove white space helper
         .replace(/<br>/g, " ")
         .replace(/\n/g, " ")
         .replace(/\t/g, " ")
@@ -45,6 +46,9 @@ const computeUserInputUnicode = (userInputSentence: Io): Uni => {
         .map((userInputWord: Io): Uni => {
             const code = userInputWord as Code
 
+            // TODO: CLEAN: Try to handle manual staff here
+            //  All smart auto staff advance stuff happens at the top
+            //  And collapse the two records into one thing, if there’s even a need for two anymore
             if (SMART_ADVANCE_CODES.includes(code)) {
                 return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(staffState.smartAdvanceWidth)
             } else if (code.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
