@@ -24,8 +24,8 @@ export {
     _7CUp,
 } from "./accidentals"
 export {
-    BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
-    TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
+    BASS_COMBINING_STAFF_POSITIONS,
+    TREBLE_COMBINING_STAFF_POSITIONS,
     COMBINING_STAFF_POSITIONS,
 } from "./combiningStaffPositions"
 export {Code, Uni} from "./types"
@@ -60,6 +60,9 @@ export {
 } from "./basics"
 export {
     st,
+    st16,
+    st24,
+    st8,
     STAFF_LINES,
 } from "./lines"
 export {

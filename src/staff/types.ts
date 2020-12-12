@@ -6,8 +6,8 @@ import {Uni} from "./map"
 type Width = number & {_WidthBrand: boolean}
 
 interface StaffState {
-    smartAdvance: Width,
-    autoStaff: Width,
+    smartAdvanceWidth: Width,
+    autoStaffWidth: Width,
     autoStaffOn: boolean,
     position: Uni,
 }

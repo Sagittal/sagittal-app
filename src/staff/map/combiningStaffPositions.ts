@@ -73,7 +73,7 @@ const c4 = trc4
 const b3 = trb3
 const a3 = tra3
 
-const TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP: Partial<Record<Code, Uni>> = {
+const TREBLE_COMBINING_STAFF_POSITIONS: Partial<Record<Code, Uni>> = {
     [Code["c6"]]: trc6,
     [Code["b5"]]: trb5,
     [Code["a5"]]: tra5,
@@ -93,7 +93,7 @@ const TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP: Partial<Record<Code, Uni>> = 
     [Code["a3"]]: tra3,
 }
 
-const BASS_COMBINING_STAFF_POSITION_UNICODE_MAP = {
+const BASS_COMBINING_STAFF_POSITIONS = {
     [Code["e4"]]: bse4,
     [Code["d4"]]: bsd4,
     [Code["c4"]]: bsc4,
@@ -134,8 +134,8 @@ const COMBINING_STAFF_POSITIONS = [
 ]
 
 export {
-    BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
-    TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
+    BASS_COMBINING_STAFF_POSITIONS,
+    TREBLE_COMBINING_STAFF_POSITIONS,
     staffPosRaise8,
     staffPosRaise7,
     staffPosRaise6,

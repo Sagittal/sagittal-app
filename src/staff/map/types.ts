@@ -1,6 +1,9 @@
 type Uni = string & {_UniBrand: boolean}
 
 enum Code {
+    "sp" = "sp",
+    "ad" = "ad",
+    ";" = ";",
     "sp1" = "sp1",
     "sp2" = "sp2",
     "sp3" = "sp3",

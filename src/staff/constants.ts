@@ -6,8 +6,8 @@ const BASS_CLEF_INITIATION = `${Code["st"]} ${Code["bscf"]} ; ` as Io
 const TREBLE_CLEF_INITIATION = `${Code["st"]} ${Code["tbcf"]} ; ` as Io
 
 const INITIAL_STAFF_STATE: StaffState = {
-    smartAdvance: 0 as Width,
-    autoStaff: 0 as Width,
+    smartAdvanceWidth: 0 as Width,
+    autoStaffWidth: 0 as Width,
     autoStaffOn: false,
     position: EMPTY_UNICODE,
 }

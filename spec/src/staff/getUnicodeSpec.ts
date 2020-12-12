@@ -1,15 +1,14 @@
 import {Code, nt4} from "../../../src/staff/map"
+import {computeUnicode} from "../../../src/staff/mappedUnicode"
 import {Clef} from "../../../src/staff/types"
-import {computeUnicode} from "../../../src/staff/unicode"
 
 describe("computeUnicode", (): void => {
     it("basically works", (): void => {
-        const userInput = Code["nt4"]
+        const code = Code["nt4"]
         const clef = Clef.TREBLE
 
-        const actual = computeUnicode(userInput, clef)
+        const actual = computeUnicode(code, clef)
 
-        const expected = `${nt4}`
-        expect(actual).toBe(expected)
+        expect(actual).toBe(nt4)
     })
 })
