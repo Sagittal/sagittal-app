@@ -55,8 +55,10 @@ import {Width} from "./types"
 
 const DEFAULT_WIDTH = 11 as Width
 
-// TODO: FEATURE ADJUST: CODE VALUES INCLUDE WIDTH
+// TODO: OVERHAUL: CODE VALUES INCLUDE WIDTH
 //  We may well need to just include these on each key, or make it optional `code: {char: '', width?: 13}` like that
+//  So that we can accept a user custom codes JSON object to merge in here too
+
 const computeUnicodeWidth = (unicode: Uni): Width => {
     if ([...Object.values(CLEFS)].includes(unicode)) return 24 as Width
     else if ([ntdb].includes(unicode)) return 23 as Width

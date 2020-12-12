@@ -65,20 +65,11 @@ const computeAdvanceUnicode = (width: Width): Uni => {
     return sumTexts(unicode, WIDTH_TO_ADVANCE_UNICODE_ARRAY[remainingWidth])
 }
 
-// TODO: FEATURE ADJUST: maybe Auto Staff opt-out, rather than opt-in. Waiting on Dave's feedback.
-
 const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: Width): Uni => {
-    if (!staffState.autoStaffOn) { // TODO: CLEAN: this could probably be simplified
-        const advanceUnicode = computeAdvanceUnicode(staffState.smartAdvanceWidth)
-        staffState.smartAdvanceWidth = 0 as Width
-        return advanceUnicode
-    }
-
-    // We've got enough staff ahead of us still to apply the advance and still be within it
-    if (staffState.autoStaffWidth >= width) {
+    if (staffState.autoStaffWidth >= width || !staffState.autoStaffOn) {
         const advanceUnicode = computeAdvanceUnicode(width)
 
-        staffState.autoStaffWidth = staffState.autoStaffWidth - width as Width
+        if (staffState.autoStaffOn) staffState.autoStaffWidth = staffState.autoStaffWidth - width as Width
         staffState.smartAdvanceWidth = 0 as Width
 
         return advanceUnicode
