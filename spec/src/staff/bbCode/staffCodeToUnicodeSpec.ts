@@ -1,8 +1,8 @@
 import {BLANK} from "@sagittal/general"
 import {staffCodeToUnicodeBBCode} from "../../../../src/staff/bbCode/staffCodeToUnicode"
-import {Clef} from "../../../../src/staff/types"
 import {sp16, sp8, st} from "../../../../src/staff/map"
-import {bscf, tbcf} from "../../../../src/staff/map/unicodeMap"
+import {bscf, tbcf} from "../../../../src/staff/map/basics"
+import {Clef} from "../../../../src/staff/types"
 
 describe("staffCodeToUnicodeBBCode", (): void => {
     it("starts off with some clef-related material if a clef class is provided, ending with a space so when the user types something without starting with a space it works - works for treble", (): void => {

@@ -33,7 +33,6 @@ export {EMPTY_UNICODE} from "./constants"
 export {
     agdt,
     CLEFS,
-    CODES,
     lgln,
     nt1,
     nt16,
@@ -45,8 +44,6 @@ export {
     nt8,
     nt8dn,
     ntdb,
-    st,
-    STAFF_LINES,
     tm0,
     tm1,
     tm2,
@@ -60,6 +57,12 @@ export {
     tmcm,
     tmdn,
     tmnm,
+} from "./basics"
+export {
+    st,
+    STAFF_LINES,
+} from "./lines"
+export {
     sp1,
     sp10,
     sp11,
@@ -76,4 +79,5 @@ export {
     sp7,
     sp8,
     sp9,
-} from "./unicodeMap"
+} from "./advance"
+export {CODES} from "./codes"
