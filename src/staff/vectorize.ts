@@ -1,4 +1,4 @@
-import {svgContainer} from "./dom"
+import {svg} from "./dom"
 
 const vectorizeText = require("vectorize-text")
 
@@ -15,26 +15,22 @@ const vectorize = (text: string): void => {
         size: MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER,
     })
 
-    const svg = ["<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"4000\">"]
+    const path = [""]
     polygons.forEach((loops: unknown[][][]): void => {
-        svg.push("<path d=\"")
+        path.push("<path d=\"")
         loops.forEach((loop: unknown[][]): void => {
             const start = loop[0]
-            svg.push("M " + start[0] + " " + start[1])
+            path.push("M " + start[0] + " " + start[1])
             for (let i = 1; i < loop.length; ++i) {
                 const p = loop[i]
-                svg.push("L " + p[0] + " " + p[1])
+                path.push("L " + p[0] + " " + p[1])
             }
-            svg.push("L " + start[0] + " " + start[1])
+            path.push("L " + start[0] + " " + start[1])
         })
-        svg.push("\" fill-rule=\"even-odd\" stroke-width=\"1\" fill=\"black\"></path>")
+        path.push("\" fill-rule=\"even-odd\" stroke-width=\"1\" fill=\"black\"></path>")
     })
-    svg.push("</svg>")
 
-    // TODO: can we maybe just have this set the innerHTML of the svg, rather than an svgContainer which is confusing
-    //  Compared with a wrapper? I named them different bc they have very different intentions, but this one maybe
-    //  Is just unnecessary
-    svgContainer.innerHTML = svg.join("")
+    svg.innerHTML = path.join("")
 }
 
 export {

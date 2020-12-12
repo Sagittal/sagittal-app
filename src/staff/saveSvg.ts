@@ -1,9 +1,6 @@
-import {svgContainer} from "./dom"
+import {svg} from "./dom"
 
 const saveSvg = (): void => {
-    const svg: SVGElement | null = svgContainer.querySelector("svg")
-    if (!svg) return
-
     const outerHTML = svg.outerHTML
     const blob = new Blob([outerHTML], {type: "image/svg+xml;charset=utf-8"})
     const URL = window.URL || window.webkitURL || window

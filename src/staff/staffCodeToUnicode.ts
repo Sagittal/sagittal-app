@@ -145,6 +145,10 @@ const recordStaff = (userInput: Io): void => {
     if (userInput === Code["st24"]) staffState.smartStaff = staffState.smartStaff + 24
 }
 
+// TODO: might be cool if it doesn't run if you have only one character in, unless it's ;
+
+// TODO: is it best if includes an assumed ; at the end (unless it's actually an ; ) so that you get enough staff?
+
 const staffCodeToUnicode = (staffCode: Io): Uni => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 
