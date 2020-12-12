@@ -1,16 +1,11 @@
-import {Clef} from "../types"
-import {computeUserInputUnicodeBBCode} from "./clefInitiation"
+import {Io} from "@sagittal/general"
+import {computeUserInputUnicode} from "../userInputUnicode"
 
 const replaceStaffCodeWithUnicodeBBCode = (staffDiv: Element): void => {
     if (staffDiv.classList.contains("processed")) return
     staffDiv.classList.add("processed")
 
-    const newTextContent = computeUserInputUnicodeBBCode(
-        staffDiv.textContent,
-        {clef: staffDiv.classList[1] as Clef},
-    )
-
-    staffDiv.textContent = newTextContent
+    staffDiv.textContent = computeUserInputUnicode(staffDiv.textContent as Io)
 }
 
 

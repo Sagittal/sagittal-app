@@ -17,8 +17,6 @@ import {computeUnit} from "./unit"
 
 // TODO: FEATURE ADJUST: "stof" to turn off Auto Staff ("st" turns it back on).
 
-// TODO: FEATURE ADJUST: do not take clef as a bbCode argument / class. expect users to just type tbcf
-
 // TODO: FEATURE ADJUST: DON'T RECOMPILE ON EVERY SINGLE KEY
 //  Might be cool if it doesn't run if you have only one character in, unless it's ;
 //  This one I haven't suggested to Dave yet
@@ -31,6 +29,8 @@ import {computeUnit} from "./unit"
 //  So that we can accept a user custom codes JSON object to merge in here too
 //  Eventually you should only need to export the maps from the map/ module, not the individual ones to get their widths
 
+// TODO: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
+//  Check the diff with the previous sentence
 const computeUserInputUnicode = (userInputSentence: Io): Uni => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 

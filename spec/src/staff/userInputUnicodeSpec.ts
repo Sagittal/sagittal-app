@@ -146,4 +146,10 @@ describe("computeUserInputUnicode", (): void => {
         const expected = st24 + nt8 + sp16 + sp5 + nt4 + sp3 + st24 + sp10
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
+
+    // TODO: STOF to disable auto staff
+    // tslint:disable-next-line:ban
+    xit("can turn off Auto Staff", (): void => {
+
+    })
 })

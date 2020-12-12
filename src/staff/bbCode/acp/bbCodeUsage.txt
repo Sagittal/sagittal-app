@@ -1,1 +1,1 @@
-[staff clef={IDENTIFIER;optional}]{TEXT}[/staff]
+[staff]{TEXT}[/staff]

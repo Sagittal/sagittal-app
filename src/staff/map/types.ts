@@ -2,6 +2,9 @@ import {Width} from "../types"
 
 type Uni = string & {_UniBrand: boolean}
 
+// TODO: CLEAN: or is this a "Glyph"?
+//  Man... both Glyph and Unicode are taken in @sagittal/system already, but maybe we should just eff-it and use them
+//  In a different way here
 interface Unit {
     unicode: Uni,
     width?: Width,
