@@ -1,6 +1,6 @@
 import {getUnicode} from "../../../src/staff/getUnicode"
-import {Clef, Code} from "../../../src/staff/types"
-import {nt4} from "../../../src/staff/unicodeMap"
+import {Clef} from "../../../src/staff/types"
+import {Code, nt4} from "../../../src/staff/map"
 
 describe("getUnicode", (): void => {
     it("basically works", (): void => {

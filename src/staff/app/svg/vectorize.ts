@@ -8,7 +8,7 @@ const MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER =
 //  Except if I do that, then I'll be forced to import @sagittal/general into that @sagittal/staff repo
 //  Which I think I might want to try to avoid
 
-const vectorize = (text: string, svg: SVGElement): void => {
+const vectorizeSvg = (text: string, svg: SVGElement): void => {
     const polygons = vectorizeText(text, {
         polygons: true,
         height: HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT,
@@ -36,5 +36,5 @@ const vectorize = (text: string, svg: SVGElement): void => {
 }
 
 export {
-    vectorize,
+    vectorizeSvg,
 }

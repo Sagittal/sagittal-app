@@ -1,10 +1,12 @@
+import {Clef} from "./types"
 import {
     BASS_COMBINING_STAFF_POSITION_UNICODE_MAP,
+    Code,
+    CODES,
     TREBLE_COMBINING_STAFF_POSITION_UNICODE_MAP,
-} from "./combiningStaffPositions"
-import {Clef, Code, Uni} from "./types"
+    Uni,
+} from "./map"
 import {unicodeFromUnknownCode} from "./unicodeFromUnknownCode"
-import {CODES} from "./unicodeMap"
 
 // TODO: FEATURE ADJUST: accept a user custom codes JSON object to merge in here too
 

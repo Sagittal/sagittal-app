@@ -1,7 +1,9 @@
-import {Code, StaffState, Uni} from "./types"
+import {Io} from "@sagittal/general"
+import {StaffState} from "./types"
+import {Code} from "./map"
 
-const BASS_CLEF_INITIATION = `${Code["st"]} ${Code["bscf"]} ; `
-const TREBLE_CLEF_INITIATION = `${Code["st"]} ${Code["tbcf"]} ; `
+const BASS_CLEF_INITIATION = `${Code["st"]} ${Code["bscf"]} ; ` as Io
+const TREBLE_CLEF_INITIATION = `${Code["st"]} ${Code["tbcf"]} ; ` as Io
 
 const INITIAL_STAFF_STATE: StaffState = {
     smartSpace: 0,
@@ -9,11 +11,8 @@ const INITIAL_STAFF_STATE: StaffState = {
     autoStaffOn: false,
 }
 
-const EMPTY_UNICODE: Uni = "" as Uni
-
 export {
     BASS_CLEF_INITIATION,
     TREBLE_CLEF_INITIATION,
     INITIAL_STAFF_STATE,
-    EMPTY_UNICODE,
 }

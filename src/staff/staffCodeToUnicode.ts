@@ -1,9 +1,48 @@
 import {BLANK, Io, max, setAllPropertiesOfObjectOnAnother, sumTexts} from "@sagittal/general"
-import {ACCIDENTALS} from "./accidentals"
-// TODO: CLEAN: clean these up
-// tslint:disable-next-line:no-reaching-imports
-import {b, bb, n, sharp, smallDoubleSharp, x} from "./accidentals/conventional"
+import {INITIAL_STAFF_STATE} from "./constants"
+import {getUnicode} from "./getUnicode"
+import {staffState} from "./globals"
+import {computeSpaceUnicode} from "./space"
+import {Clef} from "./types"
 import {
+    agdt,
+    b,
+    bb,
+    CLEFS,
+    Code,
+    COMBINING_STAFF_POSITIONS,
+    EMPTY_UNICODE,
+    lgln,
+    n,
+    nt1,
+    nt16,
+    nt16dn,
+    nt2,
+    nt2dn,
+    nt4,
+    nt4dn,
+    nt8,
+    nt8dn,
+    ntdb,
+    sharp,
+    smallDoubleSharp,
+    st,
+    STAFF_LINES,
+    tm0,
+    tm1,
+    tm2,
+    tm3,
+    tm4,
+    tm5,
+    tm6,
+    tm7,
+    tm8,
+    tm9,
+    tmcm,
+    tmdn,
+    tmnm,
+    Uni,
+    x,
     _11LDown,
     _11LUp,
     _11MDown,
@@ -20,46 +59,7 @@ import {
     _5v7kUp,
     _7CDown,
     _7CUp,
-    // tslint:disable-next-line:no-reaching-imports
-} from "./accidentals/sagittal"
-import {COMBINING_STAFF_POSITIONS} from "./combiningStaffPositions"
-import {EMPTY_UNICODE, INITIAL_STAFF_STATE} from "./constants"
-import {getUnicode} from "./getUnicode"
-import {staffState} from "./globals"
-import {computeSpaceUnicode} from "./space"
-import {Clef, Code, Uni} from "./types"
-import {
-    agdt,
-    BEAMED_GROUPS_OF_NOTES,
-    CLEFS,
-    lgln,
-    NOTES,
-    nt1,
-    nt16,
-    nt16dn,
-    nt2,
-    nt2dn,
-    nt4,
-    nt4dn,
-    nt8,
-    nt8dn,
-    ntdb,
-    st,
-    STAFF_LINES,
-    tm0,
-    tm1,
-    tm2,
-    tm3,
-    tm4,
-    tm5,
-    tm6,
-    tm7,
-    tm8,
-    tm9,
-    tmcm,
-    tmdn,
-    tmnm,
-} from "./unicodeMap"
+} from "./map"
 
 // TODO: CLEAN: obviously break this huge file down a lot
 
@@ -110,11 +110,11 @@ const applySmartSpace = (space: number): Uni => {
 const getSpaceForUnicode = (unicode: Uni): number => {
     if ([...Object.values(CLEFS)].includes(unicode)) return 24
     else if ([ntdb].includes(unicode)) return 23
-        // 22
+    // 22
     else if ([nt8, nt16].includes(unicode)) return 21
         // 20
         // 19
-        // 18
+    // 18
     else if ([tm0, tm1, tm2, tm3, tm4, tm5, tm6, tm7, tm8, tm9, tmcm].includes(unicode)) return 17
     // 16
     else if ([bb].includes(unicode)) return 15

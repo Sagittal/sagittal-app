@@ -1,4 +1,4 @@
-import {downloadButton} from "./download"
+import {downloadButton} from "./downloadButton"
 import {staffCodeInput} from "./staffCodeInput"
 import {staffDiv} from "./staffDiv"
 

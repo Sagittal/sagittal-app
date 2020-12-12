@@ -1,5 +1,5 @@
 import {Io} from "@sagittal/general"
-import {Uni} from "./types"
+import {Uni} from "./map"
 
 // TODO: CLEAN: Probably a lot of these types and variable names can be refined now that we have Code type
 

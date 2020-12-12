@@ -1,7 +1,24 @@
 import {sumTexts} from "@sagittal/general"
-import {EMPTY_UNICODE} from "./constants"
-import {Uni} from "./types"
-import {sp1, sp10, sp11, sp12, sp13, sp14, sp15, sp16, sp2, sp3, sp4, sp5, sp6, sp7, sp8, sp9} from "./unicodeMap"
+import {
+    EMPTY_UNICODE,
+    sp1,
+    sp10,
+    sp11,
+    sp12,
+    sp13,
+    sp14,
+    sp15,
+    sp16,
+    sp2,
+    sp3,
+    sp4,
+    sp5,
+    sp6,
+    sp7,
+    sp8,
+    sp9,
+    Uni,
+} from "./map"
 
 const BIGGEST_SPACE = 16
 
