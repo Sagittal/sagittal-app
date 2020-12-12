@@ -26,7 +26,3 @@ import "../../styles"
 import {replaceStaffCodeWithUnicodeBBCode} from "./replace"
 
 document.querySelectorAll("div.staff").forEach(replaceStaffCodeWithUnicodeBBCode)
-
-// TODO: I could theoretically add a script that would programmatically SFTP changes up to the site
-//  If it does, it should abort if the thing up there currently does not match what we have here
-//  Maybe I could even find where bbCode replacements and usages are stored...? or are those probably in the DB...?
