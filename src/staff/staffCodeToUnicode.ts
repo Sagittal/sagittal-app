@@ -72,30 +72,33 @@ const canBePositioned = (unicode: Uni): boolean => {
         || (unicode >= "\uEC30" && unicode <= "\uEC3F") // Kievan square notation
 }
 
-// TODO: maybe Auto Staff opt-out, rather than opt-in.
+// TODO: maybe Auto Staff opt-out, rather than opt-in. Waiting on Dave's feedback.
+
 // TODO: and related, do not take clef as a bbCode argument
 //  See forum post after this one: http://forum.sagittal.org/viewtopic.php?p=3095#p3095
+//  Also waiting on Dave's feedback.
+
 const applySmartSpace = (space: number): Uni => {
-    if (!staffState.smartStaffOn) { // TODO: this could probably be simplified
+    if (!staffState.autoStaffOn) { // TODO: this could probably be simplified
         const spaceUnicode = computeSpaceUnicode(staffState.smartSpace)
         staffState.smartSpace = 0
         return spaceUnicode
     }
 
     // We've got enough staff ahead of us still to apply the advance and still be within it
-    if (staffState.smartStaff >= space) {
+    if (staffState.autoStaff >= space) {
         const spaceUnicode = computeSpaceUnicode(space)
 
-        staffState.smartStaff = staffState.smartStaff - space
+        staffState.autoStaff = staffState.autoStaff - space
         staffState.smartSpace = 0
 
         return spaceUnicode
     } else {
-        const useUpExistingStaffSpaceUnicode = computeSpaceUnicode(staffState.smartStaff)
-        const remainingSpaceWeNeedToApply = space - staffState.smartStaff
+        const useUpExistingStaffSpaceUnicode = computeSpaceUnicode(staffState.autoStaff)
+        const remainingSpaceWeNeedToApply = space - staffState.autoStaff
         const remainingStaffSpaceUnicode = computeSpaceUnicode(remainingSpaceWeNeedToApply)
 
-        staffState.smartStaff = 24 - remainingSpaceWeNeedToApply
+        staffState.autoStaff = 24 - remainingSpaceWeNeedToApply
         staffState.smartSpace = 0
 
         return sumTexts(useUpExistingStaffSpaceUnicode, st, remainingStaffSpaceUnicode)
@@ -138,11 +141,11 @@ const recordSpace = (unicode: Uni): void => {
 }
 
 const recordStaff = (userInput: Io): void => {
-    staffState.smartStaffOn = true
-    if (userInput === Code["st"]) staffState.smartStaff = staffState.smartStaff + 24
-    if (userInput === Code["st8"]) staffState.smartStaff = staffState.smartStaff + 8
-    if (userInput === Code["st16"]) staffState.smartStaff = staffState.smartStaff + 16
-    if (userInput === Code["st24"]) staffState.smartStaff = staffState.smartStaff + 24
+    staffState.autoStaffOn = true
+    if (userInput === Code["st"]) staffState.autoStaff = staffState.autoStaff + 24
+    if (userInput === Code["st8"]) staffState.autoStaff = staffState.autoStaff + 8
+    if (userInput === Code["st16"]) staffState.autoStaff = staffState.autoStaff + 16
+    if (userInput === Code["st24"]) staffState.autoStaff = staffState.autoStaff + 24
 }
 
 // TODO: might be cool if it doesn't run if you have only one character in, unless it's ;
@@ -163,7 +166,7 @@ const staffCodeToUnicode = (staffCode: Io): Uni => {
             if (["sp", "ad", ";"].includes(userInput)) {
                 // TODO: rename most "space" stuff to "advance"
                 return applySmartSpace(staffState.smartSpace)
-            } else if (userInput.match("sp") && staffState.smartStaffOn) {
+            } else if (userInput.match("sp") && staffState.autoStaffOn) {
                 const amount = parseInt(userInput.replace("sp", BLANK))
                 return applySmartSpace(amount)
             }

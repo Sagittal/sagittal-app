@@ -5,9 +5,8 @@ const TREBLE_CLEF_INITIATION = `${Code["st"]} ${Code["tbcf"]} ; `
 
 const INITIAL_STAFF_STATE: StaffState = {
     smartSpace: 0,
-    // TODO: autoStaff, autoStaffOn, and smartSpace
-    smartStaff: 0,
-    smartStaffOn: false,
+    autoStaff: 0,
+    autoStaffOn: false,
 }
 
 const EMPTY_UNICODE: Uni = "" as Uni

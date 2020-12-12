@@ -9,8 +9,8 @@ interface StaffState {
     //  It keeps a running maximum of their widths since the last space character.
     //  And when it encounters an "sp", it converts it to an "sp<n>" where <n> is the maximum width encountered
     //  Since the last space, then it sets the running maximum back to zero.
-    smartStaff: number,
-    smartStaffOn: boolean,
+    autoStaff: number,
+    autoStaffOn: boolean,
 }
 
 enum Clef {
