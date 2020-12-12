@@ -1,8 +1,10 @@
-// TODO: wait, should the core of staffCode be extracted to its own repo, so others can contribute to it?
+// TODO: REPO ORGANIZATION: EXTRACT STAFF CODE TO ITS OWN REPO?
+//  Wait, should the core of staffCode be extracted to its own repo, so others can contribute to it?
 
 interface StaffState {
     smartSpace: number,
-    // TODO: look on forum to see if there's a good word for what these units are and make a nominal type for them
+    // TODO: CLEAN: WIDTH/PIXELS
+    //  Look on forum to see if there's a good word for what these units are and make a nominal type for them
     //  See: http://forum.sagittal.org/viewtopic.php?p=2952#p2952
     //  In the lookup tables, we would include for every symbol, its width in pixels (eighths of a staff space),
     //  Including any right side-bearing it might need. Then, as the script is outputting symbols,

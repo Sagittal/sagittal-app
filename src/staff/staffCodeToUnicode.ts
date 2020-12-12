@@ -1,6 +1,6 @@
 import {BLANK, Io, max, setAllPropertiesOfObjectOnAnother, sumTexts} from "@sagittal/general"
 import {ACCIDENTALS} from "./accidentals"
-// TODO: clean these up
+// TODO: CLEAN: clean these up
 // tslint:disable-next-line:no-reaching-imports
 import {b, bb, n, sharp, smallDoubleSharp, x} from "./accidentals/conventional"
 import {
@@ -61,7 +61,7 @@ import {
     tmnm,
 } from "./unicodeMap"
 
-// TODO: obviously break this huge file down a lot
+// TODO: CLEAN: obviously break this huge file down a lot
 
 const canBePositioned = (unicode: Uni): boolean => {
     return (unicode >= "\uE022" && unicode <= "\uE02F") // Leger lines
@@ -72,14 +72,14 @@ const canBePositioned = (unicode: Uni): boolean => {
         || (unicode >= "\uEC30" && unicode <= "\uEC3F") // Kievan square notation
 }
 
-// TODO: maybe Auto Staff opt-out, rather than opt-in. Waiting on Dave's feedback.
+// TODO: FEATURE ADJUST: maybe Auto Staff opt-out, rather than opt-in. Waiting on Dave's feedback.
 
-// TODO: and related, do not take clef as a bbCode argument
+// TODO: FEATURE ADJUST: and related, do not take clef as a bbCode argument
 //  See forum post after this one: http://forum.sagittal.org/viewtopic.php?p=3095#p3095
 //  Also waiting on Dave's feedback.
 
 const applySmartSpace = (space: number): Uni => {
-    if (!staffState.autoStaffOn) { // TODO: this could probably be simplified
+    if (!staffState.autoStaffOn) { // TODO: CLEAN: this could probably be simplified
         const spaceUnicode = computeSpaceUnicode(staffState.smartSpace)
         staffState.smartSpace = 0
         return spaceUnicode
@@ -105,7 +105,8 @@ const applySmartSpace = (space: number): Uni => {
     }
 }
 
-// TODO: may well need to just include these on each key, or make it optional `code: {char: '', width?: 13}` like that
+// TODO: FEATURE ADJUST: CODE VALUES INCLUDE WIDTH
+//  We may well need to just include these on each key, or make it optional `code: {char: '', width?: 13}` like that
 const getSpaceForUnicode = (unicode: Uni): number => {
     if ([...Object.values(CLEFS)].includes(unicode)) return 24
     else if ([ntdb].includes(unicode)) return 23
@@ -148,9 +149,12 @@ const recordStaff = (userInput: Io): void => {
     if (userInput === Code["st24"]) staffState.autoStaff = staffState.autoStaff + 24
 }
 
-// TODO: might be cool if it doesn't run if you have only one character in, unless it's ;
+// TODO: FEATURE ADJUST: DON'T RECOMPILE ON EVERY SINGLE KEY
+//  Might be cool if it doesn't run if you have only one character in, unless it's ;
+//  This one I haven't suggested to Dave yet
 
-// TODO: is it best if includes an assumed ; at the end (unless it's actually an ; ) so that you get enough staff?
+// TODO: FEATURE ADJUST: END WITH ENOUGH STAFF?
+//  Is it best if includes an assumed ; at the end (unless it's actually an ; ) so that you get enough staff?
 
 const staffCodeToUnicode = (staffCode: Io): Uni => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
@@ -164,7 +168,7 @@ const staffCodeToUnicode = (staffCode: Io): Uni => {
         .split(" ")
         .map((userInput: Io): Uni => {
             if (["sp", "ad", ";"].includes(userInput)) {
-                // TODO: rename most "space" stuff to "advance"
+                // TODO: CLEAN: rename most "space" stuff to "advance"
                 return applySmartSpace(staffState.smartSpace)
             } else if (userInput.match("sp") && staffState.autoStaffOn) {
                 const amount = parseInt(userInput.replace("sp", BLANK))

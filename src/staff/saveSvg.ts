@@ -1,6 +1,4 @@
-import {svg} from "./dom"
-
-const saveSvg = (): void => {
+const saveSvg = (svg: SVGElement): void => {
     const outerHTML = svg.outerHTML
     const blob = new Blob([outerHTML], {type: "image/svg+xml;charset=utf-8"})
     const URL = window.URL || window.webkitURL || window

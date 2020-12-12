@@ -84,7 +84,7 @@ describe("staffCodeToUnicode", (): void => {
     })
 
     it("if more than one symbol has occurred since the previous advance, uses the width of the symbol with the max width", (): void => {
-        // TODO: might want a helper that converts the unicodes BACK into their tokens
+        // TODO: TEST HELPING: might want a helper that converts the unicodes BACK into their tokens
         expect(staffCodeToUnicode("lgln nt16 ;" as Io)).toBe(lgln + nt16 + sp16 + sp5)
     })
 

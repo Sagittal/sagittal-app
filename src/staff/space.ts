@@ -5,7 +5,7 @@ import {sp1, sp10, sp11, sp12, sp13, sp14, sp15, sp16, sp2, sp3, sp4, sp5, sp6, 
 
 const BIGGEST_SPACE = 16
 
-// TODO: ugh names are so bad
+// TODO: CLEAN: ugh names are so bad
 const SPACES_ARRAY: Uni[] = [
     EMPTY_UNICODE,
     sp1,

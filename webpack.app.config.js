@@ -5,7 +5,7 @@ const common = require("./webpack.common")
 
 module.exports = {
     ...common,
-    entry: "./src/staff/index.ts",
+    entry: "./src/staff/app/index.ts",
     output: {
         path: path.resolve(__dirname, "dist/sagittal.github.io"),
         filename: 'main.[contenthash].js',

@@ -1,6 +1,6 @@
 {
   "name": "sagittal-app",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "web apps for the Sagittal microtonal notation system",
   "license": "MIT",
   "repository": {
@@ -8,8 +8,7 @@
     "url": "git+https://github.com/Sagittal/sagittal-app.git"
   },
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "rm -r dist/sagittal.github.io/* && webpack",
+    "start": "webpack-dev-server --config webpack.app.config.js",
     "deploy": "sh bin/deploy.sh",
     "profile": "node --prof -r ts-node/register/transpile-only --max-old-space-size=131072 [[script.ts]] && node --prof-process isolate-*.log > processed.txt && rm isolate-*.log",
     "lint": "tslint \"src/**/*.ts\" --fix && tslint \"spec/**/*.ts\" --fix",

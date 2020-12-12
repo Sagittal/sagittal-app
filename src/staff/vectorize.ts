@@ -1,12 +1,14 @@
-import {svg} from "./dom"
-
 const vectorizeText = require("vectorize-text")
 
 const HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT = 57
 const MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER = 256
 
-// TODO: abstract this and pull back into @sagittal/general so the JI notation bound script can use it
-const vectorize = (text: string): void => {
+// TODO: REPO ORGANIZATION: EXTRACT VECTORIZE TO GENERAL?
+//  Abstract this and pull back into @sagittal/general so the JI notation bound script can use it
+//  Except if I do that, then I'll be forced to import @sagittal/general into that @sagittal/staff repo
+//  Which I think I might want to try to avoid
+
+const vectorize = (text: string, svg: SVGElement): void => {
     const polygons = vectorizeText(text, {
         polygons: true,
         height: HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT,
