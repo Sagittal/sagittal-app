@@ -1,3 +1,4 @@
+import {EMPTY_UNICODE} from "./constants"
 import {Code, Uni} from "./types"
 
 const staffPosRaise8 = "" as Uni  // U+EB97
@@ -8,7 +9,7 @@ const staffPosRaise4 = "" as Uni  // U+EB93
 const staffPosRaise3 = "" as Uni  // U+EB92
 const staffPosRaise2 = "" as Uni  // U+EB91
 const staffPosRaise1 = "" as Uni  // U+EB90
-const staffPosCenter = "" as Uni  // (blank)
+const staffPosCenter = EMPTY_UNICODE
 const staffPosLower1 = "" as Uni  // U+EB98
 const staffPosLower2 = "" as Uni  // U+EB99
 const staffPosLower3 = "" as Uni  // U+EB9A

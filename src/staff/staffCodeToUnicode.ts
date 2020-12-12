@@ -1,4 +1,4 @@
-import {Io, max, setAllPropertiesOfObjectOnAnother, sumTexts} from "@sagittal/general"
+import {BLANK, Io, max, setAllPropertiesOfObjectOnAnother, sumTexts} from "@sagittal/general"
 import {ACCIDENTALS} from "./accidentals"
 // TODO: clean these up
 // tslint:disable-next-line:no-reaching-imports
@@ -23,7 +23,7 @@ import {
     // tslint:disable-next-line:no-reaching-imports
 } from "./accidentals/sagittal"
 import {COMBINING_STAFF_POSITIONS} from "./combiningStaffPositions"
-import {INITIAL_STAFF_STATE} from "./constants"
+import {EMPTY_UNICODE, INITIAL_STAFF_STATE} from "./constants"
 import {getUnicode} from "./getUnicode"
 import {staffState} from "./globals"
 import {computeSpaceUnicode} from "./space"
@@ -152,7 +152,7 @@ const recordStaff = (userInput: Io): void => {
 const staffCodeToUnicode = (staffCode: Io): Uni => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 
-    let staffPosition = "" as Uni // TODO: blank uni constant
+    let staffPosition = EMPTY_UNICODE
 
     return `${staffCode.toLowerCase()} ;`
         .replace(/<br>/g, " ")
@@ -164,7 +164,7 @@ const staffCodeToUnicode = (staffCode: Io): Uni => {
                 // TODO: rename most "space" stuff to "advance"
                 return applySmartSpace(staffState.smartSpace)
             } else if (userInput.match("sp") && staffState.smartStaffOn) {
-                const amount = parseInt(userInput.replace("sp", ""))
+                const amount = parseInt(userInput.replace("sp", BLANK))
                 return applySmartSpace(amount)
             }
 
@@ -178,7 +178,7 @@ const staffCodeToUnicode = (staffCode: Io): Uni => {
 
             if (COMBINING_STAFF_POSITIONS.includes(unicode)) {
                 staffPosition = unicode
-                output = "" as Uni
+                output = EMPTY_UNICODE
             } else if (canBePositioned(unicode)) {
                 output = sumTexts(staffPosition, unicode)
             } else {
@@ -189,7 +189,7 @@ const staffCodeToUnicode = (staffCode: Io): Uni => {
 
             return output
         })
-        .join("") as Uni
+        .join(BLANK) as Uni
 }
 
 export {

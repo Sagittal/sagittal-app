@@ -16,9 +16,9 @@ const vectorize = (text: string): void => {
     })
 
     const path = [""]
-    polygons.forEach((loops: unknown[][][]): void => {
-        path.push("<path d=\"")
-        loops.forEach((loop: unknown[][]): void => {
+    polygons.forEach((loops: string[][][]): void => {
+        path.push(`<path d="`)
+        loops.forEach((loop: string[][]): void => {
             const start = loop[0]
             path.push("M " + start[0] + " " + start[1])
             for (let i = 1; i < loop.length; ++i) {
@@ -27,7 +27,7 @@ const vectorize = (text: string): void => {
             }
             path.push("L " + start[0] + " " + start[1])
         })
-        path.push("\" fill-rule=\"even-odd\" stroke-width=\"1\" fill=\"black\"></path>")
+        path.push(`" fill-rule="even-odd" stroke-width="1" fill="black"></path>`)
     })
 
     svg.innerHTML = path.join("")

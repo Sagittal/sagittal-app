@@ -66,7 +66,7 @@ const ehejipnEnharmonicallyReinterpret = "" as Uni                // U+E2F9
 const ehejipnEnharmonicallyReinterpretAlmostEqual = "" as Uni     // U+E2FA
 const ehejipnEnharmonicallyReinterpretEquals = "" as Uni          // U+E2FB
 
-const accidentalThreeQuarterTonesFlatZimmermann = "" as Uni         // U+E281
+const accidentalThreeQuarterTonesFlatZimmermann = "" as Uni         // U+E281
 
 const EHEJIPN_ACCIDENTALS: Partial<Record<Code, Uni>> = {
     [Code[".bbv"]]: ehejipnDoubleFlat5Otonal,
