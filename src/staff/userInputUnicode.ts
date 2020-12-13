@@ -23,11 +23,12 @@ import {computeUnit} from "./unit"
 
 // TODO: FEATURE ADJUST: END WITH ENOUGH STAFF?
 //  Is it best if includes an assumed ; at the end (unless it's actually an ; ) so that you get enough staff?
-//  Not even sure if this is a problem.
+//  Not even sure if this is a problem. And haven't talked with Dave yet of course because haven't investigated.
 
 // TODO: FEATURE ADJUST: CUSTOM JSON
 //  So that we can accept a user custom codes JSON object to merge in here too
 //  Eventually you should only need to export the maps from the map/ module, not the individual ones to get their widths
+//  And for the npm package version, you'd construct it with a custom JSON object or something
 
 // TODO: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
 //  Check the diff with the previous sentence
