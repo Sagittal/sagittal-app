@@ -27,6 +27,7 @@ import {
 } from "./map"
 import {Width} from "./types"
 
+// TODO: perhaps only keep ; and ;13 or 13; for the manual ones
 const SMART_ADVANCE_CODES: Code[] = [Code["sp"], Code["ad"], Code[";"]]
 const ADVANCE_CODE_PREFIX = "sp"
 

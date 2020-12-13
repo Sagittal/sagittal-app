@@ -30,6 +30,13 @@ import {computeUnit} from "./unit"
 //  Eventually you should only need to export the maps from the map/ module, not the individual ones to get their widths
 //  And for the npm package version, you'd construct it with a custom JSON object or something
 
+// TODO: should we handle multi-line staffs?
+
+// TODO: inline comments with { }
+
+// TODO: what if we don't render partial codes, but instead show a cursor, including trailing space at end
+//  But strip it out of the downloaded SVG
+
 // TODO: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
 //  Check the diff with the previous sentence
 const computeUserInputUnicode = (userInputSentence: Io): Uni => {
