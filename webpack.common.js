@@ -1,5 +1,4 @@
 module.exports = {
-    // TODO: PERFORMANCE: is it the export without import in index.ts files that is preventing tree-shaking from being too effective?
     mode: "production",
     resolve: {
         extensions: [".ts", ".scss", ".js"],
