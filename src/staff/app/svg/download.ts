@@ -1,6 +1,6 @@
 const DOWNLOAD_FILENAME: string = "staffCode.svg"
 
-// TODO: solve problem of sometimes bounding boxes SVG
+// TODO: BUG: solve problem of sometimes bounding boxes SVG... see what Dave says
 
 const downloadSvg = (svg: SVGElement): void => {
     const outerHTML = svg.outerHTML

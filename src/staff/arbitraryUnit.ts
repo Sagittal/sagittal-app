@@ -5,7 +5,7 @@ import {Width} from "./types"
 const computeArbitraryUnit = (userInput: Io): Unit => {
     return {
         unicode: String.fromCharCode(parseInt(userInput.replace(/^u\+(.*)/, "0x$1"))) as Uni,
-        width: 0 as Width, // TODO: test cover this, Dave specifically called it out
+        width: 0 as Width, // TODO: CLEAN: test cover this, Dave specifically called it out
     }
 }
 

@@ -1,4 +1,4 @@
-import {sp8, Uni} from "./map"
+import {Uni} from "./map"
 
 const computeUnicodeLiteral = (unicode: Uni): string => {
     let str = unicode.charCodeAt(0).toString(16).toUpperCase()

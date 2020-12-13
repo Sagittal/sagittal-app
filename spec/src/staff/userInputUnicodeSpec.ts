@@ -62,7 +62,7 @@ describe("computeUserInputUnicode", (): void => {
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
-    // TODO: OTHER CLEFS
+    // TODO: BASIC FEATURE: OTHER CLEFS
     // tslint:disable-next-line:ban
     xit("combining staff positions change depending on the clef", (): void => {
         const userInputSentence = "bscf d4 nt" as Io
@@ -216,7 +216,8 @@ describe("computeUserInputUnicode", (): void => {
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
-    // TODO: STOF to disable auto staff
+    // TODO: NEW FEATURE: STOF to disable auto staff
+    //  "stof" to turn off Auto Staff ("st" turns it back on).
     // tslint:disable-next-line:ban
     xit("can turn off Auto Staff", (): void => {
 

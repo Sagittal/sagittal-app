@@ -3,7 +3,7 @@ import {Code, CODE_MAP, Uni, Unit} from "../../src/staff/map"
 
 const CODE_MAP_ENTRIES = Object.entries(CODE_MAP) as Array<[Code, Unit]>
 
-// TODO: use unicodeSentence and unicodeWord here and there
+// TODO: CLEAN: use unicodeSentence and unicodeWord here and there
 const undoMapFailMessage = (unicodeSentence: Uni): Io => {
     const unicodeWords = unicodeSentence.split(BLANK) as Uni[]
 

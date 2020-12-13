@@ -5,7 +5,7 @@ const downloadButton = document.createElement("button")
 downloadButton.textContent = "Download image"
 downloadButton.addEventListener("click", (): void => downloadSvg(svg))
 
-// TODO: also add a copy image button?
+// TODO: NEW FEATURE: also add a copy image button? still waiting on Dave's response
 
 export {
     downloadButton,

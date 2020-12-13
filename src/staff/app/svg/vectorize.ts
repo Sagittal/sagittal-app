@@ -8,12 +8,13 @@ const MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER =
 //  Abstract this and pull back into @sagittal/general so the JI notation bound script can use it
 //  Except if I do that, then I'll be forced to import @sagittal/general into that @sagittal/staff repo
 //  Which I think I might want to try to avoid
+//  If JI notation bounds script uses vectorize then its readme needs to say you need to install bravura text bb
 
 const vectorizeSvg = (text: string, svg: SVGElement): void => {
     const polygons = vectorizeText(text, {
         polygons: true,
         height: HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT,
-        // TODO: SVG WIDTH - do whatever it takes to make the SVG's width match its contents
+        // TODO: FEATURE ADJUST: SVG WIDTH - do whatever it takes to make the SVG's width match its contents
         textBaseline: "top",
         font: "Bravura Text BB",
         size: MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER,

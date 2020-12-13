@@ -4,7 +4,7 @@ import {staffState} from "./globals"
 import {Code, CODE_MAP, EMPTY_UNICODE, STAFF_LINE_MAP, Uni, Unit} from "./map"
 import {Width} from "./types"
 
-// TODO: perhaps only keep ; and ;13 or 13; for the manual ones
+// TODO: FEATURE ADJUST: perhaps only keep ; and ;13 or 13; for the manual ones. waiting on Dave
 const SMART_ADVANCE_CODES: Code[] = [Code["sp"], Code["ad"], Code[";"]]
 const ADVANCE_CODE_PREFIX = "sp"
 
