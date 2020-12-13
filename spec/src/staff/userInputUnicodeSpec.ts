@@ -1,33 +1,5 @@
 import {Io} from "@sagittal/general"
-import {
-    bscf,
-    lgln,
-    nt1,
-    nt16,
-    nt16dn,
-    nt2,
-    nt2dn,
-    nt4,
-    nt4dn,
-    nt8,
-    nt8dn,
-    ntdb,
-    sp10,
-    sp11,
-    sp13,
-    sp16,
-    sp2,
-    sp3,
-    sp5,
-    sp7,
-    sp8,
-    st,
-    st24,
-    _11MUp,
-    _5CDown,
-} from "../../../src/staff/map"
-import {nt, tbcf} from "../../../src/staff/map/basics"
-import {bsd4, d5, g4, trd4} from "../../../src/staff/map/combiningStaffPositions"
+import {Code, CODE_MAP} from "../../../src/staff/map"
 import {computeUserInputUnicode} from "../../../src/staff/userInputUnicode"
 import {undoMapFailMessage} from "../../helpers/undoMap"
 
@@ -37,7 +9,12 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected = d5 + _11MUp + d5 + nt + sp13
+        const expected
+            = CODE_MAP[Code["d5"]]!.unicode
+            + CODE_MAP[Code["/|\\"]]!.unicode
+            + CODE_MAP[Code["d5"]]!.unicode
+            + CODE_MAP[Code["nt"]]!.unicode
+            + CODE_MAP[Code["sp13"]]!.unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
@@ -46,7 +23,12 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected = d5 + _11MUp + d5 + nt + sp13
+        const expected
+            = CODE_MAP[Code["d5"]]!.unicode
+            + CODE_MAP[Code["/|\\"]]!.unicode
+            + CODE_MAP[Code["d5"]]!.unicode
+            + CODE_MAP[Code["nt"]]!.unicode
+            + CODE_MAP[Code["sp13"]]!.unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
@@ -55,7 +37,16 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected = st + d5 + _11MUp + sp13 + d5 + nt + sp11 + st + sp2
+        const expected
+            = CODE_MAP[Code["st"]]!.unicode
+            + CODE_MAP[Code["d5"]]!.unicode
+            + CODE_MAP[Code["/|\\"]]!.unicode
+            + CODE_MAP[Code["sp13"]]!.unicode
+            + CODE_MAP[Code["d5"]]!.unicode
+            + CODE_MAP[Code["nt"]]!.unicode
+            + CODE_MAP[Code["sp11"]]!.unicode
+            + CODE_MAP[Code["st"]]!.unicode
+            + CODE_MAP[Code["sp2"]]!.unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
@@ -64,7 +55,10 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected = trd4 + nt + sp13
+        const expected
+            = CODE_MAP[Code["trd4"]]!.unicode
+            + CODE_MAP[Code["nt"]]!.unicode
+            + CODE_MAP[Code["sp13"]]!.unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
@@ -75,7 +69,11 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected = bscf + bsd4 + nt + sp13
+        const expected
+            = CODE_MAP[Code["bscf"]]!.unicode
+            + CODE_MAP[Code["bsd4"]]!.unicode
+            + CODE_MAP[Code["nt"]]!.unicode
+            + CODE_MAP[Code["sp13"]]!.unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
@@ -84,7 +82,22 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected = st + d5 + _11MUp + sp13 + d5 + nt + sp11 + st + sp2 + g4 + _5CDown + sp7 + g4 + nt + sp13
+        const expected
+            = CODE_MAP[Code["st"]]!.unicode
+            + CODE_MAP[Code["d5"]]!.unicode
+            + CODE_MAP[Code["/|\\"]]!.unicode
+            + CODE_MAP[Code["sp13"]]!.unicode
+            + CODE_MAP[Code["d5"]]!.unicode
+            + CODE_MAP[Code["nt"]]!.unicode
+            + CODE_MAP[Code["sp11"]]!.unicode
+            + CODE_MAP[Code["st"]]!.unicode
+            + CODE_MAP[Code["sp2"]]!.unicode
+            + CODE_MAP[Code["g4"]]!.unicode
+            + CODE_MAP[Code["\\!"]]!.unicode
+            + CODE_MAP[Code["sp7"]]!.unicode
+            + CODE_MAP[Code["g4"]]!.unicode
+            + CODE_MAP[Code["nt"]]!.unicode
+            + CODE_MAP[Code["sp13"]]!.unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
@@ -92,31 +105,67 @@ describe("computeUserInputUnicode", (): void => {
         let actual
 
         actual = computeUserInputUnicode("lgln ;" as Io)
-        expect(actual).toBe(lgln + sp13, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["lgln"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
 
         actual = computeUserInputUnicode("tbcf ;" as Io)
-        expect(actual).toBe(tbcf + sp16 + sp8, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["tbcf"]]!.unicode + CODE_MAP[Code["sp16"]]!.unicode + CODE_MAP[Code["sp8"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
 
         actual = computeUserInputUnicode("ntdb ;" as Io)
-        expect(actual).toBe(ntdb + sp16 + sp7, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["ntdb"]]!.unicode + CODE_MAP[Code["sp16"]]!.unicode + CODE_MAP[Code["sp7"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
         actual = computeUserInputUnicode("nt1 ;" as Io)
-        expect(actual).toBe(nt1 + sp13, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["nt1"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
         actual = computeUserInputUnicode("nt2 ;" as Io)
-        expect(actual).toBe(nt2 + sp13, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["nt2"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
         actual = computeUserInputUnicode("nt4 ;" as Io)
-        expect(actual).toBe(nt4 + sp13, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["nt4"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
         actual = computeUserInputUnicode("nt8 ;" as Io)
-        expect(actual).toBe(nt8 + sp16 + sp5, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["nt8"]]!.unicode + CODE_MAP[Code["sp16"]]!.unicode + CODE_MAP[Code["sp5"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
         actual = computeUserInputUnicode("nt16 ;" as Io)
-        expect(actual).toBe(nt16 + sp16 + sp5, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["nt16"]]!.unicode + CODE_MAP[Code["sp16"]]!.unicode + CODE_MAP[Code["sp5"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
         actual = computeUserInputUnicode("nt2dn ;" as Io)
-        expect(actual).toBe(nt2dn + sp13, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["nt2dn"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
         actual = computeUserInputUnicode("nt4dn ;" as Io)
-        expect(actual).toBe(nt4dn + sp13, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["nt4dn"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
         actual = computeUserInputUnicode("nt8dn ;" as Io)
-        expect(actual).toBe(nt8dn + sp13, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["nt8dn"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
         actual = computeUserInputUnicode("nt16dn ;" as Io)
-        expect(actual).toBe(nt16dn + sp13, undoMapFailMessage(actual))
+        expect(actual).toBe(
+            CODE_MAP[Code["nt16dn"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
+            undoMapFailMessage(actual),
+        )
     })
 
     it("if more than one symbol has occurred since the previous advance, uses the width of the symbol with the max width", (): void => {
@@ -124,7 +173,12 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected = lgln + nt16 + sp16 + sp5
+        const expected
+            = CODE_MAP[Code["lgln"]]!.unicode
+            + CODE_MAP[Code["nt16"]]!.unicode
+            + CODE_MAP[Code["sp16"]]!.unicode
+            + CODE_MAP[Code["sp5"]]!.unicode
+
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
@@ -134,7 +188,13 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected = lgln + nt16 + sp16 + sp5 + nt4 + sp13
+        const expected
+            = CODE_MAP[Code["lgln"]]!.unicode
+            + CODE_MAP[Code["nt16"]]!.unicode
+            + CODE_MAP[Code["sp16"]]!.unicode
+            + CODE_MAP[Code["sp5"]]!.unicode
+            + CODE_MAP[Code["nt4"]]!.unicode
+            + CODE_MAP[Code["sp13"]]!.unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 
@@ -143,7 +203,16 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected = st24 + nt8 + sp16 + sp5 + nt4 + sp3 + st24 + sp10
+        const expected
+            = CODE_MAP[Code["st24"]]!.unicode
+            + CODE_MAP[Code["nt8"]]!.unicode
+            + CODE_MAP[Code["sp16"]]!.unicode
+            + CODE_MAP[Code["sp5"]]!.unicode
+            + CODE_MAP[Code["nt4"]]!.unicode
+            + CODE_MAP[Code["sp3"]]!.unicode
+            + CODE_MAP[Code["st24"]]!.unicode
+            + CODE_MAP[Code["sp10"]]!.unicode
+
         expect(actual).toBe(expected, undoMapFailMessage(actual))
     })
 

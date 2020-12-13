@@ -1,33 +1,15 @@
-import {W07, W09, W10, W13, W15} from "../constants"
-import {Code, Uni, Unit} from "../types"
+import {Code, Unit} from "../types"
 
-const h = "" as Uni                   // U+E261   natural
-const n = h
-const sharp = "" as Uni                // U+E262   sharp
-const b = "" as Uni                   // U+E260   flat
-const x = "" as Uni                   // U+E47D   double sharp
-const bb = "" as Uni                  // U+E264   double flat
-const smallDoubleSharp = "" as Uni    // U+E263   small double-sharp*
+const CONVENTIONAL_ACCIDENTAL_MAP: Record<Code, Unit> = {
+    /*U+E261*/[Code["h"]]: {unicode: "", width: 7, description: "natural"},
+    /*U+E262*/[Code["#"]]: {unicode: "", width: 10, description: "sharp"},
+    /*U+E260*/[Code["b"]]: {unicode: "", width: 9, description: "flat"},
+    /*U+E47D*/[Code["x"]]: {unicode: "", width: 13, description: "double sharp"},
+    /*U+E264*/[Code["bb"]]: {unicode: "", width: 15, description: "double flat"},
+} as Record<Code, Unit>
 
-// * Not the same as "x" or "X", which is the (Sagittal-compatible) large double-sharp.
-
-const CONVENTIONAL_ACCIDENTAL_MAP: Partial<Record<Code, Unit>> = {
-    [Code["h"]]: {unicode: h, width: W07},
-    [Code["n"]]: {unicode: n, width: W07},
-    [Code["#"]]: {unicode: sharp, width: W10},
-    [Code["b"]]: {unicode: b, width: W09},
-    [Code["x"]]: {unicode: x, width: W13},
-    [Code["bb"]]: {unicode: bb, width: W15},
-    [Code["smallDoubleSharp"]]: {unicode: smallDoubleSharp, width: W10},
-}
+CONVENTIONAL_ACCIDENTAL_MAP[Code["n"]] = CONVENTIONAL_ACCIDENTAL_MAP[Code["h"]]
 
 export {
     CONVENTIONAL_ACCIDENTAL_MAP,
-    h,
-    n,
-    sharp,
-    b,
-    x,
-    bb,
-    smallDoubleSharp,
 }

@@ -2,16 +2,11 @@ import {Code, Uni, Unit} from "../types"
 
 // See: https://w3c.github.io/smufl/gitbook/tables/arrows-and-arrowheads.html
 
-const up = "" as Uni   // U+EB88
-const down = "" as Uni // U+EB8C
-
-const UPS_AND_DOWNS_ACCIDENTAL_MAP: Partial<Record<Code, Unit>> = {
-    [Code["^"]]: {unicode: up},
-    [Code["v"]]: {unicode: down},
-}
+const UPS_AND_DOWNS_ACCIDENTAL_MAP: Record<Code, Unit> = {
+    /*U+EB88*/[Code["^"]]: {unicode: "" as Uni},
+    /*U+EB8C*/[Code["v"]]: {unicode: "" as Uni},
+} as Record<Code, Unit>
 
 export {
     UPS_AND_DOWNS_ACCIDENTAL_MAP,
-    up,
-    down,
 }
