@@ -4,7 +4,6 @@ import {Code, Codeword, CODE_MAP, Unicode, Symbol} from "../../src/staff/symbols
 
 const CODE_MAP_ENTRIES = Object.entries(CODE_MAP) as Array<[unknown, Symbol]> as Array<[Code, Symbol]>
 
-// TODO: CLEAN: use unicodeSentence and unicodeWord here and there
 const undoMapFailMessage = (actualUnicodeSentence: Unicode, expectedUnicodeSentence: Unicode): Io => {
     const actualCodewords = undoMap(actualUnicodeSentence)
     const expectedCodewords = undoMap(expectedUnicodeSentence)

@@ -1,16 +1,14 @@
 import {isUndefined, max, sumTexts} from "@sagittal/general"
-import {computeLowercaseCodewordFromCode} from "./codeword"
+import {computeMapLowercaseCodewords} from "./codeword"
 import {DEFAULT_WIDTH} from "./constants"
 import {staffState} from "./globals"
 import {Code, EMPTY_UNICODE, LowercaseCodeword, SMART_ADVANCE_MAP, STAFF_LINE_MAP, Symbol, Unicode} from "./symbols"
 import {Width} from "./types"
 import {computeUnicodeForCode} from "./unicode"
 
-// TODO: FEATURE ADJUST: perhaps only keep ; and ;13 or 13; for the manual ones. waiting on Dave
+// TODO: FEATURE ADJUST: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
 
-// TODO: CLEAN: maybe helper for this? computeMapCodewords
-const SMART_ADVANCE_LOWERCASE_CODEWORDS: LowercaseCodeword[] = (Object.keys(SMART_ADVANCE_MAP) as unknown[] as Code[])
-    .map(computeLowercaseCodewordFromCode)
+const SMART_ADVANCE_LOWERCASE_CODEWORDS: LowercaseCodeword[] = computeMapLowercaseCodewords(SMART_ADVANCE_MAP)
 const ADVANCE_CODE_PREFIX = "sp"
 
 const MAX_ADVANCE_WIDTH: Width = 16 as Width
