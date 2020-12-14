@@ -17,7 +17,7 @@ conn.on("ready", () => {
                 if (err) throw err
                 conn.end()
 
-                console.alert("\n\nSagittal Forum has had its staff.js code updated!\n\n")
+                console.warn("\n\nSagittal Forum has had its staff.js code updated!\n\n")
             },
         )
     })

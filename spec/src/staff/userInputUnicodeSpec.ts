@@ -1,5 +1,5 @@
-import {Io} from "@sagittal/general"
-import {Code, CODE_MAP} from "../../../src/staff/map"
+import {Io, sumTexts} from "@sagittal/general"
+import {Code, CODE_MAP, Uni} from "../../../src/staff/map"
 import {computeUserInputUnicode} from "../../../src/staff/userInputUnicode"
 import {undoMapFailMessage} from "../../helpers/undoMap"
 
@@ -9,13 +9,9 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected
-            = CODE_MAP[Code["d5"]]!.unicode
-            + CODE_MAP[Code["/|\\"]]!.unicode
-            + CODE_MAP[Code["d5"]]!.unicode
-            + CODE_MAP[Code["nt"]]!.unicode
-            + CODE_MAP[Code["sp13"]]!.unicode
-        expect(actual).toBe(expected, undoMapFailMessage(actual))
+        // Codewords: d5 /|\ d5 nt sp13
+        const expected = "　 " as Uni
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
     it("the most recently used combining staff position is automatically applied if none is specified", (): void => {
@@ -23,13 +19,9 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected
-            = CODE_MAP[Code["d5"]]!.unicode
-            + CODE_MAP[Code["/|\\"]]!.unicode
-            + CODE_MAP[Code["d5"]]!.unicode
-            + CODE_MAP[Code["nt"]]!.unicode
-            + CODE_MAP[Code["sp13"]]!.unicode
-        expect(actual).toBe(expected, undoMapFailMessage(actual))
+        // Codewords: d5 /|\ d5 nt sp13
+        const expected = "　 " as Uni
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
     it("combining staff positions don't manifest until they are needed (only apply to symbols with ligatures to be vertically shifted by them)", (): void => {
@@ -37,17 +29,9 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected
-            = CODE_MAP[Code["st"]]!.unicode
-            + CODE_MAP[Code["d5"]]!.unicode
-            + CODE_MAP[Code["/|\\"]]!.unicode
-            + CODE_MAP[Code["sp13"]]!.unicode
-            + CODE_MAP[Code["d5"]]!.unicode
-            + CODE_MAP[Code["nt"]]!.unicode
-            + CODE_MAP[Code["sp11"]]!.unicode
-            + CODE_MAP[Code["st"]]!.unicode
-            + CODE_MAP[Code["sp2"]]!.unicode
-        expect(actual).toBe(expected, undoMapFailMessage(actual))
+        // Codewords: st d5 /|\ sp13 d5 nt sp11 st sp2
+        const expected = "　    " as Uni
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
     it("combining staff positions assume treble clef even if no clef has been provided", (): void => {
@@ -55,11 +39,9 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected
-            = CODE_MAP[Code["trd4"]]!.unicode
-            + CODE_MAP[Code["nt"]]!.unicode
-            + CODE_MAP[Code["sp13"]]!.unicode
-        expect(actual).toBe(expected, undoMapFailMessage(actual))
+        // Codewords: trd4 nt sp13
+        const expected = "　 " as Uni
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
     // TODO: BASIC FEATURE: OTHER CLEFS
@@ -69,12 +51,15 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected
-            = CODE_MAP[Code["bscf"]]!.unicode
-            + CODE_MAP[Code["bsd4"]]!.unicode
-            + CODE_MAP[Code["nt"]]!.unicode
-            + CODE_MAP[Code["sp13"]]!.unicode
-        expect(actual).toBe(expected, undoMapFailMessage(actual))
+        const expected = sumTexts(
+            CODE_MAP[Code["bscf"]]!.unicode,
+            CODE_MAP[Code["bsd4"]]!.unicode,
+            CODE_MAP[Code["nt"]]!.unicode,
+            CODE_MAP[Code["sp13"]]!.unicode,
+        )
+        // Codewords: bscf bsd4 nt sp13
+        // Const expected = "" as Uni
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
     it("combining staff positions persist until a new one is used", (): void => {
@@ -82,90 +67,62 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected
-            = CODE_MAP[Code["st"]]!.unicode
-            + CODE_MAP[Code["d5"]]!.unicode
-            + CODE_MAP[Code["/|\\"]]!.unicode
-            + CODE_MAP[Code["sp13"]]!.unicode
-            + CODE_MAP[Code["d5"]]!.unicode
-            + CODE_MAP[Code["nt"]]!.unicode
-            + CODE_MAP[Code["sp11"]]!.unicode
-            + CODE_MAP[Code["st"]]!.unicode
-            + CODE_MAP[Code["sp2"]]!.unicode
-            + CODE_MAP[Code["g4"]]!.unicode
-            + CODE_MAP[Code["\\!"]]!.unicode
-            + CODE_MAP[Code["sp7"]]!.unicode
-            + CODE_MAP[Code["g4"]]!.unicode
-            + CODE_MAP[Code["nt"]]!.unicode
-            + CODE_MAP[Code["sp13"]]!.unicode
-        expect(actual).toBe(expected, undoMapFailMessage(actual))
+        // Codewords: st d5 /|\ sp13 d5 nt sp11 st sp2 g4 \! sp7 g4 nt sp13
+        const expected = "　      　 " as Uni
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
     it("automatically advances, proportioned to each symbol", (): void => {
         let actual
+        let expected
 
         actual = computeUserInputUnicode("lgln ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["lgln"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "　 " as Uni     // Codewords: lgln sp13
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
         actual = computeUserInputUnicode("tbcf ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["tbcf"]]!.unicode + CODE_MAP[Code["sp16"]]!.unicode + CODE_MAP[Code["sp8"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "  " as Uni     // Codewords: tbcf sp16 sp8
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
         actual = computeUserInputUnicode("ntdb ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["ntdb"]]!.unicode + CODE_MAP[Code["sp16"]]!.unicode + CODE_MAP[Code["sp7"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "   " as Uni    // Codewords: ntdb sp16 sp7
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+
         actual = computeUserInputUnicode("nt1 ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["nt1"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "　 " as Uni     // Codewords: nt1 sp13
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+
         actual = computeUserInputUnicode("nt2 ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["nt2"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "　 " as Uni     // Codewords: nt2 sp13
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+
         actual = computeUserInputUnicode("nt4 ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["nt4"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "　 " as Uni     // Codewords: nt4 sp13
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+
         actual = computeUserInputUnicode("nt8 ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["nt8"]]!.unicode + CODE_MAP[Code["sp16"]]!.unicode + CODE_MAP[Code["sp5"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "   " as Uni    // Codewords: nt8 sp16 sp5
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+
         actual = computeUserInputUnicode("nt16 ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["nt16"]]!.unicode + CODE_MAP[Code["sp16"]]!.unicode + CODE_MAP[Code["sp5"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "   " as Uni    // Codewords: nt16 sp16 sp5
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+
         actual = computeUserInputUnicode("nt2dn ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["nt2dn"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "　 " as Uni     // Codewords: nt2dn sp13
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+
         actual = computeUserInputUnicode("nt4dn ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["nt4dn"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "　 " as Uni     // Codewords: nt4dn sp13
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+
         actual = computeUserInputUnicode("nt8dn ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["nt8dn"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "　 " as Uni     // Codewords: nt8dn sp13
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+
         actual = computeUserInputUnicode("nt16dn ;" as Io)
-        expect(actual).toBe(
-            CODE_MAP[Code["nt16dn"]]!.unicode + CODE_MAP[Code["sp13"]]!.unicode,
-            undoMapFailMessage(actual),
-        )
+        expected = "　 " as Uni     // Codewords: nt16dn sp13
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
     it("if more than one symbol has occurred since the previous advance, uses the width of the symbol with the max width", (): void => {
@@ -173,13 +130,9 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected
-            = CODE_MAP[Code["lgln"]]!.unicode
-            + CODE_MAP[Code["nt16"]]!.unicode
-            + CODE_MAP[Code["sp16"]]!.unicode
-            + CODE_MAP[Code["sp5"]]!.unicode
-
-        expect(actual).toBe(expected, undoMapFailMessage(actual))
+        // Codewords: lgln nt16 sp16 sp5
+        const expected = "   " as Uni
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
     it("resets the advance amount after each application", (): void => {
@@ -188,32 +141,21 @@ describe("computeUserInputUnicode", (): void => {
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected
-            = CODE_MAP[Code["lgln"]]!.unicode
-            + CODE_MAP[Code["nt16"]]!.unicode
-            + CODE_MAP[Code["sp16"]]!.unicode
-            + CODE_MAP[Code["sp5"]]!.unicode
-            + CODE_MAP[Code["nt4"]]!.unicode
-            + CODE_MAP[Code["sp13"]]!.unicode
-        expect(actual).toBe(expected, undoMapFailMessage(actual))
+        // Codewords: lgln nt16 sp16 sp5 nt4 sp13
+        const expected = "   　 " as Uni
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
+
+    // TODO: CLEAN: group these tests up into describes
 
     it("automatically adds staff lines as needed, if a staff has been asked for at all", (): void => {
         const userInputSentence = "st24 nt8 ; nt4 ;"
 
         const actual = computeUserInputUnicode(userInputSentence)
 
-        const expected
-            = CODE_MAP[Code["st24"]]!.unicode
-            + CODE_MAP[Code["nt8"]]!.unicode
-            + CODE_MAP[Code["sp16"]]!.unicode
-            + CODE_MAP[Code["sp5"]]!.unicode
-            + CODE_MAP[Code["nt4"]]!.unicode
-            + CODE_MAP[Code["sp3"]]!.unicode
-            + CODE_MAP[Code["st24"]]!.unicode
-            + CODE_MAP[Code["sp10"]]!.unicode
-
-        expect(actual).toBe(expected, undoMapFailMessage(actual))
+        // Codewords: st24 nt8 sp16 sp5 nt4 sp3 st24 sp10
+        const expected = "      " as Uni
+        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
     // TODO: NEW FEATURE: STOF to disable auto staff

@@ -1,3 +1,4 @@
+import {EMPTY_UNICODE} from "./constants"
 import {Code, Uni, Unit} from "./types"
 
 const ADVANCE_MAP: Record<Code, Unit> = {
@@ -19,8 +20,15 @@ const ADVANCE_MAP: Record<Code, Unit> = {
     /*U+2003              */[Code["sp16"]]: {unicode: " ", description: "EM SPACE"},
 } as Record<Code, Unit>
 
+const SMART_ADVANCE_MAP: Record<Code, Unit> = {
+    [Code[";"]]: {unicode: EMPTY_UNICODE, width: 0},
+} as Record<Code, Unit>
+SMART_ADVANCE_MAP[Code["sp"]] = SMART_ADVANCE_MAP[Code[";"]]
+SMART_ADVANCE_MAP[Code["ad"]] = SMART_ADVANCE_MAP[Code[";"]]
+
 // * U+2001 EM QUAD, our desired sp14, is not in the font yet. Once it is, these should be replaced.
 
 export {
     ADVANCE_MAP,
+    SMART_ADVANCE_MAP,
 }

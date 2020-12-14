@@ -36,6 +36,7 @@ const EHEJIPN_ACCIDENTAL_MAP: Record<Code, Unit> = {
     /*U+E2DB*/[Code[".n^^^"]]: {unicode: "" as Uni},
     /*U+E2DC*/[Code[".#^^^"]]: {unicode: "" as Uni},
     /*U+E2DD*/[Code[".x^^^"]]: {unicode: "" as Uni},
+    // TODO: fix this now that uppercase codes are accepted
     /*U+E2DE*/[Code[".l"]]: {unicode: "" as Uni}, // Lowercase L here, but people would type it uppercase
     /*U+E2DF*/[Code[".p"]]: {unicode: "" as Uni},  // People would type it uppercase
     /*U+E2E0*/[Code[".ll"]]: {unicode: "" as Uni},  // Lowercase LL here, but people would type them uppercase

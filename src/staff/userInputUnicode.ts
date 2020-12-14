@@ -4,16 +4,17 @@ import {
     computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff,
     recordManualStaffWidthForAutoStaff,
     recordSymbolWidthForSmartAdvance,
-    SMART_ADVANCE_CODES,
+    SMART_ADVANCE_CODEWORDS,
 } from "./advanceUnicode"
 import {INITIAL_STAFF_STATE} from "./constants"
 import {staffState} from "./globals"
-import {Code, Uni} from "./map"
+import {Codeword, Uni} from "./map"
 import {computeMaybePositionedUnicode} from "./positionUnicode"
 import {Clef, Width} from "./types"
 import {computeUnit} from "./unit"
 
 // TODO: NEW FEATURE: Smart Clefs™: if you type a treble clef, it knows to use treble, etc.
+//  It will probably involve a performance improvement to computeUnit since on the staffState you'll save which clef
 
 // TODO: FEATURE ADJUST: END WITH ENOUGH STAFF?
 //  Is it best if includes an assumed ; at the end (unless it's actually an ; ) so that you get enough staff?
@@ -43,20 +44,18 @@ const computeUserInputUnicode = (userInputSentence: Io): Uni => {
         .replace(/\t/g, " ")
         .split(SPACE)
         .map((userInputWord: Io): Uni => {
-            const code = userInputWord as Code
-
             // TODO: CLEAN: Try to handle manual staff here
             //  All smart auto staff advance stuff happens at the top
             //  And collapse the two records into one thing, if there’s even a need for two anymore
-            if (SMART_ADVANCE_CODES.includes(code)) {
+            if (SMART_ADVANCE_CODEWORDS.includes(userInputWord as Codeword)) {
                 return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(staffState.smartAdvanceWidth)
-            } else if (code.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
-                const manualAdvanceWidth = parseInt(code.replace(ADVANCE_CODE_PREFIX, BLANK)) as Width
+            } else if (userInputWord.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
+                const manualAdvanceWidth = parseInt(userInputWord.replace(ADVANCE_CODE_PREFIX, BLANK)) as Width
 
                 return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(manualAdvanceWidth)
             }
 
-            const unit = computeUnit(code as Code, Clef.TREBLE)
+            const unit = computeUnit(userInputWord, Clef.TREBLE)
             recordSymbolWidthForSmartAdvance(unit)
             recordManualStaffWidthForAutoStaff(unit)
 
