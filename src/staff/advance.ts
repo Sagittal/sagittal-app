@@ -74,8 +74,7 @@ const computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef = (
 ): Maybe<Unicode> => {
     if (isSmartAdvanceUnicode(symbol.unicode)) {
         return computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(staffState.smartAdvanceWidth)
-        // TODO: what if you use manual advance but don't have smart stave on? what happens then?
-    } else if (isManualAdvanceUnicode(symbol.unicode) && staffState.smartStaveOn) {
+    } else if (isManualAdvanceUnicode(symbol.unicode)) {
         return computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(symbol.width!)
     }
 
