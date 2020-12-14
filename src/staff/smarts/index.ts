@@ -1,0 +1,5 @@
+export {smarts} from "./globals"
+export {computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef, maybeRecordSmartAdvance} from "./advance"
+export {INITIAL_SMARTS} from "./constants"
+export {computeMaybePositionedUnicode, maybeRecordSmartPosition} from "./position"
+export {maybeRecordSmartClef} from "./clef"

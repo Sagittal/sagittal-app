@@ -1,5 +1,5 @@
 import {Io} from "@sagittal/general"
-import {staffState} from "../../../src/staff/globals"
+import {smarts} from "../../../src/staff/smarts"
 import {computeSymbol} from "../../../src/staff/symbol"
 import {Code, CODE_MAP} from "../../../src/staff/symbols"
 import {Clef} from "../../../src/staff/types"
@@ -14,9 +14,9 @@ describe("computeSymbol", (): void => {
     })
 
     it("works for different clefs", (): void => {
-        staffState.clef = Clef.TREBLE
+        smarts.clef = Clef.TREBLE
         expect(computeSymbol("d4" as Io)).toEqual(CODE_MAP[Code["tbd4"]])
-        staffState.clef = Clef.BASS
+        smarts.clef = Clef.BASS
         expect(computeSymbol("d4" as Io)).toEqual(CODE_MAP[Code["bsd4"]])
     })
 

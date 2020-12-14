@@ -17,14 +17,6 @@
 
 import {Unicode, Width} from "./symbols"
 
-interface StaffState {
-    smartAdvanceWidth: Width,
-    smartStaveWidth: Width,
-    smartStaveOn: boolean,
-    position: Unicode,
-    clef: Clef,
-}
-
 enum Clef {
     TREBLE = "treble",
     BASS = "bass",
@@ -34,7 +26,6 @@ type UnicodeLiteral = string & {_UnicodeLiteralBrand: boolean}
 
 export {
     Clef,
-    StaffState,
     Width,
     UnicodeLiteral,
 }

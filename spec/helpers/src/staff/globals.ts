@@ -1,7 +1,6 @@
 import {setAllPropertiesOfObjectOnAnother} from "@sagittal/general"
-import {INITIAL_STAFF_STATE} from "../../../../src/staff/constants"
-import {staffState} from "../../../../src/staff/globals"
+import {INITIAL_SMARTS, smarts} from "../../../../src/staff/smarts"
 
 afterEach((): void => {
-    setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
+    setAllPropertiesOfObjectOnAnother({objectToChange: smarts, objectWithProperties: INITIAL_SMARTS})
 })

@@ -1,8 +1,8 @@
 import {sumTexts} from "@sagittal/general"
-import {staffState} from "./globals"
+import {CSP_MAP, EMPTY_UNICODE, Symbol, Unicode} from "../symbols"
+import {computeMapUnicodes} from "../unicode"
+import {smarts} from "./globals"
 import {shouldNotBeDisplayed} from "./shouldNotBeDisplayed"
-import {CSP_MAP, EMPTY_UNICODE, Symbol, Unicode} from "./symbols"
-import {computeMapUnicodes} from "./unicode"
 
 const CSP_UNICODES = computeMapUnicodes(CSP_MAP)
 
@@ -19,20 +19,20 @@ const isCspUnicode = (unicodeWord: Unicode): boolean =>
 
 const computeMaybePositionedUnicode = ({unicode}: Symbol): Unicode =>
     canBePositioned(unicode) ?
-        sumTexts(staffState.position, unicode) :
+        sumTexts(smarts.position, unicode) :
         // TODO: CLEAN: MOSTLY DUMB 1-TO-1 MAP
         //  In this refactor, this goes elsewhere, mixing position and non-position
         shouldNotBeDisplayed(unicode) ?
             EMPTY_UNICODE :
             unicode
 
-const maybeRecordStickyPosition = ({unicode}: Symbol): void => {
-    if (isCspUnicode(unicode)) staffState.position = unicode
+const maybeRecordSmartPosition = ({unicode}: Symbol): void => {
+    if (isCspUnicode(unicode)) smarts.position = unicode
 }
 
 export {
     canBePositioned,
     computeMaybePositionedUnicode,
-    maybeRecordStickyPosition,
+    maybeRecordSmartPosition,
     isCspUnicode,
 }

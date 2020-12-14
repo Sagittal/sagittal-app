@@ -1,9 +1,9 @@
 import {max, Maybe, sumTexts} from "@sagittal/general"
-import {staffState} from "./globals"
-import {Code, EMPTY_UNICODE, MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP, Symbol, Unicode} from "./symbols"
-import {Width} from "./types"
-import {computeMapUnicodes, computeUnicodeForCode} from "./unicode"
-import {computeSymbolWidth} from "./width"
+import {Code, EMPTY_UNICODE, MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP, Symbol, Unicode} from "../symbols"
+import {Width} from "../types"
+import {computeMapUnicodes, computeUnicodeForCode} from "../unicode"
+import {computeSymbolWidth} from "../width"
+import {smarts} from "./globals"
 
 // TODO: FEATURE IMPROVE, BLOCKED: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
 
@@ -44,36 +44,36 @@ const computeAdvanceUnicode = (width: Width): Unicode => {
 }
 
 const computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave = (width: Width): Unicode => {
-    if (staffState.smartStaveWidth >= width || !staffState.smartStaveOn) {
+    if (smarts.staveWidth >= width || !smarts.staveOn) {
         const advanceUnicode = computeAdvanceUnicode(width)
 
-        if (staffState.smartStaveOn) staffState.smartStaveWidth = staffState.smartStaveWidth - width as Width
-        staffState.smartAdvanceWidth = 0 as Width
+        if (smarts.staveOn) smarts.staveWidth = smarts.staveWidth - width as Width
+        smarts.advanceWidth = 0 as Width
 
         return advanceUnicode
     } else {
-        const useUpExistingStaffAdvanceUnicode: Unicode = computeAdvanceUnicode(staffState.smartStaveWidth)
-        const remainingWidthWeStillNeedToApply: Width = width - staffState.smartStaveWidth as Width
+        const useUpExistingStaffAdvanceUnicode: Unicode = computeAdvanceUnicode(smarts.staveWidth)
+        const remainingWidthWeStillNeedToApply: Width = width - smarts.staveWidth as Width
         const remainingStaffAdvanceUnicode = computeAdvanceUnicode(remainingWidthWeStillNeedToApply)
 
-        staffState.smartStaveWidth = 24 - remainingWidthWeStillNeedToApply as Width
-        staffState.smartAdvanceWidth = 0 as Width
+        smarts.staveWidth = 24 - remainingWidthWeStillNeedToApply as Width
+        smarts.advanceWidth = 0 as Width
 
         return sumTexts(useUpExistingStaffAdvanceUnicode, ST24_UNICODE, remainingStaffAdvanceUnicode)
     }
 }
 
 const maybeRecordSmartAdvance = (symbol: Symbol): void => {
-    const maxSymbolWidthSinceLastAdvance = max(staffState.smartAdvanceWidth, computeSymbolWidth(symbol))
+    const maxSymbolWidthSinceLastAdvance = max(smarts.advanceWidth, computeSymbolWidth(symbol))
 
-    staffState.smartAdvanceWidth = maxSymbolWidthSinceLastAdvance
+    smarts.advanceWidth = maxSymbolWidthSinceLastAdvance
 }
 
 const computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef = (
     symbol: Symbol,
 ): Maybe<Unicode> => {
     if (isSmartAdvanceUnicode(symbol.unicode)) {
-        return computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(staffState.smartAdvanceWidth)
+        return computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(smarts.advanceWidth)
     } else if (isManualAdvanceUnicode(symbol.unicode)) {
         return computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(symbol.width!)
     }

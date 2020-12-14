@@ -1,11 +1,15 @@
 import {BLANK, Io, isUndefined, setAllPropertiesOfObjectOnAnother, SPACE} from "@sagittal/general"
-import {computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef, maybeRecordSmartAdvance} from "./advance"
-import {maybeRecordSmartClef} from "./clef"
 import {computeLowercaseCodewordFromInput} from "./codeword"
-import {INITIAL_STAFF_STATE} from "./constants"
-import {staffState} from "./globals"
-import {computeMaybePositionedUnicode, maybeRecordStickyPosition} from "./position"
-import {maybeRecordSmartStave} from "./staves"
+import {
+    computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef,
+    computeMaybePositionedUnicode,
+    INITIAL_SMARTS,
+    maybeRecordSmartAdvance,
+    maybeRecordSmartClef,
+    maybeRecordSmartPosition,
+    smarts,
+} from "./smarts"
+import {maybeRecordSmartStave} from "./smarts/staves"
 import {computeSymbol} from "./symbol"
 import {Code, LowercaseCodeword, Unicode} from "./symbols"
 
@@ -37,7 +41,7 @@ const collapseAllWhitespacesToSingleSpaces = (inputSentence: Io): Io =>
         .replace(/\t/g, SPACE)
 
 const computeInputUnicode = (inputSentence: Io): Unicode => {
-    setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
+    setAllPropertiesOfObjectOnAnother({objectToChange: smarts, objectWithProperties: INITIAL_SMARTS})
 
     const inputWords = collapseAllWhitespacesToSingleSpaces(inputSentence).split(SPACE)
     inputWords.push(Code[Code[";"]])
@@ -57,7 +61,7 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
             maybeRecordSmartStave(symbol)
             maybeRecordSmartAdvance(symbol)
             maybeRecordSmartClef(symbol)
-            maybeRecordStickyPosition(symbol)
+            maybeRecordSmartPosition(symbol)
 
             return computeMaybePositionedUnicode(symbol)
         })

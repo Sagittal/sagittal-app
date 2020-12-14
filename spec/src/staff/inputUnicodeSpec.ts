@@ -15,7 +15,7 @@ describe("computeInputUnicode", (): void => {
     })
 
     describe("Smart Position", (): void => {
-        it("the most recently used combining staff position is automatically applied if none is specified                  ", (): void => {
+        it("the most recently used CSP is automatically applied if none is specified                  ", (): void => {
             const inputSentence = "d5 /|\\ nt" as Io
 
             const actual = computeInputUnicode(inputSentence)

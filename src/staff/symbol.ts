@@ -1,7 +1,7 @@
 import {Io, isNumber, isUndefined, RecordKey} from "@sagittal/general"
 import {computeArbitrarySymbol} from "./arbitrarySymbol"
 import {computeLowercaseCodewordFromCodeword, computeLowercaseCodewordFromInput} from "./codeword"
-import {staffState} from "./globals"
+import {smarts} from "./smarts"
 import {BASS_CSP_MAP, Code, Codeword, CODE_MAP, LowercaseCodeword, Symbol, TREBLE_CSP_MAP, Unicode} from "./symbols"
 import {Clef, Width} from "./types"
 import {isUnicodeLiteral} from "./unicodeLiteral"
@@ -28,21 +28,23 @@ const LOWERCASE_CODEWORD_TO_CODE_MAP: Record<RecordKey<LowercaseCodeword>, Code>
         {} as Record<LowercaseCodeword, Symbol>,
     )
 
+const computeFallbackToInputAsFailedSymbol = (inputWord: Io): Symbol =>
+    ({
+        unicode: inputWord as Unicode, // This is a fallback, if it's not a mapped code or in U+____ form
+        width: 0 as Width,
+    })
+
 const computeSymbol = (inputWord: Io): Symbol => {
     const lowercaseCodeword: LowercaseCodeword = computeLowercaseCodewordFromInput(inputWord)
     const code: Code = LOWERCASE_CODEWORD_TO_CODE_MAP[lowercaseCodeword]
-    const codeMap = staffState.clef === Clef.BASS ? BASS_CODE_MAP : TREBLE_CODE_MAP
+    const codeMap = smarts.clef === Clef.BASS ? BASS_CODE_MAP : TREBLE_CODE_MAP
     const symbol = codeMap[code]
 
     if (!isUndefined(symbol)) return symbol
 
     if (isUnicodeLiteral(inputWord)) return computeArbitrarySymbol(inputWord)
 
-    return {
-        unicode: inputWord as Unicode, // This is a fallback, if it's not a mapped code or in U+____ form
-        width: 0 as Width,
-    }
-
+    return computeFallbackToInputAsFailedSymbol(inputWord)
 }
 
 export {
