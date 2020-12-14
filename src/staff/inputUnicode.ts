@@ -1,9 +1,12 @@
 import {BLANK, Io, isUndefined, setAllPropertiesOfObjectOnAnother, SPACE} from "@sagittal/general"
-import {computeMaybeStaffAdvanceOrClefUnicodeAndUpdateStaffState, recordSymbolWidthForSmartAdvance} from "./advanceUnicode"
-import {computeLowercaseCodewordFromCode, computeLowercaseCodewordFromInput} from "./codeword"
+import {undoMap} from "../../spec/helpers/undoMap"
+import {computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndAutoClef, maybeRecordSmartAdvance} from "./advance"
+import {maybeRecordSmartClef} from "./clef"
+import {computeLowercaseCodewordFromInput} from "./codeword"
 import {INITIAL_STAFF_STATE} from "./constants"
 import {staffState} from "./globals"
-import {computeMaybePositionedUnicode} from "./positionUnicode"
+import {maybeRecordAutoStaff} from "./lines"
+import {computeMaybePositionedUnicode, maybeRecordStickyPosition} from "./position"
 import {computeSymbol} from "./symbol"
 import {Code, LowercaseCodeword, Unicode} from "./symbols"
 
@@ -49,10 +52,15 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
         .map((inputWord: Io): Unicode => {
             const lowercaseCodeword: LowercaseCodeword = computeLowercaseCodewordFromInput(inputWord)
 
-            const unicode = computeMaybeStaffAdvanceOrClefUnicodeAndUpdateStaffState(lowercaseCodeword)
+            const unicode = computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndAutoClef(lowercaseCodeword)
             if (!isUndefined(unicode)) return unicode
 
             const symbol = computeSymbol(lowercaseCodeword)
+
+            maybeRecordAutoStaff(symbol)
+            maybeRecordSmartAdvance(symbol)
+            maybeRecordSmartClef(symbol)
+            maybeRecordStickyPosition(symbol)
 
             return computeMaybePositionedUnicode(symbol)
         })

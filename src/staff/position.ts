@@ -11,24 +11,24 @@ const canBePositioned = (unicodeWord: Unicode): boolean => {
         || (unicodeWord >= "\uEC30" && unicodeWord <= "\uEC3F") // Kievan square notation
 }
 
+const isCombiningStaffPosition = (unicodeWord: Unicode): boolean =>
+    COMBINING_STAFF_POSITION_UNICODES.includes(unicodeWord)
+
 const COMBINING_STAFF_POSITION_UNICODES = computeMapUnicodes(COMBINING_STAFF_POSITION_MAP)
 
-const computeMaybePositionedUnicode = ({unicode}: Symbol): Unicode => {
-    let output: Unicode
+const computeMaybePositionedUnicode = ({unicode}: Symbol): Unicode =>
+    canBePositioned(unicode) ?
+        sumTexts(staffState.position, unicode) :
+        isCombiningStaffPosition(unicode) ?
+            EMPTY_UNICODE :
+            unicode
 
-    if (COMBINING_STAFF_POSITION_UNICODES.includes(unicode)) {
-        staffState.position = unicode
-        output = EMPTY_UNICODE
-    } else if (canBePositioned(unicode)) {
-        output = sumTexts(staffState.position, unicode)
-    } else {
-        output = unicode
-    }
-
-    return output
+const maybeRecordStickyPosition = ({unicode}: Symbol): void => {
+    if (isCombiningStaffPosition(unicode)) staffState.position = unicode
 }
 
 export {
     canBePositioned,
     computeMaybePositionedUnicode,
+    maybeRecordStickyPosition,
 }

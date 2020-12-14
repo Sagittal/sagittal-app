@@ -35,4 +35,5 @@ const undoMap = (unicodeSentence: Unicode): Codeword[] => {
 
 export {
     undoMapFailMessage,
+    undoMap,
 }
