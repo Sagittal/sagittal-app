@@ -7,9 +7,9 @@ import {
     TREBLE_COMBINING_STAFF_POSITION_MAP,
 } from "./combiningStaffPositions"
 import {STAFF_LINE_MAP} from "./lines"
-import {Code, Unit} from "./types"
+import {Code, Symbol} from "./types"
 
-const CODE_MAP: Record<Code, Unit> = {
+const CODE_MAP: Record<Code, Symbol> = {
     ...ADVANCE_MAP,
     ...SMART_ADVANCE_MAP,
     ...STAFF_LINE_MAP,

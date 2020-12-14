@@ -1,6 +1,6 @@
 import {Io} from "@sagittal/general"
 import {computeInputUnicode} from "../../../src/staff/inputUnicode"
-import {Uni} from "../../../src/staff/map"
+import {Unicode} from "../../../src/staff/symbols"
 import {undoMapFailMessage} from "../../helpers/undoMap"
 
 describe("computeInputUnicode", (): void => {
@@ -10,7 +10,7 @@ describe("computeInputUnicode", (): void => {
         const actual = computeInputUnicode(inputSentence)
 
         // Codewords: d5 /|\ d5 nt sp13
-        const expected = "　 " as Uni
+        const expected = "　 " as Unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
@@ -21,7 +21,7 @@ describe("computeInputUnicode", (): void => {
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: d5 /|\ d5 nt sp13
-            const expected = "　 " as Uni
+            const expected = "　 " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
@@ -31,7 +31,7 @@ describe("computeInputUnicode", (): void => {
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: st d5 /|\ sp13 d5 nt sp11 st sp2
-            const expected = "　    " as Uni
+            const expected = "　    " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
@@ -41,7 +41,7 @@ describe("computeInputUnicode", (): void => {
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: trd4 nt sp13
-            const expected = "　 " as Uni
+            const expected = "　 " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
@@ -53,7 +53,7 @@ describe("computeInputUnicode", (): void => {
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: bscf bsd4 nt sp13
-            const expected = "" as Uni
+            const expected = "" as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
@@ -63,7 +63,7 @@ describe("computeInputUnicode", (): void => {
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: st d5 /|\ sp13 d5 nt sp11 st sp2 g4 \! sp7 g4 nt sp13
-            const expected = "　      　 " as Uni
+            const expected = "　      　 " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
     })
@@ -74,51 +74,51 @@ describe("computeInputUnicode", (): void => {
             let expected
 
             actual = computeInputUnicode("lgln ;" as Io)
-            expected = "　 " as Uni     // Codewords: lgln sp13
+            expected = "　 " as Unicode     // Codewords: lgln sp13
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("tbcf ;" as Io)
-            expected = "  " as Uni     // Codewords: tbcf sp16 sp8
+            expected = "  " as Unicode     // Codewords: tbcf sp16 sp8
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("ntdb ;" as Io)
-            expected = "   " as Uni    // Codewords: ntdb sp16 sp7
+            expected = "   " as Unicode    // Codewords: ntdb sp16 sp7
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt1 ;" as Io)
-            expected = "　 " as Uni     // Codewords: nt1 sp13
+            expected = "　 " as Unicode     // Codewords: nt1 sp13
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt2 ;" as Io)
-            expected = "　 " as Uni     // Codewords: nt2 sp13
+            expected = "　 " as Unicode     // Codewords: nt2 sp13
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt4 ;" as Io)
-            expected = "　 " as Uni     // Codewords: nt4 sp13
+            expected = "　 " as Unicode     // Codewords: nt4 sp13
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt8 ;" as Io)
-            expected = "   " as Uni    // Codewords: nt8 sp16 sp5
+            expected = "   " as Unicode    // Codewords: nt8 sp16 sp5
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt16 ;" as Io)
-            expected = "   " as Uni    // Codewords: nt16 sp16 sp5
+            expected = "   " as Unicode    // Codewords: nt16 sp16 sp5
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt2dn ;" as Io)
-            expected = "　 " as Uni     // Codewords: nt2dn sp13
+            expected = "　 " as Unicode     // Codewords: nt2dn sp13
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt4dn ;" as Io)
-            expected = "　 " as Uni     // Codewords: nt4dn sp13
+            expected = "　 " as Unicode     // Codewords: nt4dn sp13
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt8dn ;" as Io)
-            expected = "　 " as Uni     // Codewords: nt8dn sp13
+            expected = "　 " as Unicode     // Codewords: nt8dn sp13
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt16dn ;" as Io)
-            expected = "　 " as Uni     // Codewords: nt16dn sp13
+            expected = "　 " as Unicode     // Codewords: nt16dn sp13
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
@@ -128,7 +128,7 @@ describe("computeInputUnicode", (): void => {
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: lgln nt16 sp16 sp5
-            const expected = "   " as Uni
+            const expected = "   " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
@@ -138,7 +138,7 @@ describe("computeInputUnicode", (): void => {
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: lgln nt16 sp16 sp5 nt4 sp13
-            const expected = "   　 " as Uni
+            const expected = "   　 " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
     })
@@ -150,7 +150,7 @@ describe("computeInputUnicode", (): void => {
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: st24 nt8 sp16 sp5 nt4 sp3 st24 sp10
-            const expected = "      " as Uni
+            const expected = "      " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 

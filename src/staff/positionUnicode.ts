@@ -1,8 +1,8 @@
 import {sumTexts} from "@sagittal/general"
 import {staffState} from "./globals"
-import {COMBINING_STAFF_POSITION_MAP, EMPTY_UNICODE, Uni, Unit} from "./map"
+import {COMBINING_STAFF_POSITION_MAP, EMPTY_UNICODE, Symbol, Unicode} from "./symbols"
 
-const canBePositioned = (unicodeWord: Uni): boolean => {
+const canBePositioned = (unicodeWord: Unicode): boolean => {
     return (unicodeWord >= "\uE022" && unicodeWord <= "\uE02F") // Leger lines
         || (unicodeWord >= "\uE050" && unicodeWord <= "\uE07F") // Clefs
         || (unicodeWord >= "\uE0A0" && unicodeWord <= "\uE21F") // Noteheads notes stems beams
@@ -12,10 +12,10 @@ const canBePositioned = (unicodeWord: Uni): boolean => {
 }
 
 const COMBINING_STAFF_POSITION_UNICODES =
-    Object.values(COMBINING_STAFF_POSITION_MAP).map(({unicode}: Unit): Uni => unicode)
+    Object.values(COMBINING_STAFF_POSITION_MAP).map(({unicode}: Symbol): Unicode => unicode)
 
-const computeMaybePositionedUnicode = ({unicode}: Unit): Uni => {
-    let output: Uni
+const computeMaybePositionedUnicode = ({unicode}: Symbol): Unicode => {
+    let output: Unicode
 
     if (COMBINING_STAFF_POSITION_UNICODES.includes(unicode)) {
         staffState.position = unicode

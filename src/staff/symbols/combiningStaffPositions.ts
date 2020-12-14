@@ -1,7 +1,7 @@
 import {EMPTY_UNICODE} from "./constants"
-import {Code, Unit} from "./types"
+import {Code, Symbol} from "./types"
 
-const GENERIC_COMBINING_STAFF_POSITIONS: Record<Code, Unit> = {
+const GENERIC_COMBINING_STAFF_POSITIONS: Record<Code, Symbol> = {
     /*U+EB97*/[Code["up8"]]: {unicode: "", width: 0},
     /*U+EB96*/[Code["up7"]]: {unicode: "", width: 0},
     /*U+EB95*/[Code["up6"]]: {unicode: "", width: 0},
@@ -19,9 +19,9 @@ const GENERIC_COMBINING_STAFF_POSITIONS: Record<Code, Unit> = {
     /*U+EB9D*/[Code["dn6"]]: {unicode: "", width: 0},
     /*U+EB9E*/[Code["dn7"]]: {unicode: "", width: 0},
     /*U+EB9F*/[Code["dn8"]]: {unicode: "", width: 0},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
-const TREBLE_COMBINING_STAFF_POSITION_MAP: Record<Code, Unit> = {
+const TREBLE_COMBINING_STAFF_POSITION_MAP: Record<Code, Symbol> = {
     [Code["c6"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["up8"]],
     [Code["b5"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["up7"]],
     [Code["a5"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["up6"]],
@@ -39,9 +39,9 @@ const TREBLE_COMBINING_STAFF_POSITION_MAP: Record<Code, Unit> = {
     [Code["c4"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["dn6"]],
     [Code["b3"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["dn7"]],
     [Code["a3"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["dn8"]],
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
-const BASS_COMBINING_STAFF_POSITION_MAP: Record<Code, Unit> = {
+const BASS_COMBINING_STAFF_POSITION_MAP: Record<Code, Symbol> = {
     [Code["e4"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["up8"]],
     [Code["d4"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["up7"]],
     [Code["c4"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["up6"]],
@@ -59,9 +59,9 @@ const BASS_COMBINING_STAFF_POSITION_MAP: Record<Code, Unit> = {
     [Code["e2"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["dn6"]],
     [Code["d2"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["dn7"]],
     [Code["c2"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["dn8"]],
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
-const CLEF_SPECIFIED_COMBINING_STAFF_POSITION_MAP: Record<Code, Unit> = {
+const CLEF_SPECIFIED_COMBINING_STAFF_POSITION_MAP: Record<Code, Symbol> = {
     [Code["trc6"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["up8"]],
     [Code["trb5"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["up7"]],
     [Code["tra5"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["up6"]],
@@ -96,9 +96,9 @@ const CLEF_SPECIFIED_COMBINING_STAFF_POSITION_MAP: Record<Code, Unit> = {
     [Code["bse2"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["dn6"]],
     [Code["bsd2"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["dn7"]],
     [Code["bsc2"]]: GENERIC_COMBINING_STAFF_POSITIONS[Code["dn8"]],
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
-const COMBINING_STAFF_POSITION_MAP: Record<Code, Unit> = {
+const COMBINING_STAFF_POSITION_MAP: Record<Code, Symbol> = {
     ...BASS_COMBINING_STAFF_POSITION_MAP,
     ...TREBLE_COMBINING_STAFF_POSITION_MAP, // Yes, I realize this is overriding bass. But it's for the unicodes list.
     ...GENERIC_COMBINING_STAFF_POSITIONS,

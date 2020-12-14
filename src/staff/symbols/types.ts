@@ -1,15 +1,9 @@
-import {Width} from "../types"
+type Unicode = string & {_UniBrand: boolean}
 
-type Uni = string & {_UniBrand: boolean}
+type Width = number & {_WidthBrand: boolean}
 
-// TODO: CLEAN: or is this a "Glyph"?
-//  Man... both Glyph and Unicode are taken in @sagittal/system already, but maybe we should just eff-it and use them
-//  In a different way here
-//  How about just use "Symbol"
-//  It was tough to deal with its primitive conflict when on large scale
-//  But here it may be fine
-interface Unit {
-    unicode: Uni,
+interface Symbol {
+    unicode: Unicode,
     width?: Width,
     description?: string,
 }
@@ -487,9 +481,10 @@ enum Code {                                                             // Just 
 }
 
 export {
-    Uni,
+    Unicode,
+    Width,
     Code,
-    Unit,
+    Symbol,
     Codeword,
     LowercaseCodeword,
 }

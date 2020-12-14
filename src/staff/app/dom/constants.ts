@@ -1,5 +1,5 @@
 import {Io, Px} from "@sagittal/general"
-import {Code} from "../../map"
+import {Code} from "../../symbols"
 
 const HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT: Px = 57 as Px
 

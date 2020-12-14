@@ -4,15 +4,13 @@
 //  The thing we'd tell people to install into phpBB is still generate from here
 //  And write a README for the library (how to consume it in the way the Sagittal app currently is)
 
-import {Uni} from "./map"
-
-type Width = number & {_WidthBrand: boolean}
+import {Unicode, Width} from "./symbols"
 
 interface StaffState {
     smartAdvanceWidth: Width,
     autoStaffWidth: Width,
     autoStaffOn: boolean,
-    position: Uni,
+    position: Unicode,
 }
 
 enum Clef {
@@ -20,8 +18,11 @@ enum Clef {
     BASS = "bass",
 }
 
+type UnicodeLiteral = string & {_UnicodeLiteralBrand: boolean}
+
 export {
     Clef,
     StaffState,
     Width,
+    UnicodeLiteral,
 }

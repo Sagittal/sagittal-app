@@ -1,14 +1,14 @@
-import {Code} from "../../../src/staff/map"
+import {Code} from "../../../src/staff/symbols"
 import {computeUnicodeForCode} from "../../../src/staff/unicode"
 import {computeUnicodeLiteral} from "../../../src/staff/unicodeLiteral"
 
 describe("computeUnicodeLiteral", (): void => {
-    it("can get you the codepoint of a given Unicode char", (): void => {
-        const unicodeWord = computeUnicodeForCode(Code["st8"])
+    it("can get you the codepoint of a given Unicode char, using lowercase", (): void => {
+        const unicodeWord = computeUnicodeForCode(Code["tmcm"])
 
         const actual = computeUnicodeLiteral(unicodeWord)
 
-        const expected = "U+E020"
+        const expected = "u+e08a"
         expect(actual).toBe(expected)
     })
 })

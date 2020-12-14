@@ -1,4 +1,4 @@
-import {EMPTY_UNICODE} from "./map"
+import {EMPTY_UNICODE} from "./symbols"
 import {StaffState, Width} from "./types"
 
 const DEFAULT_WIDTH = 11 as Width

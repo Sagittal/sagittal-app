@@ -1,4 +1,4 @@
-import {Code, Codeword} from "../../../../src/staff/map"
+import {Code, Codeword} from "../../../../src/staff/symbols"
 
 describe("no duplicate codewords", (): void => {
     it("verifies that no two codewords, when put in lower case, are the same", (): void => {

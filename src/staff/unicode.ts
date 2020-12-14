@@ -1,12 +1,12 @@
 import {isUndefined} from "@sagittal/general"
-import {Code, CODE_MAP, Uni} from "./map"
+import {Code, CODE_MAP, Unicode} from "./symbols"
 
-const computeUnicodeForCode = (code: Code): Uni => {
-    const unit = CODE_MAP[code]
+const computeUnicodeForCode = (code: Code): Unicode => {
+    const symbol = CODE_MAP[code]
 
-    if (isUndefined(unit)) throw new Error(`Symbol not found for code ${code}`)
+    if (isUndefined(symbol)) throw new Error(`Symbol not found for code ${code}`)
 
-    return unit.unicode
+    return symbol.unicode
 }
 
 export {

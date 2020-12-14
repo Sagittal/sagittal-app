@@ -9,13 +9,13 @@ import {
 import {computeLowercaseCodewordFromInput} from "./codeword"
 import {INITIAL_STAFF_STATE} from "./constants"
 import {staffState} from "./globals"
-import {Codeword, Uni} from "./map"
 import {computeMaybePositionedUnicode} from "./positionUnicode"
+import {computeSymbol} from "./symbol"
+import {Unicode} from "./symbols"
 import {Clef, Width} from "./types"
-import {computeUnit} from "./unit"
 
 // TODO: NEW FEATURE: Smart Clefs™: if you type a treble clef, it knows to use treble, etc.
-//  It will probably involve a performance improvement to computeUnit since on the staffState you'll save which clef
+//  It will probably involve a performance improvement to computeSymbol since on the staffState you'll save which clef
 
 // TODO: FEATURE ADJUST: END WITH ENOUGH STAFF?
 //  Is it best if includes an assumed ; at the end (unless it's actually an ; ) so that you get enough staff?
@@ -35,7 +35,7 @@ import {computeUnit} from "./unit"
 
 // TODO: PERFORMANCE: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
 //  Check the diff with the previous sentence
-const computeInputUnicode = (inputSentence: Io): Uni => {
+const computeInputUnicode = (inputSentence: Io): Unicode => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 
     return `${inputSentence} ;`
@@ -44,7 +44,7 @@ const computeInputUnicode = (inputSentence: Io): Uni => {
         .replace(/\n/g, " ")
         .replace(/\t/g, " ")
         .split(SPACE)
-        .map((inputWord: Io): Uni => {
+        .map((inputWord: Io): Unicode => {
             // TODO: CLEAN: Try to handle manual staff here
             //  All smart auto staff advance stuff happens at the top
             //  And collapse the two records into one thing, if there’s even a need for two anymore
@@ -56,13 +56,13 @@ const computeInputUnicode = (inputSentence: Io): Uni => {
                 return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(manualAdvanceWidth)
             }
 
-            const unit = computeUnit(inputWord, Clef.TREBLE)
-            recordSymbolWidthForSmartAdvance(unit)
-            recordManualStaffWidthForAutoStaff(unit)
+            const symbol = computeSymbol(inputWord, Clef.TREBLE)
+            recordSymbolWidthForSmartAdvance(symbol)
+            recordManualStaffWidthForAutoStaff(symbol)
 
-            return computeMaybePositionedUnicode(unit)
+            return computeMaybePositionedUnicode(symbol)
         })
-        .join(BLANK) as Uni
+        .join(BLANK) as Unicode
 }
 
 export {

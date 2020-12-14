@@ -1,12 +1,12 @@
 // tslint:disable max-line-length
 
-import {Code, Unit} from "../types"
+import {Code, Symbol} from "../types"
 
 // TODO: REPO ORGANIZATION: SHOULD I USE @SAGITTAL/SYSTEM'S UNICODES?
 //  I considered pulling these unicodes in from @sagittal/system, but decided not to bloat it for the forum
 //  Probably revisit this decision after extracting staffCode to its own repo
 
-const SAGITTAL_ACCIDENTAL_MAP: Record<Code, Unit> = {
+const SAGITTAL_ACCIDENTAL_MAP: Record<Code, Symbol> = {
     /*U+E300*/[Code["|("]]: {unicode: "", width: 7, description: "5:7 kleisma up, (5:7k, ~11:13k, 7C less 5C)"},
     /*U+E301*/[Code["!("]]: {unicode: "", width: 7, description: "5:7 kleisma down"},
     /*U+E302*/[Code["/|"]]: {unicode: "", width: 7, description: "5 comma up, (5C), 1° up [22 27 29 34 41 46 53 96-EDOs], 1/12-tone up"},
@@ -251,7 +251,7 @@ const SAGITTAL_ACCIDENTAL_MAP: Record<Code, Unit> = {
     /*U+E409*/[Code["l9"]]: {unicode: "", description: "9 tinas down, 1/(7²⋅11)-schismina down, 1.26 cents down"},
     /*U+E40A*/[Code["@."]]: {unicode: "", description: "fractional tina up, 77/(5⋅37)-schismina up, 0.08 cents up"},
     /*U+E40B*/[Code["l."]]: {unicode: "", description: "fractional tina down, 77/(5⋅37)-schismina down, 0.08 cents down"},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
 export {
     SAGITTAL_ACCIDENTAL_MAP,

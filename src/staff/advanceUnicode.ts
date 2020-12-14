@@ -2,7 +2,7 @@ import {isUndefined, max, sumTexts} from "@sagittal/general"
 import {computeLowercaseCodewordFromCode} from "./codeword"
 import {DEFAULT_WIDTH} from "./constants"
 import {staffState} from "./globals"
-import {Code, EMPTY_UNICODE, LowercaseCodeword, SMART_ADVANCE_MAP, STAFF_LINE_MAP, Uni, Unit} from "./map"
+import {Code, EMPTY_UNICODE, LowercaseCodeword, SMART_ADVANCE_MAP, STAFF_LINE_MAP, Symbol, Unicode} from "./symbols"
 import {Width} from "./types"
 import {computeUnicodeForCode} from "./unicode"
 
@@ -22,7 +22,7 @@ const ST16_UNICODE = computeUnicodeForCode(Code["st16"])
 const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
 const ST_UNICODE = computeUnicodeForCode(Code["st"])
 
-const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Uni[] = [
+const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Unicode[] = [
     EMPTY_UNICODE,
     computeUnicodeForCode(Code["sp1"]),
     computeUnicodeForCode(Code["sp2"]),
@@ -41,7 +41,7 @@ const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Uni[] = [
     computeUnicodeForCode(Code["sp15"]),
 ]
 
-const computeAdvanceUnicode = (width: Width): Uni => {
+const computeAdvanceUnicode = (width: Width): Unicode => {
     let remainingWidth = width
 
     let unicodePhrase = EMPTY_UNICODE
@@ -53,7 +53,7 @@ const computeAdvanceUnicode = (width: Width): Uni => {
     return sumTexts(unicodePhrase, WIDTH_TO_ADVANCE_UNICODE_ARRAY[remainingWidth])
 }
 
-const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: Width): Uni => {
+const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: Width): Unicode => {
     if (staffState.autoStaffWidth >= width || !staffState.autoStaffOn) {
         const advanceUnicode = computeAdvanceUnicode(width)
 
@@ -62,7 +62,7 @@ const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: 
 
         return advanceUnicode
     } else {
-        const useUpExistingStaffAdvanceUnicode: Uni = computeAdvanceUnicode(staffState.autoStaffWidth)
+        const useUpExistingStaffAdvanceUnicode: Unicode = computeAdvanceUnicode(staffState.autoStaffWidth)
         const remainingWidthWeStillNeedToApply: Width = width - staffState.autoStaffWidth as Width
         const remainingStaffAdvanceUnicode = computeAdvanceUnicode(remainingWidthWeStillNeedToApply)
 
@@ -73,16 +73,16 @@ const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: 
     }
 }
 
-const recordSymbolWidthForSmartAdvance = ({width}: Unit): void => {
+const recordSymbolWidthForSmartAdvance = ({width}: Symbol): void => {
     staffState.smartAdvanceWidth =
         max(staffState.smartAdvanceWidth, isUndefined(width) ? DEFAULT_WIDTH : width) as number as Width
 }
 
 // TODO: DRY this with combining staff positions
 //  Or even better, just have a helper method that checks to see if a subset map includes
-const STAFF_LINES_UNICODES = Object.values(STAFF_LINE_MAP).map(({unicode}: Unit): Uni => unicode)
+const STAFF_LINES_UNICODES = Object.values(STAFF_LINE_MAP).map(({unicode}: Symbol): Unicode => unicode)
 
-const recordManualStaffWidthForAutoStaff = ({unicode}: Unit): void => {
+const recordManualStaffWidthForAutoStaff = ({unicode}: Symbol): void => {
     if (!STAFF_LINES_UNICODES.includes(unicode)) return
 
     staffState.autoStaffOn = true

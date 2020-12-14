@@ -1,23 +1,23 @@
-import {Code, Unit} from "./types"
+import {Code, Symbol} from "./types"
 
-const LEDGER_LINE_MAP: Record<Code, Unit> = {
+const LEDGER_LINE_MAP: Record<Code, Symbol> = {
     /*U+E022*/[Code["lgln"]]: {unicode: "", width: 13, description: "leger line"},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
-const BAR_MAP: Record<Code, Unit> = {
+const BAR_MAP: Record<Code, Symbol> = {
     /*U+E030*/[Code["brln"]]: {unicode: "", description: "bar line (single)"},
     /*U+E031*/[Code["brlndb"]]: {unicode: "", description: "bar line double"},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
-const CLEF_MAP: Record<Code, Unit> = {
+const CLEF_MAP: Record<Code, Symbol> = {
     /*U+E050*/[Code["tbcf"]]: {unicode: "", width: 24, description: "treble"},
     /*U+E05C*/[Code["alcf"]]: {unicode: "", width: 24, description: "alto"},
     /*U+E062*/[Code["bscf"]]: {unicode: "", width: 24, description: "bass"},
     /*U+E512*/[Code["8va"]]: {unicode: "", width: 24, description: "octave above"},
     /*U+E51C*/[Code["8va"]]: {unicode: "", width: 24, description: "octave below"},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
-const TIME_SIGNATURE_MAP: Record<Code, Unit> = {
+const TIME_SIGNATURE_MAP: Record<Code, Symbol> = {
     /*U+E080*/[Code["tm0"]]: {unicode: "", width: 17, description: "time signature digit 0"},
     /*U+E081*/[Code["tm1"]]: {unicode: "", width: 17, description: "time signature digit 1"},
     /*U+E082*/[Code["tm2"]]: {unicode: "", width: 17, description: "time signature digit 2"},
@@ -31,9 +31,9 @@ const TIME_SIGNATURE_MAP: Record<Code, Unit> = {
     /*U+E08A*/[Code["tmcm"]]: {unicode: "", width: 17, description: "common time"},
     /*U+E09E*/[Code["tmnm"]]: {unicode: "", width: 0, description: "time signature combining numerator position"},
     /*U+E09F*/[Code["tmdn"]]: {unicode: "", width: 0, description: "time signature combining denominator position"},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
-const NOTE_MAP: Record<Code, Unit> = {
+const NOTE_MAP: Record<Code, Symbol> = {
     /*U+E1D0*/[Code["ntdb"]]: {unicode: "", width: 23, description: "double whole note"},
     /*U+E1D2*/[Code["nt1"]]: {unicode: "", width: 13, description: "whole note"},
     /*U+E1D3*/[Code["nt2"]]: {unicode: "", width: 13, description: "half note stem up"},
@@ -44,33 +44,33 @@ const NOTE_MAP: Record<Code, Unit> = {
     /*U+E1D8*/[Code["nt8dn"]]: {unicode: "", width: 13, description: "quarter note stem down"},
     /*U+E1D9*/[Code["nt16"]]: {unicode: "", width: 21, description: "sixteenth note stem up"},
     /*U+E1DA*/[Code["nt16dn"]]: {unicode: "", width: 13, description: "sixteenth note stem down"},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 NOTE_MAP[Code["nt"]] = NOTE_MAP[Code["nt4"]]
 
-const REST_MAP: Record<Code, Unit> = {
+const REST_MAP: Record<Code, Symbol> = {
     /*U+E4E2*/[Code["rsdb"]]: {unicode: "", description: "double whole rest"},
     /*U+E4E3*/[Code["rs1"]]: {unicode: "", description: "whole rest"},
     /*U+E4E4*/[Code["rs2"]]: {unicode: "", description: "half rest"},
     /*U+E4E5*/[Code["rs4"]]: {unicode: "", description: "quarter rest"},
     /*U+E4E6*/[Code["rs8"]]: {unicode: "", description: "eighth rest"},
     /*U+E4E7*/[Code["rs16"]]: {unicode: "", description: "sixteenth rest"},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 REST_MAP[Code["rs"]] = REST_MAP[Code["rs4"]]
 
-const DOT_MAP: Record<Code, Unit> = {
+const DOT_MAP: Record<Code, Symbol> = {
     /*U+E1E7*/[Code["dt"]]: {unicode: "", width: 6, description: "augmentation dot"},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 DOT_MAP[Code["agdt"]] = DOT_MAP[Code["dt"]]
 
 // See: https://w3c.github.io/smufl/gitbook/tables/beamed-groups-of-notes.html
-const BEAMS_MAP: Record<Code, Unit> = {
+const BEAMS_MAP: Record<Code, Symbol> = {
     /*U+E1F0*/[Code["ntbmst"]]: {unicode: "", description: "note for start of any beam (short stem)"},
     /*U+E1F2*/[Code["ntbm8"]]: {unicode: "", description: "note for end of eighth beam, and possible continuation of any beam (short stem)"},
     /*U+E1F4*/[Code["ntbm16"]]: {unicode: "", description: "note for end of 16th beam, and possible continuation of any beam (short stem)"},
     /*U+E1F7*/[Code["bm8"]]: {unicode: "", description: "eighth beam continuation (for short stems)"},
     /*U+E1F9*/[Code["bm16"]]: {unicode: "", description: "sixteenth beam continuation (for short stems)"},
     /*U+E1FF*/[Code["tp3"]]: {unicode: "", description: "tuplet digit 3 (for short stems)"},
-} as Record<Code, Unit>
+} as Record<Code, Symbol>
 
 export {
     LEDGER_LINE_MAP,
