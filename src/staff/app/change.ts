@@ -1,9 +1,9 @@
-import {computeUserInputUnicode} from "../userInputUnicode"
+import {computeInputUnicode} from "../inputUnicode"
 import {staffCodeInput, staffDiv, svg} from "./dom"
 import {vectorizeSvg} from "./svg"
 
 const replaceStaffCodeWithUnicodeApp = (): void => {
-    const unicodeSentence = computeUserInputUnicode(staffCodeInput.value)
+    const unicodeSentence = computeInputUnicode(staffCodeInput.value)
     staffDiv.textContent = unicodeSentence
     vectorizeSvg(unicodeSentence, svg)
 }
