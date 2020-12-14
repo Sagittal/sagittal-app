@@ -1,6 +1,6 @@
 import "../../styles"
-import {setupDom} from "./dom"
 import {handleStaffCodeInputChange} from "./change"
+import {setupDom} from "./dom"
 
 setupDom()
 handleStaffCodeInputChange()

@@ -1,4 +1,3 @@
-import {EMPTY_UNICODE} from "./constants"
 import {Code, Symbol} from "./types"
 
 const GENERIC_COMBINING_STAFF_POSITIONS: Record<Code, Symbol> = {
@@ -10,7 +9,7 @@ const GENERIC_COMBINING_STAFF_POSITIONS: Record<Code, Symbol> = {
     /*U+EB92*/[Code["up3"]]: {unicode: "", width: 0},
     /*U+EB91*/[Code["up2"]]: {unicode: "", width: 0},
     /*U+EB90*/[Code["up1"]]: {unicode: "", width: 0},
-    /* N/A  */[Code["md0"]]: {unicode: EMPTY_UNICODE, width: 0},
+    /*U+F3F0*/[Code["md0"]]: {unicode: "", width: 0},
     /*U+EB98*/[Code["dn1"]]: {unicode: "", width: 0},
     /*U+EB99*/[Code["dn2"]]: {unicode: "", width: 0},
     /*U+EB9A*/[Code["dn3"]]: {unicode: "", width: 0},

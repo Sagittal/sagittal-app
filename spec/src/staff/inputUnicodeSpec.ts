@@ -9,6 +9,9 @@ describe("computeInputUnicode", (): void => {
 
         const actual = computeInputUnicode(inputSentence)
 
+        // TODO: there's something confusing about this, because I don't think you could just copy and paste *these*
+        //  Codewords in and see the expected thing. unless there was a way to turn all smart/sticky/auto stuff off.
+        //  Basically this is like the "revised codewords" from what you input. or "enhanced".
         // Codewords: d5 /|\ d5 nt sp13
         const expected = "　 " as Unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
@@ -30,8 +33,8 @@ describe("computeInputUnicode", (): void => {
 
             const actual = computeInputUnicode(inputSentence)
 
-            // Codewords: st d5 /|\ sp13 d5 nt sp11 st sp2
-            const expected = "　    " as Unicode
+            // Codewords: d5 /|\ st24 sp13 d5 nt sp11 st24 sp2
+            const expected = "　    " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
@@ -70,8 +73,8 @@ describe("computeInputUnicode", (): void => {
 
             const actual = computeInputUnicode(inputSentence)
 
-            // Codewords: st d5 /|\ sp13 d5 nt sp11 st sp2 g4 \! sp7 g4 nt sp13
-            const expected = "　      　 " as Unicode
+            // Codewords: d5 /|\ st24 sp13 d5 nt sp11 st24 sp2 g4 \! sp7 g4 nt sp13
+            const expected = "　      　 " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
     })

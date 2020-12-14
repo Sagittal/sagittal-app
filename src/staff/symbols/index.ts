@@ -5,6 +5,6 @@ export {
 export {Code, Unicode, Symbol, Codeword, LowercaseCodeword, Width} from "./types"
 export {EMPTY_UNICODE} from "./constants"
 export {CLEF_MAP} from "./basics"
-export {SMART_ADVANCE_MAP} from "./advance"
-export {STAFF_LINE_MAP} from "./lines"
+export {MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP} from "./advance"
+export {MANUAL_STAFF_MAP, AUTO_STAFF_MAP} from "./lines"
 export {CODE_MAP} from "./codes"

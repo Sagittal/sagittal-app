@@ -1,6 +1,6 @@
 import {BLANK, Io, isUndefined, SPACE} from "@sagittal/general"
 import {computeCodewordFromCode} from "../../src/staff/codeword"
-import {Code, Codeword, CODE_MAP, Unicode, Symbol} from "../../src/staff/symbols"
+import {Code, Codeword, CODE_MAP, Symbol, Unicode} from "../../src/staff/symbols"
 
 const CODE_MAP_ENTRIES = Object.entries(CODE_MAP) as Array<[unknown, Symbol]> as Array<[Code, Symbol]>
 

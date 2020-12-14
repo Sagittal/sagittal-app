@@ -1,5 +1,4 @@
 import {BLANK, Io, isUndefined, setAllPropertiesOfObjectOnAnother, SPACE} from "@sagittal/general"
-import {undoMap} from "../../spec/helpers/undoMap"
 import {computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndAutoClef, maybeRecordSmartAdvance} from "./advance"
 import {maybeRecordSmartClef} from "./clef"
 import {computeLowercaseCodewordFromInput} from "./codeword"
@@ -51,11 +50,13 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
     return inputWords
         .map((inputWord: Io): Unicode => {
             const lowercaseCodeword: LowercaseCodeword = computeLowercaseCodewordFromInput(inputWord)
-
-            const unicode = computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndAutoClef(lowercaseCodeword)
-            if (!isUndefined(unicode)) return unicode
-
             const symbol = computeSymbol(lowercaseCodeword)
+
+            const unicode = computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndAutoClef(symbol)
+            // TODO: CLEAN: maybe have a pattern to return prefixes and suffixes of unicode
+            //  Whether it's advance, staff, or CSP
+            //  And only having one return statement at the end
+            if (!isUndefined(unicode)) return unicode
 
             maybeRecordAutoStaff(symbol)
             maybeRecordSmartAdvance(symbol)

@@ -1,19 +1,20 @@
 import {ACCIDENTAL_MAP} from "./accidentals"
-import {ADVANCE_MAP, SMART_ADVANCE_MAP} from "./advance"
-import {BAR_MAP, BEAMS_MAP, CLEF_MAP, DOT_MAP, LEDGER_LINE_MAP, NOTE_MAP, REST_MAP, TIME_SIGNATURE_MAP} from "./basics"
+import {MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP} from "./advance"
+import {BAR_MAP, BEAMS_MAP, CLEF_MAP, DOT_MAP, LEGER_LINE_MAP, NOTE_MAP, REST_MAP, TIME_SIGNATURE_MAP} from "./basics"
 import {
     BASS_COMBINING_STAFF_POSITION_MAP,
     CLEF_SPECIFIED_COMBINING_STAFF_POSITION_MAP,
     TREBLE_COMBINING_STAFF_POSITION_MAP,
 } from "./combiningStaffPositions"
-import {STAFF_LINE_MAP} from "./lines"
+import {AUTO_STAFF_MAP, MANUAL_STAFF_MAP} from "./lines"
 import {Code, Symbol} from "./types"
 
 const CODE_MAP: Record<Code, Symbol> = {
-    ...ADVANCE_MAP,
+    ...MANUAL_ADVANCE_MAP,
     ...SMART_ADVANCE_MAP,
-    ...STAFF_LINE_MAP,
-    ...LEDGER_LINE_MAP,
+    ...MANUAL_STAFF_MAP,
+    ...AUTO_STAFF_MAP,
+    ...LEGER_LINE_MAP,
     ...BAR_MAP,
     ...CLEF_MAP,
     ...NOTE_MAP,

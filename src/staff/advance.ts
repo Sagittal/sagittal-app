@@ -1,17 +1,14 @@
-import {BLANK, max, Maybe, sumTexts} from "@sagittal/general"
-import {computeMapLowercaseCodewords} from "./codeword"
+import {max, Maybe, sumTexts} from "@sagittal/general"
 import {staffState} from "./globals"
-import {Code, EMPTY_UNICODE, LowercaseCodeword, SMART_ADVANCE_MAP, Symbol, Unicode} from "./symbols"
+import {Code, EMPTY_UNICODE, MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP, Symbol, Unicode} from "./symbols"
 import {Width} from "./types"
-import {computeUnicodeForCode} from "./unicode"
+import {computeMapUnicodes, computeUnicodeForCode} from "./unicode"
 import {computeSymbolWidth} from "./width"
 
 // TODO: FEATURE IMPROVE, BLOCKED: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
 
-const SMART_ADVANCE_LOWERCASE_CODEWORDS: LowercaseCodeword[] = computeMapLowercaseCodewords(SMART_ADVANCE_MAP)
-const ADVANCE_CODE_PREFIX = "sp"
-const MAX_ADVANCE_WIDTH: Width = 16 as Width
-const MAX_ADVANCE_UNICODE = computeUnicodeForCode(Code["sp16"])
+const SMART_ADVANCE_UNICODES = computeMapUnicodes(SMART_ADVANCE_MAP)
+const MANUAL_ADVANCE_UNICODES = computeMapUnicodes(MANUAL_ADVANCE_MAP)
 const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Unicode[] = [
     EMPTY_UNICODE,
     computeUnicodeForCode(Code["sp1"]),
@@ -30,7 +27,9 @@ const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Unicode[] = [
     computeUnicodeForCode(Code["sp14"]),
     computeUnicodeForCode(Code["sp15"]),
 ]
-const ST_UNICODE = computeUnicodeForCode(Code["st"])
+const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
+const MAX_ADVANCE_UNICODE = computeUnicodeForCode(Code["sp16"])
+const MAX_ADVANCE_WIDTH: Width = 16 as Width
 
 const computeAdvanceUnicode = (width: Width): Unicode => {
     let remainingWidth = width
@@ -60,7 +59,7 @@ const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: 
         staffState.autoStaffWidth = 24 - remainingWidthWeStillNeedToApply as Width
         staffState.smartAdvanceWidth = 0 as Width
 
-        return sumTexts(useUpExistingStaffAdvanceUnicode, ST_UNICODE, remainingStaffAdvanceUnicode)
+        return sumTexts(useUpExistingStaffAdvanceUnicode, ST24_UNICODE, remainingStaffAdvanceUnicode)
     }
 }
 
@@ -71,21 +70,29 @@ const maybeRecordSmartAdvance = (symbol: Symbol): void => {
 }
 
 const computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndAutoClef = (
-    lowercaseCodeword: LowercaseCodeword,
+    symbol: Symbol,
 ): Maybe<Unicode> => {
-    if (SMART_ADVANCE_LOWERCASE_CODEWORDS.includes(lowercaseCodeword)) {
+    if (isSmartAdvanceUnicode(symbol.unicode)) {
         return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(staffState.smartAdvanceWidth)
-    } else if (lowercaseCodeword.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
-        const manualAdvanceWidth = parseInt(lowercaseCodeword.replace(ADVANCE_CODE_PREFIX, BLANK)) as Width
-
-        return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(manualAdvanceWidth)
+        // TODO: what if you use manual advance but don't have auto staff on? what happens then?
+    } else if (isManualAdvanceUnicode(symbol.unicode) && staffState.autoStaffOn) {
+        return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(symbol.width!)
     }
 
     return undefined
 }
 
+const isSmartAdvanceUnicode = (unicodeWord: Unicode): boolean => {
+    return SMART_ADVANCE_UNICODES.includes(unicodeWord)
+}
+
+const isManualAdvanceUnicode = (unicodeWord: Unicode): boolean => {
+    return MANUAL_ADVANCE_UNICODES.includes(unicodeWord)
+}
 
 export {
     maybeRecordSmartAdvance,
     computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndAutoClef,
+    isSmartAdvanceUnicode,
+    isManualAdvanceUnicode,
 }

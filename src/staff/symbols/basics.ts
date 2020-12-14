@@ -1,6 +1,6 @@
 import {Code, Symbol} from "./types"
 
-const LEDGER_LINE_MAP: Record<Code, Symbol> = {
+const LEGER_LINE_MAP: Record<Code, Symbol> = {
     /*U+E022*/[Code["lgln"]]: {unicode: "", width: 13, description: "leger line"},
 } as Record<Code, Symbol>
 
@@ -73,7 +73,7 @@ const BEAMS_MAP: Record<Code, Symbol> = {
 } as Record<Code, Symbol>
 
 export {
-    LEDGER_LINE_MAP,
+    LEGER_LINE_MAP,
     BAR_MAP,
     CLEF_MAP,
     TIME_SIGNATURE_MAP,
