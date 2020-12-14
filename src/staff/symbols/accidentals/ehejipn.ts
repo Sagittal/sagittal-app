@@ -36,11 +36,10 @@ const EHEJIPN_ACCIDENTAL_MAP: Record<Code, Symbol> = {
     /*U+E2DB*/[Code[".n^^^"]]: {unicode: "" as Unicode},
     /*U+E2DC*/[Code[".#^^^"]]: {unicode: "" as Unicode},
     /*U+E2DD*/[Code[".x^^^"]]: {unicode: "" as Unicode},
-    // TODO: fix this now that uppercase codes are accepted
-    /*U+E2DE*/[Code[".l"]]: {unicode: "" as Unicode}, // Lowercase L here, but people would type it uppercase
-    /*U+E2DF*/[Code[".p"]]: {unicode: "" as Unicode},  // People would type it uppercase
-    /*U+E2E0*/[Code[".ll"]]: {unicode: "" as Unicode},  // Lowercase LL here, but people would type them uppercase
-    /*U+E2E1*/[Code[".pp"]]: {unicode: "" as Unicode},  // People would type them uppercase
+    /*U+E2DE*/[Code[".L"]]: {unicode: "" as Unicode},
+    /*U+E2DF*/[Code[".P"]]: {unicode: "" as Unicode},
+    /*U+E2E0*/[Code[".LL"]]: {unicode: "" as Unicode},
+    /*U+E2E1*/[Code[".PP"]]: {unicode: "" as Unicode},
     /*U+E2E2*/[Code[".<"]]: {unicode: "" as Unicode},
     /*U+E2E3*/[Code[".>"]]: {unicode: "" as Unicode},
     /*U+E2E4*/[Code[".<|"]]: {unicode: "" as Unicode},

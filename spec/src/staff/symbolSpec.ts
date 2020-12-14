@@ -19,10 +19,7 @@ describe("computeSymbol", (): void => {
     })
 
     it("can handle uppercase codes", (): void => {
-        const inputWord = "/x" as Io // Would be .toLowerCase()'d already
-
-        const actual = computeSymbol(inputWord)
-
-        expect(actual).toEqual(CODE_MAP[Code["/X"]])
+        expect(computeSymbol("/X" as Io)).toEqual(CODE_MAP[Code["/X"]])
+        expect(computeSymbol(".LL" as Io)).toEqual(CODE_MAP[Code[".LL"]])
     })
 })
