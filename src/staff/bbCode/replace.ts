@@ -1,14 +1,15 @@
 import {Io} from "@sagittal/general"
-import {computeUserInputUnicode} from "../userInputUnicode"
+import {computeInputUnicode} from "../inputUnicode"
 
-const replaceStaffCodeWithUnicodeBBCode = (staffDiv: Element): void => {
+const replaceInputWithUnicode = (staffDiv: Element): void => {
     if (staffDiv.classList.contains("processed")) return
     staffDiv.classList.add("processed")
 
-    staffDiv.textContent = computeUserInputUnicode(staffDiv.textContent as Io)
+    const unicodeSentence = computeInputUnicode(staffDiv.textContent as Io)
+    staffDiv.textContent = unicodeSentence
 }
 
 
 export {
-    replaceStaffCodeWithUnicodeBBCode,
+    replaceInputWithUnicode,
 }

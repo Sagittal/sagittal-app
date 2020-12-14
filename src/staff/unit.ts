@@ -25,17 +25,17 @@ const LOWERCASE_CODES: Record<RecordKey<Codeword>, Code> = (Object.entries(Code)
     {} as Record<Codeword, Unit>,
 )
 
-const computeUnit = (userInputWord: Io, clef: Clef = Clef.TREBLE): Unit => {
+const computeUnit = (inputWord: Io, clef: Clef = Clef.TREBLE): Unit => {
     const codeToUnitMap = clef === Clef.BASS ? BASS_CODE_MAP : TREBLE_CODE_MAP
 
-    const code: Code = LOWERCASE_CODES[userInputWord as Codeword]
+    const code: Code = LOWERCASE_CODES[inputWord as Codeword]
     const mappedUnit = codeToUnitMap[code]
 
     return mappedUnit || (
-        userInputWord.match(/^u\+/) ?
-            computeArbitraryUnit(userInputWord) :
+        inputWord.match(/^u\+/) ?
+            computeArbitraryUnit(inputWord) :
             {
-                unicode: userInputWord, // This is a fallback, if it's not a mapped code or in U+____ form
+                unicode: inputWord, // This is a fallback, if it's not a mapped code or in U+____ form
                 width: 0 as Width,
             }
     )

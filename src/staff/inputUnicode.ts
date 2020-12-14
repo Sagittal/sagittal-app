@@ -34,28 +34,28 @@ import {computeUnit} from "./unit"
 
 // TODO: PERFORMANCE: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
 //  Check the diff with the previous sentence
-const computeUserInputUnicode = (userInputSentence: Io): Uni => {
+const computeInputUnicode = (inputSentence: Io): Uni => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 
-    return `${userInputSentence.toLowerCase()} ;`
+    return `${inputSentence.toLowerCase()} ;`
         // TODO: CLEAN: Extract a remove white space helper
         .replace(/<br>/g, " ")
         .replace(/\n/g, " ")
         .replace(/\t/g, " ")
         .split(SPACE)
-        .map((userInputWord: Io): Uni => {
+        .map((inputWord: Io): Uni => {
             // TODO: CLEAN: Try to handle manual staff here
             //  All smart auto staff advance stuff happens at the top
             //  And collapse the two records into one thing, if there’s even a need for two anymore
-            if (SMART_ADVANCE_CODEWORDS.includes(userInputWord as Codeword)) {
+            if (SMART_ADVANCE_CODEWORDS.includes(inputWord as Codeword)) {
                 return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(staffState.smartAdvanceWidth)
-            } else if (userInputWord.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
-                const manualAdvanceWidth = parseInt(userInputWord.replace(ADVANCE_CODE_PREFIX, BLANK)) as Width
+            } else if (inputWord.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
+                const manualAdvanceWidth = parseInt(inputWord.replace(ADVANCE_CODE_PREFIX, BLANK)) as Width
 
                 return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(manualAdvanceWidth)
             }
 
-            const unit = computeUnit(userInputWord, Clef.TREBLE)
+            const unit = computeUnit(inputWord, Clef.TREBLE)
             recordSymbolWidthForSmartAdvance(unit)
             recordManualStaffWidthForAutoStaff(unit)
 
@@ -65,5 +65,5 @@ const computeUserInputUnicode = (userInputSentence: Io): Uni => {
 }
 
 export {
-    computeUserInputUnicode,
+    computeInputUnicode,
 }

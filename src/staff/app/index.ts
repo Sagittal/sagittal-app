@@ -1,6 +1,6 @@
 import "../../styles"
 import {setupDom} from "./dom"
-import {replaceStaffCodeWithUnicodeApp} from "./replace"
+import {handleStaffCodeInputChange} from "./change"
 
 setupDom()
-replaceStaffCodeWithUnicodeApp()
+handleStaffCodeInputChange()

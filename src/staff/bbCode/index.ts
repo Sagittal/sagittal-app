@@ -16,6 +16,6 @@ Text, and its precursors Bravura and SMuFL. For more information see https://www
 */
 
 import "../../styles"
-import {replaceStaffCodeWithUnicodeBBCode} from "./replace"
+import {replaceInputWithUnicode} from "./replace"
 
-document.querySelectorAll("div.staff").forEach(replaceStaffCodeWithUnicodeBBCode)
+document.querySelectorAll("div.staff").forEach(replaceInputWithUnicode)
