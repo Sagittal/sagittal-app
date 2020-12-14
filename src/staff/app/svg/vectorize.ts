@@ -14,7 +14,8 @@ const vectorizeSvg = (text: string, svg: SVGElement): void => {
     const polygons = vectorizeText(text, {
         polygons: true,
         height: HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT,
-        // TODO: FEATURE IMPROVE: SVG WIDTH - do whatever it takes to make the SVG's width match its contents
+        // TODO: FEATURE IMPROVE, READY TO GO: SVG WIDTH
+        //  Do whatever it takes to make the SVG's width match its contents
         textBaseline: "top",
         font: "Bravura Text BB",
         size: MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER,

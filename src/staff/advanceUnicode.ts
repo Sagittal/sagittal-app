@@ -1,25 +1,18 @@
-import {BLANK, Io, max, Maybe, sumTexts} from "@sagittal/general"
-import {computeLowercaseCodewordFromInput, computeMapLowercaseCodewords} from "./codeword"
+import {BLANK, max, Maybe, sumTexts} from "@sagittal/general"
+import {computeMapLowercaseCodewords} from "./codeword"
 import {staffState} from "./globals"
 import {computeSymbol} from "./symbol"
-import {Code, EMPTY_UNICODE, LowercaseCodeword, SMART_ADVANCE_MAP, STAFF_LINE_MAP, Unicode} from "./symbols"
-import {Width} from "./types"
+import {CLEF_MAP, Code, EMPTY_UNICODE, LowercaseCodeword, SMART_ADVANCE_MAP, STAFF_LINE_MAP, Unicode} from "./symbols"
+import {Clef, Width} from "./types"
 import {computeUnicodeForCode} from "./unicode"
 import {computeSymbolWidth} from "./width"
 
-// TODO: FEATURE IMPROVE: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
+// TODO: FEATURE IMPROVE, BLOCKED: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
 
 const SMART_ADVANCE_LOWERCASE_CODEWORDS: LowercaseCodeword[] = computeMapLowercaseCodewords(SMART_ADVANCE_MAP)
 const ADVANCE_CODE_PREFIX = "sp"
 const MAX_ADVANCE_WIDTH: Width = 16 as Width
 const MAX_ADVANCE_UNICODE = computeUnicodeForCode(Code["sp16"])
-
-const MANUAL_STAFF_LINES_LOWERCASE_CODEWORDS: LowercaseCodeword[] = computeMapLowercaseCodewords(STAFF_LINE_MAP)
-const ST8_UNICODE = computeUnicodeForCode(Code["st8"])
-const ST16_UNICODE = computeUnicodeForCode(Code["st16"])
-const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
-const ST_UNICODE = computeUnicodeForCode(Code["st"])
-
 const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Unicode[] = [
     EMPTY_UNICODE,
     computeUnicodeForCode(Code["sp1"]),
@@ -38,6 +31,16 @@ const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Unicode[] = [
     computeUnicodeForCode(Code["sp14"]),
     computeUnicodeForCode(Code["sp15"]),
 ]
+
+const MANUAL_STAFF_LINES_LOWERCASE_CODEWORDS: LowercaseCodeword[] = computeMapLowercaseCodewords(STAFF_LINE_MAP)
+const ST8_UNICODE = computeUnicodeForCode(Code["st8"])
+const ST16_UNICODE = computeUnicodeForCode(Code["st16"])
+const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
+const ST_UNICODE = computeUnicodeForCode(Code["st"])
+
+const CLEF_LOWERCASE_CODEWORDS: LowercaseCodeword[] = computeMapLowercaseCodewords(CLEF_MAP)
+const TREBLE_UNICODE = computeUnicodeForCode(Code["tbcf"])
+const BASS_UNICODE = computeUnicodeForCode(Code["bscf"])
 
 const computeAdvanceUnicode = (width: Width): Unicode => {
     let remainingWidth = width
@@ -71,18 +74,18 @@ const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: 
     }
 }
 
-const recordSymbolWidthForSmartAdvance = (inputWord: Io): void => {
-    const symbol = computeSymbol(inputWord)
+const recordSymbolWidthForSmartAdvance = (lowercaseCodeword: LowercaseCodeword): void => {
+    const symbol = computeSymbol(lowercaseCodeword)
 
     const maxSymbolWidthSinceLastAdvance = max(staffState.smartAdvanceWidth, computeSymbolWidth(symbol))
 
     staffState.smartAdvanceWidth = maxSymbolWidthSinceLastAdvance
 }
 
-const computeManualStaffUnicodeAndRecordAutoStaff = (inputWord: Io): Unicode => {
+const computeManualStaffUnicodeAndRecordAutoStaff = (lowercaseCodeword: LowercaseCodeword): Unicode => {
     staffState.autoStaffOn = true
 
-    const {unicode} = computeSymbol(inputWord)
+    const {unicode} = computeSymbol(lowercaseCodeword)
 
     if (unicode === ST8_UNICODE) staffState.autoStaffWidth = staffState.autoStaffWidth + 8 as Width
     if (unicode === ST16_UNICODE) staffState.autoStaffWidth = staffState.autoStaffWidth + 16 as Width
@@ -91,17 +94,32 @@ const computeManualStaffUnicodeAndRecordAutoStaff = (inputWord: Io): Unicode => 
     return unicode
 }
 
-const computeMaybeStaffOrAdvanceUnicodeAndUpdateAutoStaffAndSmartAdvance = (inputWord: Io): Maybe<Unicode> => {
-    if (SMART_ADVANCE_LOWERCASE_CODEWORDS.includes(computeLowercaseCodewordFromInput(inputWord))) {
+const computeClefUnicodeAndRecordSmartClef = (lowercaseCodeword: LowercaseCodeword): Unicode => {
+    const {unicode} = computeSymbol(lowercaseCodeword)
+
+    if (unicode === TREBLE_UNICODE) staffState.clef = Clef.TREBLE
+    if (unicode === BASS_UNICODE) staffState.clef = Clef.BASS
+
+    recordSymbolWidthForSmartAdvance(lowercaseCodeword)
+
+    return unicode
+}
+
+const computeMaybeStaffAdvanceOrClefUnicodeAndUpdateStaffState = (
+    lowercaseCodeword: LowercaseCodeword,
+): Maybe<Unicode> => {
+    if (SMART_ADVANCE_LOWERCASE_CODEWORDS.includes(lowercaseCodeword)) {
         return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(staffState.smartAdvanceWidth)
-    } else if (inputWord.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
-        const manualAdvanceWidth = parseInt(inputWord.replace(ADVANCE_CODE_PREFIX, BLANK)) as Width
+    } else if (lowercaseCodeword.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
+        const manualAdvanceWidth = parseInt(lowercaseCodeword.replace(ADVANCE_CODE_PREFIX, BLANK)) as Width
 
         return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(manualAdvanceWidth)
-    } else if (MANUAL_STAFF_LINES_LOWERCASE_CODEWORDS.includes(computeLowercaseCodewordFromInput(inputWord))) {
-        return computeManualStaffUnicodeAndRecordAutoStaff(inputWord)
+    } else if (MANUAL_STAFF_LINES_LOWERCASE_CODEWORDS.includes(lowercaseCodeword)) {
+        return computeManualStaffUnicodeAndRecordAutoStaff(lowercaseCodeword)
+    } else if (CLEF_LOWERCASE_CODEWORDS.includes(lowercaseCodeword)) {
+        return computeClefUnicodeAndRecordSmartClef(lowercaseCodeword)
     } else {
-        recordSymbolWidthForSmartAdvance(inputWord)
+        recordSymbolWidthForSmartAdvance(lowercaseCodeword)
 
         return undefined
     }
@@ -109,5 +127,5 @@ const computeMaybeStaffOrAdvanceUnicodeAndUpdateAutoStaffAndSmartAdvance = (inpu
 
 export {
     recordSymbolWidthForSmartAdvance,
-    computeMaybeStaffOrAdvanceUnicodeAndUpdateAutoStaffAndSmartAdvance,
+    computeMaybeStaffAdvanceOrClefUnicodeAndUpdateStaffState,
 }

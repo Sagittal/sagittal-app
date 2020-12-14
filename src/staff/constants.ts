@@ -1,5 +1,5 @@
 import {EMPTY_UNICODE} from "./symbols"
-import {StaffState, Width} from "./types"
+import {Clef, StaffState, Width} from "./types"
 
 const DEFAULT_WIDTH = 11 as Width
 
@@ -8,6 +8,7 @@ const INITIAL_STAFF_STATE: StaffState = {
     autoStaffWidth: 0 as Width,
     autoStaffOn: false,
     position: EMPTY_UNICODE,
+    clef: Clef.TREBLE,
 }
 
 export {

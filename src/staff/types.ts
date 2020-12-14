@@ -11,6 +11,7 @@ interface StaffState {
     autoStaffWidth: Width,
     autoStaffOn: boolean,
     position: Unicode,
+    clef: Clef,
 }
 
 enum Clef {

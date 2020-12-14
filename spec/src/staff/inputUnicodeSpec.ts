@@ -25,7 +25,7 @@ describe("computeInputUnicode", (): void => {
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
-        it("combining staff positions don't manifest until they are needed (only apply to symbols with ligatures to be vertically shifted by them)", (): void => {
+        it("don't manifest until they are needed (only apply to symbols with ligatures to be vertically shifted by them)", (): void => {
             const inputSentence = "d5 st /|\\ sp13 nt sp13" as Io
 
             const actual = computeInputUnicode(inputSentence)
@@ -35,7 +35,7 @@ describe("computeInputUnicode", (): void => {
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
-        it("combining staff positions assume treble clef even if no clef has been provided", (): void => {
+        it("assume treble clef even if no clef has been provided", (): void => {
             const inputSentence = "d4 nt" as Io
 
             const actual = computeInputUnicode(inputSentence)
@@ -45,18 +45,27 @@ describe("computeInputUnicode", (): void => {
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
-        // tslint:disable-next-line:ban
-        xit("combining staff positions change depending on the clef", (): void => {
-            const inputSentence = "bscf d4 nt" as Io
+        it("change depending on the clef", (): void => {
+            const inputSentence = "bscf ; d4 nt" as Io
 
             const actual = computeInputUnicode(inputSentence)
 
-            // Codewords: bscf bsd4 nt sp13
-            const expected = "" as Unicode
+            // Codewords: bscf sp16 sp8 b5 nt4 sp13
+            const expected = "  　 " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
-        it("combining staff positions persist until a new one is used", (): void => {
+        it("clefs are smart and they stick until you change them (you can change from one to the other)", (): void => {
+            const inputSentence = "bscf ; d4 nt ; c4 nt ; tbcf ; d4 nt ; c4 nt" as Io
+
+            const actual = computeInputUnicode(inputSentence)
+
+            // Codewords: bscf sp16 sp8 bsd4 nt sp13 bsc4 nt sp13 tbcf sp16 sp8 tbd4 nt sp13 tbc4 nt sp13
+            const expected = "  　 　   　 　 " as Unicode
+            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+        })
+
+        it("persist until a new one is used", (): void => {
             const inputSentence = "d5 st /|\\ sp13 nt sp13 g4 \\! sp7 nt sp13" as Io
 
             const actual = computeInputUnicode(inputSentence)

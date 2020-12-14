@@ -1,6 +1,7 @@
 import {Io, isNumber, isUndefined, RecordKey} from "@sagittal/general"
 import {computeArbitrarySymbol} from "./arbitrarySymbol"
 import {computeLowercaseCodewordFromCodeword, computeLowercaseCodewordFromInput} from "./codeword"
+import {staffState} from "./globals"
 import {
     BASS_COMBINING_STAFF_POSITION_MAP,
     Code,
@@ -36,10 +37,10 @@ const LOWERCASE_CODEWORD_TO_CODE_MAP: Record<RecordKey<LowercaseCodeword>, Code>
         {} as Record<LowercaseCodeword, Symbol>,
     )
 
-const computeSymbol = (inputWord: Io, clef: Clef = Clef.TREBLE): Symbol => {
+const computeSymbol = (inputWord: Io): Symbol => {
     const lowercaseCodeword: LowercaseCodeword = computeLowercaseCodewordFromInput(inputWord)
     const code: Code = LOWERCASE_CODEWORD_TO_CODE_MAP[lowercaseCodeword]
-    const codeMap = clef === Clef.BASS ? BASS_CODE_MAP : TREBLE_CODE_MAP
+    const codeMap = staffState.clef === Clef.BASS ? BASS_CODE_MAP : TREBLE_CODE_MAP
     const symbol = codeMap[code]
 
     if (!isUndefined(symbol)) return symbol

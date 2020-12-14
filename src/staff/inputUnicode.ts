@@ -1,13 +1,11 @@
 import {BLANK, Io, isUndefined, setAllPropertiesOfObjectOnAnother, SPACE} from "@sagittal/general"
-import {computeMaybeStaffOrAdvanceUnicodeAndUpdateAutoStaffAndSmartAdvance, recordSymbolWidthForSmartAdvance} from "./advanceUnicode"
+import {computeMaybeStaffAdvanceOrClefUnicodeAndUpdateStaffState, recordSymbolWidthForSmartAdvance} from "./advanceUnicode"
+import {computeLowercaseCodewordFromCode, computeLowercaseCodewordFromInput} from "./codeword"
 import {INITIAL_STAFF_STATE} from "./constants"
 import {staffState} from "./globals"
 import {computeMaybePositionedUnicode} from "./positionUnicode"
 import {computeSymbol} from "./symbol"
-import {Code, Unicode} from "./symbols"
-
-// TODO: NEW FEATURE, READY TO GO: Smart Clefs™: if you type a treble clef, it knows to use treble, etc.
-//  It will probably involve a performance improvement to computeSymbol since on the staffState you'll save which clef
+import {Code, LowercaseCodeword, Unicode} from "./symbols"
 
 // TODO: NEW FEATURE, READY TO GO: inline comments with { }. ready to go
 
@@ -31,8 +29,9 @@ import {Code, Unicode} from "./symbols"
 
 // TODO: NEW FEATURE, BLOCKED: also add a copy image button? still waiting on Dave's confirmation
 
-// TODO: PERFORMANCE: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
+// TODO: PERFORMANCE, BLOCKED: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
 //  Check the diff with the previous sentence
+//  Just waiting cuz I'm curious what Dave thinks
 
 const collapseAllWhitespacesToSingleSpaces = (inputSentence: Io): Io =>
     inputSentence
@@ -48,10 +47,12 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
 
     return inputWords
         .map((inputWord: Io): Unicode => {
-            const unicode = computeMaybeStaffOrAdvanceUnicodeAndUpdateAutoStaffAndSmartAdvance(inputWord)
+            const lowercaseCodeword: LowercaseCodeword = computeLowercaseCodewordFromInput(inputWord)
+
+            const unicode = computeMaybeStaffAdvanceOrClefUnicodeAndUpdateStaffState(lowercaseCodeword)
             if (!isUndefined(unicode)) return unicode
 
-            const symbol = computeSymbol(inputWord) // TODO: BASIC FEATURE: OTHER CLEFS (already have test)
+            const symbol = computeSymbol(lowercaseCodeword)
 
             return computeMaybePositionedUnicode(symbol)
         })
