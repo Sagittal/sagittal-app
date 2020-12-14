@@ -1,6 +1,7 @@
 import {sumTexts} from "@sagittal/general"
 import {staffState} from "./globals"
 import {COMBINING_STAFF_POSITION_MAP, EMPTY_UNICODE, Symbol, Unicode} from "./symbols"
+import {computeMapUnicodes} from "./unicode"
 
 const canBePositioned = (unicodeWord: Unicode): boolean => {
     return (unicodeWord >= "\uE022" && unicodeWord <= "\uE02F") // Leger lines
@@ -11,8 +12,7 @@ const canBePositioned = (unicodeWord: Unicode): boolean => {
         || (unicodeWord >= "\uEC30" && unicodeWord <= "\uEC3F") // Kievan square notation
 }
 
-const COMBINING_STAFF_POSITION_UNICODES =
-    Object.values(COMBINING_STAFF_POSITION_MAP).map(({unicode}: Symbol): Unicode => unicode)
+const COMBINING_STAFF_POSITION_UNICODES = computeMapUnicodes(COMBINING_STAFF_POSITION_MAP)
 
 const computeMaybePositionedUnicode = ({unicode}: Symbol): Unicode => {
     let output: Unicode

@@ -4,7 +4,7 @@ import {DEFAULT_WIDTH} from "./constants"
 import {staffState} from "./globals"
 import {Code, EMPTY_UNICODE, LowercaseCodeword, SMART_ADVANCE_MAP, STAFF_LINE_MAP, Symbol, Unicode} from "./symbols"
 import {Width} from "./types"
-import {computeUnicodeForCode} from "./unicode"
+import {computeMapUnicodes, computeUnicodeForCode} from "./unicode"
 
 // TODO: FEATURE ADJUST: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
 
@@ -76,9 +76,7 @@ const recordSymbolWidthForSmartAdvance = ({width}: Symbol): void => {
         max(staffState.smartAdvanceWidth, isUndefined(width) ? DEFAULT_WIDTH : width) as number as Width
 }
 
-// TODO: DRY this with combining staff positions
-//  Or even better, just have a helper method that checks to see if a subset map includes
-const STAFF_LINES_UNICODES = Object.values(STAFF_LINE_MAP).map(({unicode}: Symbol): Unicode => unicode)
+const STAFF_LINES_UNICODES = computeMapUnicodes(STAFF_LINE_MAP)
 
 const recordManualStaffWidthForAutoStaff = ({unicode}: Symbol): void => {
     if (!STAFF_LINES_UNICODES.includes(unicode)) return
