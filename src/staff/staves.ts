@@ -6,7 +6,7 @@ const ST8_UNICODE = computeUnicodeForCode(Code["st8"])
 const ST16_UNICODE = computeUnicodeForCode(Code["st16"])
 const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
 const SMART_STAVE_UNICODE = computeUnicodeForCode(Code["st"])
-const SMART_STAVE_UNICODES = computeMapUnicodes(SMART_STAVE_MAP) // TODO: put all consts at top
+const SMART_STAVE_UNICODES = computeMapUnicodes(SMART_STAVE_MAP)
 
 const maybeRecordSmartStave = ({unicode}: Symbol): void => {
     if (unicode === SMART_STAVE_UNICODE) {
@@ -27,9 +27,8 @@ const maybeRecordSmartStave = ({unicode}: Symbol): void => {
 }
 // TODO: maybe a "smart" folder?
 
-const isSmartStaveUnicode = (unicodeWord: Unicode): boolean => {
-    return SMART_STAVE_UNICODES.includes(unicodeWord) // TODO: clean up braces single line fns
-}
+const isSmartStaveUnicode = (unicodeWord: Unicode): boolean =>
+    SMART_STAVE_UNICODES.includes(unicodeWord)
 
 export {
     maybeRecordSmartStave,

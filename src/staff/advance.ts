@@ -82,13 +82,11 @@ const computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef = (
     return undefined
 }
 
-const isSmartAdvanceUnicode = (unicodeWord: Unicode): boolean => {
-    return SMART_ADVANCE_UNICODES.includes(unicodeWord)
-}
+const isSmartAdvanceUnicode = (unicodeWord: Unicode): boolean =>
+    SMART_ADVANCE_UNICODES.includes(unicodeWord)
 
-const isManualAdvanceUnicode = (unicodeWord: Unicode): boolean => {
-    return MANUAL_ADVANCE_UNICODES.includes(unicodeWord)
-}
+const isManualAdvanceUnicode = (unicodeWord: Unicode): boolean =>
+    MANUAL_ADVANCE_UNICODES.includes(unicodeWord)
 
 export {
     maybeRecordSmartAdvance,

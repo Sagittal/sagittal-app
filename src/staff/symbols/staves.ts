@@ -7,8 +7,12 @@ const MANUAL_STAVE_MAP: Record<Code, Symbol> = {
 } as Record<Code, Symbol>
 
 const SMART_STAVE_MAP: Record<Code, Symbol> = {
-    /*U+E02F*/[Code["st"]]: {unicode: "", width: 0}, // TODO: I actually took the code he wanted for stave-off here
-    // Insert staff off symbol here
+    /*U+E02F*/[Code["st"]]: {unicode: "", width: 0},
+    // TODO: FEATURE ADJUST: I actually took the code he wanted for stave-off here for stave-on,
+    //  But now I'm proposing that it's a toggle: http://forum.sagittal.org/viewtopic.php?p=3112#p3112
+    //  - This is about the ability to disable smart stave
+    //  Already have a test going for it
+    //  Only blocked on his thoughts about whether "!st" is better, or "nost" or "stno" or "stof"
 } as Record<Code, Symbol>
 
 export {

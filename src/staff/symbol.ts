@@ -2,7 +2,7 @@ import {Io, isNumber, isUndefined, RecordKey} from "@sagittal/general"
 import {computeArbitrarySymbol} from "./arbitrarySymbol"
 import {computeLowercaseCodewordFromCodeword, computeLowercaseCodewordFromInput} from "./codeword"
 import {staffState} from "./globals"
-import {BASS_CSP_MAP, Code, CODE_MAP, Codeword, LowercaseCodeword, Symbol, TREBLE_CSP_MAP, Unicode} from "./symbols"
+import {BASS_CSP_MAP, Code, Codeword, CODE_MAP, LowercaseCodeword, Symbol, TREBLE_CSP_MAP, Unicode} from "./symbols"
 import {Clef, Width} from "./types"
 import {isUnicodeLiteral} from "./unicodeLiteral"
 

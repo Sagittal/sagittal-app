@@ -24,11 +24,6 @@ import {Code, LowercaseCodeword, Unicode} from "./symbols"
 //  But strip it out of the downloaded SVG
 //  Still waiting on Dave
 
-// TODO: NEW FEATURE, BLOCKED: STOF to disable smart stave
-//  "stof" to turn off Smart stave ("st" turns it back on).
-//  Already have a test going for it
-//  Only blocked on his thoughts about whether "!st" is better
-
 // TODO: NEW FEATURE, BLOCKED: also add a copy image button? still waiting on Dave's confirmation
 
 // TODO: PERFORMANCE, BLOCKED: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
@@ -53,7 +48,8 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
             const symbol = computeSymbol(lowercaseCodeword)
 
             const unicode = computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef(symbol)
-            // TODO: CLEAN: maybe have a pattern to return prefixes and suffixes of unicode
+            // TODO: CLEAN: MOSTLY DUMB 1-TO-1 MAP
+            //  Maybe have a pattern to return prefixes and suffixes of unicode
             //  Whether it's advance, stave, or CSP
             //  And only having one return statement at the end
             if (!isUndefined(unicode)) return unicode

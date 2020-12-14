@@ -13,14 +13,9 @@ const computeLowercaseCodewordFromCode = (code: Code): LowercaseCodeword =>
 const computeCodewordFromCode = (code: Code): Codeword =>
     Code[code] as Codeword
 
-const computeMapLowercaseCodewords = (map: Record<Code, Symbol>): LowercaseCodeword[] =>
-    (Object.keys(map) as unknown[] as Code[])
-        .map(computeLowercaseCodewordFromCode)
-
 export {
     computeLowercaseCodewordFromInput,
     computeLowercaseCodewordFromCode,
     computeLowercaseCodewordFromCodeword,
     computeCodewordFromCode,
-    computeMapLowercaseCodewords,
 }
