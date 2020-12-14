@@ -1,6 +1,6 @@
-import {Io, sumTexts} from "@sagittal/general"
+import {Io} from "@sagittal/general"
 import {computeInputUnicode} from "../../../src/staff/inputUnicode"
-import {Code, CODE_MAP, Uni} from "../../../src/staff/map"
+import {Uni} from "../../../src/staff/map"
 import {undoMapFailMessage} from "../../helpers/undoMap"
 
 describe("computeInputUnicode", (): void => {
@@ -52,14 +52,8 @@ describe("computeInputUnicode", (): void => {
 
             const actual = computeInputUnicode(inputSentence)
 
-            const expected = sumTexts(
-                CODE_MAP[Code["bscf"]]!.unicode,
-                CODE_MAP[Code["bsd4"]]!.unicode,
-                CODE_MAP[Code["nt"]]!.unicode,
-                CODE_MAP[Code["sp13"]]!.unicode,
-            )
             // Codewords: bscf bsd4 nt sp13
-            // Const expected = "" as Uni
+            const expected = "" as Uni
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
