@@ -11,7 +11,7 @@ const undoMapFailMessage = (actualUnicodeSentence: Unicode, expectedUnicodeSente
     return `expected "${actualCodewords.join(SPACE)}" to be "${expectedCodewords.join(SPACE)}"`
 }
 
-// TODO: IMPROVE: might be nice if it could recognize sp13 as a single codeword, rather than sp12 sp1
+// TODO: CLEAN: might be nice if it could recognize sp13 as a single codeword, rather than sp12 sp1
 //  I think those are the only ones which map to multiple... does that affect the unicodeLiteral module at all?
 //  Which I simplified from where I took it online so that it assumed single chars?
 const undoMap = (unicodeSentence: Unicode): Codeword[] => {

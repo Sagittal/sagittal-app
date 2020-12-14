@@ -1,20 +1,20 @@
-import {isUndefined, max, sumTexts} from "@sagittal/general"
-import {computeMapLowercaseCodewords} from "./codeword"
-import {DEFAULT_WIDTH} from "./constants"
+import {BLANK, Io, max, Maybe, sumTexts} from "@sagittal/general"
+import {computeLowercaseCodewordFromInput, computeMapLowercaseCodewords} from "./codeword"
 import {staffState} from "./globals"
-import {Code, EMPTY_UNICODE, LowercaseCodeword, SMART_ADVANCE_MAP, STAFF_LINE_MAP, Symbol, Unicode} from "./symbols"
+import {computeSymbol} from "./symbol"
+import {Code, EMPTY_UNICODE, LowercaseCodeword, SMART_ADVANCE_MAP, STAFF_LINE_MAP, Unicode} from "./symbols"
 import {Width} from "./types"
-import {computeMapUnicodes, computeUnicodeForCode} from "./unicode"
+import {computeUnicodeForCode} from "./unicode"
+import {computeSymbolWidth} from "./width"
 
-// TODO: FEATURE ADJUST: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
+// TODO: FEATURE IMPROVE: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
 
 const SMART_ADVANCE_LOWERCASE_CODEWORDS: LowercaseCodeword[] = computeMapLowercaseCodewords(SMART_ADVANCE_MAP)
 const ADVANCE_CODE_PREFIX = "sp"
-
 const MAX_ADVANCE_WIDTH: Width = 16 as Width
-
 const MAX_ADVANCE_UNICODE = computeUnicodeForCode(Code["sp16"])
 
+const MANUAL_STAFF_LINES_LOWERCASE_CODEWORDS: LowercaseCodeword[] = computeMapLowercaseCodewords(STAFF_LINE_MAP)
 const ST8_UNICODE = computeUnicodeForCode(Code["st8"])
 const ST16_UNICODE = computeUnicodeForCode(Code["st16"])
 const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
@@ -71,28 +71,43 @@ const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: 
     }
 }
 
-const recordSymbolWidthForSmartAdvance = ({width}: Symbol): void => {
-    staffState.smartAdvanceWidth =
-        max(staffState.smartAdvanceWidth, isUndefined(width) ? DEFAULT_WIDTH : width) as number as Width
+const recordSymbolWidthForSmartAdvance = (inputWord: Io): void => {
+    const symbol = computeSymbol(inputWord)
+
+    const maxSymbolWidthSinceLastAdvance = max(staffState.smartAdvanceWidth, computeSymbolWidth(symbol))
+
+    staffState.smartAdvanceWidth = maxSymbolWidthSinceLastAdvance
 }
 
-const STAFF_LINES_UNICODES = computeMapUnicodes(STAFF_LINE_MAP)
-
-const recordManualStaffWidthForAutoStaff = ({unicode}: Symbol): void => {
-    if (!STAFF_LINES_UNICODES.includes(unicode)) return
-
+const computeManualStaffUnicodeAndRecordAutoStaff = (inputWord: Io): Unicode => {
     staffState.autoStaffOn = true
+
+    const {unicode} = computeSymbol(inputWord)
 
     if (unicode === ST8_UNICODE) staffState.autoStaffWidth = staffState.autoStaffWidth + 8 as Width
     if (unicode === ST16_UNICODE) staffState.autoStaffWidth = staffState.autoStaffWidth + 16 as Width
     if (unicode === ST24_UNICODE) staffState.autoStaffWidth = staffState.autoStaffWidth + 24 as Width
+
+    return unicode
+}
+
+const computeMaybeStaffOrAdvanceUnicodeAndUpdateAutoStaffAndSmartAdvance = (inputWord: Io): Maybe<Unicode> => {
+    if (SMART_ADVANCE_LOWERCASE_CODEWORDS.includes(computeLowercaseCodewordFromInput(inputWord))) {
+        return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(staffState.smartAdvanceWidth)
+    } else if (inputWord.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
+        const manualAdvanceWidth = parseInt(inputWord.replace(ADVANCE_CODE_PREFIX, BLANK)) as Width
+
+        return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(manualAdvanceWidth)
+    } else if (MANUAL_STAFF_LINES_LOWERCASE_CODEWORDS.includes(computeLowercaseCodewordFromInput(inputWord))) {
+        return computeManualStaffUnicodeAndRecordAutoStaff(inputWord)
+    } else {
+        recordSymbolWidthForSmartAdvance(inputWord)
+
+        return undefined
+    }
 }
 
 export {
     recordSymbolWidthForSmartAdvance,
-    recordManualStaffWidthForAutoStaff,
-    computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff,
-    computeAdvanceUnicode,
-    SMART_ADVANCE_LOWERCASE_CODEWORDS,
-    ADVANCE_CODE_PREFIX,
+    computeMaybeStaffOrAdvanceUnicodeAndUpdateAutoStaffAndSmartAdvance,
 }
