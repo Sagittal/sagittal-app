@@ -1,4 +1,5 @@
 import {BLANK, Io, isUndefined, SPACE} from "@sagittal/general"
+import {computeCodewordFromCode} from "../../src/staff/codeword"
 import {Code, Codeword, CODE_MAP, Uni, Unit} from "../../src/staff/map"
 
 const CODE_MAP_ENTRIES = Object.entries(CODE_MAP) as Array<[unknown, Unit]> as Array<[Code, Unit]>
@@ -29,7 +30,7 @@ const undoMap = (unicodeSentence: Uni): Codeword[] => {
 
         const [code, _] = codeEntry
 
-        return Code[code] as Codeword
+        return computeCodewordFromCode(code)
     })
 }
 

@@ -14,9 +14,11 @@ interface Unit {
     description?: string,
 }
 
-type Codeword = string & {_CodewordBrand: boolean}  // Actual lower case string
+type Codeword = string & {_CodewordBrand: boolean}                      // String key
 
-enum Code {                                         // Just a numeric registry
+type LowercaseCodeword = string & {_LowercaseCodewordBrand: boolean}    // The lower case string that gets matched
+
+enum Code {                                                             // Just a numeric registry
     "sp",
     "ad",
     ";",
@@ -489,4 +491,5 @@ export {
     Code,
     Unit,
     Codeword,
+    LowercaseCodeword,
 }

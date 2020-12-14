@@ -4,8 +4,9 @@ import {
     computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff,
     recordManualStaffWidthForAutoStaff,
     recordSymbolWidthForSmartAdvance,
-    SMART_ADVANCE_CODEWORDS,
+    SMART_ADVANCE_LOWERCASE_CODEWORDS,
 } from "./advanceUnicode"
+import {computeLowercaseCodewordFromInput} from "./codeword"
 import {INITIAL_STAFF_STATE} from "./constants"
 import {staffState} from "./globals"
 import {Codeword, Uni} from "./map"
@@ -37,7 +38,7 @@ import {computeUnit} from "./unit"
 const computeInputUnicode = (inputSentence: Io): Uni => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 
-    return `${inputSentence.toLowerCase()} ;`
+    return `${inputSentence} ;`
         // TODO: CLEAN: Extract a remove white space helper
         .replace(/<br>/g, " ")
         .replace(/\n/g, " ")
@@ -47,7 +48,7 @@ const computeInputUnicode = (inputSentence: Io): Uni => {
             // TODO: CLEAN: Try to handle manual staff here
             //  All smart auto staff advance stuff happens at the top
             //  And collapse the two records into one thing, if there’s even a need for two anymore
-            if (SMART_ADVANCE_CODEWORDS.includes(inputWord as Codeword)) {
+            if (SMART_ADVANCE_LOWERCASE_CODEWORDS.includes(computeLowercaseCodewordFromInput(inputWord))) {
                 return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(staffState.smartAdvanceWidth)
             } else if (inputWord.match(ADVANCE_CODE_PREFIX) && staffState.autoStaffOn) {
                 const manualAdvanceWidth = parseInt(inputWord.replace(ADVANCE_CODE_PREFIX, BLANK)) as Width
