@@ -11,7 +11,7 @@ import {INITIAL_STAFF_STATE} from "./constants"
 import {staffState} from "./globals"
 import {computeMaybePositionedUnicode} from "./positionUnicode"
 import {computeSymbol} from "./symbol"
-import {Unicode} from "./symbols"
+import {Code, Unicode} from "./symbols"
 import {Clef, Width} from "./types"
 
 // TODO: NEW FEATURE: Smart Clefs™: if you type a treble clef, it knows to use treble, etc.
@@ -35,15 +35,20 @@ import {Clef, Width} from "./types"
 
 // TODO: PERFORMANCE: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
 //  Check the diff with the previous sentence
+
+const collapseAllWhitespacesToSingleSpaces = (inputSentence: Io): Io =>
+    inputSentence
+        .replace(/<br>/g, SPACE)
+        .replace(/\n/g, SPACE)
+        .replace(/\t/g, SPACE)
+
 const computeInputUnicode = (inputSentence: Io): Unicode => {
     setAllPropertiesOfObjectOnAnother({objectToChange: staffState, objectWithProperties: INITIAL_STAFF_STATE})
 
-    return `${inputSentence} ;`
-        // TODO: CLEAN: Extract a remove white space helper
-        .replace(/<br>/g, " ")
-        .replace(/\n/g, " ")
-        .replace(/\t/g, " ")
-        .split(SPACE)
+    const inputWords = collapseAllWhitespacesToSingleSpaces(inputSentence).split(SPACE)
+    inputWords.push(Code[Code[";"]])
+
+    return inputWords
         .map((inputWord: Io): Unicode => {
             // TODO: CLEAN: Try to handle manual staff here
             //  All smart auto staff advance stuff happens at the top
