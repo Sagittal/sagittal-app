@@ -4,7 +4,7 @@ import {Clef} from "../../../src/staff/types"
 import {computeUnit} from "../../../src/staff/unit"
 
 describe("computeUnit", (): void => {
-    it("gets you the unicode and width for the code", (): void => {
+    it("gets you the unicode, width, and description for the given word", (): void => {
         const userInputWord = "nt4" as Io
         const clef = Clef.TREBLE
 

@@ -3,9 +3,9 @@ import {computeUnicodeLiteral} from "../../../src/staff/unicodeLiteral"
 
 describe("computeUnicodeLiteral", (): void => {
     it("can get you the codepoint of a given Unicode char", (): void => {
-        const unicode = CODE_MAP[Code["st8"]]!.unicode
+        const unicodeWord = CODE_MAP[Code["st8"]]!.unicode
 
-        const actual = computeUnicodeLiteral(unicode)
+        const actual = computeUnicodeLiteral(unicodeWord)
 
         const expected = "U+E020"
         expect(actual).toBe(expected)

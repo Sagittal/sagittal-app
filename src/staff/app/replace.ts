@@ -3,9 +3,9 @@ import {staffCodeInput, staffDiv, svg} from "./dom"
 import {vectorizeSvg} from "./svg"
 
 const replaceStaffCodeWithUnicodeApp = (): void => {
-    const unicode = computeUserInputUnicode(staffCodeInput.value)
-    staffDiv.textContent = unicode
-    vectorizeSvg(unicode, svg)
+    const unicodeSentence = computeUserInputUnicode(staffCodeInput.value)
+    staffDiv.textContent = unicodeSentence
+    vectorizeSvg(unicodeSentence, svg)
 }
 
 export {

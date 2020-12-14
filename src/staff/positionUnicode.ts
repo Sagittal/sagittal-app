@@ -2,13 +2,13 @@ import {sumTexts} from "@sagittal/general"
 import {staffState} from "./globals"
 import {COMBINING_STAFF_POSITION_MAP, EMPTY_UNICODE, Uni, Unit} from "./map"
 
-const canBePositioned = (unicode: Uni): boolean => {
-    return (unicode >= "\uE022" && unicode <= "\uE02F") // Leger lines
-        || (unicode >= "\uE050" && unicode <= "\uE07F") // Clefs
-        || (unicode >= "\uE0A0" && unicode <= "\uE21F") // Noteheads, notes, beamed groups, stems
-        || (unicode >= "\uE240" && unicode <= "\uE4FF") // Flags, accidentals, articulation, holds and pauses, rests
-        || (unicode >= "\uE900" && unicode <= "\uEA1F") // Medieval and Renaissance
-        || (unicode >= "\uEC30" && unicode <= "\uEC3F") // Kievan square notation
+const canBePositioned = (unicodeWord: Uni): boolean => {
+    return (unicodeWord >= "\uE022" && unicodeWord <= "\uE02F") // Leger lines
+        || (unicodeWord >= "\uE050" && unicodeWord <= "\uE07F") // Clefs
+        || (unicodeWord >= "\uE0A0" && unicodeWord <= "\uE21F") // Noteheads notes stems beams
+        || (unicodeWord >= "\uE240" && unicodeWord <= "\uE4FF") // Flags accidentals articulation holds pauses rests
+        || (unicodeWord >= "\uE900" && unicodeWord <= "\uEA1F") // Medieval & Renaissance
+        || (unicodeWord >= "\uEC30" && unicodeWord <= "\uEC3F") // Kievan square notation
 }
 
 const COMBINING_STAFF_POSITION_UNICODES =

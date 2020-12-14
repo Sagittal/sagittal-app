@@ -35,13 +35,13 @@ const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Uni[] = [
 const computeAdvanceUnicode = (width: Width): Uni => {
     let remainingWidth = width
 
-    let unicode = EMPTY_UNICODE
+    let unicodePhrase = EMPTY_UNICODE
     while (remainingWidth >= WIDTH_OF_BIGGEST_ADVANCE) {
         remainingWidth = remainingWidth - WIDTH_OF_BIGGEST_ADVANCE as Width
-        unicode = sumTexts(unicode, CODE_MAP[Code["sp16"]]!.unicode)
+        unicodePhrase = sumTexts(unicodePhrase, CODE_MAP[Code["sp16"]]!.unicode)
     }
 
-    return sumTexts(unicode, WIDTH_TO_ADVANCE_UNICODE_ARRAY[remainingWidth])
+    return sumTexts(unicodePhrase, WIDTH_TO_ADVANCE_UNICODE_ARRAY[remainingWidth])
 }
 
 const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: Width): Uni => {
