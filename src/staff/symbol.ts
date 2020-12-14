@@ -2,23 +2,14 @@ import {Io, isNumber, isUndefined, RecordKey} from "@sagittal/general"
 import {computeArbitrarySymbol} from "./arbitrarySymbol"
 import {computeLowercaseCodewordFromCodeword, computeLowercaseCodewordFromInput} from "./codeword"
 import {staffState} from "./globals"
-import {
-    BASS_COMBINING_STAFF_POSITION_MAP,
-    Code,
-    Codeword,
-    CODE_MAP,
-    LowercaseCodeword,
-    Symbol,
-    TREBLE_COMBINING_STAFF_POSITION_MAP,
-    Unicode,
-} from "./symbols"
+import {BASS_CSP_MAP, Code, CODE_MAP, Codeword, LowercaseCodeword, Symbol, TREBLE_CSP_MAP, Unicode} from "./symbols"
 import {Clef, Width} from "./types"
 import {isUnicodeLiteral} from "./unicodeLiteral"
 
 const BASS_CODE_MAP: Record<Code, Symbol> =
-    {...CODE_MAP, ...BASS_COMBINING_STAFF_POSITION_MAP} as Record<Code, Symbol>
+    {...CODE_MAP, ...BASS_CSP_MAP} as Record<Code, Symbol>
 const TREBLE_CODE_MAP: Record<Code, Symbol> =
-    {...CODE_MAP, ...TREBLE_COMBINING_STAFF_POSITION_MAP} as Record<Code, Symbol>
+    {...CODE_MAP, ...TREBLE_CSP_MAP} as Record<Code, Symbol>
 
 const LOWERCASE_CODEWORD_TO_CODE_MAP: Record<RecordKey<LowercaseCodeword>, Code> =
     (Object.entries(Code) as Array<[Codeword, Code]>).reduce(

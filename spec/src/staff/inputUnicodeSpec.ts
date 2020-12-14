@@ -9,15 +9,12 @@ describe("computeInputUnicode", (): void => {
 
         const actual = computeInputUnicode(inputSentence)
 
-        // TODO: there's something confusing about this, because I don't think you could just copy and paste *these*
-        //  Codewords in and see the expected thing. unless there was a way to turn all smart/sticky/auto stuff off.
-        //  Basically this is like the "revised codewords" from what you input. or "enhanced".
         // Codewords: d5 /|\ d5 nt sp13
         const expected = "　 " as Unicode
         expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
     })
 
-    describe("combining staff positions", (): void => {
+    describe("Smart Position", (): void => {
         it("the most recently used combining staff position is automatically applied if none is specified                  ", (): void => {
             const inputSentence = "d5 /|\\ nt" as Io
 
@@ -38,6 +35,18 @@ describe("computeInputUnicode", (): void => {
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
 
+        it("persist until a new one is used", (): void => {
+            const inputSentence = "d5 st /|\\ sp13 nt sp13 g4 \\! sp7 nt sp13" as Io
+
+            const actual = computeInputUnicode(inputSentence)
+
+            // Codewords: d5 /|\ st24 sp13 d5 nt sp11 st24 sp2 g4 \! sp7 g4 nt sp13
+            const expected = "　      　 " as Unicode
+            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+        })
+    })
+
+    describe("Smart Clef", (): void => {
         it("assume treble clef even if no clef has been provided", (): void => {
             const inputSentence = "d4 nt" as Io
 
@@ -67,19 +76,9 @@ describe("computeInputUnicode", (): void => {
             const expected = "  　 　   　 　 " as Unicode
             expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
         })
-
-        it("persist until a new one is used", (): void => {
-            const inputSentence = "d5 st /|\\ sp13 nt sp13 g4 \\! sp7 nt sp13" as Io
-
-            const actual = computeInputUnicode(inputSentence)
-
-            // Codewords: d5 /|\ st24 sp13 d5 nt sp11 st24 sp2 g4 \! sp7 g4 nt sp13
-            const expected = "　      　 " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
-        })
     })
 
-    describe("smart advance", (): void => {
+    describe("Smart Advance", (): void => {
         it("advances by the width given by each symbol", (): void => {
             let actual
             let expected
@@ -154,8 +153,8 @@ describe("computeInputUnicode", (): void => {
         })
     })
 
-    describe("auto staff", (): void => {
-        it("automatically adds staff lines as needed, if a staff has been asked for at all", (): void => {
+    describe("Smart Stave", (): void => {
+        it("automatically adds stave lines as needed, if a staff has been asked for at all", (): void => {
             const inputSentence = "st24 nt8 ; nt4 ;"
 
             const actual = computeInputUnicode(inputSentence)
@@ -166,7 +165,7 @@ describe("computeInputUnicode", (): void => {
         })
 
         // tslint:disable-next-line:ban
-        xit("can turn off Auto Staff", (): void => {
+        xit("can turn off Smart Stave", (): void => {
 
         })
     })

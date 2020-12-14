@@ -43,20 +43,20 @@ const computeAdvanceUnicode = (width: Width): Unicode => {
     return sumTexts(unicodePhrase, WIDTH_TO_ADVANCE_UNICODE_ARRAY[remainingWidth])
 }
 
-const computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff = (width: Width): Unicode => {
-    if (staffState.autoStaffWidth >= width || !staffState.autoStaffOn) {
+const computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave = (width: Width): Unicode => {
+    if (staffState.smartStaveWidth >= width || !staffState.smartStaveOn) {
         const advanceUnicode = computeAdvanceUnicode(width)
 
-        if (staffState.autoStaffOn) staffState.autoStaffWidth = staffState.autoStaffWidth - width as Width
+        if (staffState.smartStaveOn) staffState.smartStaveWidth = staffState.smartStaveWidth - width as Width
         staffState.smartAdvanceWidth = 0 as Width
 
         return advanceUnicode
     } else {
-        const useUpExistingStaffAdvanceUnicode: Unicode = computeAdvanceUnicode(staffState.autoStaffWidth)
-        const remainingWidthWeStillNeedToApply: Width = width - staffState.autoStaffWidth as Width
+        const useUpExistingStaffAdvanceUnicode: Unicode = computeAdvanceUnicode(staffState.smartStaveWidth)
+        const remainingWidthWeStillNeedToApply: Width = width - staffState.smartStaveWidth as Width
         const remainingStaffAdvanceUnicode = computeAdvanceUnicode(remainingWidthWeStillNeedToApply)
 
-        staffState.autoStaffWidth = 24 - remainingWidthWeStillNeedToApply as Width
+        staffState.smartStaveWidth = 24 - remainingWidthWeStillNeedToApply as Width
         staffState.smartAdvanceWidth = 0 as Width
 
         return sumTexts(useUpExistingStaffAdvanceUnicode, ST24_UNICODE, remainingStaffAdvanceUnicode)
@@ -69,14 +69,14 @@ const maybeRecordSmartAdvance = (symbol: Symbol): void => {
     staffState.smartAdvanceWidth = maxSymbolWidthSinceLastAdvance
 }
 
-const computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndAutoClef = (
+const computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef = (
     symbol: Symbol,
 ): Maybe<Unicode> => {
     if (isSmartAdvanceUnicode(symbol.unicode)) {
-        return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(staffState.smartAdvanceWidth)
-        // TODO: what if you use manual advance but don't have auto staff on? what happens then?
-    } else if (isManualAdvanceUnicode(symbol.unicode) && staffState.autoStaffOn) {
-        return computeAdvanceUnicodeMindingSmartAdvanceAndPotentiallyAutoStaff(symbol.width!)
+        return computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(staffState.smartAdvanceWidth)
+        // TODO: what if you use manual advance but don't have smart stave on? what happens then?
+    } else if (isManualAdvanceUnicode(symbol.unicode) && staffState.smartStaveOn) {
+        return computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(symbol.width!)
     }
 
     return undefined
@@ -92,7 +92,7 @@ const isManualAdvanceUnicode = (unicodeWord: Unicode): boolean => {
 
 export {
     maybeRecordSmartAdvance,
-    computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndAutoClef,
+    computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef,
     isSmartAdvanceUnicode,
     isManualAdvanceUnicode,
 }

@@ -19,8 +19,8 @@ import {Unicode, Width} from "./symbols"
 
 interface StaffState {
     smartAdvanceWidth: Width,
-    autoStaffWidth: Width,
-    autoStaffOn: boolean,
+    smartStaveWidth: Width,
+    smartStaveOn: boolean,
     position: Unicode,
     clef: Clef,
 }

@@ -3,7 +3,7 @@ import {Unicode} from "./symbols"
 import {UnicodeLiteral} from "./types"
 
 const isUnicodeLiteral = (candidateUnicodeLiteralInputWord: Io): candidateUnicodeLiteralInputWord is UnicodeLiteral =>
-!!candidateUnicodeLiteralInputWord.match(/^u\+/)
+    !!candidateUnicodeLiteralInputWord.match(/^u\+/)
 
 const computeUnicodeLiteral = (unicodeWord: Unicode): UnicodeLiteral => {
     let unicodeLiteral = unicodeWord.charCodeAt(0).toString(16)

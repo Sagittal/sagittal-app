@@ -1,19 +1,15 @@
 import {ACCIDENTAL_MAP} from "./accidentals"
 import {MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP} from "./advance"
 import {BAR_MAP, BEAMS_MAP, CLEF_MAP, DOT_MAP, LEGER_LINE_MAP, NOTE_MAP, REST_MAP, TIME_SIGNATURE_MAP} from "./basics"
-import {
-    BASS_COMBINING_STAFF_POSITION_MAP,
-    CLEF_SPECIFIED_COMBINING_STAFF_POSITION_MAP,
-    TREBLE_COMBINING_STAFF_POSITION_MAP,
-} from "./combiningStaffPositions"
-import {AUTO_STAFF_MAP, MANUAL_STAFF_MAP} from "./lines"
+import {BASS_CSP_MAP, CLEF_SPECIFIED_CSP_MAP, TREBLE_CSP_MAP} from "./csps"
+import {MANUAL_STAVE_MAP, SMART_STAVE_MAP} from "./staves"
 import {Code, Symbol} from "./types"
 
 const CODE_MAP: Record<Code, Symbol> = {
     ...MANUAL_ADVANCE_MAP,
     ...SMART_ADVANCE_MAP,
-    ...MANUAL_STAFF_MAP,
-    ...AUTO_STAFF_MAP,
+    ...MANUAL_STAVE_MAP,
+    ...SMART_STAVE_MAP,
     ...LEGER_LINE_MAP,
     ...BAR_MAP,
     ...CLEF_MAP,
@@ -23,9 +19,9 @@ const CODE_MAP: Record<Code, Symbol> = {
     ...BEAMS_MAP,
     ...TIME_SIGNATURE_MAP,
     ...ACCIDENTAL_MAP,
-    ...BASS_COMBINING_STAFF_POSITION_MAP,
-    ...TREBLE_COMBINING_STAFF_POSITION_MAP,
-    ...CLEF_SPECIFIED_COMBINING_STAFF_POSITION_MAP,
+    ...BASS_CSP_MAP,
+    ...TREBLE_CSP_MAP,
+    ...CLEF_SPECIFIED_CSP_MAP,
 }
 
 export {

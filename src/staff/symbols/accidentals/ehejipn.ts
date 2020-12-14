@@ -1,4 +1,4 @@
-import {Code, Unicode, Symbol} from "../types"
+import {Code, Symbol, Unicode} from "../types"
 import {CONVENTIONAL_ACCIDENTAL_MAP} from "./conventional"
 import {UNCONVENTIONAL_ACCIDENTAL_MAP} from "./unconventional"
 

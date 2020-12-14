@@ -1,4 +1,4 @@
-import {Code, Unicode, Symbol} from "../types"
+import {Code, Symbol, Unicode} from "../types"
 
 // See: https://w3c.github.io/smufl/gitbook/tables/arrows-and-arrowheads.html
 

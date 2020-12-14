@@ -61,7 +61,7 @@ notational commas, i.e. the commas most often needed to notate the
 most popular ratios.
 
 The best way we could figure to determine ratio popularity was to
-look at their ocurrences in the Scala archive (thanks Manuel). This
+look at their occurrences in the Scala archive (thanks Manuel). This
 decision might be controversial, but if you look at the results, you
 see that in most cases the decision as to which comma to use in a
 certain vicinity is like chalk and cheese, one of them notates
