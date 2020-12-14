@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as vectorizeText from "vectorize-text"
+import {default as vectorizeText} from "vectorize-text"
 import {HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT} from "../dom"
 
 const MAX_FONT_SIZE_TO_INCREASE_MESH_DETAIL_BEFORE_IT_STARTS_FAILING_TO_RENDER = 256
