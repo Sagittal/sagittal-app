@@ -7,6 +7,7 @@ import {smarts} from "./globals"
 import {updateSmarts} from "./update"
 
 // TODO: FEATURE IMPROVE, BLOCKED: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
+//  Okay, so it's ad<n> and ; and that's it
 
 const SMART_ADVANCE_UNICODES = computeMapUnicodes(SMART_ADVANCE_MAP)
 const MANUAL_ADVANCE_UNICODES = computeMapUnicodes(MANUAL_ADVANCE_MAP)

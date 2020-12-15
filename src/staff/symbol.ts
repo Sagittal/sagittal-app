@@ -41,6 +41,7 @@ const LOWERCASE_CODEWORD_TO_CODE_MAP: Record<RecordKey<LowercaseCodeword>, Code>
         {} as Record<LowercaseCodeword, Symbol>,
     )
 
+// TODO: Dave suggests use JS to calculate width of character to estimate its width
 const computeArbitrarySymbol = (inputWord: Io): Symbol =>
     ({
         unicode: String.fromCharCode(parseInt(inputWord.replace(/^u\+(.*)/, "0x$1"))) as Unicode,
@@ -60,11 +61,13 @@ const computeSymbol = (inputWord: Io): Symbol => {
     //  It seems like there should be some way to not use smarts here, e.g. to set the smarts.position
     //  To the correct unicode based on what the clef is, since you only need the clef part of these maps for the
     //  Positions after all... but I couldn't quite figure out how to do it
+    //  Maybe if you just save the right codeMap to use on the smarts.? I mean you'd still have to reference smarts here
     const codeMap = smarts.clef === Clef.BASS ? BASS_CODE_MAP : TREBLE_CODE_MAP
     const symbol = codeMap[code]
 
     if (!isUndefined(symbol)) return symbol
 
+    // TODO: what happened to my note about arbitrary/literal needing to be one word AKA they're the same thing
     if (isUnicodeLiteral(inputWord)) return computeArbitrarySymbol(inputWord)
 
     return computeFallbackToInputAsFailedSymbol(inputWord)
