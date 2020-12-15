@@ -187,7 +187,7 @@ describe("computeInputUnicode", (): void => {
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: tbcf st24 sp16 sp8 nt4 st24 sp12 sp1 nt4 sp12 sp1 nt4 sp12 sp1 nt4 st24 sp16 sp12
-            const expected = "  　 　 　  　d" as Unicode
+            const expected = "  　 　 　  　" as Unicode
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
     })
