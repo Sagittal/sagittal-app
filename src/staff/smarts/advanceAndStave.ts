@@ -1,10 +1,9 @@
 import {max, sumTexts} from "@sagittal/general"
-import {Code, EMPTY_UNICODE, MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP, Symbol, Unicode} from "../symbols"
+import {Code, EMPTY_UNICODE, MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP, SMART_STAVE_MAP, Symbol, Unicode} from "../symbols"
 import {Width} from "../types"
 import {computeMapUnicodes, computeUnicodeForCode} from "../utility"
 import {computeSymbolWidth} from "../width"
 import {smarts} from "./globals"
-import {updateSmarts} from "./update"
 
 // TODO: FEATURE IMPROVE, BLOCKED: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
 //  Okay, so it's ad<n> and ; and that's it
@@ -29,9 +28,16 @@ const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Unicode[] = [
     computeUnicodeForCode(Code["sp14"]),
     computeUnicodeForCode(Code["sp15"]),
 ]
-const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
+
 const MAX_ADVANCE_UNICODE = computeUnicodeForCode(Code["sp16"])
 const MAX_ADVANCE_WIDTH: Width = 16 as Width
+
+const ST8_UNICODE = computeUnicodeForCode(Code["st8"])
+const ST16_UNICODE = computeUnicodeForCode(Code["st16"])
+const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
+
+const SMART_STAVE_UNICODE = computeUnicodeForCode(Code["st"])
+const SMART_STAVE_UNICODES = computeMapUnicodes(SMART_STAVE_MAP)
 
 const computeAdvanceUnicode = (width: Width): Unicode => {
     let remainingWidth = width
@@ -45,45 +51,45 @@ const computeAdvanceUnicode = (width: Width): Unicode => {
     return sumTexts(unicodePhrase, WIDTH_TO_ADVANCE_UNICODE_ARRAY[remainingWidth])
 }
 
-const computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave = (width: Width): Unicode => {
+const computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmartAdvanceAndSmartStave = (width: Width): Unicode => {
+    let advancePrefixUnicode
     if (smarts.staveWidth >= width || !smarts.staveOn) {
-        const advanceUnicode = computeAdvanceUnicode(width)
+        smarts.staveWidth = smarts.staveWidth - width as Width
 
-        if (smarts.staveOn) smarts.staveWidth = smarts.staveWidth - width as Width
-        smarts.advanceWidth = 0 as Width
-
-        return advanceUnicode
+        advancePrefixUnicode = computeAdvanceUnicode(width)
     } else {
         const useUpExistingStaffAdvanceUnicode: Unicode = computeAdvanceUnicode(smarts.staveWidth)
         const remainingWidthWeStillNeedToApply: Width = width - smarts.staveWidth as Width
         const remainingStaffAdvanceUnicode = computeAdvanceUnicode(remainingWidthWeStillNeedToApply)
 
         smarts.staveWidth = 24 - remainingWidthWeStillNeedToApply as Width
-        smarts.advanceWidth = 0 as Width
 
-        return sumTexts(useUpExistingStaffAdvanceUnicode, ST24_UNICODE, remainingStaffAdvanceUnicode)
+        advancePrefixUnicode = sumTexts(useUpExistingStaffAdvanceUnicode, ST24_UNICODE, remainingStaffAdvanceUnicode)
     }
-}
 
-const updateSmartAdvance = (symbol: Symbol): void => {
-    const maxSymbolWidthSinceLastAdvance = max(smarts.advanceWidth, computeSymbolWidth(symbol))
+    smarts.advanceWidth = 0 as Width
 
-    smarts.advanceWidth = maxSymbolWidthSinceLastAdvance
+    return advancePrefixUnicode
 }
 
 const computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmarts = (symbol: Symbol): Unicode => {
-    let unicode
+    let smartAdvanceAndSmartStavePrefixUnicode
     if (isSmartAdvanceUnicode(symbol.unicode)) {
-        unicode = computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(smarts.advanceWidth)
+        smartAdvanceAndSmartStavePrefixUnicode =
+            computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmartAdvanceAndSmartStave(smarts.advanceWidth)
     } else if (isManualAdvanceUnicode(symbol.unicode)) {
-        unicode = computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(symbol.width!)
+        smartAdvanceAndSmartStavePrefixUnicode =
+            computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmartAdvanceAndSmartStave(symbol.width!)
     } else {
-        unicode = EMPTY_UNICODE
+        updateSmartStave(symbol)
+
+        const maxSymbolWidthSinceLastAdvance = max(smarts.advanceWidth, computeSymbolWidth(symbol))
+        smarts.advanceWidth = maxSymbolWidthSinceLastAdvance
+
+        smartAdvanceAndSmartStavePrefixUnicode = EMPTY_UNICODE
     }
 
-    updateSmarts(symbol)
-
-    return unicode
+    return smartAdvanceAndSmartStavePrefixUnicode
 }
 
 const isSmartAdvanceUnicode = (unicodeWord: Unicode): boolean =>
@@ -92,9 +98,21 @@ const isSmartAdvanceUnicode = (unicodeWord: Unicode): boolean =>
 const isManualAdvanceUnicode = (unicodeWord: Unicode): boolean =>
     MANUAL_ADVANCE_UNICODES.includes(unicodeWord)
 
+const updateSmartStave = ({unicode}: Symbol): void => {
+    if (unicode === SMART_STAVE_UNICODE) smarts.staveOn = true
+
+    if (unicode === ST8_UNICODE) smarts.staveWidth = smarts.staveWidth + 8 as Width
+    if (unicode === ST16_UNICODE) smarts.staveWidth = smarts.staveWidth + 16 as Width
+    if (unicode === ST24_UNICODE) smarts.staveWidth = smarts.staveWidth + 24 as Width
+}
+
+const isSmartStaveUnicode = (unicodeWord: Unicode): boolean =>
+    SMART_STAVE_UNICODES.includes(unicodeWord)
+
 export {
-    updateSmartAdvance,
     computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmarts,
     isSmartAdvanceUnicode,
     isManualAdvanceUnicode,
+    updateSmartStave,
+    isSmartStaveUnicode,
 }

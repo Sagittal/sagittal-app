@@ -1,10 +1,9 @@
 import {BLANK, Io, setAllPropertiesOfObjectOnAnother, SPACE, sumTexts} from "@sagittal/general"
 import {
     computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmarts,
-    computeSmartPositionUnicode,
+    computeSmartPositionAndSmartClefPrefixUnicodeAndUpdateSmarts,
     INITIAL_SMARTS,
     smarts,
-    updateSmarts,
 } from "./smarts"
 import {computeSymbol} from "./symbol"
 import {Code, Unicode} from "./symbols"
@@ -57,11 +56,11 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
 
             const smartAdvanceAndSmartStavePrefixUnicode =
                 computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmarts(symbol)
-
+            const smartPositionAndSmartClefPrefixUnicode =
+                computeSmartPositionAndSmartClefPrefixUnicodeAndUpdateSmarts(symbol)
             const unicode = computeUnicode(symbol)
-            const positionPrefixUnicode = computeSmartPositionUnicode(symbol)
 
-            return sumTexts(smartAdvanceAndSmartStavePrefixUnicode, positionPrefixUnicode, unicode)
+            return sumTexts(smartAdvanceAndSmartStavePrefixUnicode, smartPositionAndSmartClefPrefixUnicode, unicode)
         })
         .join(BLANK) as Unicode
 }

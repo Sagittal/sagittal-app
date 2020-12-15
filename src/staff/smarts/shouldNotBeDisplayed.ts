@@ -1,7 +1,6 @@
 import {Unicode} from "../symbols"
-import {isManualAdvanceUnicode, isSmartAdvanceUnicode} from "./advance"
-import {isPositionUnicode} from "./position"
-import {isSmartStaveUnicode} from "./stave"
+import {isManualAdvanceUnicode, isSmartAdvanceUnicode, isSmartStaveUnicode} from "./advanceAndStave"
+import {isPositionUnicode} from "./positionAndClef"
 
 const shouldNotBeDisplayed = (unicodeWord: Unicode): boolean =>
     isPositionUnicode(unicodeWord)

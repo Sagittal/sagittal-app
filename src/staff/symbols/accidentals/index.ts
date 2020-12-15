@@ -1,6 +1,1 @@
-export {CONVENTIONAL_ACCIDENTAL_MAP} from "./conventional"
-export {EHEJIPN_ACCIDENTAL_MAP} from "./ehejipn"
-export {SAGITTAL_ACCIDENTAL_MAP} from "./sagittal"
-export {UNCONVENTIONAL_ACCIDENTAL_MAP} from "./unconventional"
-export {UPS_AND_DOWNS_ACCIDENTAL_MAP} from "./upsAndDowns"
 export {ACCIDENTAL_MAP} from "./accidentals"

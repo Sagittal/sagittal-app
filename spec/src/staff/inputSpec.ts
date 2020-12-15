@@ -90,57 +90,57 @@ describe("computeInputUnicode", (): void => {
             let actual
             let expected
 
-            actual = computeInputUnicode("lgln ;" as Io)
+            actual = computeInputUnicode("lgln" as Io)
             expected = "　 " as Unicode     // Codewords: lgln sp13
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("tbcf ;" as Io)
+            actual = computeInputUnicode("tbcf" as Io)
             expected = "  " as Unicode     // Codewords: tbcf sp16 sp8
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("ntdb ;" as Io)
+            actual = computeInputUnicode("ntdb" as Io)
             expected = "   " as Unicode    // Codewords: ntdb sp16 sp7
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("nt1 ;" as Io)
+            actual = computeInputUnicode("nt1" as Io)
             expected = "　 " as Unicode     // Codewords: nt1 sp13
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("nt2 ;" as Io)
+            actual = computeInputUnicode("nt2" as Io)
             expected = "　 " as Unicode     // Codewords: nt2 sp13
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("nt4 ;" as Io)
+            actual = computeInputUnicode("nt4" as Io)
             expected = "　 " as Unicode     // Codewords: nt4 sp13
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("nt8 ;" as Io)
+            actual = computeInputUnicode("nt8" as Io)
             expected = "   " as Unicode    // Codewords: nt8 sp16 sp5
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("nt16 ;" as Io)
+            actual = computeInputUnicode("nt16" as Io)
             expected = "   " as Unicode    // Codewords: nt16 sp16 sp5
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("nt2dn ;" as Io)
+            actual = computeInputUnicode("nt2dn" as Io)
             expected = "　 " as Unicode     // Codewords: nt2dn sp13
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("nt4dn ;" as Io)
+            actual = computeInputUnicode("nt4dn" as Io)
             expected = "　 " as Unicode     // Codewords: nt4dn sp13
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("nt8dn ;" as Io)
+            actual = computeInputUnicode("nt8dn" as Io)
             expected = "　 " as Unicode     // Codewords: nt8dn sp13
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
-            actual = computeInputUnicode("nt16dn ;" as Io)
+            actual = computeInputUnicode("nt16dn" as Io)
             expected = "　 " as Unicode     // Codewords: nt16dn sp13
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
         it("if more than one symbol has occurred since the previous advance, uses the width of the symbol with the max width", (): void => {
-            const inputSentence = "lgln nt16 ;" as Io
+            const inputSentence = "lgln nt16" as Io
 
             const actual = computeInputUnicode(inputSentence)
 
@@ -150,7 +150,7 @@ describe("computeInputUnicode", (): void => {
         })
 
         it("resets the advance amount after each application", (): void => {
-            const inputSentence = "lgln nt16 ; nt4 ;" as Io
+            const inputSentence = "lgln nt16 ; nt4" as Io
 
             const actual = computeInputUnicode(inputSentence)
 
@@ -161,13 +161,23 @@ describe("computeInputUnicode", (): void => {
     })
 
     describe("Smart Stave", (): void => {
-        it("automatically adds stave lines as needed, if a staff has been asked for at all", (): void => {
-            const inputSentence = "st24 nt8 ; nt4 ;"
+        it("automatically adds stave lines as needed, if smart stave has been asked for", (): void => {
+            const inputSentence = "st nt8 ; nt4"
 
             const actual = computeInputUnicode(inputSentence)
 
             // Codewords: st24 nt8 sp16 sp5 nt4 sp3 st24 sp10
-            const expected = "      " as Unicode
+            const expected = "      " as Unicode
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
+        })
+
+        it("does not adds additional lines as needed, if only a manual stave has been asked for", (): void => {
+            const inputSentence = "st24 nt8 ; nt4"
+
+            const actual = computeInputUnicode(inputSentence)
+
+            // Codewords: st24 nt8 sp16 sp5 nt4 sp12 sp1
+            const expected = "   　 " as Unicode
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
