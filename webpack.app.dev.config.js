@@ -1,4 +1,3 @@
-const webpack = require("webpack")
 const app = require("./webpack.app.config")
 
 module.exports = {
@@ -6,9 +5,7 @@ module.exports = {
     mode: "development",
     devtool: "inline-source-map",
     devServer: {
+        watchContentBase: true,
         contentBase: "dist/sagittal.github.io",
     },
-    plugins: [
-        new webpack.WatchIgnorePlugin({paths: ["node_modules", "spec"]}),
-    ],
 }
