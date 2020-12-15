@@ -13,6 +13,7 @@ const SMART_STAVE_MAP: Record<Code, Symbol> = {
     //  - This is about the ability to disable smart stave
     //  Already have a test going for it
     //  Only blocked on his thoughts about whether "!st" is better, or "nost" or "stno" or "stof"
+    //  And there's also an open question (related to toggle) whether the manual staves should turn smart staves on
 } as Record<Code, Symbol>
 
 export {

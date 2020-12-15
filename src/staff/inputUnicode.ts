@@ -1,17 +1,13 @@
 import {BLANK, Io, isUndefined, setAllPropertiesOfObjectOnAnother, SPACE} from "@sagittal/general"
-import {computeLowercaseCodewordFromInput} from "./codeword"
 import {
     computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef,
     computeMaybePositionedUnicode,
     INITIAL_SMARTS,
-    maybeRecordSmartAdvance,
-    maybeRecordSmartClef,
-    maybeRecordSmartPosition,
     smarts,
+    updateSmarts,
 } from "./smarts"
-import {maybeRecordSmartStave} from "./smarts/staves"
 import {computeSymbol} from "./symbol"
-import {Code, LowercaseCodeword, Unicode} from "./symbols"
+import {Code, Unicode} from "./symbols"
 
 // TODO: NEW FEATURE, READY TO GO: inline comments with { }. ready to go
 
@@ -48,8 +44,7 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
 
     return inputWords
         .map((inputWord: Io): Unicode => {
-            const lowercaseCodeword: LowercaseCodeword = computeLowercaseCodewordFromInput(inputWord)
-            const symbol = computeSymbol(lowercaseCodeword)
+            const symbol = computeSymbol(inputWord)
 
             const unicode = computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef(symbol)
             // TODO: CLEAN: MOSTLY DUMB 1-TO-1 MAP
@@ -58,10 +53,7 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
             //  And only having one return statement at the end
             if (!isUndefined(unicode)) return unicode
 
-            maybeRecordSmartStave(symbol)
-            maybeRecordSmartAdvance(symbol)
-            maybeRecordSmartClef(symbol)
-            maybeRecordSmartPosition(symbol)
+            updateSmarts(symbol)
 
             return computeMaybePositionedUnicode(symbol)
         })

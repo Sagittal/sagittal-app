@@ -26,13 +26,13 @@ const computeMaybePositionedUnicode = ({unicode}: Symbol): Unicode =>
             EMPTY_UNICODE :
             unicode
 
-const maybeRecordSmartPosition = ({unicode}: Symbol): void => {
+const updateSmartPosition = ({unicode}: Symbol): void => {
     if (isCspUnicode(unicode)) smarts.position = unicode
 }
 
 export {
     canBePositioned,
     computeMaybePositionedUnicode,
-    maybeRecordSmartPosition,
+    updateSmartPosition,
     isCspUnicode,
 }

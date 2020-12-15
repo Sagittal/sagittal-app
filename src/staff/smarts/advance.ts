@@ -63,7 +63,7 @@ const computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave = (width: Width): Un
     }
 }
 
-const maybeRecordSmartAdvance = (symbol: Symbol): void => {
+const updateSmartAdvance = (symbol: Symbol): void => {
     const maxSymbolWidthSinceLastAdvance = max(smarts.advanceWidth, computeSymbolWidth(symbol))
 
     smarts.advanceWidth = maxSymbolWidthSinceLastAdvance
@@ -88,7 +88,7 @@ const isManualAdvanceUnicode = (unicodeWord: Unicode): boolean =>
     MANUAL_ADVANCE_UNICODES.includes(unicodeWord)
 
 export {
-    maybeRecordSmartAdvance,
+    updateSmartAdvance,
     computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef,
     isSmartAdvanceUnicode,
     isManualAdvanceUnicode,

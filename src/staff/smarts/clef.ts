@@ -6,11 +6,11 @@ import {smarts} from "./globals"
 const TREBLE_UNICODE = computeUnicodeForCode(Code["tbcf"])
 const BASS_UNICODE = computeUnicodeForCode(Code["bscf"])
 
-const maybeRecordSmartClef = ({unicode}: Symbol): void => {
+const updateSmartClef = ({unicode}: Symbol): void => {
     if (unicode === TREBLE_UNICODE) smarts.clef = Clef.TREBLE
     if (unicode === BASS_UNICODE) smarts.clef = Clef.BASS
 }
 
 export {
-    maybeRecordSmartClef,
+    updateSmartClef,
 }

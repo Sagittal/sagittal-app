@@ -15,7 +15,7 @@
 //  It should always run once upon loading
 //  Forum will need to take care of styling its input not to display
 
-import {Unicode, Width} from "./symbols"
+import {Width} from "./symbols"
 
 enum Clef {
     TREBLE = "treble",

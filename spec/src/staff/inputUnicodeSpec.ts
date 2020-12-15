@@ -1,7 +1,7 @@
 import {Io} from "@sagittal/general"
 import {computeInputUnicode} from "../../../src/staff/inputUnicode"
 import {Unicode} from "../../../src/staff/symbols"
-import {undoMapFailMessage} from "../../helpers/undoMap"
+import {codewordFailMessage} from "../../helpers/undoMap"
 
 describe("computeInputUnicode", (): void => {
     it("basically works", (): void => {
@@ -11,7 +11,7 @@ describe("computeInputUnicode", (): void => {
 
         // Codewords: d5 /|\ d5 nt sp13
         const expected = "　 " as Unicode
-        expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+        expect(actual).toBe(expected, codewordFailMessage(actual, expected))
     })
 
     describe("Smart Position", (): void => {
@@ -22,7 +22,7 @@ describe("computeInputUnicode", (): void => {
 
             // Codewords: d5 /|\ d5 nt sp13
             const expected = "　 " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
         it("don't manifest until they are needed (only apply to symbols with ligatures to be vertically shifted by them)", (): void => {
@@ -32,7 +32,7 @@ describe("computeInputUnicode", (): void => {
 
             // Codewords: d5 /|\ st24 sp13 d5 nt sp11 st24 sp2
             const expected = "　    " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
         it("persist until a new one is used", (): void => {
@@ -42,7 +42,7 @@ describe("computeInputUnicode", (): void => {
 
             // Codewords: d5 /|\ st24 sp13 d5 nt sp11 st24 sp2 g4 \! sp7 g4 nt sp13
             const expected = "　      　 " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
     })
 
@@ -54,7 +54,7 @@ describe("computeInputUnicode", (): void => {
 
             // Codewords: trd4 nt sp13
             const expected = "　 " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
         it("change depending on the clef", (): void => {
@@ -64,7 +64,7 @@ describe("computeInputUnicode", (): void => {
 
             // Codewords: bscf sp16 sp8 b5 nt4 sp13
             const expected = "  　 " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
         it("clefs are smart and they stick until you change them (you can change from one to the other)", (): void => {
@@ -74,7 +74,7 @@ describe("computeInputUnicode", (): void => {
 
             // Codewords: bscf sp16 sp8 bsd4 nt sp13 bsc4 nt sp13 tbcf sp16 sp8 tbd4 nt sp13 tbc4 nt sp13
             const expected = "  　 　   　 　 " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
     })
 
@@ -85,51 +85,51 @@ describe("computeInputUnicode", (): void => {
 
             actual = computeInputUnicode("lgln ;" as Io)
             expected = "　 " as Unicode     // Codewords: lgln sp13
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("tbcf ;" as Io)
             expected = "  " as Unicode     // Codewords: tbcf sp16 sp8
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("ntdb ;" as Io)
             expected = "   " as Unicode    // Codewords: ntdb sp16 sp7
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt1 ;" as Io)
             expected = "　 " as Unicode     // Codewords: nt1 sp13
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt2 ;" as Io)
             expected = "　 " as Unicode     // Codewords: nt2 sp13
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt4 ;" as Io)
             expected = "　 " as Unicode     // Codewords: nt4 sp13
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt8 ;" as Io)
             expected = "   " as Unicode    // Codewords: nt8 sp16 sp5
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt16 ;" as Io)
             expected = "   " as Unicode    // Codewords: nt16 sp16 sp5
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt2dn ;" as Io)
             expected = "　 " as Unicode     // Codewords: nt2dn sp13
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt4dn ;" as Io)
             expected = "　 " as Unicode     // Codewords: nt4dn sp13
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt8dn ;" as Io)
             expected = "　 " as Unicode     // Codewords: nt8dn sp13
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
 
             actual = computeInputUnicode("nt16dn ;" as Io)
             expected = "　 " as Unicode     // Codewords: nt16dn sp13
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
         it("if more than one symbol has occurred since the previous advance, uses the width of the symbol with the max width", (): void => {
@@ -139,7 +139,7 @@ describe("computeInputUnicode", (): void => {
 
             // Codewords: lgln nt16 sp16 sp5
             const expected = "   " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
         it("resets the advance amount after each application", (): void => {
@@ -149,7 +149,7 @@ describe("computeInputUnicode", (): void => {
 
             // Codewords: lgln nt16 sp16 sp5 nt4 sp13
             const expected = "   　 " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
     })
 
@@ -161,7 +161,7 @@ describe("computeInputUnicode", (): void => {
 
             // Codewords: st24 nt8 sp16 sp5 nt4 sp3 st24 sp10
             const expected = "      " as Unicode
-            expect(actual).toBe(expected, undoMapFailMessage(actual, expected))
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
         // tslint:disable-next-line:ban

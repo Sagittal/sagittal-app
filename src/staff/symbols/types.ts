@@ -8,11 +8,11 @@ interface Symbol {
     description?: string,
 }
 
-type Codeword = string & {_CodewordBrand: boolean}                      // String key
+type Codeword = string & {_CodewordBrand: boolean}                  // String key; what input words become via "smarts"
 
-type LowercaseCodeword = string & {_LowercaseCodewordBrand: boolean}    // The lower case string that gets matched
+type LowercaseCodeword = string & {_LowercaseCodewordBrand: boolean}// The lower case string that gets matched
 
-enum Code {                                                             // Just a numeric registry
+enum Code {                                                         // Just a numeric registry
     "sp",
     "ad",
     ";",
