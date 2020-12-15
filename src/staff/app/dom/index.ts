@@ -1,5 +1,4 @@
 export {setupDom} from "./dom"
 export {svg} from "./svg"
-export {HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT} from "./constants"
 export {staffCodeInput} from "./staffCodeInput"
 export {staffDiv} from "./staffDiv"
