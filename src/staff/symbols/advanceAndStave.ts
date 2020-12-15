@@ -44,5 +44,3 @@ export {
     MANUAL_STAVE_MAP,
     SMART_STAVE_MAP,
 }
-
-// TODO: And BTW "brln" needs a width of 4 and "brlndb" 7.

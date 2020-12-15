@@ -33,10 +33,18 @@ import {computeUnicode} from "./unicode"
 // TODO: NEW FEATURE, READY TO GO: also add a copy image button? still waiting on Dave's confirmation
 //  He says yes do it
 
+// TODO: NEW FEATURE, BLOCKED: SMART BARLINES
+//  It's currently not possible to end with a barline
+//  This might be related to the `inputWords.push(Code[Code[";"]])` below
+//  And BTW "brln" needs a width of 4 and "brlndb" 7
+//  .
 // TODO: PERFORMANCE, BLOCKED: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
 //  Check the diff with the previous sentence
 //  Just waiting cuz I'm curious what Dave thinks
 //  He says don't spend time on it, but I can definitely see it slowing down as it gets longer...
+//  Then he says it is getting slow for him now.
+//  That or only compile the word once you type a space
+//  Let's see what he says
 
 const collapseAllWhitespacesToSingleSpaces = (inputSentence: Io): Io =>
     inputSentence
@@ -48,7 +56,7 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
     setAllPropertiesOfObjectOnAnother({objectToChange: smarts, objectWithProperties: INITIAL_SMARTS})
 
     const inputWords = collapseAllWhitespacesToSingleSpaces(inputSentence).split(SPACE)
-    inputWords.push(Code[Code[";"]]) // TODO: BUG, not possible to end line with a bar line
+    inputWords.push(Code[Code[";"]])
 
     return inputWords
         .map((inputWord: Io): Unicode => {

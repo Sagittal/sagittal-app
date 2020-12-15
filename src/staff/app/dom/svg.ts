@@ -1,4 +1,4 @@
-import {HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT} from "./constants"
+import {HEIGHT_WHICH_CAUSES_SVG_TO_MATCH_TEXT} from "../constants"
 
 const svg = document.createElement("svg") as Element as SVGElement
 svg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
