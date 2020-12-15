@@ -1,10 +1,8 @@
-import {sumTexts} from "@sagittal/general"
-import {CSP_MAP, EMPTY_UNICODE, Symbol, Unicode} from "../symbols"
+import {EMPTY_UNICODE, POSITION_MAP, Symbol, Unicode} from "../symbols"
 import {computeMapUnicodes} from "../utility"
 import {smarts} from "./globals"
-import {shouldNotBeDisplayed} from "./shouldNotBeDisplayed"
 
-const CSP_UNICODES = computeMapUnicodes(CSP_MAP)
+const POSITION_UNICODES = computeMapUnicodes(POSITION_MAP)
 
 const canBePositioned = (unicodeWord: Unicode): boolean =>
     (unicodeWord >= "\uE022" && unicodeWord <= "\uE024")    // Leger lines
@@ -13,26 +11,19 @@ const canBePositioned = (unicodeWord: Unicode): boolean =>
     || (unicodeWord >= "\uE900" && unicodeWord <= "\uEA1F") // Medieval & Renaissance
     || (unicodeWord >= "\uEC30" && unicodeWord <= "\uEC3F") // Kievan square notation
 
-
-const isCspUnicode = (unicodeWord: Unicode): boolean =>
-    CSP_UNICODES.includes(unicodeWord)
-
-const computeMaybePositionedUnicode = ({unicode}: Symbol): Unicode =>
-    canBePositioned(unicode) ?
-        sumTexts(smarts.position, unicode) :
-        // TODO: CLEAN: MOSTLY DUMB 1-TO-1 MAP
-        //  In this refactor, this goes elsewhere, mixing position and non-position
-        shouldNotBeDisplayed(unicode) ?
-            EMPTY_UNICODE :
-            unicode
+const isPositionUnicode = (unicodeWord: Unicode): boolean =>
+    POSITION_UNICODES.includes(unicodeWord)
 
 const updateSmartPosition = ({unicode}: Symbol): void => {
-    if (isCspUnicode(unicode)) smarts.position = unicode
+    if (isPositionUnicode(unicode)) smarts.position = unicode
 }
+
+const computeSmartPositionUnicode = ({unicode}: Symbol): Unicode =>
+    canBePositioned(unicode) ? smarts.position : EMPTY_UNICODE
 
 export {
     canBePositioned,
-    computeMaybePositionedUnicode,
     updateSmartPosition,
-    isCspUnicode,
+    isPositionUnicode,
+    computeSmartPositionUnicode,
 }

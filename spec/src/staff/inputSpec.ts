@@ -22,7 +22,7 @@ describe("computeInputUnicode", (): void => {
     })
 
     describe("Smart Position", (): void => {
-        it("the most recently used CSP is automatically applied if none is specified                  ", (): void => {
+        it("the most recently used position is automatically applied if none is specified", (): void => {
             const inputSentence = "d5 /|\\ nt" as Io
 
             const actual = computeInputUnicode(inputSentence)
@@ -33,7 +33,7 @@ describe("computeInputUnicode", (): void => {
         })
 
         it("don't manifest until they are needed (only apply to symbols with ligatures to be vertically shifted by them)", (): void => {
-            const inputSentence = "d5 st /|\\ sp13 nt sp13" as Io
+            const inputSentence = "d5 st /|\\ sp13 nt" as Io
 
             const actual = computeInputUnicode(inputSentence)
 
@@ -43,7 +43,7 @@ describe("computeInputUnicode", (): void => {
         })
 
         it("persist until a new one is used", (): void => {
-            const inputSentence = "d5 st /|\\ sp13 nt sp13 g4 \\! sp7 nt sp13" as Io
+            const inputSentence = "d5 st /|\\ sp13 nt sp13 g4 \\! sp7 nt" as Io
 
             const actual = computeInputUnicode(inputSentence)
 

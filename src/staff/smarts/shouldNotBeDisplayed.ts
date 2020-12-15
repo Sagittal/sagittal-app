@@ -1,10 +1,10 @@
 import {Unicode} from "../symbols"
 import {isManualAdvanceUnicode, isSmartAdvanceUnicode} from "./advance"
-import {isCspUnicode} from "./position"
-import {isSmartStaveUnicode} from "./staves"
+import {isPositionUnicode} from "./position"
+import {isSmartStaveUnicode} from "./stave"
 
 const shouldNotBeDisplayed = (unicodeWord: Unicode): boolean =>
-    isCspUnicode(unicodeWord)
+    isPositionUnicode(unicodeWord)
     || isSmartStaveUnicode(unicodeWord)
     || isSmartAdvanceUnicode(unicodeWord)
     || isManualAdvanceUnicode(unicodeWord)

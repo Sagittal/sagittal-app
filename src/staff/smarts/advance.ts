@@ -1,9 +1,10 @@
-import {max, Maybe, sumTexts} from "@sagittal/general"
+import {max, sumTexts} from "@sagittal/general"
 import {Code, EMPTY_UNICODE, MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP, Symbol, Unicode} from "../symbols"
 import {Width} from "../types"
 import {computeMapUnicodes, computeUnicodeForCode} from "../utility"
 import {computeSymbolWidth} from "../width"
 import {smarts} from "./globals"
+import {updateSmarts} from "./update"
 
 // TODO: FEATURE IMPROVE, BLOCKED: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
 
@@ -69,16 +70,19 @@ const updateSmartAdvance = (symbol: Symbol): void => {
     smarts.advanceWidth = maxSymbolWidthSinceLastAdvance
 }
 
-const computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef = (
-    symbol: Symbol,
-): Maybe<Unicode> => {
+const computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmarts = (symbol: Symbol): Unicode => {
+    let unicode
     if (isSmartAdvanceUnicode(symbol.unicode)) {
-        return computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(smarts.advanceWidth)
+        unicode = computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(smarts.advanceWidth)
     } else if (isManualAdvanceUnicode(symbol.unicode)) {
-        return computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(symbol.width!)
+        unicode = computeAdvanceUnicodeMindingSmartAdvanceAndSmartStave(symbol.width!)
+    } else {
+        unicode = EMPTY_UNICODE
     }
 
-    return undefined
+    updateSmarts(symbol)
+
+    return unicode
 }
 
 const isSmartAdvanceUnicode = (unicodeWord: Unicode): boolean =>
@@ -89,7 +93,7 @@ const isManualAdvanceUnicode = (unicodeWord: Unicode): boolean =>
 
 export {
     updateSmartAdvance,
-    computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef,
+    computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmarts,
     isSmartAdvanceUnicode,
     isManualAdvanceUnicode,
 }

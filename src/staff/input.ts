@@ -1,13 +1,14 @@
-import {BLANK, Io, isUndefined, setAllPropertiesOfObjectOnAnother, SPACE} from "@sagittal/general"
+import {BLANK, Io, setAllPropertiesOfObjectOnAnother, SPACE, sumTexts} from "@sagittal/general"
 import {
-    computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef,
-    computeMaybePositionedUnicode,
+    computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmarts,
+    computeSmartPositionUnicode,
     INITIAL_SMARTS,
     smarts,
     updateSmarts,
 } from "./smarts"
 import {computeSymbol} from "./symbol"
 import {Code, Unicode} from "./symbols"
+import {computeUnicode} from "./unicode"
 
 // TODO: NEW FEATURE, READY TO GO: inline comments with { }. ready to go
 
@@ -16,6 +17,8 @@ import {Code, Unicode} from "./symbols"
 //  Eventually you should only need to export the maps from the map/ module, not the individual ones to get their widths
 //  And for the npm package version, you'd construct it with a custom JSON object or something
 //  Slightly blocked on Dave's specific feedback about it being a TSV or tab-separated text file
+//  And I'm not quite sure yet how this is going to work w/r/t clefs and positions, if they'll be able to modify those
+//  Per Dave's concerns that all mappings are based on final unicodes, not the codewords, to support other languages
 
 // TODO: NEW FEATURE, BLOCKED: should we handle multi-line staves? still waiting on Dave's response
 
@@ -46,16 +49,13 @@ const computeInputUnicode = (inputSentence: Io): Unicode => {
         .map((inputWord: Io): Unicode => {
             const symbol = computeSymbol(inputWord)
 
-            const unicode = computeMaybeAdvancedUnicodeAndMaybeRecordSmartAdvanceAndSmartClef(symbol)
-            // TODO: CLEAN: MOSTLY DUMB 1-TO-1 MAP
-            //  Maybe have a pattern to return prefixes and suffixes of unicode
-            //  Whether it's advance, stave, or CSP
-            //  And only having one return statement at the end
-            if (!isUndefined(unicode)) return unicode
+            const smartAdvanceAndSmartStavePrefixUnicode =
+                computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmarts(symbol)
 
-            updateSmarts(symbol)
+            const unicode = computeUnicode(symbol)
+            const positionPrefixUnicode = computeSmartPositionUnicode(symbol)
 
-            return computeMaybePositionedUnicode(symbol)
+            return sumTexts(smartAdvanceAndSmartStavePrefixUnicode, positionPrefixUnicode, unicode)
         })
         .join(BLANK) as Unicode
 }

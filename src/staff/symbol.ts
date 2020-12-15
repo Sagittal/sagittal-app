@@ -1,6 +1,15 @@
 import {Io, isNumber, isUndefined, RecordKey} from "@sagittal/general"
 import {smarts} from "./smarts"
-import {BASS_CSP_MAP, Code, Codeword, CODE_MAP, LowercaseCodeword, Symbol, TREBLE_CSP_MAP, Unicode} from "./symbols"
+import {
+    BASS_POSITION_MAP,
+    Code,
+    Codeword,
+    CODE_MAP,
+    LowercaseCodeword,
+    Symbol,
+    TREBLE_POSITION_MAP,
+    Unicode,
+} from "./symbols"
 import {Clef, Width} from "./types"
 import {isUnicodeLiteral} from "./utility"
 
@@ -11,9 +20,9 @@ const computeLowercaseCodewordFromCodeword = (codeword: Codeword): LowercaseCode
     codeword.toLowerCase() as LowercaseCodeword
 
 const BASS_CODE_MAP: Record<Code, Symbol> =
-    {...CODE_MAP, ...BASS_CSP_MAP} as Record<Code, Symbol>
+    {...CODE_MAP, ...BASS_POSITION_MAP} as Record<Code, Symbol>
 const TREBLE_CODE_MAP: Record<Code, Symbol> =
-    {...CODE_MAP, ...TREBLE_CSP_MAP} as Record<Code, Symbol>
+    {...CODE_MAP, ...TREBLE_POSITION_MAP} as Record<Code, Symbol>
 
 const LOWERCASE_CODEWORD_TO_CODE_MAP: Record<RecordKey<LowercaseCodeword>, Code> =
     (Object.entries(Code) as Array<[Codeword, Code]>).reduce(
@@ -47,6 +56,10 @@ const computeFallbackToInputAsFailedSymbol = (inputWord: Io): Symbol =>
 const computeSymbol = (inputWord: Io): Symbol => {
     const lowercaseCodeword: LowercaseCodeword = computeLowercaseCodewordFromInput(inputWord)
     const code: Code = LOWERCASE_CODEWORD_TO_CODE_MAP[lowercaseCodeword]
+    // TODO: CLEAN: CLEF & POSITION SMARTS
+    //  It seems like there should be some way to not use smarts here, e.g. to set the smarts.position
+    //  To the correct unicode based on what the clef is, since you only need the clef part of these maps for the
+    //  Positions after all... but I couldn't quite figure out how to do it
     const codeMap = smarts.clef === Clef.BASS ? BASS_CODE_MAP : TREBLE_CODE_MAP
     const symbol = codeMap[code]
 

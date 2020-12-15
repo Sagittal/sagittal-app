@@ -9,14 +9,6 @@ const BAR_MAP: Record<Code, Symbol> = {
     /*U+E031*/[Code["brlndb"]]: {unicode: "", description: "bar line double"},
 } as Record<Code, Symbol>
 
-const CLEF_MAP: Record<Code, Symbol> = {
-    /*U+E050*/[Code["tbcf"]]: {unicode: "", width: 24, description: "treble"},
-    /*U+E05C*/[Code["alcf"]]: {unicode: "", width: 24, description: "alto"},
-    /*U+E062*/[Code["bscf"]]: {unicode: "", width: 24, description: "bass"},
-    /*U+E512*/[Code["8va"]]: {unicode: "", width: 24, description: "octave above"},
-    /*U+E51C*/[Code["8va"]]: {unicode: "", width: 24, description: "octave below"},
-} as Record<Code, Symbol>
-
 const TIME_SIGNATURE_MAP: Record<Code, Symbol> = {
     /*U+E080*/[Code["tm0"]]: {unicode: "", width: 17, description: "time signature digit 0"},
     /*U+E081*/[Code["tm1"]]: {unicode: "", width: 17, description: "time signature digit 1"},
@@ -75,7 +67,6 @@ const BEAMS_MAP: Record<Code, Symbol> = {
 export {
     LEGER_LINE_MAP,
     BAR_MAP,
-    CLEF_MAP,
     TIME_SIGNATURE_MAP,
     NOTE_MAP,
     REST_MAP,
