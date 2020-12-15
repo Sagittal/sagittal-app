@@ -1,14 +1,10 @@
-// TODO: solve these issues:
-/*
-(node:13860) [DEP_WEBPACK_MAIN_TEMPLATE_GET_ASSET_PATH] DeprecationWarning: MainTemplate.getAssetPath is deprecated (use Compilation.getAssetPath instead)
-(Use `node --trace-deprecation ...` to show where the warning was created)
-i ｢atl｣: Using typescript@4.1.2 from typescript
-i ｢atl｣: Using tsconfig.json from C:/Users/DouglasBlumeyer/workspace/Sagittal/sagittal-main/app/tsconfig.json
-(node:13860) [DEP_WEBPACK_COMPILATION_ASSETS] DeprecationWarning: Compilation.assets will be frozen in future, all modifications are deprecated.
-BREAKING CHANGE: No more changes should happen to Compilation.assets after sealing the Compilation.
- */
-
 module.exports = {
+    // TODO: PERFORMANCE: We can't actually improve tree-shaking by switching @sagittal/general to esnext modules
+    //  Because then it doesn't work in the node-based environments (importing into @sagittal/system and running tests)
+    //  If we actually wanted to reduce the impact of including @sagittal/general on this code
+    //  We'd have to look into @sagittal/general as a library having two different compiled results, one for Node and
+    //  One for the browser. I think.
+    mode: "production",
     resolve: {
         extensions: [".ts", ".scss", ".js"],
         alias: {

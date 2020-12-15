@@ -8,7 +8,7 @@
     "url": "git+https://github.com/Sagittal/sagittal-app.git"
   },
   "scripts": {
-    "start": "webpack serve --config webpack.app.dev.config.js",
+    "start": "webpack serve --config webpack.app.config.js --mode development",
     "deploy": "sh bin/deploy.sh",
     "profile": "node --prof -r ts-node/register/transpile-only --max-old-space-size=131072 [[script.ts]] && node --prof-process isolate-*.log > processed.txt && rm isolate-*.log",
     "lint": "tslint \"src/**/*.ts\" --fix && tslint \"spec/**/*.ts\" --fix",
@@ -27,7 +27,7 @@
     "buffer": "^6.0.3",
     "css-loader": "^5.0.1",
     "favicons-webpack-plugin": "^5.0.0-alpha.3",
-    "html-webpack-plugin": "^4.5.0",
+    "html-webpack-plugin": "^5.0.0-alpha.15",
     "jasmine": "^3.6.3",
     "jasmine-spec-reporter": "^5.0.2",
     "node-sass": "^5.0.0",
