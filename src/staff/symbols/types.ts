@@ -84,6 +84,7 @@ enum Code {                                                         // Just a nu
     "bm8",
     "bm16",
     "tp3",
+    "br",
     "c6",
     "b5",
     "a5",

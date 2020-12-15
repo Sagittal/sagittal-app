@@ -34,4 +34,13 @@ describe("computeSymbol", (): void => {
         const expected = {unicode: "幸" as Unicode, width: 0 as Width} as Symbol
         expect(actual).toEqual(expected)
     })
+
+    it("let's do a realistic, known example", (): void => {
+        const unicodeLiteral: UnicodeLiteral = "u+e3f0" as UnicodeLiteral
+
+        const actual = computeSymbol(unicodeLiteral)
+
+        const expected = {unicode: "" as Unicode, width: 0 as Width} as Symbol
+        expect(actual).toEqual(expected)
+    })
 })

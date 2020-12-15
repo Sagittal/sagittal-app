@@ -64,6 +64,10 @@ const BEAMS_MAP: Record<Code, Symbol> = {
     /*U+E1FF*/[Code["tp3"]]: {unicode: "", description: "tuplet digit 3 (for short stems)"},
 } as Record<Code, Symbol>
 
+const BREAKS_MAP: Record<Code, Symbol> = {
+    /*U+000D*/[Code["br"]]: {unicode: "\n", description: "stave break"},
+} as Record<Code, Symbol>
+
 export {
     LEGER_LINE_MAP,
     BAR_MAP,
@@ -72,4 +76,5 @@ export {
     REST_MAP,
     DOT_MAP,
     BEAMS_MAP,
+    BREAKS_MAP,
 }
