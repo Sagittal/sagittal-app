@@ -30,6 +30,7 @@ module.exports = {
                     compilerOptions: {
                         module: "esnext",
                     },
+                    exclude: "spec",
                     transpileOnly: true,
                     isolatedModules: true,
                 },
