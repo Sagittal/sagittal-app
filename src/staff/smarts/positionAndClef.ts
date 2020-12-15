@@ -7,6 +7,7 @@ const TREBLE_UNICODE = computeUnicodeForCode(Code["tbcf"])
 const BASS_UNICODE = computeUnicodeForCode(Code["bscf"])
 
 const POSITION_UNICODES = computeMapUnicodes(POSITION_MAP)
+const FAKE_TEMP_MIDDLE_POSITION_UNICODE = computeUnicodeForCode(Code["md0"])
 
 const canBePositioned = (unicodeWord: Unicode): boolean =>
     (unicodeWord >= "\uE022" && unicodeWord <= "\uE024")    // Leger lines
@@ -26,7 +27,9 @@ const computeSmartPositionAndSmartClefPrefixUnicodeAndUpdateSmarts = (symbol: Sy
     updateSmartClef(symbol)
     updateSmartPosition(symbol)
 
-    return canBePositioned(symbol.unicode) ? smarts.position : EMPTY_UNICODE
+    return canBePositioned(symbol.unicode) && smarts.position !== FAKE_TEMP_MIDDLE_POSITION_UNICODE ?
+        smarts.position :
+        EMPTY_UNICODE
 }
 
 const updateSmartClef = ({unicode}: Symbol): void => {

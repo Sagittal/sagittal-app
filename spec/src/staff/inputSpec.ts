@@ -51,6 +51,16 @@ describe("computeInputUnicode", (): void => {
             const expected = "　      　 " as Unicode
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
+
+        it("does not actually put the middle position on the stave, because it is a temporary / made up unicode since no zero position glyph is in SMuFL", (): void => {
+            const inputSentence = "d5 nt ; b4 /|\\ nt" as Io
+
+            const actual = computeInputUnicode(inputSentence)
+
+            // Codewords: d5 nt ; /|\ nt sp13
+            const expected = "　 　 " as Unicode
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
+        })
     })
 
     describe("Smart Clef", (): void => {
