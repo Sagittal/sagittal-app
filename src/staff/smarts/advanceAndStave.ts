@@ -36,7 +36,8 @@ const ST8_UNICODE = computeUnicodeForCode(Code["st8"])
 const ST16_UNICODE = computeUnicodeForCode(Code["st16"])
 const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
 
-const SMART_STAVE_UNICODE = computeUnicodeForCode(Code["st"])
+const SMART_STAVE_ON_UNICODE = computeUnicodeForCode(Code["st"])
+const SMART_STAVE_OFF_UNICODE = computeUnicodeForCode(Code["stof"])
 const SMART_STAVE_UNICODES = computeMapUnicodes(SMART_STAVE_MAP)
 
 const computeAdvanceUnicode = (width: Width): Unicode => {
@@ -99,7 +100,8 @@ const isManualAdvanceUnicode = (unicodeWord: Unicode): boolean =>
     MANUAL_ADVANCE_UNICODES.includes(unicodeWord)
 
 const updateSmartStave = ({unicode}: Symbol): void => {
-    if (unicode === SMART_STAVE_UNICODE) smarts.staveOn = true
+    if (unicode === SMART_STAVE_ON_UNICODE) smarts.staveOn = true
+    if (unicode === SMART_STAVE_OFF_UNICODE) smarts.staveOn = false
 
     if (unicode === ST8_UNICODE) smarts.staveWidth = smarts.staveWidth + 8 as Width
     if (unicode === ST16_UNICODE) smarts.staveWidth = smarts.staveWidth + 16 as Width

@@ -36,6 +36,7 @@ enum Code {                                                         // Just a nu
     "st16",
     "st24",
     "st",
+    "stof",
     "lgln",
     "brln",
     "brlndb",

@@ -181,9 +181,14 @@ describe("computeInputUnicode", (): void => {
             expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
 
-        // tslint:disable-next-line:ban
-        xit("can turn off Smart Stave", (): void => {
+        it("can be turned off and on", (): void => {
+            const inputSentence = "st tbcf ; nt ; stof nt ; nt ; st nt"
 
+            const actual = computeInputUnicode(inputSentence)
+
+            // Codewords: tbcf st24 sp16 sp8 nt4 st24 sp12 sp1 nt4 sp12 sp1 nt4 sp12 sp1 nt4 st24 sp16 sp12
+            const expected = "  　 　 　  　d" as Unicode
+            expect(actual).toBe(expected, codewordFailMessage(actual, expected))
         })
     })
 })
