@@ -1,5 +1,5 @@
 import {Io} from "@sagittal/general"
-import {computeInputUnicode} from "../inputUnicode"
+import {computeInputUnicode} from "../input"
 
 const replaceInputWithUnicode = (staffDiv: Element): void => {
     if (staffDiv.classList.contains("processed")) return

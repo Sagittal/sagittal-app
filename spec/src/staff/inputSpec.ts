@@ -1,7 +1,14 @@
-import {Io} from "@sagittal/general"
-import {computeInputUnicode} from "../../../src/staff/inputUnicode"
+import {Io, SPACE} from "@sagittal/general"
+import {computeInputUnicode} from "../../../src/staff/input"
 import {Unicode} from "../../../src/staff/symbols"
-import {codewordFailMessage} from "../../helpers/undoMap"
+import {computeCodewordsFromUnicode} from "../../../src/staff/utility/codeword"
+
+const codewordFailMessage = (actualUnicodeSentence: Unicode, expectedUnicodeSentence: Unicode): Io => {
+    const actualCodewords = computeCodewordsFromUnicode(actualUnicodeSentence)
+    const expectedCodewords = computeCodewordsFromUnicode(expectedUnicodeSentence)
+
+    return `expected "${actualCodewords.join(SPACE)}" to be "${expectedCodewords.join(SPACE)}"`
+}
 
 describe("computeInputUnicode", (): void => {
     it("basically works", (): void => {

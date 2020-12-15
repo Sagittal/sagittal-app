@@ -1,7 +1,7 @@
 import {max, Maybe, sumTexts} from "@sagittal/general"
 import {Code, EMPTY_UNICODE, MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP, Symbol, Unicode} from "../symbols"
 import {Width} from "../types"
-import {computeMapUnicodes, computeUnicodeForCode} from "../unicode"
+import {computeMapUnicodes, computeUnicodeForCode} from "../utility"
 import {computeSymbolWidth} from "../width"
 import {smarts} from "./globals"
 

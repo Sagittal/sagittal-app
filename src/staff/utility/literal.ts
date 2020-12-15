@@ -1,6 +1,6 @@
 import {Io} from "@sagittal/general"
-import {Unicode} from "./symbols"
-import {UnicodeLiteral} from "./types"
+import {Unicode} from "../symbols"
+import {UnicodeLiteral} from "../types"
 
 const isUnicodeLiteral = (candidateUnicodeLiteralInputWord: Io): candidateUnicodeLiteralInputWord is UnicodeLiteral =>
     !!candidateUnicodeLiteralInputWord.match(/^u\+/)

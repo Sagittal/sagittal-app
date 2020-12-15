@@ -1,6 +1,6 @@
 import {isUndefined} from "@sagittal/general"
+import {Code, CODE_MAP, Symbol, Unicode} from "../symbols"
 import {computeCodewordFromCode} from "./codeword"
-import {Code, CODE_MAP, Symbol, Unicode} from "./symbols"
 
 const computeUnicodeForCode = (code: Code): Unicode => {
     const symbol = CODE_MAP[code]

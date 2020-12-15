@@ -1,6 +1,6 @@
 import {Code, Symbol} from "../symbols"
 import {Clef} from "../types"
-import {computeUnicodeForCode} from "../unicode"
+import {computeUnicodeForCode} from "../utility"
 import {smarts} from "./globals"
 
 const TREBLE_UNICODE = computeUnicodeForCode(Code["tbcf"])

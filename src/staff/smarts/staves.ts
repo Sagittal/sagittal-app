@@ -1,5 +1,5 @@
 import {Code, SMART_STAVE_MAP, Symbol, Unicode, Width} from "../symbols"
-import {computeMapUnicodes, computeUnicodeForCode} from "../unicode"
+import {computeMapUnicodes, computeUnicodeForCode} from "../utility"
 import {smarts} from "./globals"
 
 const ST8_UNICODE = computeUnicodeForCode(Code["st8"])

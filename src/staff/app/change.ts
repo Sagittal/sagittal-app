@@ -1,5 +1,5 @@
 import {Io} from "@sagittal/general"
-import {computeInputUnicode} from "../inputUnicode"
+import {computeInputUnicode} from "../input"
 import {staffCodeInput, staffDiv, svg} from "./dom"
 import {vectorizeSvg} from "./svg"
 

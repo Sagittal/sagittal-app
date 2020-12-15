@@ -1,10 +1,14 @@
 import {Io, isNumber, isUndefined, RecordKey} from "@sagittal/general"
-import {computeArbitrarySymbol} from "./arbitrarySymbol"
-import {computeLowercaseCodewordFromCodeword, computeLowercaseCodewordFromInput} from "./codeword"
 import {smarts} from "./smarts"
 import {BASS_CSP_MAP, Code, Codeword, CODE_MAP, LowercaseCodeword, Symbol, TREBLE_CSP_MAP, Unicode} from "./symbols"
 import {Clef, Width} from "./types"
-import {isUnicodeLiteral} from "./unicodeLiteral"
+import {isUnicodeLiteral} from "./utility"
+
+const computeLowercaseCodewordFromInput = (inputWord: Io): LowercaseCodeword =>
+    inputWord.toLowerCase() as LowercaseCodeword
+
+const computeLowercaseCodewordFromCodeword = (codeword: Codeword): LowercaseCodeword =>
+    codeword.toLowerCase() as LowercaseCodeword
 
 const BASS_CODE_MAP: Record<Code, Symbol> =
     {...CODE_MAP, ...BASS_CSP_MAP} as Record<Code, Symbol>
@@ -28,9 +32,15 @@ const LOWERCASE_CODEWORD_TO_CODE_MAP: Record<RecordKey<LowercaseCodeword>, Code>
         {} as Record<LowercaseCodeword, Symbol>,
     )
 
+const computeArbitrarySymbol = (inputWord: Io): Symbol =>
+    ({
+        unicode: String.fromCharCode(parseInt(inputWord.replace(/^u\+(.*)/, "0x$1"))) as Unicode,
+        width: 0 as Width,
+    })
+
 const computeFallbackToInputAsFailedSymbol = (inputWord: Io): Symbol =>
     ({
-        unicode: inputWord as Unicode, // This is a fallback, if it's not a mapped code or in U+____ form
+        unicode: inputWord as Unicode,
         width: 0 as Width,
     })
 

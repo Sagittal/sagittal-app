@@ -1,6 +1,6 @@
 import {sumTexts} from "@sagittal/general"
 import {CSP_MAP, EMPTY_UNICODE, Symbol, Unicode} from "../symbols"
-import {computeMapUnicodes} from "../unicode"
+import {computeMapUnicodes} from "../utility"
 import {smarts} from "./globals"
 import {shouldNotBeDisplayed} from "./shouldNotBeDisplayed"
 
