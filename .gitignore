@@ -4,4 +4,3 @@ dist
 log
 .DS_Store
 bash.exe.stackdump
-.secrets.json

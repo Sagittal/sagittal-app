@@ -6,6 +6,6 @@ module.exports = {
     devtool: "inline-source-map",
     devServer: {
         watchContentBase: true,
-        contentBase: "dist/sagittal.github.io",
+        contentBase: "dist",
     },
 }
