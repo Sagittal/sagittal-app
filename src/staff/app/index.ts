@@ -1,6 +1,6 @@
 import "../styles"
-import {handleStaffCodeInputChange} from "./change"
+import {processStaffCodeChange} from "./process"
 import {root, setupDom} from "./dom"
 
 setupDom()
-handleStaffCodeInputChange(root)
+processStaffCodeChange(root)

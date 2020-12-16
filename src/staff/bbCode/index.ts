@@ -16,9 +16,9 @@ Text, and its precursors Bravura and SMuFL. For more information see https://www
 */
 
 import "../styles"
-import {replaceInputWithUnicode} from "./replace"
+import {processStaffCode} from "./process"
 
-document.querySelectorAll(".staff-code").forEach(replaceInputWithUnicode)
+document.querySelectorAll(".staff-code").forEach(processStaffCode)
 
 // TODO: NON-BLOCKING LOADING FOR THE FORUM
 //  Or rather, now the problem is: we need to know when a font has finished loading before doing the above replacement

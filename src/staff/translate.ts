@@ -1,19 +1,17 @@
 import {Io} from "@sagittal/general"
-import {computeInputUnicode} from "../input"
+import {computeInputUnicode} from "./input"
+import {Unicode} from "./symbols"
 
-const replaceInputWithUnicode = (rootDiv: Element): void => {
-    // TODO: DRY with sibling
-    if (rootDiv.classList.contains("processed")) return
-    rootDiv.classList.add("processed")
-
+const translateInputToDisplay = (rootDiv: Element): Unicode => {
     const input = rootDiv.querySelector("textarea")!
     const display = rootDiv.querySelector("div")!
 
     const unicodeSentence = computeInputUnicode(input.value as Io)
     display.textContent = unicodeSentence
+
+    return unicodeSentence
 }
 
-
 export {
-    replaceInputWithUnicode,
+    translateInputToDisplay,
 }
