@@ -42,7 +42,7 @@ const LOWERCASE_CODEWORD_TO_CODE_MAP: Record<RecordKey<LowercaseCodeword>, Code>
     )
 
 // TODO: Dave suggests use JS to calculate width of character to estimate its width
-const computeArbitrarySymbol = (inputWord: Io): Symbol =>
+const computeUnicodeLiteralSymbol = (inputWord: Io): Symbol =>
     ({
         unicode: String.fromCharCode(parseInt(inputWord.replace(/^u\+(.*)/, "0x$1"))) as Unicode,
         width: 0 as Width,
@@ -67,8 +67,7 @@ const computeSymbol = (inputWord: Io): Symbol => {
 
     if (!isUndefined(symbol)) return symbol
 
-    // TODO: what happened to my note about arbitrary/literal needing to be one word AKA they're the same thing
-    if (isUnicodeLiteral(inputWord)) return computeArbitrarySymbol(inputWord)
+    if (isUnicodeLiteral(inputWord)) return computeUnicodeLiteralSymbol(inputWord)
 
     return computeFallbackToInputAsFailedSymbol(inputWord)
 }
