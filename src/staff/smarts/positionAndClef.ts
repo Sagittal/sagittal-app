@@ -1,10 +1,21 @@
-import {Code, EMPTY_UNICODE, POSITION_MAP, Symbol, Unicode} from "../symbols"
-import {Clef} from "../types"
+import {
+    BASS_POSITION_MAP,
+    Code,
+    CODE_MAP,
+    EMPTY_UNICODE,
+    POSITION_MAP,
+    Symbol,
+    TREBLE_POSITION_MAP,
+    Unicode,
+} from "../symbols"
 import {computeMapUnicodes, computeUnicodeForCode} from "../utility"
 import {smarts} from "./globals"
 
 const TREBLE_UNICODE = computeUnicodeForCode(Code["tbcf"])
 const BASS_UNICODE = computeUnicodeForCode(Code["bscf"])
+
+const BASS_CODE_MAP: Record<Code, Symbol> = {...CODE_MAP, ...BASS_POSITION_MAP} as Record<Code, Symbol>
+const TREBLE_CODE_MAP: Record<Code, Symbol> = {...CODE_MAP, ...TREBLE_POSITION_MAP} as Record<Code, Symbol>
 
 const POSITION_UNICODES = computeMapUnicodes(POSITION_MAP)
 const FAKE_TEMP_MIDDLE_POSITION_UNICODE = computeUnicodeForCode(Code["md0"])
@@ -33,8 +44,8 @@ const computeSmartPositionAndSmartClefPrefixUnicodeAndUpdateSmarts = (symbol: Sy
 }
 
 const updateSmartClef = ({unicode}: Symbol): void => {
-    if (unicode === TREBLE_UNICODE) smarts.clef = Clef.TREBLE
-    if (unicode === BASS_UNICODE) smarts.clef = Clef.BASS
+    if (unicode === TREBLE_UNICODE) smarts.codeMap = TREBLE_CODE_MAP
+    if (unicode === BASS_UNICODE) smarts.codeMap = BASS_CODE_MAP
 }
 
 export {
@@ -43,4 +54,5 @@ export {
     isPositionUnicode,
     computeSmartPositionAndSmartClefPrefixUnicodeAndUpdateSmarts,
     updateSmartClef,
+    TREBLE_CODE_MAP,
 }

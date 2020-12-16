@@ -1,5 +1,6 @@
 import {EMPTY_UNICODE} from "../symbols"
-import {Clef, Width} from "../types"
+import {Width} from "../types"
+import {TREBLE_CODE_MAP} from "./positionAndClef"
 import {Smarts} from "./types"
 
 const INITIAL_SMARTS: Smarts = {
@@ -7,7 +8,7 @@ const INITIAL_SMARTS: Smarts = {
     staveWidth: 0 as Width,
     staveOn: false,
     position: EMPTY_UNICODE,
-    clef: Clef.TREBLE,
+    codeMap: TREBLE_CODE_MAP,
 }
 
 export {

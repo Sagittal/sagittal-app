@@ -1,7 +1,15 @@
 import {Io} from "@sagittal/general"
 import {smarts} from "../../../src/staff/smarts"
 import {computeSymbol} from "../../../src/staff/symbol"
-import {Code, CODE_MAP, Symbol, Unicode, Width} from "../../../src/staff/symbols"
+import {
+    BASS_POSITION_MAP,
+    Code,
+    CODE_MAP,
+    Symbol,
+    TREBLE_POSITION_MAP,
+    Unicode,
+    Width,
+} from "../../../src/staff/symbols"
 import {Clef, UnicodeLiteral} from "../../../src/staff/types"
 
 describe("computeSymbol", (): void => {
@@ -15,9 +23,9 @@ describe("computeSymbol", (): void => {
     })
 
     it("works for different clefs", (): void => {
-        smarts.clef = Clef.TREBLE
+        smarts.codeMap = TREBLE_POSITION_MAP
         expect(computeSymbol("d4" as Io)).toEqual(CODE_MAP[Code["tbd4"]])
-        smarts.clef = Clef.BASS
+        smarts.codeMap = BASS_POSITION_MAP
         expect(computeSymbol("d4" as Io)).toEqual(CODE_MAP[Code["bsd4"]])
     })
 

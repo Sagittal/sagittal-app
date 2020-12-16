@@ -1,12 +1,11 @@
-import {Unicode, Width} from "../symbols"
-import {Clef} from "../types"
+import {Code, Symbol, Unicode, Width} from "../symbols"
 
 interface Smarts {
     advanceWidth: Width,
     staveWidth: Width,
     staveOn: boolean,
     position: Unicode,
-    clef: Clef,
+    codeMap: Record<Code, Symbol>
 }
 
 export {
