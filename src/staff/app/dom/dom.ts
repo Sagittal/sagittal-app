@@ -1,11 +1,14 @@
+import {display} from "./display"
 import {downloadButton} from "./downloadButton"
-import {staffCodeInput} from "./staffCodeInput"
-import {staffDiv} from "./staffDiv"
+import {input} from "./input"
+import {root} from "./root"
 
 const setupDom = (): void => {
-    document.body.appendChild(staffCodeInput)
-    document.body.appendChild(staffDiv)
-    document.body.appendChild(downloadButton)
+    document.body.appendChild(root)
+
+    root.appendChild(input)
+    root.appendChild(display)
+    root.appendChild(downloadButton)
 }
 
 export {

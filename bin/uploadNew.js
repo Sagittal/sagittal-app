@@ -2,8 +2,8 @@ const {Client} = require("ssh2")
 const secrets = require("../.secrets.json")
 
 const sshOpt = {...secrets, port: 26, host: "dkeenan.com"}
-const remoteFile = "public_html/sagittal/forum/assets/javascript/staff.js"
-const localFile = "./dist/forum/bbCode/staff.js"
+const remoteFile = "public_html/sagittal/forum/assets/javascript/staffCode.js"
+const localFile = "./dist/forum/bbCode/staffCode.js"
 
 const conn = new Client()
 conn.on("ready", () => {
@@ -17,7 +17,7 @@ conn.on("ready", () => {
                 if (err) throw err
                 conn.end()
 
-                console.warn("\n\nThe Sagittal Forum has had its staff.js updated!\n\n")
+                console.warn("\n\nThe Sagittal Forum has had its staffCode.js updated!\n\n")
             },
         )
     })

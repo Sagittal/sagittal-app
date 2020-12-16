@@ -1,8 +1,7 @@
 const DOWNLOAD_FILENAME: string = "staffCode.svg"
 
-// TODO: MAYBE BUG, BLOCKED: solve problem of sometimes bounding boxes SVG... see what Dave says
-//  Well he doesn't see it, but I definitely do, when you do it before changing the text. low priority since
-//  It doesn't affect Dave's needs, just before unveiling to wide audience
+// TODO: BUG, LOW PRIORITY: BOUNDING BOXES IN SVG IF DOWNLOAD RIGHT AWAY
+//  It doesn't affect Dave's needs for EDO staff notation; but important to solve before unveiling to wide audience
 
 const downloadSvg = (svg: SVGElement): void => {
     const outerHTML = svg.outerHTML
