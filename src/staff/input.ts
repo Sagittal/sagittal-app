@@ -9,42 +9,49 @@ import {computeSymbol} from "./symbol"
 import {Code, Unicode} from "./symbols"
 import {computeUnicode} from "./unicode"
 
-// TODO: NEW FEATURE, READY TO GO: inline comments with { }. ready to go
+// TODO: NEW FEATURE, READY TO GO: INLINE COMMENTS
+//  Use { }. ready to go
+//  Details here, bottom of this post: http://forum.sagittal.org/viewtopic.php?p=3100#p3100
 
-// TODO: NEW FEATURE, READY TO GO: CUSTOM JSON
-//  So that we can accept a user custom codes JSON object to merge in here too
-//  Eventually you should only need to export the maps from the map/ module, not the individual ones to get their widths
-//  And for the npm package version, you'd construct it with a custom JSON object or something
-//  Slightly blocked on Dave's specific feedback about it being a TSV or tab-separated text file
-//  And I'm not quite sure yet how this is going to work w/r/t clefs and positions, if they'll be able to modify those
+// TODO: NEW FEATURE, READY TO GO: COPY IMAGE BUTTON
+
+// TODO: NEW FEATURE, LOW PRIORITY: MULTI-LINE STAVES
+//  I've already implemented the "br" code which causes the display to work
+//  - But it doesn't play well with Smart Stave or Smart Advance. waiting on Dave's research on how it could work
+//  - And it may relate to SVG WIDTH determination, insofar as it's related to things we need to compute when handing
+//  What displays in the DOM to what vectorize-text needs to render
+//  See: http://forum.sagittal.org/viewtopic.php?p=3122#p3122
+
+// TODO: NEW FEATURE, BLOCKED: CUSTOM CODEWORDS
+//  - User can provide a tsv with custom codes
+//  - It should support arbitrary whitespace between each field on each line
+//  - I'm not quite sure yet how this is going to work w/r/t clefs and positions, if they'll be able to modify those
 //  Per Dave's concerns that all mappings are based on final unicodes, not the codewords, to support other languages
-//  Use tsv, support arbitrary whitespace between each field on each line
-//  He may still have some resistance or thoughts re: all the codes go in such a config file though
+//  - We're still sorting out how this relates to providing of custom font potentially via the same single config file
+//  As well as whether we can have the examples in the README or if he wants me to pull out all the built-in codes from
+//  TypeScript modules and into some flat config file and lose typing and all that jazz
 
-// TODO: NEW FEATURE, BLOCKED: should we handle multi-line staves? still waiting on Dave's response
-//  Dave wants to handle this, but it seems like it might be pretty hard. carriage returns don't do it alone
+// TODO: NEW FEATURE, BLOCKED: SMART CHORDS, OR RIGHT ALIGNMENT FOR CHORDS
+//  See: http://forum.sagittal.org/viewtopic.php?p=3117#p3117
+//  Blocked because it's still in development.
 
-// TODO: NEW FEATURE, BLOCKED: what if we don't render partial codes, but instead show a cursor,
-//  Including trailing space at end
-//  But strip it out of the downloaded SVG
-//  Still waiting on Dave
-//  He doesn't like that, but now I've proposed we just don't show the thing, and then make the box red for a sec
-
-// TODO: NEW FEATURE, READY TO GO: also add a copy image button? still waiting on Dave's confirmation
-//  He says yes do it
+// TODO: NEW FEATURE, BLOCKED: DON'T RENDER CODES UNTIL SPACE IS TYPED
+//  Blocked because we're still discussing on the forum
+//  - But then you have to remember to add a space to the forum version at the end or it won't render the last codeword
+//  But make sure that plays well with the terminal Smart Advance `inputWords.push(Code[Code[";"]])` below
 
 // TODO: NEW FEATURE, BLOCKED: SMART BARLINES
 //  It's currently not possible to end with a barline
-//  This might be related to the `inputWords.push(Code[Code[";"]])` below
-//  And BTW "brln" needs a width of 4 and "brlndb" 7
-//  .
+//  This might be related to the terminal Smart Advance `inputWords.push(Code[Code[";"]])` below
+//  Blocked because waiting on Dave's thoughts about how much work to put into it
+
 // TODO: PERFORMANCE, BLOCKED: DON'T RE-RUN ON CODES YOU ALREADY CONVERTED, ONLY NEW STUFF
 //  Check the diff with the previous sentence
 //  Just waiting cuz I'm curious what Dave thinks
 //  He says don't spend time on it, but I can definitely see it slowing down as it gets longer...
 //  Then he says it is getting slow for him now.
 //  That or only compile the word once you type a space
-//  Let's see what he says
+//  Let's see what he says. Yes this is different and totally complimentary to the don't render codes until space typed
 
 const collapseAllWhitespacesToSingleSpaces = (inputSentence: Io): Io =>
     inputSentence

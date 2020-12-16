@@ -20,15 +20,17 @@ import {processStaffCode} from "./process"
 
 document.querySelectorAll(".staff-code").forEach(processStaffCode)
 
-// TODO: NON-BLOCKING LOADING FOR THE FORUM
-//  Or rather, now the problem is: we need to know when a font has finished loading before doing the above replacement
+// TODO: BUG, LOW PRIORITY: NO "FLASH OF UNSTYLED CONTENT" ON THE FORUM
+//  We need to know when a font has finished loading before doing the above replacement
 //  In order to do that, either use a library like this: https://www.npmjs.com/package/jquery-fontspy
 //  Or `document.fonts`: https://makandracards.com/makandra/31499-detecting-when-fonts-are-loaded-via-javascript
 //  Or these: https://portalzine.de/dev/options-to-detect-when-a-font-face-has-been-loaded/
 //  This: https://stackoverflow.com/questions/5680013/how-to-be-notified-once-a-web-font-has-loaded
 //  Or this: https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet/load
 //  `document.fonts.ready.then(()` did not work btw
+//  It's only a problem the first time someone loads a page on the forum, so low priority
 
-// TODO: ALLOW FOR USERS TO CONFIGURE WHICH FONT IT USES
+// TODO: NEW FEATURE, BLOCKED: ALLOW FOR USERS TO CONFIGURE WHICH FONT IT USES
 //  Probably in the HTML replacement somehow
 //  Although maybe in a config file, along with custom codewords
+//  Blocked because I'm waiting for Dave's thoughts on providing it through HTML replacement vs. a config file

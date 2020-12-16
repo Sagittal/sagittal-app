@@ -1,7 +1,6 @@
 import {Io, isNumber, isUndefined, RecordKey} from "@sagittal/general"
 import {smarts} from "./smarts"
-import {Code, Codeword, LowercaseCodeword, Symbol, Unicode} from "./symbols"
-import {Width} from "./types"
+import {Code, Codeword, LowercaseCodeword, Symbol, Unicode, Width} from "./symbols"
 import {isUnicodeLiteral} from "./utility"
 
 const computeLowercaseCodewordFromInput = (inputWord: Io): LowercaseCodeword =>
@@ -27,7 +26,7 @@ const LOWERCASE_CODEWORD_TO_CODE_MAP: Record<RecordKey<LowercaseCodeword>, Code>
         {} as Record<LowercaseCodeword, Symbol>,
     )
 
-// TODO: FEATURE ADJUST: DETERMINE WIDTH FOR UNICODE LITERAL SYMBOLS
+// TODO: FEATURE IMPROVE, LOW PRIORITY: PROGRAMMATICALLY DETERMINE WIDTH FOR UNICODE LITERAL SYMBOLS
 //  Dave suggests use JS to calculate width of character to estimate its width
 //  Preliminary research suggests there is a way to do it, but it's likely pretty tricky
 const computeUnicodeLiteralSymbol = (inputWord: Io): Symbol =>

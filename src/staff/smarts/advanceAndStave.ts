@@ -1,40 +1,29 @@
-import {max, sumTexts} from "@sagittal/general"
-import {Code, EMPTY_UNICODE, MANUAL_ADVANCE_MAP, SMART_ADVANCE_MAP, SMART_STAVE_MAP, Symbol, Unicode} from "../symbols"
-import {Width} from "../types"
+import {max, subtract, sumTexts} from "@sagittal/general"
+import {
+    Code,
+    EMPTY_UNICODE,
+    MANUAL_ADVANCE_MAP,
+    SMART_ADVANCE_MAP,
+    SMART_STAVE_MAP,
+    Symbol,
+    Unicode,
+    Width,
+} from "../symbols"
 import {computeMapUnicodes, computeUnicodeForCode} from "../utility"
 import {computeSymbolWidth} from "../width"
 import {smarts} from "./globals"
 
-// TODO: FEATURE IMPROVE, BLOCKED: perhaps only keep ; and ;13 or 13; for the manual advances. waiting on Dave
-//  Okay, so it's ad<n> and ; and that's it
-
 const SMART_ADVANCE_UNICODES = computeMapUnicodes(SMART_ADVANCE_MAP)
 const MANUAL_ADVANCE_UNICODES = computeMapUnicodes(MANUAL_ADVANCE_MAP)
-const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Unicode[] = [
-    EMPTY_UNICODE,
-    computeUnicodeForCode(Code["sp1"]),
-    computeUnicodeForCode(Code["sp2"]),
-    computeUnicodeForCode(Code["sp3"]),
-    computeUnicodeForCode(Code["sp4"]),
-    computeUnicodeForCode(Code["sp5"]),
-    computeUnicodeForCode(Code["sp6"]),
-    computeUnicodeForCode(Code["sp7"]),
-    computeUnicodeForCode(Code["sp8"]),
-    computeUnicodeForCode(Code["sp9"]),
-    computeUnicodeForCode(Code["sp10"]),
-    computeUnicodeForCode(Code["sp11"]),
-    computeUnicodeForCode(Code["sp12"]),
-    computeUnicodeForCode(Code["sp13"]),
-    computeUnicodeForCode(Code["sp14"]),
-    computeUnicodeForCode(Code["sp15"]),
-]
+const WIDTH_TO_ADVANCE_UNICODE_ARRAY: Unicode[] = [EMPTY_UNICODE, ...MANUAL_ADVANCE_UNICODES]
 
-const MAX_ADVANCE_UNICODE = computeUnicodeForCode(Code["sp16"])
+const MAX_ADVANCE_UNICODE = computeUnicodeForCode(Code["ad16"])
 const MAX_ADVANCE_WIDTH: Width = 16 as Width
 
 const ST8_UNICODE = computeUnicodeForCode(Code["st8"])
 const ST16_UNICODE = computeUnicodeForCode(Code["st16"])
 const ST24_UNICODE = computeUnicodeForCode(Code["st24"])
+const MAX_STAVE_WIDTH = 24 as Width
 
 const SMART_STAVE_ON_UNICODE = computeUnicodeForCode(Code["st"])
 const SMART_STAVE_OFF_UNICODE = computeUnicodeForCode(Code["stof"])
@@ -45,7 +34,7 @@ const computeAdvanceUnicode = (width: Width): Unicode => {
 
     let unicodePhrase = EMPTY_UNICODE
     while (remainingWidth >= MAX_ADVANCE_WIDTH) {
-        remainingWidth = remainingWidth - MAX_ADVANCE_WIDTH as Width
+        remainingWidth = subtract(remainingWidth, MAX_ADVANCE_WIDTH)
         unicodePhrase = sumTexts(unicodePhrase, MAX_ADVANCE_UNICODE)
     }
 
@@ -55,15 +44,15 @@ const computeAdvanceUnicode = (width: Width): Unicode => {
 const computeSmartAdvanceAndSmartStavePrefixUnicodeAndUpdateSmartAdvanceAndSmartStave = (width: Width): Unicode => {
     let advancePrefixUnicode
     if (smarts.staveWidth >= width || !smarts.staveOn) {
-        smarts.staveWidth = smarts.staveWidth - width as Width
+        smarts.staveWidth = subtract(smarts.staveWidth, width)
 
         advancePrefixUnicode = computeAdvanceUnicode(width)
     } else {
         const useUpExistingStaffAdvanceUnicode: Unicode = computeAdvanceUnicode(smarts.staveWidth)
-        const remainingWidthWeStillNeedToApply: Width = width - smarts.staveWidth as Width
+        const remainingWidthWeStillNeedToApply: Width = subtract(width, smarts.staveWidth)
         const remainingStaffAdvanceUnicode = computeAdvanceUnicode(remainingWidthWeStillNeedToApply)
 
-        smarts.staveWidth = 24 - remainingWidthWeStillNeedToApply as Width
+        smarts.staveWidth = subtract(MAX_STAVE_WIDTH, remainingWidthWeStillNeedToApply)
 
         advancePrefixUnicode = sumTexts(useUpExistingStaffAdvanceUnicode, ST24_UNICODE, remainingStaffAdvanceUnicode)
     }

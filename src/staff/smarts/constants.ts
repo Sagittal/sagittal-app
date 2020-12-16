@@ -1,5 +1,4 @@
-import {EMPTY_UNICODE} from "../symbols"
-import {Width} from "../types"
+import {EMPTY_UNICODE, Width} from "../symbols"
 import {TREBLE_CODE_MAP} from "./positionAndClef"
 import {Smarts} from "./types"
 

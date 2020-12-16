@@ -10,7 +10,7 @@ import {
     Unicode,
     Width,
 } from "../../../src/staff/symbols"
-import {Clef, UnicodeLiteral} from "../../../src/staff/types"
+import {UnicodeLiteral} from "../../../src/staff/types"
 
 describe("computeSymbol", (): void => {
     it("gets you the symbol (unicode, width, and description) for the given word", (): void => {
