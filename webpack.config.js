@@ -16,16 +16,6 @@ module.exports = {
             buffer: "buffer",
         },
     },
-    externals: {
-        "fs": "{}",
-        "jasmine-spec-reporter": "{}",
-        "child_process": "{}",
-        "perf_hooks": "{}",
-        "path": "{}",
-        "os": "{}",
-        "util": "{}",
-        "colors": "{}",
-    },
     module: {
         rules: [
             {
