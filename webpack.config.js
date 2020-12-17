@@ -1,10 +1,11 @@
 const path = require("path")
+const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin")
 
 module.exports = {
     mode: "production",
-    entry: "./src/staff/index.ts",
+    entry: "./src/index.ts",
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "main.[contenthash].js",
@@ -54,5 +55,8 @@ module.exports = {
             title: "staffCode renderer",
         }),
         new FaviconsWebpackPlugin("./assets/favicon.png"),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+        }),
     ],
 }

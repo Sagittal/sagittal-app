@@ -1,7 +1,7 @@
-const app = require("./webpack.app.config")
+const config = require("./webpack.config")
 
 module.exports = {
-    ...app,
+    ...config,
     mode: "development",
     devtool: "inline-source-map",
     devServer: {
