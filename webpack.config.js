@@ -30,9 +30,11 @@ module.exports = {
         rules: [
             {
                 test: /\.ts$/,
-                loader: "awesome-typescript-loader",
+                loader: "ts-loader",
                 options: {
-                    module: "esnext",
+                    compilerOptions: {
+                        module: "esnext",
+                    },
                     transpileOnly: true,
                 },
             },
@@ -52,7 +54,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "staffCode renderer",
+            title: "Sagittal Notator (one day; for now, just StaffCode renderer)",
         }),
         new FaviconsWebpackPlugin("./assets/favicon.png"),
         new webpack.ProvidePlugin({
