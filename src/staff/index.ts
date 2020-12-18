@@ -1,6 +1,3 @@
-import {buildStaffCode, translateInputToDisplay} from "staff-code"
+import {doPackage, loadFontsThen} from "staff-code"
 
-const root = buildStaffCode()
-document.body.appendChild(root)
-
-translateInputToDisplay(root)
+loadFontsThen(doPackage)

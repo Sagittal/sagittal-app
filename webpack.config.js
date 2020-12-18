@@ -2,6 +2,7 @@ const path = require("path")
 const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin")
+const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = {
     mode: "production",
@@ -28,18 +29,6 @@ module.exports = {
                     transpileOnly: true,
                 },
             },
-            {
-                test: /\.scss$/,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                    "sass-loader",
-                ],
-            },
-            {
-                test: /\.(otf|woff)$/,
-                loader: "url-loader",
-            },
         ],
     },
     plugins: [
@@ -50,5 +39,6 @@ module.exports = {
         new webpack.ProvidePlugin({
             process: 'process/browser',
         }),
+        new CopyWebpackPlugin({patterns: [{from: "node_modules/staff-code/dist/package/fonts", to: "assets/fonts"}]}),
     ],
 }
