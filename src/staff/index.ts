@@ -1,3 +1,6 @@
-import {doPackage, loadFontsThen} from "staff-code"
+import {loadFontsThen, setupPackageRoot} from "staff-code"
 
-loadFontsThen(doPackage)
+loadFontsThen((): void => {
+    const root: HTMLDivElement = setupPackageRoot()
+    document.body.appendChild(root)
+})
