@@ -34,11 +34,10 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: "Sagittal Notator (one day; for now, just StaffCode renderer)",
+            meta: {viewport: "width=device-width, initial-scale=1"},
         }),
         new FaviconsWebpackPlugin("./assets/favicon.png"),
-        new webpack.ProvidePlugin({
-            process: 'process/browser',
-        }),
+        new webpack.ProvidePlugin({process: "process/browser"}),
         new CopyWebpackPlugin({patterns: [{from: "node_modules/staff-code/dist/package/fonts", to: "assets/fonts"}]}),
     ],
 }
