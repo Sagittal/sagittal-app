@@ -1,6 +1,6 @@
 {
   "name": "sagittal-app",
-  "version": "1.0.88",
+  "version": "1.0.89",
   "description": "web apps for the Sagittal microtonal notation system",
   "license": "MIT",
   "repository": {
@@ -20,7 +20,7 @@
     "tmp": "node -r ts-node/register/transpile-only --max-old-space-size=131072 spec/helpers/shared/tmp/tmp.ts"
   },
   "devDependencies": {
-    "@sagittal/general": "^1.0.67",
+    "@sagittal/general": "^1.0.68",
     "@types/jasmine": "^3.6.2",
     "@types/node": "^14.14.16",
     "@types/vexflow": "^3.0.0",
@@ -31,7 +31,7 @@
     "jasmine": "^3.6.3",
     "jasmine-spec-reporter": "^5.0.2",
     "process": "^0.11.10",
-    "staff-code": "^1.0.34",
+    "staff-code": "^1.0.36",
     "ts-loader": "^8.0.12",
     "ts-node": "^9.1.1",
     "tslint": "^6.1.3",
