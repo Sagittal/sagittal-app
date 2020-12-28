@@ -12,7 +12,7 @@ module.exports = {
         filename: "main.[contenthash].js",
     },
     resolve: {
-        extensions: [".ts", ".scss", ".js"],
+        extensions: [".ts", ".scss", ".js", ".json"],
         alias: {
             buffer: "buffer",
         },
