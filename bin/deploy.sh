@@ -6,6 +6,7 @@ NEW_VERSION=$(< package.json grep version | head -1 | awk -F: '{ print $2 }' | s
 rm -r dist/* > /dev/null 2>&1 || true
 npm run build
 pushd dist || exit
+  touch .nojekyll
   git add .
   git commit -m "${NEW_VERSION}"
   git push
