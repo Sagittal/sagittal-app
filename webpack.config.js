@@ -38,6 +38,11 @@ module.exports = {
         }),
         new FaviconsWebpackPlugin("./assets/favicon.png"),
         new webpack.ProvidePlugin({process: "process/browser"}),
-        new CopyWebpackPlugin({patterns: [{from: "node_modules/staff-code/dist/package/fonts", to: "assets/fonts"}]}),
+        new CopyWebpackPlugin({
+            patterns: [
+                {from: "node_modules/staff-code/dist/package/fonts", to: "assets/fonts"},
+                {from: "node_modules/staff-code/dist/bbCode"},
+            ],
+        }),
     ],
 }
