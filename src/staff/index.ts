@@ -1,7 +1,10 @@
+import {Io, Maybe} from "@sagittal/general"
 import {loadFontsThen, setupPackageRoot} from "staff-code"
 
+const initialText = new URLSearchParams(window.location.search).get("codes") || undefined as Maybe<Io>
+
 loadFontsThen((): void => {
-    const root: HTMLSpanElement = setupPackageRoot()
+    const root: HTMLSpanElement = setupPackageRoot({initialText})
     document.body.appendChild(root)
 })
 
