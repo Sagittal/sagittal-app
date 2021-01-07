@@ -1,10 +1,7 @@
-import {Io, Maybe} from "@sagittal/general"
 import {loadFontsThen, setupPackageRoot} from "staff-code"
 
-const initialText = new URLSearchParams(window.location.search).get("codes") || undefined as Maybe<Io>
-
 loadFontsThen((): void => {
-    const root: HTMLSpanElement = setupPackageRoot({initialText})
+    const root: HTMLSpanElement = setupPackageRoot()
     document.body.appendChild(root)
 })
 
@@ -18,4 +15,4 @@ loadFontsThen((): void => {
 //  Just as we have already done for end users of the bbCode variant via bbCode attributes.
 //  That is, I believe I should add a couple little inputs to adjust the size and line height.
 //  I think they'd fit nicely next to the download button below the input textarea. What do you think?
-//  - Blocked on Dave's thoughts
+//  - yes to line height and size spinners, 0.1 step, and include in the URL copy link
