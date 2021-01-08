@@ -34,7 +34,8 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "Sagittal Notator (one day; for now, just StaffCode renderer)",
+            // TODO: make a couple other routes like new main page, extras, docs, etc. and in CloudFlare map them
+            title: "StaffCode (one day, Sagittal web app)",
             meta: {viewport: "width=device-width, initial-scale=1"},
         }),
         new FaviconsWebpackPlugin("./assets/favicon.png"),
