@@ -31,7 +31,7 @@
     "jasmine": "^3.6.3",
     "jasmine-spec-reporter": "^5.0.2",
     "process": "^0.11.10",
-    "staff-code": "^1.0.101",
+    "staff-code": "^1.0.103",
     "ts-loader": "^8.0.14",
     "ts-node": "^9.1.1",
     "tslint": "^6.1.3",

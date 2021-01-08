@@ -9,6 +9,7 @@ module.exports = {
     entry: "./src/index.ts",
     output: {
         path: path.resolve(__dirname, "dist"),
+        chunkFilename: "[name].bundle.js",
         filename: "main.[contenthash].js",
     },
     resolve: {
