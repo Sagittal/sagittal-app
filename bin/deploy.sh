@@ -7,6 +7,7 @@ rm -r dist/* > /dev/null 2>&1 || true
 npm run build
 pushd dist || exit
   touch .nojekyll
+  echo staffcode.sagittal.org > CNAME
   git add .
   git commit -m "${NEW_VERSION}"
   git push
