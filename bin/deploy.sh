@@ -8,6 +8,7 @@ NEW_VERSION=$(< package.json grep version | head -1 | awk -F: '{ print $2 }' | s
 npm run build
 pushd dist || exit
   touch .nojekyll
+  echo app.sagittal.org > CNAME
   git add .
   git commit -m "${NEW_VERSION}"
   git push
