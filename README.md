@@ -4,6 +4,8 @@ web apps for the Sagittal microtonal notation system
 
 ## development
 
+After cloning, don't forget to `cd` into `dist` and `git checkout main`.
+
 `npm start` to build run the dev server.
 `npm deploy` to build and push the latest code to production: `https://sagittal.github.io`.
 
