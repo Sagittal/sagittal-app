@@ -3,39 +3,20 @@ const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
+const common = require("./webpack.common.config")
 
 module.exports = {
+    ...common,
     mode: "production",
-    entry: "./src/index.ts",
+    entry: "./src/staffCode/index.ts",
     output: {
-        path: path.resolve(__dirname, "dist"),
+        path: path.resolve(__dirname, "dist/staffcode"),
         chunkFilename: "[name].bundle.js",
         filename: "main.[contenthash].js",
     },
-    resolve: {
-        extensions: [".ts", ".scss", ".js", ".json"],
-        alias: {
-            buffer: "buffer",
-        },
-    },
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                loader: "ts-loader",
-                options: {
-                    compilerOptions: {
-                        module: "esnext",
-                    },
-                    transpileOnly: true,
-                },
-            },
-        ],
-    },
     plugins: [
         new HtmlWebpackPlugin({
-            // TODO: make a couple other routes like new main page, extras, docs, etc. and in CloudFlare map them
-            title: "StaffCode (one day, Sagittal web app)",
+            title: "StaffCode",
             meta: {viewport: "width=device-width, initial-scale=1"},
         }),
         new FaviconsWebpackPlugin("./assets/favicon.png"),
