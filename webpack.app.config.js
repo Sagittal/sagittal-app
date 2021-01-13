@@ -16,7 +16,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: "Sagittal",
-            meta: {viewport: "width=device-width, initial-scale=1"},
+            meta: {viewport: "width=device-width, height=device-height, initial-scale=1"},
         }),
         new FaviconsWebpackPlugin("./assets/favicon.png"),
         new webpack.ProvidePlugin({process: "process/browser"}),
