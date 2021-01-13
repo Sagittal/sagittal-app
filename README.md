@@ -8,6 +8,9 @@ After cloning, don't forget to `cd` into `dist` and `git checkout main`. There's
 submodule initiation, like I did on other big projects, but I'm too lazy.
 
 `npm start` to build and run the dev server.
+
+## deployment
+
 `npm deploy` to build and push the latest code to production: `https://sagittal.github.io`,
 or `https://app.sagittal.org`.
 
