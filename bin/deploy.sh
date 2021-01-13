@@ -13,4 +13,4 @@ pushd dist || exit
   git commit -m "${NEW_VERSION}"
   git push
 popd || exit
-echo App deployed. Please commit, and if necessary, update the Sagittal forum config for bbCodes.
+echo App deployed. Please commit.
