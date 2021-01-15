@@ -10,7 +10,7 @@ module.exports = {
     entry: "./src/jiPitch/index.ts",
     output: {
         path: path.resolve(__dirname, "dist/ji-pitch"),
-        chunkFilename: "[name].bundle.js",
+        chunkFilename: "[name].[contenthash].js",
         filename: "main.[contenthash].js",
     },
     plugins: [

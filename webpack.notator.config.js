@@ -10,7 +10,7 @@ module.exports = {
     entry: "./src/notator/index.ts",
     output: {
         path: path.resolve(__dirname, "dist/notator"),
-        chunkFilename: "[name].bundle.js",
+        chunkFilename: "[name].[contenthash].js",
         filename: "main.[contenthash].js",
     },
     plugins: [
