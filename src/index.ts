@@ -1,3 +1,18 @@
+const googleAnalyticsTag1 = document.createElement("script")
+googleAnalyticsTag1.async = true
+googleAnalyticsTag1.src = "https://www.googletagmanager.com/gtag/js?id=G-8DDP6TEPDF"
+document.head.appendChild(googleAnalyticsTag1)
+
+const googleAnalyticsTag2 = document.createElement("script")
+googleAnalyticsTag2.innerHTML = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-8DDP6TEPDF');
+`
+document.head.appendChild(googleAnalyticsTag2)
+
 const div = document.createElement("div")
 div.textContent = "(one day this could be the new home page)"
 document.body.appendChild(div)
