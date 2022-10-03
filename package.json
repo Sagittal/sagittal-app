@@ -23,14 +23,14 @@
     "tmp": "node -r ts-node/register/transpile-only --max-old-space-size=131072 spec/helpers/shared/tmp/tmp.ts"
   },
   "devDependencies": {
-    "@sagittal/general": "^1.0.118",
+    "@sagittal/general": "^1.0.119",
     "@types/jasmine": "^4.3.0",
-    "@types/node": "^18.7.23",
+    "@types/node": "^18.8.0",
     "@types/vexflow": "^3.0.0",
     "buffer": "^6.0.3",
     "copy-webpack-plugin": "^11.0.0",
-    "favicons": "6.0.0",
-    "favicons-webpack-plugin": "^5.0.2",
+    "favicons": "7.0.1",
+    "favicons-webpack-plugin": "^6.0.0-alpha.1",
     "html-webpack-plugin": "^5.5.0",
     "http-server": "^14.1.1",
     "jasmine": "^4.4.0",
