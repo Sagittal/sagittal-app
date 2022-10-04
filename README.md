@@ -1,4 +1,4 @@
-![test](https://github.com/Sagittal/sagital-main/actions/workflows/test.yml/badge.svg)
+![test](https://github.com/Sagittal/sagittal-app/actions/workflows/test.yml/badge.svg)
 
 # sagittal-app
 

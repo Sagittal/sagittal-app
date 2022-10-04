@@ -1,5 +1,5 @@
-name: testing ${{ github.sha }}
-run-name: test
+name: tests
+run-name: testing
 on: [push]
 jobs:
   test:
