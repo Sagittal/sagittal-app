@@ -8,6 +8,7 @@
     "url": "git+https://github.com/Sagittal/sagittal-app.git"
   },
   "scripts": {
+    "setup": "npm i",
     "start": "make build && http-server dist",
     "build": "sh bin/build.sh",
     "build-app": "webpack --config webpack.app.config.js",
