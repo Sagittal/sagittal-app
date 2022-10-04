@@ -1,4 +1,4 @@
-name: test
+name: testing ${{ github.event.head_commit.message }}
 run-name: test
 on: [push]
 jobs:

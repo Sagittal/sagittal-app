@@ -1,3 +1,5 @@
+![test](https://github.com/github/Sagittal/sagital-main/actions/workflows/test.yml/badge.svg)
+
 # sagittal-app
 
 web apps for the Sagittal microtonal notation system
