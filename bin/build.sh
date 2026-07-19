@@ -8,3 +8,4 @@ make build-app
 make build-ji-pitch
 make build-notator
 make build-xtras
+make build-calculator

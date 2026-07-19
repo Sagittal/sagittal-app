@@ -31,6 +31,12 @@ linkToNotator.style.display = "block"
 linkToNotator.textContent = "Notator"
 document.body.appendChild(linkToNotator)
 
+const linkToCalculator = document.createElement("a")
+linkToCalculator.href = "/calculator"
+linkToCalculator.style.display = "block"
+linkToCalculator.textContent = "Calculator"
+document.body.appendChild(linkToCalculator)
+
 const linkToXtras = document.createElement("a")
 linkToXtras.href = "/xtras"
 linkToXtras.style.display = "block"
