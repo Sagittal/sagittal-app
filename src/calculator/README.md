@@ -10,7 +10,9 @@ input panel picks which notation is on screen, one at a time: *Precision Level* 
 all four levels, with a live diagram of where your pitch falls among each level's
 symbols; *Prime Factor* spells the same pitch in the prime-factor notation
 ([t=99](http://forum.sagittal.org/viewtopic.php?t=99)): one Sagittal per prime
-factor, with the factor-by-factor arithmetic laid out.
+factor, with the factor-by-factor arithmetic laid out. A control in the heading
+picks the palette — *Auto* follows the operating system, *Light* and *Dark*
+override it and are remembered.
 
 The build is a single self-contained `index.html`: no server, no network, no font
 to install.
@@ -57,8 +59,8 @@ recalculated from the workbook's own formulas (`tools/oracle.py` produces
 extreme-level tables and font subset, and pins the speller's spellings, symbol
 order and cents reconciliation. `runInteractionSpec.py` drives the built page and
 asserts the behaviour of the inputs, the linked ratio/vector, the collapsing
-columns, the copy buttons, the notation tabs, the diagram and the prime-factor
-section.
+columns, the copy buttons, the notation tabs, the diagram, the prime-factor
+section and the theme control.
 
 ## How it fits into this repo
 
