@@ -97,9 +97,7 @@
     color: var(--ink);
     font: 15px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif;
   }
-  /* wide enough for the widest a level table ever gets — the Extreme card at a
-     pitch needing six-character cores in both Flavors, with every column open */
-  .wrap { max-width: 1224px; margin: 0 auto; padding: 38px 22px 60px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 38px 22px 60px; }
 
   .mono { font-family: "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace; }
   /* Bravura centres accidentals on the staff, so inline use needs re-centring */
@@ -633,7 +631,7 @@
   thead tr.subhead th { padding-top: 4px; padding-bottom: 8px; font-weight: 600; }
   thead { border-bottom: 1px solid var(--line); }
   td {
-    padding: 8px 4px;
+    padding: 8px 5px;
     border-bottom: 1px solid var(--line-soft);
     vertical-align: middle;
     white-space: nowrap;
@@ -647,13 +645,12 @@
     padding-top: 2px;
     padding-bottom: 2px;
   }
-  /* the two columns that list one entry per glyph, stacked to stay narrow */
-  td.uni, td.sc {
+  td.uni {
     font-family: "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
     font-size: 11px;
     line-height: 1.45;
   }
-  td.uni .cw, td.sc .cw { white-space: pre; }
+  td.uni .cw { white-space: pre; }
   td.unichars {
     font-family: "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
     font-size: 14px;
@@ -699,9 +696,8 @@
   }
   .measuring .cw, .measuring .cd { transition: none !important; }
 
-  /* hover-to-copy (left side: the values are right-justified). The gutter is
-     the button's own 5px + 22px, and every column pays it, so it is kept tight */
-  td.cp { position: relative; padding-left: 30px; }
+  /* hover-to-copy (left side: the values are right-justified) */
+  td.cp { position: relative; padding-left: 32px; }
   td.cp .copy {
     position: absolute;
     left: 5px;
@@ -738,9 +734,35 @@
   footer a { color: var(--accent); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
-  /* A collapsed group's rules pair its #levels.cx-KEY state with its .g-KEY
-     cells, one KEY per group — written out at startup from GROUPS itself, so
-     a new column collapses without a second list to keep in step. */
+  /* one block per collapsible group */
+  #levels.cx-unicode .g-unicode .cw,
+  #levels.cx-sagitype .g-sagitype .cw,
+  #levels.cx-unichars .g-unichars .cw,
+  #levels.cx-bravura .g-bravura .cw,
+  #levels.cx-fifths .g-fifths .cw,
+  #levels.cx-representing .g-representing .cw,
+  #levels.cx-error .g-error .cw { max-width: 0; max-height: 0; opacity: 0; }
+  #levels.cx-unicode .g-unicode.dash-lead .cd,
+  #levels.cx-sagitype .g-sagitype.dash-lead .cd,
+  #levels.cx-unichars .g-unichars.dash-lead .cd,
+  #levels.cx-bravura .g-bravura.dash-lead .cd,
+  #levels.cx-fifths .g-fifths.dash-lead .cd,
+  #levels.cx-representing .g-representing.dash-lead .cd,
+  #levels.cx-error .g-error.dash-lead .cd { max-width: var(--w, 1em); opacity: 1; }
+  #levels.cx-unicode td.g-unicode,
+  #levels.cx-sagitype td.g-sagitype,
+  #levels.cx-unichars td.g-unichars,
+  #levels.cx-bravura td.g-bravura,
+  #levels.cx-fifths td.g-fifths,
+  #levels.cx-representing td.g-representing,
+  #levels.cx-error td.g-error { padding-left: 10px; padding-right: 10px; }
+  #levels.cx-unicode .g-unicode .copy,
+  #levels.cx-sagitype .g-sagitype .copy,
+  #levels.cx-unichars .g-unichars .copy,
+  #levels.cx-bravura .g-bravura .copy,
+  #levels.cx-fifths .g-fifths .copy,
+  #levels.cx-representing .g-representing .copy,
+  #levels.cx-error .g-error .copy { display: none; }
 
   @media (prefers-reduced-motion: no-preference) {
     button, input, .chev, .tog, .tip::after { transition: transform 150ms, opacity 130ms, background 120ms, border-color 120ms, color 120ms; }
@@ -1535,28 +1557,6 @@ if (typeof module !== "undefined") module.exports = SAG_PF;</script>
     .map((c) => "U+" + c.codePointAt(0).toString(16).toUpperCase().padStart(4, "0"))
     .join(sep || " ");
 
-  // StaffCode spends one codeword per glyph, so a Sagitype's accents, its core
-  // and its sharp or flat each become a word of their own and the nominal
-  // becomes its note-name notehead. The codewords are the Sagitype spellings
-  // themselves — StaffCode takes them verbatim — bar the double sharp, which
-  // it writes X. Case is load-bearing: X and Y are also four-shaft sagittals.
-  const SC_ACCENT = /^(``|,,|`|,|'|\.)/;
-  const SC_WHORL = { "#": "#", b: "b", bb: "bb", x: "X" };
-  function staffCode(ascii, sep) {
-    const words = [];
-    let rest = ascii.slice(0, -1).trim();
-    for (let a = SC_ACCENT.exec(rest); a; a = SC_ACCENT.exec(rest)) {
-      words.push(a[1]);
-      rest = rest.slice(a[1].length);
-    }
-    const whorl = /(bb|b|#|x)$/.exec(rest);
-    if (whorl) rest = rest.slice(0, -whorl[1].length);
-    if (rest) words.push(rest);
-    if (whorl) words.push(SC_WHORL[whorl[1]]);
-    words.push("nt" + ascii.slice(-1) + "wh");
-    return words.join(sep || " ");
-  }
-
   // ---------- column model ----------
   const GROUPS = [
     { key: "bravura", name: "Bravura", variants: true, cls: "brav",
@@ -1567,12 +1567,6 @@ if (typeof module !== "undefined") module.exports = SAG_PF;</script>
       tip: "Sagittal's plain-text shorthand — its own name for it is Sagitype — as "
         + "used on the forum and in Scala.",
       value: (row, lv, v) => lv[v + "Ascii"] },
-    { key: "staffcode", name: "StaffCode", variants: true, cls: "sc",
-      tip: "What to type into StaffCode — the forum's [staff] tags, or "
-        + "staffcode.org — to get these symbols. One codeword per glyph, listed "
-        + "the way the codepoints are; copying gives them back on one line.",
-      value: (row, lv, v) => staffCode(lv[v + "Ascii"], "\n"),
-      copy: (row, lv, v) => staffCode(lv[v + "Ascii"], " ") },
     { key: "unichars", name: "Unicode", variants: true, cls: "unichars",
       tip: "The characters themselves. They will show as boxes in anything without "
         + "a SMuFL font, but they paste through intact.",
@@ -1597,16 +1591,6 @@ if (typeof module !== "undefined") module.exports = SAG_PF;</script>
   const collapsed = new Set();
   const show = { evo: true, revo: true };
   const variantsOn = () => ["evo", "revo"].filter((v) => show[v]);
-
-  // A collapsed group shrinks its cells away and grows a dash in their place;
-  // the rules are the same four for every group, so they are written from
-  // GROUPS rather than kept as a second list of the columns.
-  document.head.appendChild(document.createElement("style")).textContent =
-    GROUPS.map((g) => `
-      #levels.cx-${g.key} .g-${g.key} .cw { max-width: 0; max-height: 0; opacity: 0; }
-      #levels.cx-${g.key} .g-${g.key}.dash-lead .cd { max-width: var(--w, 1em); opacity: 1; }
-      #levels.cx-${g.key} td.g-${g.key} { padding-left: 10px; padding-right: 10px; }
-      #levels.cx-${g.key} .g-${g.key} .copy { display: none; }`).join("");
 
 
   // The column set never changes when a group collapses — collapsing is a CSS
@@ -1661,7 +1645,7 @@ if (typeof module !== "undefined") module.exports = SAG_PF;</script>
     b.type = "button";
     b.className = "copy";
     b.title = "Copy";
-    b.setAttribute("aria-label", "Copy " + (copyAs === undefined ? text : copyAs));
+    b.setAttribute("aria-label", "Copy " + text);
     b.innerHTML = COPY_ICON;
     b.addEventListener("click", () => {
       copyText(copyAs === undefined ? v.textContent : copyAs).then(() => {
