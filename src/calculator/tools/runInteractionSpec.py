@@ -19,11 +19,15 @@ import sys
 from paths import DIST, INDEX, ROOT, TOOLS
 
 BROWSERS = [p for p in [
+    os.environ.get("BROWSER"),                  # CI, and any other non-Windows host
     r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
     r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
     r"C:\Program Files\Google\Chrome\Application\chrome.exe",
     r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
-] if os.path.exists(p)]
+    "/usr/bin/google-chrome",
+    "/usr/bin/chromium-browser",
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+] if p and os.path.exists(p)]
 if not BROWSERS:
     sys.exit("no Edge or Chrome found to run the spec in")
 
