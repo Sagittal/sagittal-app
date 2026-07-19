@@ -13,13 +13,17 @@ body = body.replace("%%CORE_JS%%", CORE.read_text(encoding="utf-8").strip())
 body = body.replace("%%PRIME_FACTOR_JS%%", PRIME_FACTOR.read_text(encoding="utf-8").strip())
 
 DIST.mkdir(exist_ok=True)
-(DIST / "artifact.html").write_text(body, encoding="utf-8")
+(DIST / "artifact.html").write_text(body, encoding="utf-8", newline="\n")
 
+# index.html is committed and the gate diffs it, so it is written with the line
+# endings git stores; letting Windows translate them leaves the tree dirty after
+# every build for a page that has not changed.
 INDEX.write_text(
     '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
     '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
     "</head>\n<body>\n" + body + "\n</body>\n</html>\n",
     encoding="utf-8",
+    newline="\n",
 )
 
 print(f"index.html {INDEX.stat().st_size // 1024} KB")
