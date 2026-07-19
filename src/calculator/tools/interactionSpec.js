@@ -4,6 +4,7 @@
   const ok = (name, cond, extra) =>
     out.push((cond ? "PASS " : "FAIL ") + name + (extra === undefined ? "" : "  [" + extra + "]"));
   const $ = (id) => document.getElementById(id);
+  const onScreen = (el) => el.getBoundingClientRect().height > 0;
   const fire = (el, type) => el.dispatchEvent(new Event(type || "input", { bubbles: true }));
   const expInput = (p) => document.querySelector('input[aria-label="Exponent of prime ' + p + '"]');
   const primeLab = (p) => [...document.querySelectorAll("#vec .p")]
@@ -478,14 +479,86 @@
   // ---------- errors ----------
   $("den").value = "0"; fire($("den"));
   ok("zero denominator reports a problem", !$("error-msg").hidden);
+  ok("an error takes the diagram down with the levels",
+    !onScreen($("levels")) && !onScreen($("diagram-card")),
+    "levels " + onScreen($("levels")) + ", diagram " + onScreen($("diagram-card")));
   $("den").value = "1"; fire($("den"));
   ok("recovers after a bad ratio", $("error-msg").hidden);
+  ok("recovering brings both back",
+    onScreen($("levels")) && onScreen($("diagram-card")));
+
+  // ---------- tabs ----------
+  const tablist = document.querySelector('[role="tablist"]');
+  const panelBottom = document.querySelector(".panel").getBoundingClientRect().bottom;
+  ok("a row of tabs sits just below the input panel",
+    Boolean(tablist) && tablist.getBoundingClientRect().top >= panelBottom
+    && tablist.getBoundingClientRect().top - panelBottom < 40,
+    tablist ? (tablist.getBoundingClientRect().top - panelBottom).toFixed(0) + "px"
+      : "no tablist");
+  const where = () => "levels " + onScreen($("levels"))
+    + ", prime factor " + onScreen($("pf-card"));
+  ok("Precision Level and Prime Factor are never on screen together",
+    onScreen($("levels")) !== onScreen($("pf-card")), where());
+  const tabNames = [...document.querySelectorAll('[role="tab"]')]
+    .map((t) => t.textContent.trim());
+  ok("the tabs are named for the two notations",
+    tabNames.join("|") === "Precision Level|Prime Factor", tabNames.join("|"));
+  $("tab-pf").click();
+  ok("clicking Prime Factor swaps the panes",
+    onScreen($("pf-card")) && !onScreen($("levels")), where());
+  $("tab-levels").click();
+  ok("clicking Precision Level swaps back",
+    onScreen($("levels")) && !onScreen($("pf-card")), where());
+
+  // a tab row is walked with the arrow keys, not with Tab
+  $("tab-levels").focus();
+  $("tab-levels").dispatchEvent(
+    new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
+  ok("the arrow keys move along the tab row",
+    document.activeElement === $("tab-pf") && onScreen($("pf-card")),
+    document.activeElement.id + ", " + where());
+  $("tab-pf").dispatchEvent(
+    new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }));
+  ok("only the selected tab is in the tab order",
+    $("tab-levels").tabIndex === 0 && $("tab-pf").tabIndex === -1,
+    $("tab-levels").tabIndex + "," + $("tab-pf").tabIndex);
+
+  // a card rebuilt while its pane was hidden had no layout to measure from
+  $("tab-pf").click();
+  $("show-evo").checked = false; fire($("show-evo"), "change");
+  $("tab-levels").click();
+  ok("tables rebuilt on the other tab keep their pinned widths",
+    /px$/.test(groupCell("medium", "Sagitype").querySelector(".cw")
+      .style.getPropertyValue("--w")),
+    groupCell("medium", "Sagitype").querySelector(".cw").style.getPropertyValue("--w"));
+  $("show-evo").checked = true; fire($("show-evo"), "change");
+
+  // the diagram sizes itself to a pane that is not there on the other tab
+  const dgSummary = $("diagram-card").querySelector("summary");
+  dgSummary.click();
+  $("tab-pf").click();
+  $("num").value = "5"; $("den").value = "4"; fire($("num"));
+  $("tab-levels").click();
+  ok("the diagram is redrawn to fit its pane on the way back in",
+    $("dg-scroll").scrollWidth <= $("dg-scroll").clientWidth + 1,
+    $("dg-scroll").scrollWidth + " vs " + $("dg-scroll").clientWidth);
+  $("num").value = "1"; $("den").value = "1"; fire($("num"));
+  dgSummary.click();
+
+  // the preview slots are sized from glyphs that have no width while hidden
+  $("tab-pf").click();
+  expInput(7).value = "1"; fire(expInput(7));
+  $("tab-levels").click();
+  const slots = [...document.querySelectorAll("#levels details.level:not([open]) .pv-gl")];
+  ok("preview slots are re-sized on the way back in",
+    slots.length > 0 && slots.every((e) => e.scrollWidth <= e.clientWidth + 1),
+    slots.map((e) => e.scrollWidth + "/" + e.clientWidth).join(" "));
+  expInput(7).value = "0"; fire(expInput(7));
+
+  $("tab-pf").click();   // the prime-factor checks below run on their own tab
 
   // ---------- prime factor ----------
   const pfCard = $("pf-card");
-  ok("prime factor section head present",
-    [...document.querySelectorAll(".section-head")]
-      .some((h) => h.textContent.trim() === "Prime Factor"));
   ok("prime factor card is a collapsed level card",
     Boolean(pfCard) && pfCard.classList.contains("level") && !pfCard.open);
   ok("sixteen symbol tiles",
@@ -535,9 +608,9 @@
     copied === pfCp.querySelector(".cv").textContent, JSON.stringify(copied));
   expInput(7).value = "0"; fire(expInput(7));
   $("den").value = "0"; fire($("den"));
-  ok("an input error hides the prime factor card", pfCard.style.display === "none");
+  ok("an input error hides the prime factor card", !onScreen(pfCard));
   $("den").value = "1"; fire($("den"));
-  ok("recovering restores it", pfCard.style.display !== "none");
+  ok("recovering restores it", onScreen(pfCard));
   pfCard.querySelector("summary").click();
 
   const div = document.createElement("div");

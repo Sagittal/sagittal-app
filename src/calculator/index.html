@@ -385,8 +385,40 @@
   .tip.tip-right::after { left: auto; right: 0; }
   th .tip::after { left: auto; right: 0; }
 
+  /* ---------- notation tabs ---------- */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-top: 26px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tab {
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 8px 8px 0 0;
+    padding: 11px 18px;
+    margin-bottom: -1px;
+    cursor: pointer;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] {
+    color: var(--ink);
+    background: var(--card);
+    border-color: var(--line);
+    border-bottom-color: var(--card);
+  }
+
+  .pane { margin-top: 22px; }
+  .pane.blank { display: none; }
+
   /* ---------- precision levels ---------- */
-  #levels { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+  #levels { display: flex; flex-direction: column; gap: 12px; }
   .section-head {
     font-size: 15px;
     font-weight: 700;
@@ -500,7 +532,6 @@
   .dg-readout b { color: var(--ink); font-weight: 600; }
 
   /* ---------- prime factor ---------- */
-  #pf-card { margin-top: 12px; }
   .pf-body { display: flex; flex-direction: column; gap: 16px; padding: 14px 20px 18px; }
   .pf-body .field-label { margin-bottom: 8px; }
   #pf-result { display: flex; flex-direction: column; gap: 12px; }
@@ -777,55 +808,64 @@
     </div>
   </div>
 
+  <div class="tabs" role="tablist" aria-label="Notation">
+    <button type="button" class="tab" id="tab-levels" role="tab"
+            aria-controls="pane-levels" aria-selected="true">Precision Level</button>
+    <button type="button" class="tab" id="tab-pf" role="tab"
+            aria-controls="pane-pf" aria-selected="false" tabindex="-1">Prime Factor</button>
+  </div>
+
   <p id="error-msg" hidden></p>
-  <p class="section-head" id="levels-head">Precision Level</p>
-  <div id="levels"></div>
-  <p class="section-head" id="diagram-head">Diagram</p>
 
-  <details class="level" id="diagram-card">
-    <summary>
-      <span class="chev"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M6 3.5L10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <span class="lv-head"><span class="lv-title">
-        <span class="lv-name">Precision Levels</span></span>
-        <span class="lv-meta">every symbol each level offers, laid out by the size of
-          the alteration it stands for &mdash; your pitch marked on it</span></span>
-    </summary>
-    <div class="diagram-body">
-      <div class="diagram-controls">
-        <label for="dg-zoom">Zoom</label>
-        <input type="range" id="dg-zoom" min="14" max="220" value="30" step="1"
-               aria-label="Diagram zoom, pixels per cent">
-        <span id="dg-zoom-val">30 px/&cent;</span>
-      </div>
-      <div class="diagram-scroll" id="dg-scroll"></div>
-      <p class="dg-readout" id="dg-readout"></p>
-    </div>
-  </details>
+  <div class="pane" id="pane-levels" role="tabpanel" aria-labelledby="tab-levels">
+    <div id="levels"></div>
+    <p class="section-head">Diagram</p>
 
-  <p class="section-head" id="pf-head">Prime Factor</p>
+    <details class="level" id="diagram-card">
+      <summary>
+        <span class="chev"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M6 3.5L10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="lv-head"><span class="lv-title">
+          <span class="lv-name">Precision Levels</span></span>
+          <span class="lv-meta">every symbol each level offers, laid out by the size of
+            the alteration it stands for &mdash; your pitch marked on it</span></span>
+      </summary>
+      <div class="diagram-body">
+        <div class="diagram-controls">
+          <label for="dg-zoom">Zoom</label>
+          <input type="range" id="dg-zoom" min="14" max="220" value="30" step="1"
+                 aria-label="Diagram zoom, pixels per cent">
+          <span id="dg-zoom-val">30 px/&cent;</span>
+        </div>
+        <div class="diagram-scroll" id="dg-scroll"></div>
+        <p class="dg-readout" id="dg-readout"></p>
+      </div>
+    </details>
+  </div>
 
-  <details class="level" id="pf-card">
-    <summary>
-      <span class="chev"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M6 3.5L10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <span class="lv-head"><span class="lv-title">
-        <span class="lv-name tip" tabindex="0">One Symbol per Prime</span></span>
-        <span class="lv-meta">each prime above 3 keeps its own Sagittal ·
-          <b>61</b>-limit · exact &mdash; no boundaries, no error</span></span>
-      <span class="lv-preview" id="pf-preview" aria-hidden="true"></span>
-    </summary>
-    <div class="pf-body">
-      <p class="pf-note" id="pf-note" hidden></p>
-      <div id="pf-result">
-        <div class="tbl-wrap"><table id="pf-table"></table></div>
-        <div class="tbl-wrap"><table id="pf-factors"></table></div>
-        <p class="pf-recon" id="pf-recon"></p>
+  <div class="pane" id="pane-pf" role="tabpanel" aria-labelledby="tab-pf" hidden>
+    <details class="level" id="pf-card">
+      <summary>
+        <span class="chev"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M6 3.5L10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="lv-head"><span class="lv-title">
+          <span class="lv-name tip" tabindex="0">One Symbol per Prime</span></span>
+          <span class="lv-meta">each prime above 3 keeps its own Sagittal ·
+            <b>61</b>-limit · exact &mdash; no boundaries, no error</span></span>
+        <span class="lv-preview" id="pf-preview" aria-hidden="true"></span>
+      </summary>
+      <div class="pf-body">
+        <p class="pf-note" id="pf-note" hidden></p>
+        <div id="pf-result">
+          <div class="tbl-wrap"><table id="pf-table"></table></div>
+          <div class="tbl-wrap"><table id="pf-factors"></table></div>
+          <p class="pf-recon" id="pf-recon"></p>
+        </div>
+        <div>
+          <p class="field-label">The full symbol set</p>
+          <div class="pf-strip" id="pf-strip"></div>
+        </div>
       </div>
-      <div>
-        <p class="field-label">The full symbol set</p>
-        <div class="pf-strip" id="pf-strip"></div>
-      </div>
-    </div>
-  </details>
+    </details>
+  </div>
 
   <footer>
     <p>Port of the <em>Sagittal Standard JI Notation Calculator</em> spreadsheet
@@ -1799,8 +1839,8 @@ if (typeof module !== "undefined") module.exports = SAG_PF;</script>
     const err = $("error-msg");
     const showErr = Boolean(res.error);
     err.hidden = !showErr;
-    levelsRoot.style.display = showErr ? "none" : "";
-    $("pf-card").style.display = showErr ? "none" : "";
+    // an error leaves neither notation anything to show, diagram included
+    for (const p of document.querySelectorAll(".pane")) p.classList.toggle("blank", showErr);
     if (showErr) {
       err.textContent = res.error;
       $("cents").textContent = "—";
@@ -2161,6 +2201,38 @@ if (typeof module !== "undefined") module.exports = SAG_PF;</script>
       pfTiles[f.prime].querySelector(".pf-tile-e").textContent = signedInt(f.exp);
     }
   }
+
+  // ---------- tabs ----------
+  // An inactive pane is display:none, and nothing inside one can be measured,
+  // so every width the levels pane pins for itself is quietly skipped while it
+  // is away. Each tab carries whatever it has to redo on the way back in.
+  function relayoutLevels() {
+    for (const m of D.levels) measureWidths(levelParts[m.level].table);
+    if (DG.card.open) { syncZoomRange(); drawDiagram(); }
+  }
+  const TABS = [
+    ["tab-levels", "pane-levels", relayoutLevels],
+    ["tab-pf", "pane-pf"],
+  ];
+  function selectTab(id) {
+    for (const [tab, pane, relayout] of TABS) {
+      const on = tab === id;
+      $(tab).setAttribute("aria-selected", String(on));
+      $(tab).tabIndex = on ? 0 : -1;
+      $(pane).hidden = !on;
+      if (on && relayout) relayout();
+    }
+  }
+  for (const [tab] of TABS) $(tab).addEventListener("click", () => selectTab(tab));
+  document.querySelector(".tabs").addEventListener("keydown", (e) => {
+    const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    if (!step) return;
+    e.preventDefault();
+    const at = TABS.findIndex(([tab]) => $(tab).getAttribute("aria-selected") === "true");
+    const [next] = TABS[(at + step + TABS.length) % TABS.length];
+    selectTab(next);
+    $(next).focus();
+  });
 
   // ---------- wiring ----------
   for (const p of P) expInputs[p].addEventListener("input", onVectorInput);
