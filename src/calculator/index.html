@@ -230,7 +230,11 @@
     cursor: pointer;
   }
   button.add-prime:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
-  button.add-prime:disabled { opacity: 0.4; cursor: help; }
+  button.add-prime:disabled {
+    color: var(--line);
+    border-color: var(--line);
+    cursor: help;
+  }
   button.add-prime { position: relative; }
   th.grouphead .tip { cursor: pointer; }
 
@@ -469,8 +473,9 @@
     gap: 8px;
   }
   .lv-preview .pv-lab { text-align: right; }
-  .lv-preview .pv-gl { white-space: nowrap; }
-  .lv-preview .pv-gl { text-align: left; }
+  /* pin the glyph to its own column: with one flavor there is no label, and a
+     lone child would otherwise fall into the label's slot */
+  .lv-preview .pv-gl { grid-column: 2; white-space: nowrap; text-align: right; }
   .pv-lab { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .pv-gl {
     font-family: "SagittalGlyphs", "Bravura Text", Bravura, sans-serif;

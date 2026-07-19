@@ -418,6 +418,26 @@
   const glXs = shownPreview(".lv-preview .pv-gl");
   ok("preview labels share one left edge per slot",
     labXs.length > 0 && new Set(labXs).size === 2, labXs.join());
+  // with one flavor there is no label, and the lone glyph must still sit in the
+  // glyph column rather than falling into the label's slot
+  const glyphRights = () =>
+    [...document.querySelectorAll("#levels details.level:not([open]) .pv-gl")]
+      .map((e) => Math.round(e.getBoundingClientRect().right))
+      .filter((x) => x > 0);
+  const bothRight = Math.max(...glyphRights());
+  $("show-evo").checked = false; fire($("show-evo"), "change");
+  const evoOff = glyphRights();
+  ok("with only Revo the glyphs keep the same right edge",
+    evoOff.length > 0 && new Set(evoOff).size === 1 && evoOff[0] === bothRight,
+    evoOff.join() + " vs " + bothRight);
+  $("show-evo").checked = true; fire($("show-evo"), "change");
+  $("show-revo").checked = false; fire($("show-revo"), "change");
+  const revoOff = glyphRights();
+  ok("with only Evo the glyphs keep the same right edge",
+    revoOff.length > 0 && new Set(revoOff).size === 1 && revoOff[0] === bothRight,
+    revoOff.join() + " vs " + bothRight);
+  $("show-revo").checked = true; fire($("show-revo"), "change");
+
   ok("preview glyphs share one left edge per slot",
     glXs.length > 0 && new Set(glXs).size === 2, glXs.join());
 
