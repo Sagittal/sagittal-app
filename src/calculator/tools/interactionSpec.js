@@ -645,6 +645,40 @@
   ok("recovering restores it", onScreen(pfCard));
   pfCard.querySelector("summary").click();
 
+  // ---------- theme ----------
+  ok("the header carries a theme control",
+    Boolean(document.querySelector("header .theme")));
+
+  const themeOpt = (c) => document.querySelector('.theme-opt[data-choice="' + c + '"]');
+  const pageBg = () => getComputedStyle(document.body).backgroundColor;
+  themeOpt("light").click();
+  const lightBg = pageBg();
+  themeOpt("dark").click();
+  ok("choosing Dark repaints the page dark", lum(pageBg()) < lum(lightBg),
+    lightBg + " -> " + pageBg());
+
+  const stored = () => {
+    try { return localStorage.getItem("sagittalCalculatorTheme"); }
+    catch (e) { return "unavailable"; }
+  };
+  ok("the choice is remembered for the next visit", stored() === "dark", stored());
+  ok("only the chosen option is marked",
+    [...document.querySelectorAll(".theme-opt")]
+      .filter((b) => b.getAttribute("aria-checked") === "true")
+      .map((b) => b.dataset.choice).join() === "dark",
+    [...document.querySelectorAll(".theme-opt")]
+      .map((b) => b.dataset.choice + ":" + b.getAttribute("aria-checked")).join(" "));
+  ok("only the chosen option is in the tab order",
+    themeOpt("dark").tabIndex === 0 && themeOpt("auto").tabIndex === -1
+    && themeOpt("light").tabIndex === -1);
+
+  themeOpt("auto").click();
+  ok("Auto takes the palette from the OS",
+    document.documentElement.dataset.theme
+      === (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"),
+    document.documentElement.dataset.theme);
+  ok("Auto is the absence of a choice, not a stored one", !stored(), stored());
+
   const div = document.createElement("div");
   div.id = "TESTOUT";
   div.textContent = out.join("\n");

@@ -9,12 +9,31 @@
   (https://scripts.sil.org/OFL). The subset uses the family name
   "SagittalGlyphs" per the OFL's Reserved Font Name rules.
 -->
+<script>
+// Settle the palette before the first paint, or the page flashes the other one.
+// data-theme carries the resolved palette the stylesheet keys on; the choice
+// behind it may be "auto", which tracks the OS for as long as it stays there.
+(() => {
+  "use strict";
+  const root = document.documentElement;
+  let stored = null;
+  try { stored = localStorage.getItem("sagittalCalculatorTheme"); } catch (e) { /* no storage */ }
+  const choice = stored === "light" || stored === "dark" ? stored : "auto";
+  root.dataset.themeChoice = choice;
+  root.dataset.theme = choice !== "auto" ? choice
+    : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+})();
+</script>
 <style>
   @font-face {
     font-family: "SagittalGlyphs";
     src: url(data:font/woff2;base64,%%FONT_B64%%) format("woff2");
     font-display: block;
   }
+  /* One block per palette, and light is the bare :root so the page is never
+     unpainted. The script above always stamps data-theme with a resolved
+     "light" or "dark" — following the OS is settled there rather than by a
+     prefers-color-scheme copy of the dark palette here. */
   :root {
     --bg: #faf9f6;
     --card: #ffffff;
@@ -30,24 +49,8 @@
     --thead: #857e75;
     --tip-bg: #2c2823;
     --tip-fg: #f5f1e9;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #171614;
-      --card: #1f1d1a;
-      --raise: #24211d;
-      --ink: #eae6df;
-      --muted: #9b948a;
-      --line: #34302a;
-      --line-soft: #282521;
-      --accent: #e08a72;
-      --accent-soft: #3a2822;
-      --glyph: #f3efe7;
-      --input-bg: #26231f;
-      --thead: #8d867c;
-      --tip-bg: #3a352e;
-      --tip-fg: #f2eee6;
-    }
+    --ok: #2f7d4f;
+    color-scheme: light;
   }
   :root[data-theme="dark"] {
     --bg: #171614;
@@ -64,22 +67,8 @@
     --thead: #8d867c;
     --tip-bg: #3a352e;
     --tip-fg: #f2eee6;
-  }
-  :root[data-theme="light"] {
-    --bg: #faf9f6;
-    --card: #ffffff;
-    --raise: #fbfaf7;
-    --ink: #211f1b;
-    --muted: #6e6862;
-    --line: #e5e1d8;
-    --line-soft: #efece5;
-    --accent: #a63a2b;
-    --accent-soft: #f3e4df;
-    --glyph: #16130f;
-    --input-bg: #ffffff;
-    --thead: #857e75;
-    --tip-bg: #2c2823;
-    --tip-fg: #f5f1e9;
+    --ok: #6cc48c;
+    color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
@@ -101,8 +90,38 @@
     vertical-align: middle;
   }
 
-  header { margin-bottom: 26px; }
+  header { position: relative; margin-bottom: 26px; }
+  /* the control sits in the heading's own band, so the subtitle below it keeps
+     the full width and stays on one line */
+  .theme {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+  .theme-opt {
+    font: inherit;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 9px;
+    cursor: pointer;
+  }
+  .theme-opt:hover { color: var(--ink); }
+  .theme-opt[aria-checked="true"] { color: var(--ink); background: var(--accent-soft); }
   header h1 {
+    /* clears the absolutely-positioned control above, which is ~162px wide */
+    padding-right: 176px;
     font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
     font-size: clamp(25px, 3.6vw, 34px);
     font-weight: 600;
@@ -713,7 +732,7 @@
   td.cp:hover .copy, td.cp:focus-within .copy { opacity: 1; pointer-events: auto; }
   td.cp .copy:hover { color: var(--accent); border-color: var(--accent); }
   td.cp:has(.copy:hover) .cv { color: var(--accent); }
-  td.cp .copy.done { color: #2f7d4f; border-color: #2f7d4f; opacity: 1; }
+  td.cp .copy.done { color: var(--ok); border-color: var(--ok); opacity: 1; }
 
   footer {
     margin-top: 42px;
@@ -772,6 +791,14 @@
 
 <div class="wrap">
   <header>
+    <div class="theme" role="radiogroup" aria-label="Color theme">
+      <button type="button" class="theme-opt" data-choice="auto" role="radio"
+              aria-checked="true">Auto</button>
+      <button type="button" class="theme-opt" data-choice="light" role="radio"
+              aria-checked="false" tabindex="-1">Light</button>
+      <button type="button" class="theme-opt" data-choice="dark" role="radio"
+              aria-checked="false" tabindex="-1">Dark</button>
+    </div>
     <h1>Sagittal Standard Notation Calculator</h1>
     <p class="sub">Enter a pitch as a ratio or as its prime exponents, choose the
       Pythagorean nominal to be your tonic, then choose your preferred Sagittal
@@ -1878,6 +1905,21 @@
     }
   }
 
+  // Left/right arrows step through a group of buttons that share one roving
+  // focus — the notation tabs and the theme control are both this shape.
+  function arrowKeys(group, onAttr, pick) {
+    group.addEventListener("keydown", (e) => {
+      const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (!step) return;
+      e.preventDefault();
+      const all = [...group.querySelectorAll("button")];
+      const next = all[(all.findIndex((b) => b.getAttribute(onAttr) === "true")
+        + step + all.length) % all.length];
+      pick(next);
+      next.focus();
+    });
+  }
+
   // ---------- tabs ----------
   // An inactive pane is display:none, and nothing inside one can be measured,
   // so every width the levels pane pins for itself is quietly skipped while it
@@ -1900,15 +1942,41 @@
     }
   }
   for (const [tab] of TABS) $(tab).addEventListener("click", () => selectTab(tab));
-  document.querySelector(".tabs").addEventListener("keydown", (e) => {
-    const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-    if (!step) return;
-    e.preventDefault();
-    const at = TABS.findIndex(([tab]) => $(tab).getAttribute("aria-selected") === "true");
-    const [next] = TABS[(at + step + TABS.length) % TABS.length];
-    selectTab(next);
-    $(next).focus();
+  arrowKeys(document.querySelector(".tabs"), "aria-selected", (b) => selectTab(b.id));
+
+  // ---------- theme ----------
+  // The choice is what the user picked and is remembered; the palette on
+  // data-theme is what it resolves to now. They differ only under "auto".
+  const THEME_KEY = "sagittalCalculatorTheme";   // also read by the script in the head
+  const themeGroup = document.querySelector(".theme");
+  const themeOpts = [...themeGroup.querySelectorAll(".theme-opt")];
+  const prefersDark = matchMedia("(prefers-color-scheme: dark)");
+
+  function applyTheme(choice, remember) {
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.dataset.theme =
+      choice === "auto" ? (prefersDark.matches ? "dark" : "light") : choice;
+    for (const b of themeOpts) {
+      const on = b.dataset.choice === choice;
+      b.setAttribute("aria-checked", String(on));
+      b.tabIndex = on ? 0 : -1;
+    }
+    if (!remember) return;
+    try {
+      if (choice === "auto") localStorage.removeItem(THEME_KEY);
+      else localStorage.setItem(THEME_KEY, choice);
+    } catch (e) { /* no storage — the choice still holds for this visit */ }
+  }
+
+  for (const b of themeOpts) {
+    b.addEventListener("click", () => applyTheme(b.dataset.choice, true));
+  }
+  arrowKeys(themeGroup, "aria-checked", (b) => applyTheme(b.dataset.choice, true));
+  // only "auto" is listening; the other two ignore the OS by definition
+  prefersDark.addEventListener("change", () => {
+    applyTheme(document.documentElement.dataset.themeChoice, false);
   });
+  applyTheme(document.documentElement.dataset.themeChoice, false);
 
   // ---------- wiring ----------
   for (const p of P) expInputs[p].addEventListener("input", onVectorInput);
