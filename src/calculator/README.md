@@ -5,7 +5,7 @@ A web port of the *Sagittal Standard JI Notation Calculator* spreadsheet
 
 Enter a pitch as a ratio or as its prime exponents, choose the Pythagorean nominal
 that is your 1/1, and read off its Sagittal notation — Evo and/or Revo, as Sagitype,
-as Unicode codepoints, and drawn in Bravura. A row of tabs under the
+as Unicode codepoints, drawn in Bravura and named in Sagispeak. A row of tabs under the
 input panel picks which notation is on screen, one at a time: *Precision Level* gives
 all four levels, with a live diagram of where your pitch falls among each level's
 symbols; *Prime Factor* spells the same pitch in the prime-factor notation
@@ -21,6 +21,7 @@ to install.
     src/core.js         the computation, ported cell for cell from the workbook
     src/primeFactor.js  the one-symbol-per-prime comma table and speller
     src/data.js         generated — boundary, comma and key tables, verbatim
+    src/sagispeak.js    generated — each Sagittal glyph's name, and how it is said
     src/font.b64        generated — a ~12 KB subset of the Sagittal Bravura
     data/*.xlsx         the workbook the tables come from
     tools/              build and specs
@@ -38,11 +39,17 @@ Regenerating the data (only needed when the workbook or the font changes) requir
 
     python tools/dumpWorkbook.py          # xlsx  -> data/workbookDump.json
     python tools/extractData.py           # dump  -> src/data.js + src/font.b64
+    python tools/extractSagispeak.py      # WinCompose + the docs -> src/sagispeak.js
 
 The font subset is cut from `BravuraSagittalUpdate_v10.otf` in the `bravura`
 folder of the `sagittal-main` monorepo, so the glyphs match the rest of Sagittal,
-mina diacritics included. Only the regeneration step needs it — `src/font.b64` is
-committed, so `tools/build.py` works from a standalone clone of this repo.
+mina diacritics included. The Sagispeak names come from the same monorepo's
+`wincompose/wincompose_{evo,revo}_sagispeak.txt`, which give the spelling that types
+each glyph, and their pronunciations from the docs' own
+`reference/sagispeak-key.md`, which gives the IPA; nothing about a name is invented
+here. Only the regeneration steps need the monorepo — `src/font.b64` and
+`src/sagispeak.js` are committed, so `tools/build.py` works from a standalone clone
+of this repo.
 
 ## Specs
 
@@ -57,7 +64,8 @@ recalculated from the workbook's own formulas (`tools/oracle.py` produces
 extreme-level tables and font subset, and pins the speller's spellings, symbol
 order and cents reconciliation. `runInteractionSpec.py` drives the built page and
 asserts the behaviour of the inputs, the linked ratio/vector, the collapsing
-columns, the copy buttons, the notation tabs, the diagram and the prime-factor
+columns, the copy and pronounce buttons, the notation tabs, the diagram and the
+prime-factor
 section.
 
 ## How it fits into this repo

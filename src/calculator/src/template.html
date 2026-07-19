@@ -571,13 +571,14 @@
   }
 
   /* ---------- results table ---------- */
+  /* eight column groups in both Flavors outrun the page, so the widest
+     tables scroll — and say so, rather than hiding the bar */
   .tbl-wrap {
     overflow-x: auto;
     overflow-y: hidden;
-    scrollbar-width: none;
+    scrollbar-width: thin;
     border-radius: 0 0 9px 9px;
   }
-  .tbl-wrap::-webkit-scrollbar { display: none; }
   table { border-collapse: collapse; width: 100%; table-layout: auto; }
   th, td { text-align: right; }
   th {
@@ -644,6 +645,9 @@
     line-height: 1.45;
   }
   td.uni .cw { white-space: pre; }
+  /* Sagispeak stacks the same way, a word per glyph, in the reading font */
+  td.words { line-height: 1.45; }
+  td.words .cw { white-space: pre; }
   td.unichars {
     font-family: "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
     font-size: 14px;
@@ -714,6 +718,9 @@
   td.cp .copy:hover { color: var(--accent); border-color: var(--accent); }
   td.cp:has(.copy:hover) .cv { color: var(--accent); }
   td.cp .copy.done { color: #2f7d4f; border-color: #2f7d4f; opacity: 1; }
+  /* a cell offering a speaker as well as copy pays for a second chip */
+  td.cp:has(.speak) { padding-left: 54px; }
+  td.cp .speak { left: 29px; }
 
   footer {
     margin-top: 42px;
@@ -727,35 +734,7 @@
   footer a { color: var(--accent); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
-  /* one block per collapsible group */
-  #levels.cx-unicode .g-unicode .cw,
-  #levels.cx-sagitype .g-sagitype .cw,
-  #levels.cx-unichars .g-unichars .cw,
-  #levels.cx-bravura .g-bravura .cw,
-  #levels.cx-fifths .g-fifths .cw,
-  #levels.cx-representing .g-representing .cw,
-  #levels.cx-error .g-error .cw { max-width: 0; max-height: 0; opacity: 0; }
-  #levels.cx-unicode .g-unicode.dash-lead .cd,
-  #levels.cx-sagitype .g-sagitype.dash-lead .cd,
-  #levels.cx-unichars .g-unichars.dash-lead .cd,
-  #levels.cx-bravura .g-bravura.dash-lead .cd,
-  #levels.cx-fifths .g-fifths.dash-lead .cd,
-  #levels.cx-representing .g-representing.dash-lead .cd,
-  #levels.cx-error .g-error.dash-lead .cd { max-width: var(--w, 1em); opacity: 1; }
-  #levels.cx-unicode td.g-unicode,
-  #levels.cx-sagitype td.g-sagitype,
-  #levels.cx-unichars td.g-unichars,
-  #levels.cx-bravura td.g-bravura,
-  #levels.cx-fifths td.g-fifths,
-  #levels.cx-representing td.g-representing,
-  #levels.cx-error td.g-error { padding-left: 10px; padding-right: 10px; }
-  #levels.cx-unicode .g-unicode .copy,
-  #levels.cx-sagitype .g-sagitype .copy,
-  #levels.cx-unichars .g-unichars .copy,
-  #levels.cx-bravura .g-bravura .copy,
-  #levels.cx-fifths .g-fifths .copy,
-  #levels.cx-representing .g-representing .copy,
-  #levels.cx-error .g-error .copy { display: none; }
+  /* the per-group collapse rules are written from GROUPS; see collapseSheet */
 
   @media (prefers-reduced-motion: no-preference) {
     button, input, .chev, .tog, .tip::after { transition: transform 150ms, opacity 130ms, background 120ms, border-color 120ms, color 120ms; }
@@ -900,6 +879,7 @@
 </div>
 
 <script>%%DATA_JS%%</script>
+<script>%%SAGISPEAK_JS%%</script>
 <script>%%CORE_JS%%</script>
 <script>%%PRIME_FACTOR_JS%%</script>
 <script>
@@ -922,6 +902,11 @@
   const DONE_ICON = '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">'
     + '<path d="M3 8.5l3.2 3.2L13 5" fill="none" stroke="currentColor" '
     + 'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const SPEAK_ICON = '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">'
+    + '<path d="M8.4 3.1 5.1 6H3.1a.9.9 0 0 0-.9.9v2.2a.9.9 0 0 0 .9.9h2l3.3 2.9z" '
+    + 'fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>'
+    + '<path d="M10.9 5.9a3 3 0 0 1 0 4.2" fill="none" stroke="currentColor" '
+    + 'stroke-width="1.4" stroke-linecap="round"/></svg>';
 
   const APOTOME = SAG.APOTOME;
   // SMuFL accidentals, for spelling nominals with real symbols
@@ -1234,6 +1219,14 @@
   const codepoints = (s, sep) => [...s].filter((c) => c !== " ")
     .map((c) => "U+" + c.codePointAt(0).toString(16).toUpperCase().padStart(4, "0"))
     .join(sep || " ");
+  // A symbol's Sagispeak is its glyphs' names, accents first, one word each.
+  // The notehead the key table appends is not a sagittal, so it is passed over.
+  // Every glyph carries two spellings: how the name is written, and how it is
+  // said — an English voice reads "pai" as "pay" when the docs' IPA is /paɪ/,
+  // so it is handed "pigh". Both are lifted in extractSagispeak.py.
+  const WRITTEN = 0, SAID = 1;
+  const sagispeak = (s, part) =>
+    [...s].map((c) => SAG_SPEAK[c]).filter(Boolean).map((g) => g[part]).join(" ");
 
   // ---------- column model ----------
   const GROUPS = [
@@ -1253,6 +1246,17 @@
       tip: "The SMuFL codepoints of those characters, written out one per line.",
       value: (row, lv, v) => codepoints(lv[v + "Unicode"], "\n"),
       copy: (row, lv, v) => codepoints(lv[v + "Unicode"], " ") },
+    { key: "sagispeak", name: "Sagispeak", variants: false, cls: "words",
+      tip: "Sagittal's own way of naming and pronouncing the symbols, independent of "
+        + "both tuning and language: one consonant per flag, in the order the flags "
+        + "appear, then “ai” — the vowel of “high” — if the symbol points up, or “ao” "
+        + "— the vowel of “down” — if it points down. One word per glyph, accents "
+        + "first, listed the way the codepoints are; copying gives them back on one "
+        + "line. Evo and Revo nearly always come to the same name; where they do not, "
+        + "both are given.",
+      value: (row, lv) => sagispeakOn(lv, WRITTEN).join(" / ").replace(/ /g, "\n"),
+      copy: (row, lv) => sagispeakOn(lv, WRITTEN).join(" / "),
+      speak: (row, lv) => sagispeakOn(lv, SAID)[0] },
     { key: "fifths", name: "Fifths<br>Count", variants: false, cls: "num",
       tip: "How many fifths along the chain of fifths this nominal sits from your "
         + "tonic — a rough measure of how far afield the spelling is.",
@@ -1269,6 +1273,26 @@
   const collapsed = new Set();
   const show = { evo: true, revo: true };
   const variantsOn = () => ["evo", "revo"].filter((v) => show[v]);
+  // One Sagispeak serves both flavors: they part only where Evo hangs an accent
+  // on a bare shaft and leaves the apotome to a conventional sharp, which Revo
+  // folds into the sagittal itself.
+  const sagispeakOn = (lv, part) =>
+    [...new Set(variantsOn().map((v) => sagispeak(lv[v + "Unicode"], part)))];
+
+  // Collapsing is a class on #levels rather than a rebuild, so it needs a rule
+  // per group: the cell's content shrinks away, its dash grows in, the padding
+  // closes up and the buttons go. Written from GROUPS so a new column inherits
+  // them by existing, instead of by four more selectors kept in step by hand.
+  const collapseSheet = document.createElement("style");
+  collapseSheet.textContent = GROUPS.map((g) => {
+    const on = "#levels.cx-" + g.key + " .g-" + g.key;
+    return on + " .cw { max-width: 0; max-height: 0; opacity: 0 }\n"
+      + on + ".dash-lead .cd { max-width: var(--w, 1em); opacity: 1 }\n"
+      + "#levels.cx-" + g.key + " td.g-" + g.key
+      + " { padding-left: 10px; padding-right: 10px }\n"
+      + on + " .copy { display: none }";
+  }).join("\n");
+  document.head.appendChild(collapseSheet);
 
 
   // The column set never changes when a group collapses — collapsing is a CSS
@@ -1301,7 +1325,22 @@
     document.body.removeChild(ta);
     return Promise.resolve();
   }
-  function cell(text, cls, groupStart, copyAs) {
+  // ---------- say-on-hover ----------
+  // Nothing is shipped to play, so the pronunciation is the browser's own
+  // voice reading the name. Where there is no such voice the speaker is never
+  // offered, which is why this is asked before the button is built.
+  const canSpeak = () => typeof speechSynthesis !== "undefined"
+    && typeof SpeechSynthesisUtterance !== "undefined";
+  function pronounce(name) {
+    try {
+      speechSynthesis.cancel();          // a second click restarts, not queues
+      const utterance = new SpeechSynthesisUtterance(name);
+      utterance.rate = 0.8;
+      speechSynthesis.speak(utterance);
+    } catch (err) { /* a voice that will not speak is not worth reporting */ }
+  }
+
+  function cell(text, cls, groupStart, copyAs, speakAs) {
     const el = document.createElement("td");
     const v = document.createElement("span");
     v.className = "cw cv";
@@ -1333,6 +1372,16 @@
       });
     });
     el.appendChild(b);
+    if (speakAs && canSpeak()) {
+      const s = document.createElement("button");
+      s.type = "button";
+      s.className = "copy speak";      // same hover-reveal chip as the copy button
+      s.title = "Pronounce";
+      s.setAttribute("aria-label", "Pronounce " + speakAs);
+      s.innerHTML = SPEAK_ICON;
+      s.addEventListener("click", () => pronounce(speakAs));
+      el.appendChild(s);
+    }
     return el;
   }
 
@@ -1562,9 +1611,11 @@
         cols.forEach((c, idx) => {
           const groupStart = Boolean(c.only || c.first);
           tr.appendChild(cell(c.g.value(row, lv, c.variant),
-            c.g.cls + " g-" + c.g.key + (idx > 0 && groupStart ? " grp" : ""),
+            (c.g.cls ? c.g.cls + " " : "") + "g-" + c.g.key
+              + (idx > 0 && groupStart ? " grp" : ""),
             groupStart,
-            c.g.copy && c.g.copy(row, lv, c.variant)));
+            c.g.copy && c.g.copy(row, lv, c.variant),
+            c.g.speak && c.g.speak(row, lv, c.variant)));
         });
         tbody.appendChild(tr);
       }
