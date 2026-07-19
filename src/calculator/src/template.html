@@ -1502,8 +1502,10 @@
     const gls = [...levelsRoot.querySelectorAll(".lv-preview .pv-gl")];
     if (!gls.length) return;
     levelsRoot.style.setProperty("--pv-gl-w", "max-content");
-    const widest = Math.ceil(Math.max(...gls.map((e) => e.scrollWidth)));
-    levelsRoot.style.setProperty("--pv-gl-w", Math.max(widest, 40) + "px");
+    const widest = Math.ceil(Math.max(
+      ...gls.map((e) => e.getBoundingClientRect().width)));
+    // every preview is hidden while all the cards are open; keep the last width
+    if (widest > 0) levelsRoot.style.setProperty("--pv-gl-w", widest + "px");
   }
 
   function render() {
@@ -1583,6 +1585,7 @@
       exps, residueNum: residue.n, residueDen: residue.d, nominal,
     }));
     paintToggles();
+    sizePreviews();
   }
 
 
@@ -1966,6 +1969,7 @@
     document.fonts.ready.then(() => {
       sizeComboList();
       for (const m of D.levels) measureWidths(levelParts[m.level].table);
+      sizePreviews();
     });
   }
 })();

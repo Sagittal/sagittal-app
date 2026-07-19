@@ -418,6 +418,25 @@
   const glXs = shownPreview(".lv-preview .pv-gl");
   ok("preview labels share one left edge per slot",
     labXs.length > 0 && new Set(labXs).size === 2, labXs.join());
+  // the glyph column is exactly the widest spelling on show: any wider and the
+  // label drifts away from the notation it belongs to
+  const glyphSlots = () =>
+    [...document.querySelectorAll("#levels details.level:not([open]) .pv-gl")]
+      .filter((e) => e.getBoundingClientRect().width > 0);
+  const inkWidth = (e) => {
+    const r = document.createRange();
+    r.selectNodeContents(e);
+    return r.getBoundingClientRect().width;
+  };
+  const slots = glyphSlots();
+  const widestInk = Math.max(...slots.map(inkWidth));
+  ok("the glyph column is no wider than the widest spelling",
+    slots.every((e) => e.getBoundingClientRect().width <= widestInk + 2),
+    Math.round(slots[0].getBoundingClientRect().width) + " slot vs "
+    + Math.round(widestInk) + " widest ink");
+  ok("the widest spelling sits flush against its label",
+    slots.some((e) => inkWidth(e) >= e.getBoundingClientRect().width - 2));
+
   // with one flavor there is no label, and the lone glyph must still sit in the
   // glyph column rather than falling into the label's slot
   const glyphRights = () =>
