@@ -1,0 +1,55 @@
+name: merge gate
+run-name: gating
+
+# The gate the merge queue runs on the candidate merge (this branch onto the
+# main it will land on), and on the PR itself so a red branch never enqueues.
+on:
+    pull_request:
+    merge_group:
+
+jobs:
+    typescript:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20.x
+            - run: npm i
+            - run: npm run test-full
+
+    calculator:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20.x
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: "3.12"
+
+            - name: Build the page
+              run: python tools/build.py
+              working-directory: src/calculator
+
+            # index.html is committed, so a stale one means someone edited the
+            # sources without rebuilding — the page a reviewer sees would not be
+            # the page the sources make.
+            - name: The committed page matches its sources
+              run: git diff --exit-code -- index.html
+              working-directory: src/calculator
+
+            - name: The maths, against the workbook itself
+              run: node tools/coreSpec.mjs
+              working-directory: src/calculator
+
+            - name: The prime-factor tables and speller
+              run: node tools/primeFactorSpec.mjs
+              working-directory: src/calculator
+
+            - name: The UI, in headless Chrome
+              run: python tools/runInteractionSpec.py
+              working-directory: src/calculator
+              env:
+                  BROWSER: /usr/bin/google-chrome
