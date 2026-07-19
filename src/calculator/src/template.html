@@ -455,7 +455,7 @@
     flex: none;
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: var(--pv-gap, 18px);
     padding-left: 16px;
   }
   .pv { display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; }
@@ -1502,10 +1502,16 @@
     const gls = [...levelsRoot.querySelectorAll(".lv-preview .pv-gl")];
     if (!gls.length) return;
     levelsRoot.style.setProperty("--pv-gl-w", "max-content");
-    const widest = Math.ceil(Math.max(
-      ...gls.map((e) => e.getBoundingClientRect().width)));
-    // every preview is hidden while all the cards are open; keep the last width
-    if (widest > 0) levelsRoot.style.setProperty("--pv-gl-w", widest + "px");
+    const inks = gls.map((e) => e.getBoundingClientRect().width).filter((w) => w > 0);
+    if (!inks.length) return;   // every preview is hidden: keep the last sizing
+    const widest = Math.ceil(Math.max(...inks));
+    const narrowest = Math.floor(Math.min(...inks));
+    levelsRoot.style.setProperty("--pv-gl-w", widest + "px");
+    // The notations are right-aligned so their right edges line up, which leaves
+    // the narrowest of them up to (widest - narrowest) adrift from its own label.
+    // The space between one flavor's pair and the next has to beat that, or the
+    // second label reads as belonging to the notation before it.
+    levelsRoot.style.setProperty("--pv-gap", (widest - narrowest + 22) + "px");
   }
 
   function render() {

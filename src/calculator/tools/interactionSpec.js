@@ -418,6 +418,37 @@
   const glXs = shownPreview(".lv-preview .pv-gl");
   ok("preview labels share one left edge per slot",
     labXs.length > 0 && new Set(labXs).size === 2, labXs.join());
+  // each flavor label has to read as belonging to the notation after it, which
+  // means it must sit nearer that notation than the one before it — across the
+  // pitches whose Evo and Revo spellings differ most in width
+  const inkRect = (e) => {
+    const r = document.createRange();
+    r.selectNodeContents(e);
+    return r.getBoundingClientRect();
+  };
+  const worstBinding = () => {
+    let worst = null;
+    document.querySelectorAll("#levels details.level:not([open])").forEach((c) => {
+      const labs = [...c.querySelectorAll(".pv-lab")];
+      const gls = [...c.querySelectorAll(".pv-gl")];
+      if (labs.length < 2) return;
+      const toOwn = inkRect(gls[1]).left - labs[1].getBoundingClientRect().right;
+      const toPrev = labs[1].getBoundingClientRect().left - inkRect(gls[0]).right;
+      if (!worst || toOwn - toPrev > worst.margin) {
+        worst = { margin: toOwn - toPrev, toOwn, toPrev };
+      }
+    });
+    return worst;
+  };
+  [["1", "1"], ["5", "4"], ["13", "8"], ["4375", "4374"]].forEach(([n, d]) => {
+    $("num").value = n; $("den").value = d; fire($("num"));
+    const w = worstBinding();
+    ok(`the Revo label stays nearer its own notation at ${n}/${d}`,
+      Boolean(w) && w.toOwn < w.toPrev,
+      w && Math.round(w.toOwn) + " to its own vs " + Math.round(w.toPrev) + " to Evo's");
+  });
+  $("num").value = "1"; $("den").value = "1"; fire($("num"));
+
   // the glyph column is exactly the widest spelling on show: any wider and the
   // label drifts away from the notation it belongs to
   const glyphSlots = () =>
@@ -428,14 +459,14 @@
     r.selectNodeContents(e);
     return r.getBoundingClientRect().width;
   };
-  const slots = glyphSlots();
-  const widestInk = Math.max(...slots.map(inkWidth));
+  const shownSlots = glyphSlots();
+  const widestInk = Math.max(...shownSlots.map(inkWidth));
   ok("the glyph column is no wider than the widest spelling",
-    slots.every((e) => e.getBoundingClientRect().width <= widestInk + 2),
-    Math.round(slots[0].getBoundingClientRect().width) + " slot vs "
+    shownSlots.every((e) => e.getBoundingClientRect().width <= widestInk + 2),
+    Math.round(shownSlots[0].getBoundingClientRect().width) + " slot vs "
     + Math.round(widestInk) + " widest ink");
   ok("the widest spelling sits flush against its label",
-    slots.some((e) => inkWidth(e) >= e.getBoundingClientRect().width - 2));
+    shownSlots.some((e) => inkWidth(e) >= e.getBoundingClientRect().width - 2));
 
   // with one flavor there is no label, and the lone glyph must still sit in the
   // glyph column rather than falling into the label's slot
