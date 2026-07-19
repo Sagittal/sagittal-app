@@ -193,7 +193,8 @@
   // ---------- table shape ----------
   ok("Unicode column first",
     heads("medium").join("|")
-    === "Bravura|Sagitype|Unicode|UnicodeCodepoints|FifthsCount|Cents|Error",
+    === "Bravura|Sagitype|Unicode|UnicodeCodepoints|Sagispeak"
+       + "|FifthsCount|Cents|Error",
     heads("medium").join("|"));
   const allCells = [...card("medium").querySelectorAll("th, td")]
     .filter((c) => !c.classList.contains("rowtog"));
@@ -266,8 +267,8 @@
   $("show-evo").checked = false; fire($("show-evo"), "change");
   ok("unchecking Evo drops the sub-header row", !subRow());
   ok("unchecking Evo halves the notation columns",
-    dataCells("medium", 0).length === 7,
-    dataCells("medium", 0).length);
+    dataCells("medium", 0).length === heads("medium").length,
+    dataCells("medium", 0).length + " cells for " + heads("medium").length + " groups");
   ok("the last checked variant is not greyed out", $("show-revo").disabled === false);
   const lum = (c) => {
     const [r, g, b] = c.match(/\d+/g).map(Number);
@@ -304,12 +305,26 @@
     && previewGl === cellText("medium", simplestRow, colIndex("medium", "Bravura", 1)),
     JSON.stringify(previewGl) + " vs row " + simplestRow);
 
-  // ---------- no scrollbar ----------
+  // ---------- scrolling ----------
+  // Eight column groups in both Flavors outrun the page, so the widest tables
+  // scroll. What matters is that they say so.
   const wrap = card("medium").querySelector(".tbl-wrap");
-  ok("table does not scroll horizontally", wrap.scrollWidth <= wrap.clientWidth + 1,
+  ok("a table that does not overflow shows nothing to scroll",
+    wrap.scrollWidth <= wrap.clientWidth + 1,
     wrap.scrollWidth + " vs " + wrap.clientWidth);
-  ok("no scrollbar is ever drawn",
-    getComputedStyle(wrap).scrollbarWidth === "none");
+  ok("the scrollbar is drawn rather than hidden",
+    getComputedStyle(wrap).scrollbarWidth === "thin",
+    getComputedStyle(wrap).scrollbarWidth);
+  // 175/1 reaches the long symbols — a six-character core in both Flavors
+  $("num").value = "175"; fire($("num"));
+  card("extreme").querySelector("summary").click();
+  const exWrap = card("extreme").querySelector(".tbl-wrap");
+  ok("the widest symbols scroll, and can be scrolled to",
+    exWrap.scrollWidth > exWrap.clientWidth
+    && getComputedStyle(exWrap).overflowX === "auto",
+    exWrap.scrollWidth + " vs " + exWrap.clientWidth);
+  card("extreme").querySelector("summary").click();
+  $("num").value = "1"; fire($("num"));
 
   // ---------- tooltips ----------
   const medTip = card("medium").querySelector(".lv-name").dataset.tip;
@@ -354,6 +369,89 @@
   btn.click();
   ok("copy copies the cell text",
     copied === cpCell.querySelector(".cv").textContent, JSON.stringify(copied));
+
+  // ---------- Sagispeak ----------
+  const speakIdx = () => colIndex("medium", "Sagispeak");
+  const speakText = (r) => cellText("medium", r, speakIdx());
+  const speakCell = (r) => dataCells("medium", r)[speakIdx()];
+  ok("a name is one word per glyph, listed down the cell",
+    speakText(2) === "pai\ndouble\nflat", JSON.stringify(speakText(2)));
+  ok("the words are stacked rather than run together",
+    getComputedStyle(speakCell(2).querySelector(".cv")).whiteSpace === "pre",
+    getComputedStyle(speakCell(2).querySelector(".cv")).whiteSpace);
+  speakCell(2).querySelector("button.copy:not(.speak)").click();
+  ok("copying gives the name back on one line",
+    copied === "pai double flat", JSON.stringify(copied));
+  expInput(5).value = "1"; fire(expInput(5));           // 5/4 over D
+  ok("the row read below is the 5-comma-down spelling of F",
+    cellText("medium", 1, colIndex("medium", "Sagitype")) === "\\!#F",
+    cellText("medium", 1, colIndex("medium", "Sagitype")));
+  ok("a sagittal and the sharp beside it are named in that order",
+    speakText(1) === "pao\nsharp", JSON.stringify(speakText(1)));
+  expInput(5).value = "0"; fire(expInput(5));
+  expInput(7).value = "1"; fire(expInput(7));           // 7/4 over D
+  ok("the 7-comma is named for its own flag", speakText(0) === "tao", speakText(0));
+  expInput(7).value = "0"; fire(expInput(7));
+  ok("a plain nominal has no Sagispeak, and shows the usual dash",
+    speakText(1) === "-", speakText(1));
+  const speakTh = () => groupTh("medium", "Sagispeak");
+  ok("one Sagispeak column serves both flavors",
+    (speakTh().colSpan || 1) === 1 && speakTh().rowSpan === 2,
+    (speakTh().colSpan || 1) + " wide, " + speakTh().rowSpan + " deep");
+  const speakTip = speakTh().querySelector(".tip").dataset.tip;
+  ok("its tooltip gives the two vowels and where they come from",
+    /“ai”/.test(speakTip) && /“ao”/.test(speakTip) && /high/.test(speakTip)
+    && /down/.test(speakTip), speakTip.slice(0, 70));
+
+  // ---------- pronouncing ----------
+  ok("the Sagispeak cell offers a speaker as well as a copy",
+    Boolean(speakCell(2).querySelector("button.speak svg"))
+    && Boolean(speakCell(2).querySelector("button.copy:not(.speak)")));
+  ok("no other column offers one",
+    dataCells("medium", 2).filter((td) => td.querySelector(".speak")).length === 1);
+  ok("the speaker hides until the cell is hovered, as copy does",
+    getComputedStyle(speakCell(2).querySelector(".speak")).opacity === "0");
+  const copyBox = speakCell(2).querySelector("button.copy:not(.speak)").getBoundingClientRect();
+  const speakBox = speakCell(2).querySelector(".speak").getBoundingClientRect();
+  ok("the speaker sits beside the copy button, clear of it",
+    speakBox.left >= copyBox.right && speakBox.left - copyBox.right < 8,
+    (speakBox.left - copyBox.right).toFixed(1) + "px apart");
+  let said = null;
+  speechSynthesis.speak = (u) => { said = u.text; };
+  speechSynthesis.cancel = () => {};
+  // read as spelled, an English voice says "pai" as "pay"; the docs' key puts
+  // it at /paɪ/, and "tao" at /taʊ/ — which "tow" would not give either
+  speakCell(2).querySelector(".speak").click();
+  ok("the spoken name respells the up diphthong",
+    said === "pigh double flat", JSON.stringify(said));
+  expInput(7).value = "1"; fire(expInput(7));           // 7/4 over D reaches tao
+  speakCell(0).querySelector(".speak").click();
+  ok("and the down one, clear of the words English says with /oʊ/",
+    said === "taow", JSON.stringify(said));
+  expInput(7).value = "0"; fire(expInput(7));
+
+  // no speech in this browser: no speaker offered, and nothing thrown.
+  // speechSynthesis is an own accessor of window, so deleting it would not put
+  // it back — the descriptor has to be kept and redefined.
+  const synthDesc = Object.getOwnPropertyDescriptor(window, "speechSynthesis");
+  Object.defineProperty(window, "speechSynthesis", { configurable: true, value: undefined });
+  fire($("num"));
+  ok("without speech support the speaker is never built",
+    dataCells("medium", 2).every((td) => !td.querySelector(".speak")));
+  ok("and the rest of the column is untouched", speakText(1) === "-", speakText(1));
+  Object.defineProperty(window, "speechSynthesis", synthDesc);
+  fire($("num"));
+  ok("the speaker returns once speech is available again",
+    Boolean(speakCell(2).querySelector(".speak")));
+
+  speakTh().click();
+  ok("Sagispeak collapses like the rest",
+    shrunk("medium", "Sagispeak") && dashShown("medium", "Sagispeak"));
+  ok("its speaker goes when it collapses",
+    getComputedStyle(groupCell("medium", "Sagispeak").querySelector(".speak"))
+      .display === "none");
+  speakTh().click();
+  ok("Sagispeak expands again", !shrunk("medium", "Sagispeak"));
 
   // ---------- a folded row is short, and its cells all show a dash ----------
   const firstRow = bodyRows("medium")[0];
