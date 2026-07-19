@@ -191,9 +191,9 @@
   expInput(5).value = "0"; fire(expInput(5));
 
   // ---------- table shape ----------
-  ok("the two text encodings sit together, ahead of the characters",
+  ok("Unicode column first",
     heads("medium").join("|")
-    === "Bravura|Sagitype|StaffCode|Unicode|UnicodeCodepoints|FifthsCount|Cents|Error",
+    === "Bravura|Sagitype|Unicode|UnicodeCodepoints|FifthsCount|Cents|Error",
     heads("medium").join("|"));
   const allCells = [...card("medium").querySelectorAll("th, td")]
     .filter((c) => !c.classList.contains("rowtog"));
@@ -207,22 +207,6 @@
   const pvGl = card("high").querySelector(".pv-gl");
   ok("preview glyphs are big too",
     parseFloat(getComputedStyle(pvGl).fontSize) >= 48, getComputedStyle(pvGl).fontSize);
-
-  // ---------- StaffCode ----------
-  // 1/1 over D, Extreme: C is .\!x, D is bare, E is '/|bb — between them an
-  // accent to split off, a double sharp, a double flat, and the Revo cores X\
-  // and Y/, whose X and Y must not be read as conventional accidentals.
-  const staffCol = (v) => colIndex("extreme", "StaffCode", v === "evo" ? 0 : 1);
-  const sc = (r, v) => cellText("extreme", r, staffCol(v)).replace(/\s+/g, " ");
-  ok("a sagittal keeps its Sagitype spelling, its accent a word of its own",
-    sc(0, "evo") === ". \\! X ntCwh", JSON.stringify(sc(0, "evo")));
-  ok("an unaltered row is the notehead alone",
-    sc(1, "evo") === "ntDwh", JSON.stringify(sc(1, "evo")));
-  ok("a double flat is one word, the nominal another",
-    sc(2, "evo") === "' /| bb ntEwh", JSON.stringify(sc(2, "evo")));
-  ok("Revo shafts ending in X or Y stay part of their symbol",
-    sc(0, "revo") === ". X\\ ntCwh" && sc(2, "revo") === "' Y/ ntEwh",
-    JSON.stringify(sc(0, "revo")) + " " + JSON.stringify(sc(2, "revo")));
 
   // ---------- collapsing ----------
   const groupCell = (lvl, name) =>
@@ -276,20 +260,14 @@
   groupTh("medium", "Cents").click();
   ok("REPRESENTING expands again", !shrunk("medium", "Cents"));
 
-  groupTh("medium", "StaffCode").click();
-  ok("StaffCode collapses like the rest",
-    shrunk("medium", "StaffCode") && dashShown("medium", "StaffCode"));
-  groupTh("medium", "StaffCode").click();
-  ok("StaffCode expands again", !shrunk("medium", "StaffCode"));
-
   // ---------- Evo / Revo ----------
   const subRow = () => card("medium").querySelector("thead tr.subhead");
   ok("sub-header row present with both on", Boolean(subRow()));
   $("show-evo").checked = false; fire($("show-evo"), "change");
   ok("unchecking Evo drops the sub-header row", !subRow());
-  ok("unchecking Evo leaves one column per group",
-    dataCells("medium", 0).length === heads("medium").length,
-    dataCells("medium", 0).length + " cells, " + heads("medium").length + " groups");
+  ok("unchecking Evo halves the notation columns",
+    dataCells("medium", 0).length === 7,
+    dataCells("medium", 0).length);
   ok("the last checked variant is not greyed out", $("show-revo").disabled === false);
   const lum = (c) => {
     const [r, g, b] = c.match(/\d+/g).map(Number);
@@ -332,15 +310,6 @@
     wrap.scrollWidth + " vs " + wrap.clientWidth);
   ok("no scrollbar is ever drawn",
     getComputedStyle(wrap).scrollbarWidth === "none");
-  // 175/1 reaches the long symbols — a six-character core, four codewords deep
-  $("num").value = "175"; fire($("num"));
-  card("extreme").querySelector("summary").click();
-  const exWrap = card("extreme").querySelector(".tbl-wrap");
-  ok("the widest symbols still do not scroll the table",
-    exWrap.scrollWidth <= exWrap.clientWidth + 1,
-    exWrap.scrollWidth + " vs " + exWrap.clientWidth);
-  card("extreme").querySelector("summary").click();
-  $("num").value = "1"; fire($("num"));
 
   // ---------- tooltips ----------
   const medTip = card("medium").querySelector(".lv-name").dataset.tip;
@@ -385,13 +354,6 @@
   btn.click();
   ok("copy copies the cell text",
     copied === cpCell.querySelector(".cv").textContent, JSON.stringify(copied));
-  // the stacked columns read down the cell but copy as one pasteable line
-  const scCell = dataCells("medium", 0)[colIndex("medium", "StaffCode")];
-  scCell.querySelector("button.copy").click();
-  ok("StaffCode copies as a single line of codewords",
-    copied === scCell.querySelector(".cv").textContent.replace(/\n/g, " ")
-    && !/\n/.test(copied) && copied.split(" ").length > 1,
-    JSON.stringify(copied));
 
   // ---------- a folded row is short, and its cells all show a dash ----------
   const firstRow = bodyRows("medium")[0];

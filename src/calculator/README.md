@@ -5,7 +5,7 @@ A web port of the *Sagittal Standard JI Notation Calculator* spreadsheet
 
 Enter a pitch as a ratio or as its prime exponents, choose the Pythagorean nominal
 that is your 1/1, and read off its Sagittal notation — Evo and/or Revo, as Sagitype,
-as StaffCode, as Unicode codepoints, and drawn in Bravura. A row of tabs under the
+as Unicode codepoints, and drawn in Bravura. A row of tabs under the
 input panel picks which notation is on screen, one at a time: *Precision Level* gives
 all four levels, with a live diagram of where your pitch falls among each level's
 symbols; *Prime Factor* spells the same pitch in the prime-factor notation
