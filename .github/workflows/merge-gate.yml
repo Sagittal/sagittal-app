@@ -16,6 +16,21 @@ jobs:
               with:
                   node-version: 20.x
             - run: npm i
+
+            # The two steps that read the TypeScript. Until they were added this
+            # job was named for a language it never checked: jasmine finds one
+            # spec in the whole repo and that spec asserts that true is truthy, so
+            # a type error or an unused import could land through a green gate.
+            - name: The types
+              run: npm run typecheck
+
+            # lint-check, not lint: the latter passes --fix and rewrites files,
+            # and a gate that edits the tree it is judging can never fail.
+            - name: The lint rules
+              run: npm run lint-check
+
+            # Kept for the specs to arrive into — jasmine errors on an empty spec
+            # tree, which is the whole reason the one trivial spec exists.
             - run: npm run test-full
 
     calculator:

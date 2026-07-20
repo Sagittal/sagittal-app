@@ -5,7 +5,12 @@ import tseslint from "typescript-eslint"
 
 export default tseslint.config(
     {
-        ignores: ["**/*.js", "**/*.d.ts", "dist/*", "eslint.config.mjs"],
+        // Plain JavaScript is not linted here, whichever extension it wears. The
+        // typed rules below need every linted file to belong to a tsconfig, and
+        // the .mjs under src/calculator/tools belongs to none of them — it is
+        // node-run tooling, gated by the calculator job instead. eslint.config.mjs
+        // used to be named here alone; **/*.mjs is the rule it was one case of.
+        ignores: ["**/*.js", "**/*.mjs", "**/*.d.ts", "dist/*"],
     },
     eslint.configs.recommended,
     ...tseslint.configs.recommendedTypeChecked,
