@@ -1,0 +1,61 @@
+name: deploy calculator
+run-name: deploying calculator
+
+# Publishes the calculator to the live site. The page is committed at
+# src/calculator/index.html as a single self-contained file — the merge gate
+# diffs it against a fresh build, so the committed file is always the page its
+# sources make. The site itself lives in a separate repo, Sagittal/sagittal.github.io
+# (served at app.sagittal.org), so this copies that one file into that repo's
+# calculator/ folder over SSH, where it lands at app.sagittal.org/calculator (and
+# sagittal.github.io/calculator). Nothing is built here.
+on:
+    push:
+        branches: [main]
+        paths:
+            - src/calculator/index.html
+            - .github/workflows/deploy-calculator.yml
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+# One publish at a time; never cancel a run mid-push.
+concurrency:
+    group: deploy-calculator
+    cancel-in-progress: false
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Publish the page into the site repo's calculator/ folder
+              env:
+                  DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+              run: |
+                  set -euo pipefail
+
+                  # A write deploy key on Sagittal/sagittal.github.io, held here as a secret.
+                  mkdir -p ~/.ssh && chmod 700 ~/.ssh
+                  printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy_key
+                  chmod 600 ~/.ssh/deploy_key
+                  ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+                  export GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes"
+
+                  git clone --depth 1 git@github.com:Sagittal/sagittal.github.io.git site
+                  mkdir -p site/calculator
+                  cp src/calculator/index.html site/calculator/index.html
+
+                  # Touch only calculator/index.html; leave the rest of the site intact,
+                  # and no-op when the page has not changed.
+                  git -C site add calculator/index.html
+                  if git -C site diff --cached --quiet; then
+                      echo "calculator unchanged — nothing to publish"
+                      exit 0
+                  fi
+                  git -C site \
+                      -c user.name="github-actions[bot]" \
+                      -c user.email="github-actions[bot]@users.noreply.github.com" \
+                      commit -m "Deploy calculator from sagittal-app@${GITHUB_SHA}"
+                  git -C site push origin HEAD:main
